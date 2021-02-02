@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Screens/Login/login_screen.dart';
-import 'package:flutter_auth/Screens/Signup/components/background.dart';
-import 'package:flutter_auth/Screens/Signup/components/or_divider.dart';
-import 'package:flutter_auth/Screens/Signup/components/social_icon.dart';
-import 'package:flutter_auth/components/already_have_an_account_acheck.dart';
-import 'package:flutter_auth/components/rounded_button.dart';
-import 'package:flutter_auth/components/rounded_input_field.dart';
-import 'package:flutter_auth/components/rounded_password_field.dart';
+import 'package:LavaDurian/Screens/Login/login_screen.dart';
+import 'package:LavaDurian/Screens/Signup/components/background.dart';
+import 'package:LavaDurian/Screens/Signup/components/or_divider.dart';
+import 'package:LavaDurian/Screens/Signup/components/social_icon.dart';
+import 'package:LavaDurian/components/already_have_an_account_acheck.dart';
+import 'package:LavaDurian/components/rounded_button.dart';
+import 'package:LavaDurian/components/rounded_input_field.dart';
+import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {

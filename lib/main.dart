@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Screens/Welcome/welcome_screen.dart';
-import 'package:flutter_auth/constants.dart';
+import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
+import 'package:LavaDurian/constants.dart';
 
 void main() => runApp(MyApp());
 

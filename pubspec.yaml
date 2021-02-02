@@ -1,4 +1,4 @@
-name: flutter_auth
+name: LavaDurian
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -24,6 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_svg: ^0.19.1
+  change_app_package_name: ^0.1.2
 
 dev_dependencies:
   flutter_test:

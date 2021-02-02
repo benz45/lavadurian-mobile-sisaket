@@ -1,15 +1,22 @@
-# Welcome page, Login Page and Sign up page - Flutter UI
+# Moblie Application for Lava Durian Online Marketplace
 
-## [Watch it on YouTube](https://youtu.be/ExKYjqgswJg)
+พัฒนาโดย 
+
+[อาจาย์พิศาล สุขขี](https://www.facebook.com/numvarn)
+
+phisan.s@sskru.ac.th
+
+สาขาวิทยาการคอมพิวเตอร์, คณะศิลปศาสตร์และวิทยาศาสตร์ มหาวิทยาลัยราชภัฏศรีสะเกษ
 
 **Packages we are using:**
 
-- flutter_svg: [link](https://pub.dev/packages/flutter_svg)
+- google_maps_flutter: [link](https://pub.dev/packages/google_maps_flutter)
+- geolocator: [link](https://pub.dev/packages/geolocator)
 
-We design 3 screens first one is a welcome screen like then user open your app it shows then users have two options, if he has an account then press the login button and it just shifts him to the login screen or if he or she don't have an account then press signup button its transfers to the signup screen.
+**GUI Template**
 
-### Auth UI
+- Welcome-Login-Signup-Page-Flutter [link](https://github.com/abuanwar072/Welcome-Login-Signup-Page-Flutter)
 
-![App UI](/UI.png)
-# lavadurian-mobile
-# lavadurian-mobile
+**Description:**
+
+โมบายแอปพลิเคชั่นนี้พัฒนาขึ้นสำหรับการจัดการขายทุเรียนภุเขาไฟออนไลน์ จังหวัดศรีสะเกษ เพื่อให้เกษตรกรผู้ปลูกทุดเรียนภูเขาไฟสามารถนำผลผลิตจากสวนตนเองมาขายให้ผู้บริโภคได้โดยตรง ด้วยการรักษาคุณภาพของผลผลิตทุเรียนภูเขาไฟ์ ซึ่งเป็นสินค้าคุณภาพของจังหวัดศรีสะเกษ

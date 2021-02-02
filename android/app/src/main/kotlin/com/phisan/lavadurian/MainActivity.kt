@@ -1,4 +1,4 @@
-package com.example.flutter_auth
+package com.phisan.lavadurian
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
