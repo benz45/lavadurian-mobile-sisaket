@@ -26,6 +26,7 @@ dependencies:
   flutter_svg: ^0.19.1
   change_app_package_name: ^0.1.2
   http: ^0.12.2
+  path_provider: ^1.6.27
 
 dev_dependencies:
   flutter_test:
