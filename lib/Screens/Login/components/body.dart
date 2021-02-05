@@ -10,11 +10,17 @@ import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as Http;
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class Body extends StatelessWidget {
-  const Body({
-    Key key,
-  }) : super(key: key);
+  // const Body({
+  //   Key key,
+  // }) : super(key: key);
+  String email = '';
+  String password = '';
+
+  final RoundedLoadingButtonController _btnController =
+      new RoundedLoadingButtonController();
 
   Future<void> _login(
       BuildContext context, String email, String password) async {
@@ -38,10 +44,12 @@ class Body extends StatelessWidget {
         FileProcess fileProcess = FileProcess('setting.json');
         fileProcess.writeData(tokenData);
         print("Login success");
+        _btnController.success();
       } catch (e) {
         print(e);
       }
     } else {
+      _btnController.stop();
       showDialog(
         context: context,
         builder: (context) {
@@ -57,8 +65,22 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String email = '';
-    String password = '';
+    // Login Button
+    final loginButton = RoundedLoadingButton(
+      child: Text(
+        "LOGIN",
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      controller: _btnController,
+      width: MediaQuery.of(context).size.width,
+      color: Color(0xFF6F35A5),
+      onPressed: () {
+        if (email != "" && password != "") {
+          _login(context, email.trim(), password.trim());
+        }
+      },
+    );
 
     Size size = MediaQuery.of(context).size;
     return Background(
@@ -87,13 +109,18 @@ class Body extends StatelessWidget {
                 password = value;
               },
             ),
-            RoundedButton(
-              text: "LOGIN",
-              press: () {
-                if (email != "" && password != "") {
-                  _login(context, email.trim(), password.trim());
-                }
-              },
+            // RoundedButton(
+            //   text: "LOGIN",
+            //   press: () {
+            //     if (email != "" && password != "") {
+            //       _login(context, email.trim(), password.trim());
+            //     }
+            //   },
+            // ),
+            // SizedBox(height: size.height * 0.03),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+              child: loginButton,
             ),
             SizedBox(height: size.height * 0.03),
             AlreadyHaveAnAccountCheck(
