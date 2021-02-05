@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:LavaDurian/Screens/App/operation.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/components/background.dart';
 import 'package:LavaDurian/Screens/Signup/signup_screen.dart';
 import 'package:LavaDurian/components/already_have_an_account_acheck.dart';
-import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
@@ -43,8 +43,9 @@ class Body extends StatelessWidget {
       try {
         FileProcess fileProcess = FileProcess('setting.json');
         fileProcess.writeData(tokenData);
-        print("Login success");
         _btnController.success();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => OperationPage()));
       } catch (e) {
         print(e);
       }
