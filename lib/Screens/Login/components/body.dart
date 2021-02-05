@@ -109,15 +109,6 @@ class Body extends StatelessWidget {
                 password = value;
               },
             ),
-            // RoundedButton(
-            //   text: "LOGIN",
-            //   press: () {
-            //     if (email != "" && password != "") {
-            //       _login(context, email.trim(), password.trim());
-            //     }
-            //   },
-            // ),
-            // SizedBox(height: size.height * 0.03),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
               child: loginButton,
