@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:LavaDurian/class/file_process.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/components/background.dart';
 import 'package:LavaDurian/Screens/Signup/signup_screen.dart';
@@ -31,6 +32,15 @@ class Body extends StatelessWidget {
     if (jsonData['token'] != null) {
       String tokenData = '{"token": "${jsonData['token']}"}';
       print(tokenData);
+
+      // Write token to setting file
+      try {
+        FileProcess fileProcess = FileProcess('setting.json');
+        fileProcess.writeData(tokenData);
+        print("Login success");
+      } catch (e) {
+        print(e);
+      }
     } else {
       showDialog(
         context: context,
