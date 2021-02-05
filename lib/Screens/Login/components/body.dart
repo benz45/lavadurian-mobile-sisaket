@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/components/background.dart';
 import 'package:LavaDurian/Screens/Signup/signup_screen.dart';
@@ -6,11 +8,42 @@ import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:http/http.dart' as Http;
 
 class Body extends StatelessWidget {
   const Body({
     Key key,
   }) : super(key: key);
+
+  Future<void> _login(
+      BuildContext context, String email, String password) async {
+    Map<String, String> data = {
+      'username': email,
+      'password': password,
+    };
+
+    final response = await Http.post(
+        'https://durian-lava.herokuapp.com/api/login',
+        body: data);
+
+    final jsonData = json.decode(response.body);
+
+    if (jsonData['token'] != null) {
+      String tokenData = '{"token": "${jsonData['token']}"}';
+      print(tokenData);
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Can not login !!'),
+            content:
+                Text("Invalid Username or Password !, Please login again."),
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +80,9 @@ class Body extends StatelessWidget {
             RoundedButton(
               text: "LOGIN",
               press: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      content: Text("email: ${email}\npassword: ${password}"),
-                    );
-                  },
-                );
+                if (email != "" && password != "") {
+                  _login(context, email.trim(), password.trim());
+                }
               },
             ),
             SizedBox(height: size.height * 0.03),
