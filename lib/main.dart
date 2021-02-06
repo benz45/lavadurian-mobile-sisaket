@@ -1,5 +1,5 @@
+import 'package:LavaDurian/App/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/constants.dart';
 
 void main() => runApp(MyApp());
@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
         primaryColor: kPrimaryColor,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: WelcomeScreen(),
+      // home: WelcomeScreen(),
+      home: SplashPage(),
     );
   }
 }
