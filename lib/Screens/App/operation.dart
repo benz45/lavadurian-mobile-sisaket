@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/Login/components/background.dart';
+import 'package:LavaDurian/components/drawer_menu.dart';
 import 'package:flutter/material.dart';
 
 class OperationPage extends StatefulWidget {
@@ -12,8 +13,9 @@ class _OperationPageState extends State<OperationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Lava Durian Online'),
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
       ),
+      drawer: NavDrawer(),
       body: Background(
         child: Center(
           child: Column(
