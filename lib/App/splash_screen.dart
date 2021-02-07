@@ -13,6 +13,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  SettingModel settingModel;
   String setting;
 
   Future<String> _getSetting() async {
@@ -29,6 +30,7 @@ class _SplashPageState extends State<SplashPage> {
         MaterialPageRoute(builder: (context) => WelcomeScreen()),
       );
     } else {
+      settingModel.value = jsonDecode(setting);
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => OperationPage()),
@@ -42,41 +44,43 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   @override
+  void initState() {
+    settingModel = context.read<SettingModel>();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<SettingModel>(
-      builder: (context, setting, child) => Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('WELCOME TO LAVADURIAN ONLINE'),
-              SizedBox(
-                height: 20.0,
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('WELCOME TO LAVADURIAN ONLINE'),
+            SizedBox(
+              height: 20.0,
+            ),
+            Container(
+              child: FutureBuilder(
+                future: _getSetting(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    startTime();
+                    return Column(
+                      children: [
+                        CircularProgressIndicator(),
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      children: [
+                        CircularProgressIndicator(),
+                      ],
+                    );
+                  }
+                },
               ),
-              Container(
-                child: FutureBuilder(
-                  future: _getSetting(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      setting.value = jsonDecode(snapshot.data);
-                      startTime();
-                      return Column(
-                        children: [
-                          CircularProgressIndicator(),
-                        ],
-                      );
-                    } else {
-                      return Column(
-                        children: [
-                          CircularProgressIndicator(),
-                        ],
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
