@@ -23,7 +23,6 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _checkAuthentication() async {
-    print(setting);
     if (setting == 'fail' || setting == '{}') {
       Navigator.push(
         context,
@@ -45,6 +44,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
+    super.initState();
     settingModel = context.read<SettingModel>();
   }
 

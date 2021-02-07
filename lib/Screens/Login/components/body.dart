@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:LavaDurian/App/operation.dart';
 import 'package:LavaDurian/class/file_process.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/components/background.dart';
 import 'package:LavaDurian/Screens/Signup/signup_screen.dart';
@@ -11,6 +12,7 @@ import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as Http;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -21,8 +23,9 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String email = '';
+  SettingModel settingModel;
 
+  String email = '';
   String password = '';
 
   final RoundedLoadingButtonController _btnController =
@@ -43,7 +46,9 @@ class _BodyState extends State<Body> {
 
     if (jsonData['token'] != null) {
       String tokenData = '{"token": "${jsonData['token']}"}';
-      print(tokenData);
+
+      // Set value to setting model
+      settingModel.value = jsonData;
 
       // Write token to setting file
       try {
@@ -68,6 +73,12 @@ class _BodyState extends State<Body> {
         },
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    settingModel = context.read<SettingModel>();
   }
 
   @override
