@@ -1,8 +1,11 @@
 import 'dart:async';
-import 'package:LavaDurian/App/operation.dart';
+import 'dart:convert';
+import 'package:LavaDurian/app/operation.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -40,37 +43,40 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('WELCOME TO LAVADURIAN ONLINE'),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              child: FutureBuilder(
-                future: _getSetting(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    startTime();
-                    return Column(
-                      children: [
-                        CircularProgressIndicator(),
-                      ],
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        CircularProgressIndicator(),
-                      ],
-                    );
-                  }
-                },
+    return Consumer<SettingModel>(
+      builder: (context, setting, child) => Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('WELCOME TO LAVADURIAN ONLINE'),
+              SizedBox(
+                height: 20.0,
               ),
-            ),
-          ],
+              Container(
+                child: FutureBuilder(
+                  future: _getSetting(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      setting.value = jsonDecode(snapshot.data);
+                      startTime();
+                      return Column(
+                        children: [
+                          CircularProgressIndicator(),
+                        ],
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          CircularProgressIndicator(),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

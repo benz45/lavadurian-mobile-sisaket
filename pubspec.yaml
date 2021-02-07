@@ -26,6 +26,7 @@ dependencies:
   flutter_svg: ^0.19.1
   change_app_package_name: ^0.1.2
   http: ^0.12.2
+  provider: ^4.3.3
   path_provider: ^1.6.27
   rounded_loading_button: ^1.0.0
 
