@@ -11,6 +11,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   String setting;
+
   Future<String> _getSetting() async {
     FileProcess fileProcess = FileProcess('setting.json');
     setting = await fileProcess.readData();
