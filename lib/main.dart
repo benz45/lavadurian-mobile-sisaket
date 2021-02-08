@@ -1,4 +1,5 @@
 import 'package:LavaDurian/app/splash_screen.dart';
+import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<SettingModel>(create: (_) => SettingModel()),
+        ChangeNotifierProvider<UserModel>(create: (_) => UserModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -67,7 +67,10 @@ class _SplashPageState extends State<SplashPage> {
                     startTime();
                     return Column(
                       children: [
-                        CircularProgressIndicator(),
+                        // CircularProgressIndicator(),
+                        SizedBox(
+                          height: 10.0,
+                        )
                       ],
                     );
                   } else {

@@ -1,6 +1,8 @@
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
+import 'package:LavaDurian/models/profile_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
@@ -8,6 +10,8 @@ class NavDrawer extends StatefulWidget {
 }
 
 class _NavDrawerState extends State<NavDrawer> {
+  UserModel userModel;
+
   Future<void> _logout() async {
     FileProcess fileProcess = FileProcess('setting.json');
     try {
@@ -20,14 +24,21 @@ class _NavDrawerState extends State<NavDrawer> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    userModel = context.read<UserModel>();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text('Phisan Sookkhee'),
-            accountEmail: Text('phisan.s@sskru.ac.th'),
+            accountName: Text(
+                "${userModel.value['first_name']} ${userModel.value['last_name']}"),
+            accountEmail: Text("${userModel.value['email']}"),
             currentAccountPicture: CircleAvatar(
               child: FlutterLogo(
                 size: 40.0,
