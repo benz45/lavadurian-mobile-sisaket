@@ -39,7 +39,7 @@ class _BodyState extends State<Body> {
     };
 
     final response = await Http.post(
-        'https://durian-lava.herokuapp.com/api/login',
+        '${settingModel.baseURL}/${settingModel.endPointLogin}',
         body: data);
 
     final jsonData = json.decode(response.body);

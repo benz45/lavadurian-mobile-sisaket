@@ -30,7 +30,7 @@ class _OperationPageState extends State<OperationPage> {
 
     if (userModel.value.isEmpty) {
       final response = await Http.get(
-          'https://durian-lava.herokuapp.com/api/user/me',
+          '${settingModel.baseURL}/${settingModel.endPointUserProfile}',
           headers: {
             'Content-Type': 'application/json; charset=UTF-8',
             HttpHeaders.authorizationHeader: "Token $token"
