@@ -29,24 +29,39 @@ class Body extends StatelessWidget {
             ),
             RoundedInputField(
               hintText: "First Name",
+              icon: Icons.person,
               onChanged: (value) {},
             ),
             RoundedInputField(
               hintText: "Last Name",
+              icon: Icons.person,
               onChanged: (value) {},
             ),
             RoundedInputField(
               hintText: "Citizen ID",
+              icon: Icons.person_pin_rounded,
               onChanged: (value) {},
             ),
             RoundedInputField(
               hintText: "Your Email",
+              icon: Icons.email,
               onChanged: (value) {},
             ),
             RoundedPasswordField(
               onChanged: (value) {},
             ),
             RoundedPasswordField(
+              onChanged: (value) {},
+            ),
+            RoundedInputField(
+              hintText: "Store Name",
+              icon: Icons.store_outlined,
+              onChanged: (value) {},
+            ),
+            // DropdownButton(items: [],),
+            RoundedInputField(
+              hintText: "Phone Number",
+              icon: Icons.phone,
               onChanged: (value) {},
             ),
             RoundedButton(
