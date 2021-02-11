@@ -4,11 +4,14 @@ class SettingModel extends ChangeNotifier {
   // API value
   String get baseURL => 'https://durian-lava.herokuapp.com';
 
-  // End-point for login
+  // End-point for Login
   String get endPointLogin => 'api/login';
 
-  // End-point for get user profile
+  // End-point for get User Profile
   String get endPointUserProfile => 'api/user/me';
+
+  // End-point for Reset Password
+  String get endPointResetPassword => 'accounts/password/reset';
 
   // Setting Value
   Map<String, dynamic> _value = {};

@@ -22,7 +22,7 @@ class ResetPasswordCheck extends StatelessWidget {
         GestureDetector(
           onTap: press,
           child: Text(
-            'Reset password',
+            'Reset Password',
             style: TextStyle(
               color: kPrimaryColor,
               fontWeight: FontWeight.bold,

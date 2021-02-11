@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:LavaDurian/App/operation.dart';
+import 'package:LavaDurian/Screens/Login/reset_password.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/components/reset_password.dart';
 import 'package:LavaDurian/models/setting_model.dart';
@@ -141,7 +142,7 @@ class _BodyState extends State<Body> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUpScreen();
+                      return ResetPassword();
                     },
                   ),
                 );
