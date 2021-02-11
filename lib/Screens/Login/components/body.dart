@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:LavaDurian/App/operation.dart';
 import 'package:LavaDurian/class/file_process.dart';
+import 'package:LavaDurian/components/reset_password.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/components/background.dart';
@@ -96,6 +97,8 @@ class _BodyState extends State<Body> {
       onPressed: () {
         if (email != "" && password != "") {
           _login(context, email.trim(), password.trim());
+        } else {
+          _btnController.stop();
         }
       },
     );
@@ -132,6 +135,19 @@ class _BodyState extends State<Body> {
               child: loginButton,
             ),
             SizedBox(height: size.height * 0.03),
+            ResetPasswordCheck(
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SignUpScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: size.height * 0.01),
             AlreadyHaveAnAccountCheck(
               press: () {
                 Navigator.push(
