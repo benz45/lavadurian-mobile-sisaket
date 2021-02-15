@@ -1,3 +1,4 @@
+import 'package:LavaDurian/components/trader_type_list.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
 import 'package:LavaDurian/Screens/Signup/components/background.dart';
@@ -9,7 +10,12 @@ import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -58,7 +64,7 @@ class Body extends StatelessWidget {
               icon: Icons.store_outlined,
               onChanged: (value) {},
             ),
-            // DropdownButton(items: [],),
+            teaderTypeList(),
             RoundedInputField(
               hintText: "Phone Number",
               icon: Icons.phone,
