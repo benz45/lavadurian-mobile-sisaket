@@ -7,7 +7,7 @@
         {
             "name": "LavaDurian",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
         }
     ]
 }

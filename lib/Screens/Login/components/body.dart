@@ -4,6 +4,8 @@ import 'package:LavaDurian/App/operation.dart';
 import 'package:LavaDurian/Screens/Login/reset_password.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/components/reset_password.dart';
+import 'package:LavaDurian/components/rounded_button.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/components/background.dart';
@@ -94,7 +96,7 @@ class _BodyState extends State<Body> {
       ),
       controller: _btnController,
       width: MediaQuery.of(context).size.width,
-      color: Color(0xFF6F35A5),
+      color: kPrimaryColor,
       onPressed: () {
         if (email != "" && password != "") {
           _login(context, email.trim(), password.trim());
@@ -122,6 +124,7 @@ class _BodyState extends State<Body> {
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
               hintText: "Your Email",
+              icon: Icons.person,
               onChanged: (value) {
                 email = value;
               },
