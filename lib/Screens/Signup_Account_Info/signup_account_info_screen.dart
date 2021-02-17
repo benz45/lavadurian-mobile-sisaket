@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:LavaDurian/Screens/Signup/components/body.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/components/body.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpAccountInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

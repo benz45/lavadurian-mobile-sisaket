@@ -4,10 +4,12 @@ import 'package:LavaDurian/App/operation.dart';
 import 'package:LavaDurian/Screens/Login/reset_password.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/components/reset_password.dart';
+import 'package:LavaDurian/components/rounded_button.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/components/background.dart';
-import 'package:LavaDurian/Screens/Signup/signup_screen.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/signup_id_card_screen.dart';
 import 'package:LavaDurian/components/already_have_an_account_acheck.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
@@ -94,7 +96,7 @@ class _BodyState extends State<Body> {
       ),
       controller: _btnController,
       width: MediaQuery.of(context).size.width,
-      color: Color(0xFF6F35A5),
+      color: kPrimaryColor,
       onPressed: () {
         if (email != "" && password != "") {
           _login(context, email.trim(), password.trim());
@@ -122,6 +124,7 @@ class _BodyState extends State<Body> {
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
               hintText: "Your Email",
+              icon: Icons.person,
               onChanged: (value) {
                 email = value;
               },
@@ -155,7 +158,7 @@ class _BodyState extends State<Body> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUpScreen();
+                      return SignUpIDCardScreen();
                     },
                   ),
                 );
