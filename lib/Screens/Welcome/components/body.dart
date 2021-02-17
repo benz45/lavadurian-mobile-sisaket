@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
-import 'package:LavaDurian/Screens/Signup_ID_Card/signup_screen.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/signup_id_card_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/components/background.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/constants.dart';
@@ -48,7 +48,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUpScreen();
+                      return SignUpIDCardScreen();
                     },
                   ),
                 );

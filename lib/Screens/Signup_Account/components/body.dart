@@ -1,3 +1,4 @@
+import 'package:LavaDurian/components/social_signup.dart';
 import 'package:LavaDurian/components/text_field_container.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +12,25 @@ import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  Body({Key key}) : super(key: key);
+
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  Map<String, String> data = {};
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    void _onChange(value) {
-      print(value);
+    void _onChange({String value, String index}) {
+      setState(() => data[index] = value);
     }
+
+    print(data);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -41,19 +52,19 @@ class Body extends StatelessWidget {
         RoundedInputField(
           hintText: "อีเมล",
           icon: Icons.email,
-          onChanged: _onChange,
+          onChanged: (value) => _onChange(value: value, index: 'email'),
           textInputAction: TextInputAction.next,
         ),
         RoundedInputField(
           hintText: "รหัสผ่าน",
           icon: Icons.vpn_key_outlined,
-          onChanged: _onChange,
+          onChanged: (value) => _onChange(value: value, index: 'password'),
           textInputAction: TextInputAction.next,
         ),
         RoundedInputField(
           hintText: "ยืนยันรหัสผ่าน",
           icon: Icons.vpn_key,
-          onChanged: _onChange,
+          onChanged: (value) => _onChange(value: value, index: 'cPassword'),
           textInputAction: TextInputAction.done,
         ),
         RoundedButton(
@@ -76,24 +87,7 @@ class Body extends StatelessWidget {
         ),
         // ignore: todo
         // TODO:(Next Feature) Social Sign Up.
-        // OrDivider(),
-        //  Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: <Widget>[
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/facebook.svg",
-        //       press: () {},
-        //     ),
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/twitter.svg",
-        //       press: () {},
-        //     ),
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/google-plus.svg",
-        //       press: () {},
-        //     ),
-        //   ],
-        // )
+        // SocialSignUp()
       ],
     );
   }

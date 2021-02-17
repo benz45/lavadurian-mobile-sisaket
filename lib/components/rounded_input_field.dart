@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 class RoundedInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
-  final ValueChanged<String> onChanged;
+  final onChanged;
   final keyboardType;
   final inputFormatters;
   final controller;
@@ -29,6 +29,7 @@ class RoundedInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFieldContainer(
       child: TextField(
+        key: key,
         inputFormatters: inputFormatters,
         controller: controller,
         keyboardType: keyboardType,

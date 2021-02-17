@@ -1,3 +1,4 @@
+import 'package:LavaDurian/components/social_signup.dart';
 import 'package:LavaDurian/components/text_field_container.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
@@ -70,24 +71,7 @@ class Body extends StatelessWidget {
         ),
         // ignore: todo
         // TODO:(Next Feature) Social Sign Up.
-        // OrDivider(),
-        //  Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: <Widget>[
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/facebook.svg",
-        //       press: () {},
-        //     ),
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/twitter.svg",
-        //       press: () {},
-        //     ),
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/google-plus.svg",
-        //       press: () {},
-        //     ),
-        //   ],
-        // )
+        // SocialSignUp()
       ],
     );
   }

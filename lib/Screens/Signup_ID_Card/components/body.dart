@@ -1,3 +1,5 @@
+import 'package:LavaDurian/components/header_text_signup.dart';
+import 'package:LavaDurian/components/social_signup.dart';
 import 'package:LavaDurian/components/text_field_container.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
@@ -20,27 +22,14 @@ class Body extends StatelessWidget {
     var maskFormatter = new MaskTextInputFormatter(
         mask: '#-####-#####-##-#', filter: {"#": RegExp(r'[0-9]')});
 
-    void _onChangeA(_) {
+    void _onChange(_) {
       print(maskFormatter.getUnmaskedText());
     }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 12.0),
-          child: Text(
-            "ทุเรียนภูเขาไฟศรีสะเกษ",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-          ),
-        ),
-        Text(
-          "สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ",
-          style: TextStyle(
-              fontWeight: FontWeight.bold, color: kTextSecondaryColor),
-        ),
-        SizedBox(height: size.height * 0.03),
-
+        HeaderTextSignUp(),
         RoundedInputField(
           hintText: "รหัสประจำตัวประชาชน",
           inputFormatters: [
@@ -48,7 +37,7 @@ class Body extends StatelessWidget {
           ],
           keyboardType: TextInputType.number,
           icon: Icons.person_pin_rounded,
-          onChanged: _onChangeA,
+          onChanged: _onChange,
         ),
         RoundedButton(
           text: "ถัดไป",
@@ -70,24 +59,7 @@ class Body extends StatelessWidget {
         ),
         // ignore: todo
         // TODO:(Next Feature) Social Sign Up.
-        // OrDivider(),
-        //  Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: <Widget>[
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/facebook.svg",
-        //       press: () {},
-        //     ),
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/twitter.svg",
-        //       press: () {},
-        //     ),
-        //     SocalIcon(
-        //       iconSrc: "assets/icons/google-plus.svg",
-        //       press: () {},
-        //     ),
-        //   ],
-        // )
+        // SocialSignUp()
       ],
     );
   }
