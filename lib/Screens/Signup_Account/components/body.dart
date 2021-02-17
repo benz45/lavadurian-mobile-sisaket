@@ -13,24 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class Body extends StatefulWidget {
-  @override
-  _BodyState createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> {
-  TextEditingController _controller;
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
+class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
@@ -57,22 +40,21 @@ class _BodyState extends State<Body> {
 
         RoundedInputField(
           hintText: "อีเมล",
-          keyboardType: TextInputType.number,
           icon: Icons.email,
           onChanged: _onChange,
-          controller: _controller,
+          textInputAction: TextInputAction.next,
         ),
         RoundedInputField(
           hintText: "รหัสผ่าน",
-          keyboardType: TextInputType.number,
           icon: Icons.vpn_key_outlined,
           onChanged: _onChange,
+          textInputAction: TextInputAction.next,
         ),
         RoundedInputField(
           hintText: "ยืนยันรหัสผ่าน",
-          keyboardType: TextInputType.number,
           icon: Icons.vpn_key,
           onChanged: _onChange,
+          textInputAction: TextInputAction.done,
         ),
         RoundedButton(
           text: "ถัดไป",
