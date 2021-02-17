@@ -2,9 +2,9 @@ import 'package:LavaDurian/components/text_field_container.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
-import 'package:LavaDurian/Screens/Signup/components/background.dart';
-import 'package:LavaDurian/Screens/Signup/components/or_divider.dart';
-import 'package:LavaDurian/Screens/Signup/components/social_icon.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/components/background.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/components/or_divider.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/components/social_icon.dart';
 import 'package:LavaDurian/components/already_have_an_account_acheck.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
@@ -13,15 +13,29 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  TextEditingController _controller;
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var maskFormatter = new MaskTextInputFormatter(
-        mask: '#-####-#####-##-#', filter: {"#": RegExp(r'[0-9]')});
 
-    void _onChangeA(_) {
-      print(maskFormatter.getUnmaskedText());
+    void _onChange(value) {
+      print(value);
     }
 
     return Column(
@@ -42,13 +56,23 @@ class Body extends StatelessWidget {
         SizedBox(height: size.height * 0.03),
 
         RoundedInputField(
-          hintText: "รหัสประจำตัวประชาชน",
-          inputFormatters: [
-            maskFormatter,
-          ],
+          hintText: "อีเมล",
           keyboardType: TextInputType.number,
-          icon: Icons.person_pin_rounded,
-          onChanged: _onChangeA,
+          icon: Icons.email,
+          onChanged: _onChange,
+          controller: _controller,
+        ),
+        RoundedInputField(
+          hintText: "รหัสผ่าน",
+          keyboardType: TextInputType.number,
+          icon: Icons.vpn_key_outlined,
+          onChanged: _onChange,
+        ),
+        RoundedInputField(
+          hintText: "ยืนยันรหัสผ่าน",
+          keyboardType: TextInputType.number,
+          icon: Icons.vpn_key,
+          onChanged: _onChange,
         ),
         RoundedButton(
           text: "ถัดไป",

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
-import 'package:LavaDurian/Screens/Signup/signup_screen.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/signup_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/components/background.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/constants.dart';
