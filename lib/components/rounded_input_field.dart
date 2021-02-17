@@ -12,9 +12,11 @@ class RoundedInputField extends StatelessWidget {
   final controller;
   final onSubmitted;
   final textInputAction;
+  final bool enabled;
 
   const RoundedInputField(
       {Key key,
+      this.enabled,
       this.hintText,
       this.icon,
       this.controller,
@@ -30,6 +32,7 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
       child: TextField(
         key: key,
+        enabled: enabled,
         inputFormatters: inputFormatters,
         controller: controller,
         keyboardType: keyboardType,

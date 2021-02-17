@@ -26,6 +26,20 @@ class Body extends StatelessWidget {
       print(maskFormatter.getUnmaskedText());
     }
 
+    void _onSubmit(BuildContext context) {
+      // Validation ID Card.
+      if (maskFormatter.getUnmaskedText().length != 13) {
+        final scaffold = Scaffold.of(context);
+        scaffold.showSnackBar(
+          SnackBar(
+            content: const Text('เลขบัตรประชาชนไม่ถูกต้อง'),
+            action: SnackBarAction(
+                label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+          ),
+        );
+      }
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -41,7 +55,7 @@ class Body extends StatelessWidget {
         ),
         RoundedButton(
           text: "ถัดไป",
-          press: () {},
+          press: () => _onSubmit(context),
         ),
         SizedBox(height: size.height * 0.03),
         AlreadyHaveAnAccountCheck(
