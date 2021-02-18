@@ -1,6 +1,7 @@
 import 'package:LavaDurian/components/social_signup.dart';
 import 'package:LavaDurian/components/text_field_container.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/signup_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
 import 'package:LavaDurian/Screens/Signup_ID_Card/components/background.dart';
@@ -12,6 +13,7 @@ import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class Body extends StatefulWidget {
   Body({Key key}) : super(key: key);
@@ -24,6 +26,7 @@ class _BodyState extends State<Body> {
   Map<String, String> data = {};
 
   Widget build(BuildContext context) {
+    final citizenId = Provider.of<SignupModel>(context);
     Size size = MediaQuery.of(context).size;
 
     void _onChange({String value, String index}) {
