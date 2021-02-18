@@ -40,7 +40,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         builder: (context) {
           return AlertDialog(
             title: Text("Email has been send !"),
-            content: Text("Please, check your email for reset your password."),
+            content: Text("$msg"),
             actions: [
               FlatButton(
                   onPressed: () {
