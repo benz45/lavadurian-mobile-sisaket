@@ -11,7 +11,7 @@ class SettingModel extends ChangeNotifier {
   String get endPointUserProfile => 'api/user/me';
 
   // End-point for Reset Password
-  String get endPointResetPassword => 'accounts/password/reset';
+  String get endPointResetPassword => 'dj-rest-auth/password/reset/';
 
   // Setting Value
   Map<String, dynamic> _value = {};
