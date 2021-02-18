@@ -29,7 +29,6 @@ dependencies:
   provider: ^4.3.3
   path_provider: ^1.6.27
   rounded_loading_button: ^1.0.0
-  webview_flutter: ^1.0.7
 
 dev_dependencies:
   flutter_test:
