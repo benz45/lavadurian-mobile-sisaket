@@ -14,6 +14,7 @@ class RoundedInputField extends StatelessWidget {
   final textInputAction;
   final bool enabled;
   final bool autofocus;
+  final obscureText;
 
   const RoundedInputField(
       {Key key,
@@ -24,6 +25,7 @@ class RoundedInputField extends StatelessWidget {
       this.controller,
       this.onChanged,
       this.onSubmitted,
+      this.obscureText = false,
       this.inputFormatters,
       this.textInputAction,
       this.keyboardType = TextInputType.text})
@@ -51,6 +53,7 @@ class RoundedInputField extends StatelessWidget {
           hintText: hintText,
           border: InputBorder.none,
         ),
+        obscureText: obscureText,
       ),
     );
   }

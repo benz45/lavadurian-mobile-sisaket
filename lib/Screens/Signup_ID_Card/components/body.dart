@@ -25,7 +25,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final citizenId = Provider.of<SignupModel>(context);
+    final store = Provider.of<SignupModel>(context);
     final api = Provider.of<SettingModel>(context);
 
     var maskFormatter = MaskTextInputFormatter(
@@ -45,12 +45,12 @@ class Body extends StatelessWidget {
               body: {'citizenid': maskFormatter.getUnmaskedText()});
 
           if (response.statusCode == 200) {
-            final result = CheckCitizenId.fromJson(jsonDecode(response.body));
+            final result = CheckInfo.fromJson(jsonDecode(response.body));
             if (result.status) {
               _showSnackBar(context, 'เลขบัตรประชาชนถูกลงทะเบียนแล้ว');
               _btnController.stop();
             } else {
-              citizenId.citizenId = maskFormatter.getUnmaskedText();
+              store.setCitizenid = maskFormatter.getUnmaskedText();
               _btnController.success();
               Timer(Duration(milliseconds: 350), () {
                 Navigator.push(
