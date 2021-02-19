@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:LavaDurian/Screens/Signup_Account/signup_account_screen.dart';
 import 'package:LavaDurian/components/header_text_signup.dart';
+import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/checkCitizenId_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
@@ -35,7 +36,7 @@ class Body extends StatelessWidget {
       try {
         FocusManager.instance.primaryFocus.unfocus();
         if (maskFormatter.getUnmaskedText().length != 13) {
-          _showSnackBar(context, 'เลขบัตรประชาชนไม่ถูกต้อง');
+          showSnackBar(context, 'เลขบัตรประชาชนไม่ถูกต้อง');
           _btnController.stop();
         }
 
@@ -47,7 +48,7 @@ class Body extends StatelessWidget {
           if (response.statusCode == 200) {
             final result = CheckInfo.fromJson(jsonDecode(response.body));
             if (result.status) {
-              _showSnackBar(context, 'เลขบัตรประชาชนถูกลงทะเบียนแล้ว');
+              showSnackBar(context, 'เลขบัตรประชาชนถูกลงทะเบียนแล้ว');
               _btnController.stop();
             } else {
               store.setCitizenid = maskFormatter.getUnmaskedText();
@@ -120,17 +121,6 @@ class Body extends StatelessWidget {
         // TODO:(Next Feature) Social Sign Up.
         // SocialSignUp()
       ],
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String text) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(text),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
     );
   }
 }

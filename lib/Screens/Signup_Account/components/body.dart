@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/checkCitizenId_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
@@ -47,32 +48,32 @@ class _BodyState extends State<Body> {
         if (data['email']?.length == null ||
             data['password']?.length == null ||
             data['cPassword']?.length == null) {
-          _showSnackBar(context, 'กรุญากรอกข้อมูลให้ครบถ้วน');
+          showSnackBar(context, 'กรุญากรอกข้อมูลให้ครบถ้วน');
           _btnController.error();
         } else {
           bool emailValid = RegExp(regExpEmail).hasMatch(data['email']);
           bool passValid = RegExp(regExpPassword).hasMatch(data['password']);
 
           if (!emailValid) {
-            _showSnackBar(context, 'กรุญากรอกอีเมลให้ถูกต้อง');
+            showSnackBar(context, 'กรุญากรอกอีเมลให้ถูกต้อง');
             _btnController.error();
             return;
           }
 
           if (data['password'].length < 6) {
-            _showSnackBar(context, 'รหัสควรมากกว่า 6 ตัวอักษร');
+            showSnackBar(context, 'รหัสควรมากกว่า 6 ตัวอักษร');
             _btnController.error();
             return;
           }
 
           if (data['password'] != data['cPassword']) {
-            _showSnackBar(context, 'รหัสผ่านไม่ตรงกัน');
+            showSnackBar(context, 'รหัสผ่านไม่ตรงกัน');
             _btnController.error();
             return;
           }
 
           if (!passValid) {
-            _showSnackBar(context,
+            showSnackBar(context,
                 'รหัสผ่านควรมีตัวพิมพ์ใหญ่, ตัวพิมพ์เล็ก อย่างละ 1 ตัวอักษร');
             _btnController.error();
             return;
@@ -89,7 +90,7 @@ class _BodyState extends State<Body> {
 
               if (result.status) {
                 _btnController.stop();
-                _showSnackBar(context, 'อีเมลนี้มีการลงทะเบียนไว้แล้ว');
+                showSnackBar(context, 'อีเมลนี้มีการลงทะเบียนไว้แล้ว');
               } else {
                 // ignore: todo
                 // TODO: (Next Version) ;
@@ -184,17 +185,6 @@ class _BodyState extends State<Body> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String text) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(text),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }
