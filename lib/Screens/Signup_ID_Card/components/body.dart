@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:LavaDurian/Screens/Signup_Account/signup_account_screen.dart';
 import 'package:LavaDurian/components/header_text_signup.dart';
+import 'package:LavaDurian/components/btnRoundedLoadingButton.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
-import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/checkCitizenId_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/signup_model.dart';
@@ -67,22 +67,10 @@ class Body extends StatelessWidget {
           }
         }
       } catch (err) {
-        throw err;
+        throw (err);
       }
       // Validation ID Card.
     }
-
-    final Widget _onSubmitButton = RoundedLoadingButton(
-      child: Text(
-        "ถัดไป",
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
-      ),
-      controller: _btnController,
-      width: MediaQuery.of(context).size.width,
-      color: kPrimaryColor,
-      onPressed: () => _onSubmit(context),
-    );
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -94,13 +82,17 @@ class Body extends StatelessWidget {
             maskFormatter,
           ],
           keyboardType: TextInputType.number,
-          icon: Icons.person_pin_rounded,
+          icon: Icons.person_search,
           onSubmitted: (_) => _onSubmit(context),
         ),
 
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-          child: _onSubmitButton,
+          child: BtnRoundedLoadingButton(
+            text: 'ถัดไป',
+            controller: _btnController,
+            onPressed: () => _onSubmit(context),
+          ),
         ),
 
         SizedBox(height: size.height * 0.03),

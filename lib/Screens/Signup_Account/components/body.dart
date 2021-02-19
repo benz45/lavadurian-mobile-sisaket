@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:LavaDurian/Screens/Signup_Account_Info/signup_account_info_screen.dart';
+import 'package:LavaDurian/components/btnRoundedLoadingButton.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/checkCitizenId_model.dart';
@@ -34,8 +37,8 @@ class _BodyState extends State<Body> {
       new RoundedLoadingButtonController();
 
   Widget build(BuildContext context) {
-    final store = Provider.of<SignupModel>(context);
-    final api = Provider.of<SettingModel>(context);
+    final storeSignup = Provider.of<SignupModel>(context);
+    final storeApi = Provider.of<SettingModel>(context);
     Size size = MediaQuery.of(context).size;
 
     void _onChange({String value, String index}) {
@@ -45,76 +48,26 @@ class _BodyState extends State<Body> {
 
     Future _onSubmit() async {
       try {
-        if (data['email']?.length == null ||
-            data['password']?.length == null ||
-            data['cPassword']?.length == null) {
-          showSnackBar(context, 'กรุญากรอกข้อมูลให้ครบถ้วน');
-          _btnController.error();
-        } else {
-          bool emailValid = RegExp(regExpEmail).hasMatch(data['email']);
-          bool passValid = RegExp(regExpPassword).hasMatch(data['password']);
-
-          if (!emailValid) {
-            showSnackBar(context, 'กรุญากรอกอีเมลให้ถูกต้อง');
-            _btnController.error();
-            return;
-          }
-
-          if (data['password'].length < 6) {
-            showSnackBar(context, 'รหัสควรมากกว่า 6 ตัวอักษร');
-            _btnController.error();
-            return;
-          }
-
-          if (data['password'] != data['cPassword']) {
-            showSnackBar(context, 'รหัสผ่านไม่ตรงกัน');
-            _btnController.error();
-            return;
-          }
-
-          if (!passValid) {
-            showSnackBar(context,
-                'รหัสผ่านควรมีตัวพิมพ์ใหญ่, ตัวพิมพ์เล็ก อย่างละ 1 ตัวอักษร');
-            _btnController.error();
-            return;
-          }
-
-          if (emailValid && passValid) {
-            final response = await http
-                .post('${api.baseURL}/${api.endPointCheckEmail}', body: {
-              'email': data['email'],
-            });
-
-            if (response.statusCode == 200) {
-              final result = CheckInfo.fromJson(jsonDecode(response.body));
-
-              if (result.status) {
-                _btnController.stop();
-                showSnackBar(context, 'อีเมลนี้มีการลงทะเบียนไว้แล้ว');
-              } else {
-                // ignore: todo
-                // TODO: (Next Version) ;
-                _btnController.success();
-              }
-            }
-          }
+        bool result = await validateData(context, storeApi);
+        if (result) {
+          storeSignup.setEmail = data['email'];
+          storeSignup.setPassword = data['password'];
+          _btnController.success();
+          Timer(Duration(milliseconds: 350), () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return SignUpAccountInfoScreen();
+                },
+              ),
+            );
+          });
         }
       } catch (err) {
         throw err;
       }
     }
-
-    final Widget _onSubmitButton = RoundedLoadingButton(
-      child: Text(
-        "ถัดไป",
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
-      ),
-      controller: _btnController,
-      width: MediaQuery.of(context).size.width,
-      color: kPrimaryColor,
-      onPressed: () => _onSubmit(),
-    );
 
     return Container(
       constraints: BoxConstraints.expand(),
@@ -146,7 +99,7 @@ class _BodyState extends State<Body> {
                 inputFormatters: limitingTextInput,
               ),
               RoundedInputField(
-                hintText: "รหัสผ่าน ( มากกว่า 6 ตัวอักษร )",
+                hintText: "รหัสผ่าน ( 8 ตัวอักษรขึ้นไป )",
                 icon: Icons.vpn_key_outlined,
                 onChanged: (v) => _onChange(value: v, index: 'password'),
                 textInputAction: TextInputAction.next,
@@ -163,7 +116,11 @@ class _BodyState extends State<Body> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                child: _onSubmitButton,
+                child: BtnRoundedLoadingButton(
+                  text: 'ถัดไป',
+                  controller: _btnController,
+                  onPressed: () => _onSubmit(),
+                ),
               ),
               SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
@@ -187,5 +144,66 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  }
+
+  Future validateData(BuildContext context, SettingModel api) async {
+    if (data['email']?.length == null ||
+        data['password']?.length == null ||
+        data['cPassword']?.length == null) {
+      showSnackBar(context, 'กรุญากรอกข้อมูลให้ครบถ้วน');
+      _btnController.reset();
+    } else {
+      bool emailValid = RegExp(regExpEmail).hasMatch(data['email']);
+      bool passValid = RegExp(regExpPassword).hasMatch(data['password']);
+
+      if (!emailValid) {
+        showSnackBar(context, 'กรุญากรอกอีเมลให้ถูกต้อง');
+        _btnController.reset();
+        return false;
+      }
+
+      if (data['password'].length < 8) {
+        showSnackBar(context, 'รหัสควรมากกว่า 8 ตัวอักษร');
+        _btnController.reset();
+        return false;
+      }
+
+      if (data['password'] != data['cPassword']) {
+        showSnackBar(context, 'รหัสผ่านไม่ตรงกัน');
+        _btnController.reset();
+        return false;
+      }
+
+      if (!passValid) {
+        showSnackBar(context,
+            'รหัสผ่านควรมีตัวพิมพ์ใหญ่, ตัวพิมพ์เล็ก อย่างละ 1 ตัวอักษร');
+        _btnController.reset();
+        return false;
+      }
+
+      if (emailValid && passValid) {
+        final response =
+            await http.post('${api.baseURL}/${api.endPointCheckEmail}', body: {
+          'email': data['email'],
+        });
+
+        if (response.statusCode == 200) {
+          final result = CheckInfo.fromJson(jsonDecode(response.body));
+
+          if (result.status) {
+            _btnController.stop();
+            showSnackBar(context, 'อีเมลนี้มีการลงทะเบียนไว้แล้ว');
+            return false;
+          } else {
+            _btnController.success();
+            return true;
+          }
+        } else {
+          _btnController.stop();
+          showSnackBar(context, 'อีเมลนี้มีการลงทะเบียนไว้แล้ว');
+          return false;
+        }
+      }
+    }
   }
 }

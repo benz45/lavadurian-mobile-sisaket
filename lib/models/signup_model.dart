@@ -8,17 +8,6 @@ SignupModel signupModelFromJson(String str) =>
 String signupModelToJson(SignupModel data) => json.encode(data.toJson());
 
 class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
-  SignupModel({
-    this.password,
-    this.email,
-    this.firstName,
-    this.lastName,
-    this.citizenid,
-    this.tradertype,
-    this.tradername,
-    this.phone,
-  });
-
   String password;
   String email;
   String firstName;
@@ -27,6 +16,30 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
   String tradertype;
   String tradername;
   String phone;
+
+  // Trader Type
+  final String traderMiddleman = 'พ่อค้าคนกลาง';
+  final String traderOwner = 'เจ้าของสวน';
+
+  SignupModel(
+      {String password = '',
+      String email = '',
+      String firstName = '',
+      String lastName = '',
+      String citizenid = '',
+      String tradertype = '',
+      String tradername = '',
+      String phone = '',
+      String traderMiddleman,
+      String traderOwner})
+      : this.password = password,
+        this.email = email,
+        this.firstName = firstName,
+        this.lastName = lastName,
+        this.citizenid = citizenid,
+        this.tradertype = traderMiddleman,
+        this.tradername = tradername,
+        this.phone = phone;
 
   factory SignupModel.fromJson(Map<String, dynamic> json) => SignupModel(
         password: json["password"],
@@ -57,7 +70,7 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
   String get getCitizenid => citizenid;
   String get getTradertype => tradertype;
   String get getTradername => tradername;
-  String get getPhone => phone;
+  String get getPhoneNumber => phone;
 
   set setEmail(String value) => {email = value, notifyListeners()};
   set setPassword(String value) => {password = value, notifyListeners()};
@@ -66,7 +79,7 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
   set setCitizenid(String value) => {citizenid = value, notifyListeners()};
   set setTradertype(String value) => {tradertype = value, notifyListeners()};
   set setTradername(String value) => {tradername = value, notifyListeners()};
-  set setPhone(String value) => {phone = value, notifyListeners()};
+  set setPhoneNumber(String value) => {phone = value, notifyListeners()};
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
