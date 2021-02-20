@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:LavaDurian/Screens/Signup_Account/signup_account_screen.dart';
 import 'package:LavaDurian/components/header_text_signup.dart';
-import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/components/btnRoundedLoadingButton.dart';
+import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/models/checkCitizenId_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/signup_model.dart';
@@ -25,7 +26,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final citizenId = Provider.of<SignupModel>(context);
+    final store = Provider.of<SignupModel>(context);
     final api = Provider.of<SettingModel>(context);
 
     var maskFormatter = MaskTextInputFormatter(
@@ -35,7 +36,7 @@ class Body extends StatelessWidget {
       try {
         FocusManager.instance.primaryFocus.unfocus();
         if (maskFormatter.getUnmaskedText().length != 13) {
-          _showSnackBar(context, 'เลขบัตรประชาชนไม่ถูกต้อง');
+          showSnackBar(context, 'เลขบัตรประชาชนไม่ถูกต้อง');
           _btnController.stop();
         }
 
@@ -45,12 +46,12 @@ class Body extends StatelessWidget {
               body: {'citizenid': maskFormatter.getUnmaskedText()});
 
           if (response.statusCode == 200) {
-            final result = CheckCitizenId.fromJson(jsonDecode(response.body));
+            final result = CheckInfo.fromJson(jsonDecode(response.body));
             if (result.status) {
-              _showSnackBar(context, 'เลขบัตรประชาชนถูกลงทะเบียนแล้ว');
+              showSnackBar(context, 'เลขบัตรประชาชนถูกลงทะเบียนแล้ว');
               _btnController.stop();
             } else {
-              citizenId.citizenId = maskFormatter.getUnmaskedText();
+              store.setCitizenid = maskFormatter.getUnmaskedText();
               _btnController.success();
               Timer(Duration(milliseconds: 350), () {
                 Navigator.push(
@@ -66,22 +67,10 @@ class Body extends StatelessWidget {
           }
         }
       } catch (err) {
-        throw err;
+        throw (err);
       }
       // Validation ID Card.
     }
-
-    final Widget _onSubmitButton = RoundedLoadingButton(
-      child: Text(
-        "ถัดไป",
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
-      ),
-      controller: _btnController,
-      width: MediaQuery.of(context).size.width,
-      color: kPrimaryColor,
-      onPressed: () => _onSubmit(context),
-    );
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -93,13 +82,17 @@ class Body extends StatelessWidget {
             maskFormatter,
           ],
           keyboardType: TextInputType.number,
-          icon: Icons.person_pin_rounded,
+          icon: Icons.person_search,
           onSubmitted: (_) => _onSubmit(context),
         ),
 
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-          child: _onSubmitButton,
+          child: BtnRoundedLoadingButton(
+            text: 'ถัดไป',
+            controller: _btnController,
+            onPressed: () => _onSubmit(context),
+          ),
         ),
 
         SizedBox(height: size.height * 0.03),
@@ -120,17 +113,6 @@ class Body extends StatelessWidget {
         // TODO:(Next Feature) Social Sign Up.
         // SocialSignUp()
       ],
-    );
-  }
-
-  void _showSnackBar(BuildContext context, String text) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        content: Text(text),
-        action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
-      ),
     );
   }
 }

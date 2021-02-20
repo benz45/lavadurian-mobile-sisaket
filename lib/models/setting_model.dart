@@ -16,6 +16,9 @@ class SettingModel extends ChangeNotifier {
   // End-point for Reset Password
   String get endPointCheckCitizenId => 'api/check/id';
 
+  // End-point for Reset Password
+  String get endPointCheckEmail => 'api/check/email';
+
   // Setting Value
   Map<String, dynamic> _value = {};
   Map<String, dynamic> get value => _value;

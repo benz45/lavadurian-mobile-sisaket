@@ -1,10 +1,10 @@
-class CheckCitizenId {
+class CheckInfo {
   bool status;
   String message;
 
-  CheckCitizenId({this.status, this.message});
+  CheckInfo({this.status, this.message});
 
-  CheckCitizenId.fromJson(Map<String, dynamic> json) {
+  CheckInfo.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
   }
