@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Lava Durian Sisaket',
         theme: ThemeData(
           primaryColor: kPrimaryColor,
