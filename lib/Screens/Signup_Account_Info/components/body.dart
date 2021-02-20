@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:LavaDurian/components/btnRoundedLoadingButton.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/checkCitizenId_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/signup_model.dart';
 import 'package:flutter/material.dart';
@@ -69,11 +71,45 @@ class _BodyState extends State<Body> {
             showSnackBar(context, 'กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง');
             return;
           }
-          _btnController.success();
-          print(storeSignup);
-          // ignore: todo
-          // TODO: New Feature
-          // Do something !!
+
+          final response = await http.post(
+              '${storeApi.baseURL}/${storeApi.endPointRegis}',
+              body: <String, String>{
+                'username': storeSignup.getEmail,
+                'password': storeSignup.getPassword,
+                'email': storeSignup.getEmail,
+                'first_name': storeSignup.getFirstName,
+                'last_name': storeSignup.getLastName,
+                'citizenid': storeSignup.getCitizenid,
+                'tradertype': storeSignup.getTradertype,
+                'tradername': storeSignup.getTradername,
+                'phone': storeSignup.getPhoneNumber,
+              });
+          if (response.statusCode == 200) {
+            final result =
+                ResponseSignupModel.fromJson(jsonDecode(response.body));
+
+            if (result.status) {
+              _btnController.success();
+              Timer(Duration(milliseconds: 350), () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              });
+            } else {
+              _btnController.reset();
+              showSnackBar(context, 'เกิดข้อผิดพลาด status ${result.status}');
+            }
+          } else {
+            _btnController.reset();
+            showSnackBar(
+                context, 'เกิดข้อผิดพลาด response ${response.statusCode}');
+          }
         } else {
           _btnController.reset();
           // Timer(Duration(milliseconds: 740), () => _btnController.reset());

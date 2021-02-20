@@ -21,18 +21,18 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
   final String traderMiddleman = 'พ่อค้าคนกลาง';
   final String traderOwner = 'เจ้าของสวน';
 
-  SignupModel(
-      {String password = '',
-      String email = '',
-      String firstName = '',
-      String lastName = '',
-      String citizenid = '',
-      String tradertype = '',
-      String tradername = '',
-      String phone = '',
-      String traderMiddleman,
-      String traderOwner})
-      : this.password = password,
+  SignupModel({
+    String password = '',
+    String email = '',
+    String firstName = '',
+    String lastName = '',
+    String citizenid = '',
+    String tradertype = '',
+    String tradername = '',
+    String phone = '',
+    String traderMiddleman,
+    String traderOwner,
+  })  : this.password = password,
         this.email = email,
         this.firstName = firstName,
         this.lastName = lastName,
@@ -93,4 +93,39 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
     properties.add(StringProperty('tradername', tradername));
     properties.add(StringProperty('phone', phone));
   }
+}
+
+ResponseSignupModel responseSignupModelFromJson(String str) =>
+    ResponseSignupModel.fromJson(json.decode(str));
+
+String responseSignupModelToJson(ResponseSignupModel data) =>
+    json.encode(data.toJson());
+
+class ResponseSignupModel {
+  ResponseSignupModel({
+    this.status,
+    this.message,
+    this.email,
+    this.username,
+  });
+
+  bool status;
+  String message;
+  String email;
+  String username;
+
+  factory ResponseSignupModel.fromJson(Map<String, dynamic> json) =>
+      ResponseSignupModel(
+        status: json["status"],
+        message: json["message"],
+        email: json["email"],
+        username: json["username"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "email": email,
+        "username": username,
+      };
 }

@@ -7,6 +7,9 @@ class SettingModel extends ChangeNotifier {
   // End-point for Login
   String get endPointLogin => 'api/login';
 
+  // End-point for Login
+  String get endPointRegis => 'api/regis';
+
   // End-point for get User Profile
   String get endPointUserProfile => 'api/user/me';
 
