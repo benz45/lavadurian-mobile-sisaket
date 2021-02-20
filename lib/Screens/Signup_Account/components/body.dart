@@ -191,7 +191,7 @@ class _BodyState extends State<Body> {
           final result = CheckInfo.fromJson(jsonDecode(response.body));
 
           if (result.status) {
-            _btnController.stop();
+            _btnController.reset();
             showSnackBar(context, 'อีเมลนี้มีการลงทะเบียนไว้แล้ว');
             return false;
           } else {
@@ -199,8 +199,8 @@ class _BodyState extends State<Body> {
             return true;
           }
         } else {
-          _btnController.stop();
-          showSnackBar(context, 'อีเมลนี้มีการลงทะเบียนไว้แล้ว');
+          _btnController.reset();
+          showSnackBar(context, 'เกิดข้อผิดพลาด ${response.statusCode}');
           return false;
         }
       }
