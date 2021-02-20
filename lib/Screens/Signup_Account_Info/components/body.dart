@@ -126,6 +126,7 @@ class _BodyState extends State<Body> {
                 icon: Icons.phone_iphone,
                 onChanged: (v) => storeSignup.setPhoneNumber = v,
                 textInputAction: TextInputAction.next,
+                keyboardType: TextInputType.phone,
                 inputFormatters: [
                   maskFormatter,
                 ],
