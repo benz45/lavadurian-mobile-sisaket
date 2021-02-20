@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:LavaDurian/Screens/Register_Success/register_success_screen.dart';
 import 'package:LavaDurian/components/btnRoundedLoadingButton.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -96,7 +97,7 @@ class _BodyState extends State<Body> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return LoginScreen();
+                      return RegisterSuccessScreen();
                     },
                   ),
                 );
@@ -112,7 +113,6 @@ class _BodyState extends State<Body> {
           }
         } else {
           _btnController.reset();
-          // Timer(Duration(milliseconds: 740), () => _btnController.reset());
           showSnackBar(context, 'กรุณากรอกข้อมูลให้ครบถ้วน');
           return;
         }
