@@ -29,6 +29,7 @@ class _OperationPageState extends State<OperationPage> {
     String token = settingModel.value['token'];
 
     if (userModel.value.isEmpty) {
+      print("Connect...");
       final response = await Http.get(
           '${settingModel.baseURL}/${settingModel.endPointUserProfile}',
           headers: {
@@ -50,7 +51,7 @@ class _OperationPageState extends State<OperationPage> {
       }
       return response.body;
     } else {
-      return 'success';
+      return userModel.value.toString();
     }
   }
 

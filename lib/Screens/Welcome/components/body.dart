@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
-import 'package:LavaDurian/Screens/Signup/signup_screen.dart';
+import 'package:LavaDurian/Screens/Signup_ID_Card/signup_id_card_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/components/background.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/constants.dart';
@@ -16,18 +16,14 @@ class Body extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "WELCOME TO EDU",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
             SizedBox(height: size.height * 0.05),
             SvgPicture.asset(
-              "assets/icons/chat.svg",
+              "assets/icons/logo_lava_durian_sisaket_top.svg",
               height: size.height * 0.45,
             ),
             SizedBox(height: size.height * 0.05),
             RoundedButton(
-              text: "LOGIN",
+              text: "เข้าสู่ระบบ",
               press: () {
                 Navigator.push(
                   context,
@@ -40,15 +36,15 @@ class Body extends StatelessWidget {
               },
             ),
             RoundedButton(
-              text: "SIGN UP",
+              text: "ลงทะเบียน",
               color: kPrimaryLightColor,
-              textColor: Colors.black,
+              textColor: kPrimaryColor,
               press: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUpScreen();
+                      return SignUpIDCardScreen();
                     },
                   ),
                 );
