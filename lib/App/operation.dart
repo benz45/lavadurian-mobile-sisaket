@@ -25,9 +25,23 @@ class _OperationPageState extends State<OperationPage> {
     userModel = context.read<UserModel>();
   }
 
+  Future<void> _getStoreProfile() async {
+    String token = settingModel.value['token'];
+    final response = await Http.get(
+        '${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Token $token"
+        });
+
+    var jsonData = json.decode(utf8.decode(response.bodyBytes));
+    print(jsonData['data']['stores']);
+  }
+
   Future<String> _getUserProfile() async {
     String token = settingModel.value['token'];
 
+    // Get only one time after login
     if (userModel.value.isEmpty) {
       print("Connect...");
       final response = await Http.get(
@@ -49,7 +63,11 @@ class _OperationPageState extends State<OperationPage> {
           'email': item['email'],
         };
       }
-      return response.body;
+
+      // Get Store profile after login success
+      _getStoreProfile();
+
+      return userModel.value.toString();
     } else {
       return userModel.value.toString();
     }

@@ -17,11 +17,14 @@ class SettingModel extends ChangeNotifier {
   // End-point for Reset Password
   String get endPointResetPassword => 'dj-rest-auth/password/reset/';
 
-  // End-point for Reset Password
+  // End-point for Check Exist Citizen ID
   String get endPointCheckCitizenId => 'api/check/id';
 
-  // End-point for Reset Password
+  // End-point for Check Exist Email
   String get endPointCheckEmail => 'api/check/email';
+
+  // End-point for get Store Profile of Current Trader
+  String get endPointGetStoreProfile => 'api/store/get';
 
   // Setting Value
   Map<String, dynamic> _value = {};
