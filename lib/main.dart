@@ -2,6 +2,7 @@ import 'package:LavaDurian/app/splash_screen.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/signup_model.dart';
+import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<SettingModel>(create: (_) => SettingModel()),
         ChangeNotifierProvider<UserModel>(create: (_) => UserModel()),
+        ChangeNotifierProvider<StoreModel>(create: (_) => StoreModel()),
+        ChangeNotifierProvider<ProductModel>(create: (_) => ProductModel()),
+        ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
+        ChangeNotifierProvider<ItemModel>(create: (_) => ItemModel()),
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),
       ],
       child: MaterialApp(
