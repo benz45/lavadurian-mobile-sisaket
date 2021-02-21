@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class SettingModel extends ChangeNotifier {
   // API value
-  String get baseURL => 'https://durian-lava.herokuapp.com';
+  // String get baseURL => 'https://durian-lava.herokuapp.com';
+  String get baseURL => 'http://127.0.0.1:8000';
 
   // End-point for Login
   String get endPointLogin => 'api/login';
