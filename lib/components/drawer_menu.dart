@@ -12,17 +12,6 @@ class NavDrawer extends StatefulWidget {
 class _NavDrawerState extends State<NavDrawer> {
   UserModel userModel;
 
-  Future<void> _logout() async {
-    FileProcess fileProcess = FileProcess('setting.json');
-    try {
-      fileProcess.writeData('{}');
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -31,6 +20,19 @@ class _NavDrawerState extends State<NavDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final storeUser = Provider.of<UserModel>(context);
+    Future<void> _logout() async {
+      FileProcess fileProcess = FileProcess('setting.json');
+      try {
+        storeUser.clear();
+        fileProcess.writeData('{}');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+      } catch (e) {
+        print(e);
+      }
+    }
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
