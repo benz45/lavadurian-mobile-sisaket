@@ -65,30 +65,71 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Upload product image"),
+        title: Text("Flutter Image Picker Example"),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Center(child: Text('Error: $_error')),
-          Expanded(
-            child: buildGridView(),
+          Center(
+            child: Text(
+              "ภาพผลิตภัณฑ์ทุเรียนสำหรับประชาสัมพันธ์",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
-          RaisedButton(
-            child: Text("Pick images"),
-            onPressed: loadAssets,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 400.0,
+              child: Center(
+                child: images.isEmpty
+                    ? Text("ยังไม่มีภาพที่ถูกเลือก")
+                    : buildGridView(),
+              ),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               FloatingActionButton(
                 onPressed: () => loadAssets(),
-                tooltip: "Pick Image",
-                child: Icon(Icons.camera_alt),
+                tooltip: "pickImage",
+                child: Icon(Icons.add_a_photo),
               ),
             ],
-          ),
+          )
         ],
       ),
     );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text("Upload product image"),
+  //     ),
+  //     body: Column(
+  //       children: <Widget>[
+  //         Center(child: Text('Error: $_error')),
+  //         Expanded(
+  //           child: buildGridView(),
+  //         ),
+  //         RaisedButton(
+  //           child: Text("Pick images"),
+  //           onPressed: loadAssets,
+  //         ),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           children: <Widget>[
+  //             FloatingActionButton(
+  //               onPressed: () => loadAssets(),
+  //               tooltip: "Pick Image",
+  //               child: Icon(Icons.camera_alt),
+  //             ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
