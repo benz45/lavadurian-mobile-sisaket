@@ -39,3 +39,5 @@ lib/generated_plugin_registrant.dart
 .vscode/settings.json
 ios/Runner.xcodeproj/project.pbxproj
 ios/Podfile.lock
+ios/Flutter/.last_build_id
+ios/Podfile.lock
