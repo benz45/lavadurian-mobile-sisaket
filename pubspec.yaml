@@ -32,6 +32,8 @@ dependencies:
   mask_text_input_formatter: ^1.2.1
   google_fonts: ^1.1.2
   velocity_x: ^1.4.1
+  image_picker: ^0.6.7+22
+  multi_image_picker: ^4.6.5
 
 dev_dependencies:
   flutter_test:
