@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:LavaDurian/app/operation.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
+import 'package:LavaDurian/app/product_img_upload.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,8 @@ class _SplashPageState extends State<SplashPage> {
       settingModel.value = jsonDecode(setting);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => OperationPage()),
+        // MaterialPageRoute(builder: (context) => OperationPage()),
+        MaterialPageRoute(builder: (context) => ProductImageUpload()),
       );
     }
   }
