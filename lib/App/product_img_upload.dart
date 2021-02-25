@@ -1,7 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'dart:async';
 import 'package:multi_image_picker/multi_image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ProductImageUpload extends StatefulWidget {
   @override
@@ -9,12 +14,14 @@ class ProductImageUpload extends StatefulWidget {
 }
 
 class _ProductImageUploadState extends State<ProductImageUpload> {
+  SettingModel settingModel;
   List<Asset> images = List<Asset>();
   String _error;
 
   @override
   void initState() {
     super.initState();
+    settingModel = context.read<SettingModel>();
   }
 
   Widget buildGridView() {
@@ -68,16 +75,66 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     });
   }
 
+  // For upload data
+  Future<Null> _uploadProcess() async {
+    // get current user token
+    String token = settingModel.value['token'];
+
+    // string to uri
+    Uri uri = Uri.parse(
+        '${settingModel.baseURL}/${settingModel.endPointUploadProductImage}');
+
+    // create multipart request
+    MultipartRequest request = MultipartRequest("POST", uri);
+
+    for (Asset asset in images) {
+      ByteData byteData = await asset.getByteData(quality: 80);
+      List<int> imageData = byteData.buffer.asUint8List();
+
+      MultipartFile multipartFile = MultipartFile.fromBytes(
+        'image',
+        imageData,
+        filename: 'image.jpg',
+      );
+
+      // add access token to header
+      request.headers['authorization'] = "Token $token";
+
+      // add file to multipart
+      request.files.add(multipartFile);
+
+      //adding params Product ID
+      request.fields['product'] = '178';
+
+      // send
+      var response = await request.send();
+      print(token);
+      print(response.reasonPhrase);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     RaisedButton uploadButton = RaisedButton(
-      onPressed: () {},
+      onPressed: () => _uploadProcess(),
       color: kPrimaryColor,
       shape: new RoundedRectangleBorder(
         borderRadius: new BorderRadius.circular(10.0),
       ),
       child: Text(
         'Upload Photo',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    );
+
+    RaisedButton cancelButton = RaisedButton(
+      onPressed: () {},
+      color: kPrimaryColor,
+      shape: new RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(10.0),
+      ),
+      child: Text(
+        'Cancel Upload',
         style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     );
@@ -112,9 +169,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
             images.isNotEmpty
                 ? ButtonBar(
                     alignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      uploadButton,
-                    ],
+                    children: <Widget>[uploadButton, cancelButton],
                   )
                 : Text("")
           ],
