@@ -139,7 +139,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter Image Picker Example"),
+        title: Text("Upload Product Image"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 40.0),
