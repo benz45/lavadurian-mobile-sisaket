@@ -93,7 +93,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     MultipartRequest request = MultipartRequest("POST", uri);
 
     for (Asset asset in images) {
-      ByteData byteData = await asset.getByteData(quality: 60);
+      ByteData byteData = await asset.getByteData(quality: 30);
       List<int> imageData = byteData.buffer.asUint8List();
 
       MultipartFile multipartFile = MultipartFile.fromBytes(
@@ -158,13 +158,13 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                 width: MediaQuery.of(context).size.width,
                 height: 400.0,
                 child: Center(
-                  child: images.isEmpty
+                  child: images == null || images.length == 0
                       ? Text("ยังไม่มีภาพที่ถูกเลือก")
                       : buildGridView(),
                 ),
               ),
             ),
-            images.isNotEmpty
+            images != null && images.length != 0
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: ButtonBar(
