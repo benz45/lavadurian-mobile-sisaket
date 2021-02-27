@@ -50,36 +50,45 @@ class _OperationPageState extends State<OperationPage> {
     var jsonData = json.decode(utf8.decode(response.bodyBytes));
 
     // Set data to stores model
-    List<Map<String, dynamic>> storeList = [];
-    for (var store in jsonData['data']['stores']) {
-      Map<String, dynamic> map = store;
-      storeList.add(map);
+    if (jsonData['data']['stores'] != null) {
+      List<Map<String, dynamic>> storeList = [];
+      for (var store in jsonData['data']['stores']) {
+        Map<String, dynamic> map = store;
+        storeList.add(map);
+      }
+      storeModel.stores = storeList;
+      print(storeList);
     }
-    storeModel.stores = storeList;
 
     // Set data to products model
-    List<Map<String, dynamic>> productList = [];
-    for (var product in jsonData['data']['products']) {
-      Map<String, dynamic> map = product;
-      productList.add(map);
+    if (jsonData['data']['products'] != null) {
+      List<Map<String, dynamic>> productList = [];
+      for (var product in jsonData['data']['products']) {
+        Map<String, dynamic> map = product;
+        productList.add(map);
+      }
+      productModel.products = productList;
     }
-    productModel.products = productList;
 
     // Set data to orders model
-    List<Map<String, dynamic>> orderList = [];
-    for (var order in jsonData['data']['orders']) {
-      Map<String, dynamic> map = order;
-      productList.add(map);
+    if (jsonData['data']['orders'] != null) {
+      List<Map<String, dynamic>> orderList = [];
+      for (var order in jsonData['data']['orders']) {
+        Map<String, dynamic> map = order;
+        orderList.add(map);
+      }
+      orderModel.orders = orderList;
     }
-    orderModel.orders = orderList;
 
     // Set data to items model
-    List<Map<String, dynamic>> itemList = [];
-    for (var item in jsonData['data']['items']) {
-      Map<String, dynamic> map = item;
-      itemList.add(map);
+    if (jsonData['data']['items'] != null) {
+      List<Map<String, dynamic>> itemList = [];
+      for (var item in jsonData['data']['items']) {
+        Map<String, dynamic> map = item;
+        itemList.add(map);
+      }
+      itemModel.items = itemList;
     }
-    itemModel.items = itemList;
   }
 
   Future<String> _getUserProfile() async {
@@ -108,8 +117,10 @@ class _OperationPageState extends State<OperationPage> {
         };
       }
 
+      print(userModel.value);
+
       // Get Store profile after login success
-      _getStoreProfile();
+      await _getStoreProfile();
 
       return userModel.value.toString();
     } else {
@@ -128,108 +139,139 @@ class _OperationPageState extends State<OperationPage> {
       key: _drawerKey, // assign key to Scaffold
       endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
       drawer: NavDrawer(),
-      body: Container(
-        color: Colors.grey[50],
-        child: CustomScrollView(slivers: [
-          SliverAppBar(
-            shadowColor: Colors.grey[50].withOpacity(0.3),
-            backgroundColor: Colors.grey[50],
-            automaticallyImplyLeading: false,
-            pinned: true,
-            title: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: IconButton(
-                        onPressed: () => _drawerKey.currentState.openDrawer(),
-                        icon: Icon(Icons.menu),
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Icon(Icons.person, color: kPrimaryColor),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            expandedHeight: 260.0,
-            flexibleSpace: FlexibleSpaceBar(
-                background: Container(
+      body: FutureBuilder(
+        future: _getUserProfile(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Container(
               color: Colors.grey[50],
-              padding: EdgeInsets.fromLTRB(0, statusBarHeight, 0, 30),
-              height: statusBarHeight + appBarHeight,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Text('ร้านค้า').text.xl2.semiBold.black.make().box.p12.make(),
-                  VxSwiper.builder(
-                    itemCount: 10,
-                    height: 130,
-                    viewportFraction: 0.55,
-                    enableInfiniteScroll: true,
-                    enlargeCenterPage: true,
-                    isFastScrollingEnabled: false,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return "ร้านค้าที่ ${index + 1}"
-                          .text
-                          .black
-                          .make()
-                          .box
-                          .rounded
-                          .alignCenter
-                          .color(kPrimaryLightColor)
-                          .make()
-                          .p4();
-                    },
+              child: CustomScrollView(slivers: [
+                SliverAppBar(
+                  shadowColor: Colors.grey[50].withOpacity(0.3),
+                  backgroundColor: Colors.grey[50],
+                  automaticallyImplyLeading: false,
+                  pinned: true,
+                  title: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: IconButton(
+                              onPressed: () =>
+                                  _drawerKey.currentState.openDrawer(),
+                              icon: Icon(Icons.menu),
+                              color: kPrimaryColor,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Icon(Icons.person, color: kPrimaryColor),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
+                  expandedHeight: 260.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                      background: Container(
+                    color: Colors.grey[50],
+                    padding: EdgeInsets.fromLTRB(0, statusBarHeight, 0, 30),
+                    height: statusBarHeight + appBarHeight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text('ร้านค้า')
+                            .text
+                            .xl2
+                            .semiBold
+                            .black
+                            .make()
+                            .box
+                            .p12
+                            .make(),
+                        VxSwiper.builder(
+                          itemCount: 10,
+                          height: 130,
+                          viewportFraction: 0.55,
+                          enableInfiniteScroll: true,
+                          enlargeCenterPage: true,
+                          isFastScrollingEnabled: false,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return "ร้านค้าที่ ${index + 1}"
+                                .text
+                                .black
+                                .make()
+                                .box
+                                .rounded
+                                .alignCenter
+                                .color(kPrimaryLightColor)
+                                .make()
+                                .p4();
+                          },
+                        ),
+                      ],
+                    ),
+                  )),
+                ),
+
+                //
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    ListTile(
+                      title: Text('รายการคำสั่งซื้อ')
+                          .text
+                          .xl
+                          .black
+                          .semiBold
+                          .make(),
+                    ).pLTRB(16.0, 0.0, 16.0, 0.0),
+                    CardOrder().px32(),
+                    ListTile(
+                      title: Text('รายการสินค้า').text.xl.black.semiBold.make(),
+                    ).pLTRB(16.0, 16.0, 16.0, 0.0),
+                  ]),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.0),
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.85,
+                        mainAxisSpacing: 20.0,
+                        crossAxisSpacing: 20.0),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              color: kPrimaryLightColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(18.0))),
+                          child: Center(
+                            child: Text('สินค้า'),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ]),
+            );
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(),
                 ],
               ),
-            )),
-          ),
-
-          //
-          SliverList(
-            delegate: SliverChildListDelegate([
-              ListTile(
-                title: Text('รายการคำสั่งซื้อ').text.xl.black.semiBold.make(),
-              ).pLTRB(16.0, 0.0, 16.0, 0.0),
-              CardOrder().px32(),
-              ListTile(
-                title: Text('รายการสินค้า').text.xl.black.semiBold.make(),
-              ).pLTRB(16.0, 16.0, 16.0, 0.0),
-            ]),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 32.0),
-            sliver: SliverGrid(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.85,
-                  mainAxisSpacing: 20.0,
-                  crossAxisSpacing: 20.0),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                        color: kPrimaryLightColor,
-                        borderRadius: BorderRadius.all(Radius.circular(18.0))),
-                    child: Center(
-                      child: Text('สินค้า'),
-                    ),
-                  );
-                },
-              ),
-            ),
-          )
-        ]),
+            );
+          }
+        },
       ),
     );
   }
