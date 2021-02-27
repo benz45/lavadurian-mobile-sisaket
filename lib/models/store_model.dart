@@ -17,6 +17,22 @@ class StoreModel extends ChangeNotifier {
 }
 
 class ProductModel extends ChangeNotifier {
+  Map<String, String> _gene = {
+    '1': 'ทุเรียนภูเขาไฟ (หมอนทอง)',
+    '2': 'ก้านยาว',
+    '3': 'หมอนทอง',
+    '4': 'ชะนี',
+    '5': 'กระดุม',
+    '6': 'หลงลับแล',
+    '7': 'พวงมณี',
+  };
+
+  Map<String, String> _status = {
+    '1': 'พร้อมขาย',
+    '2': 'สั่งจองล่วงหน้า',
+    '3': 'ยุติการขาย',
+  };
+
   List<Map<String, dynamic>> _products = [];
 
   List<Map<String, dynamic>> get products => _products;
@@ -30,9 +46,23 @@ class ProductModel extends ChangeNotifier {
     _products.clear();
     notifyListeners();
   }
+
+  Map<String, String> get productGene => _gene;
+  Map<String, String> get productStatus => _status;
 }
 
 class OrdertModel extends ChangeNotifier {
+  Map<String, String> _orderStatus = {
+    '1': 'รอรับออร์เดอร์',
+    '2': 'รับออร์เดอร์',
+    '3': 'รอการชำระเงิน',
+    '4': 'แจ้งชำระเงินแล้ว',
+    '5': 'ชำระเงินแล้ว',
+    '6': 'จัดส่งสินค้าแล้ว',
+    '7': 'ดำเนินการเสร็จสิ้น',
+    '8': 'ยกเลิก',
+  };
+
   List<Map<String, dynamic>> _orders = [];
 
   List<Map<String, dynamic>> get orders => _orders;
@@ -46,6 +76,8 @@ class OrdertModel extends ChangeNotifier {
     _orders.clear();
     notifyListeners();
   }
+
+  Map<String, String> get orderStatus => _orderStatus;
 }
 
 class ItemModel extends ChangeNotifier {

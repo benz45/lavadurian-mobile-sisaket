@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 import 'package:LavaDurian/Screens/Login/components/background.dart';
 import 'package:LavaDurian/components/drawer_menu.dart';
@@ -25,6 +26,10 @@ class _OperationPageState extends State<OperationPage> {
   OrdertModel orderModel;
   ItemModel itemModel;
 
+  Map<String, String> productGene;
+  Map<String, String> orderStatus;
+  Map<String, String> productStatus;
+
   @override
   void initState() {
     super.initState();
@@ -34,6 +39,10 @@ class _OperationPageState extends State<OperationPage> {
     productModel = context.read<ProductModel>();
     orderModel = context.read<OrdertModel>();
     itemModel = context.read<ItemModel>();
+
+    productGene = productModel.productGene;
+    productStatus = productModel.productStatus;
+    orderStatus = orderModel.orderStatus;
   }
 
   // Get Store profile from server
@@ -57,7 +66,6 @@ class _OperationPageState extends State<OperationPage> {
         storeList.add(map);
       }
       storeModel.stores = storeList;
-      print(storeList);
     }
 
     // Set data to products model
@@ -96,7 +104,6 @@ class _OperationPageState extends State<OperationPage> {
 
     // Get only one time after login
     if (userModel.value.isEmpty) {
-      print("Connect...");
       final response = await Http.get(
           '${settingModel.baseURL}/${settingModel.endPointUserProfile}',
           headers: {
@@ -116,8 +123,6 @@ class _OperationPageState extends State<OperationPage> {
           'email': item['email'],
         };
       }
-
-      print(userModel.value);
 
       // Get Store profile after login success
       await _getStoreProfile();
@@ -194,7 +199,7 @@ class _OperationPageState extends State<OperationPage> {
                             .p12
                             .make(),
                         VxSwiper.builder(
-                          itemCount: 10,
+                          itemCount: storeModel.stores.length,
                           height: 130,
                           viewportFraction: 0.55,
                           enableInfiniteScroll: true,
@@ -202,7 +207,7 @@ class _OperationPageState extends State<OperationPage> {
                           isFastScrollingEnabled: false,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return "ร้านค้าที่ ${index + 1}"
+                            return "${storeModel.stores[index]['name']}"
                                 .text
                                 .black
                                 .make()
@@ -218,8 +223,6 @@ class _OperationPageState extends State<OperationPage> {
                     ),
                   )),
                 ),
-
-                //
                 SliverList(
                   delegate: SliverChildListDelegate([
                     ListTile(
@@ -230,10 +233,23 @@ class _OperationPageState extends State<OperationPage> {
                           .semiBold
                           .make(),
                     ).pLTRB(16.0, 0.0, 16.0, 0.0),
-                    CardOrder().px32(),
+                  ]),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return CardOrder(
+                        order: orderModel.orders[index],
+                      ).px32();
+                    },
+                    childCount: orderModel.orders.length,
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
                     ListTile(
                       title: Text('รายการสินค้า').text.xl.black.semiBold.make(),
-                    ).pLTRB(16.0, 16.0, 16.0, 0.0),
+                    ).pLTRB(16.0, 0.0, 16.0, 0.0),
                   ]),
                 ),
                 SliverPadding(
@@ -252,10 +268,16 @@ class _OperationPageState extends State<OperationPage> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(18.0))),
                           child: Center(
-                            child: Text('สินค้า'),
+                            child: Text(
+                                "${productGene[productModel.products[index]['gene'].toString()]}\n"
+                                "จำนวน: ${productModel.products[index]['values']}\n"
+                                "นน.: ${productModel.products[index]['weight']}\n"
+                                "ราคา: ${productModel.products[index]['price']}\n"
+                                "สถานะ: ${productStatus[productModel.products[index]['status'].toString()]}\n"),
                           ),
                         );
                       },
+                      childCount: productModel.products.length,
                     ),
                   ),
                 )
@@ -278,12 +300,19 @@ class _OperationPageState extends State<OperationPage> {
 }
 
 class CardOrder extends StatelessWidget {
+  final Map<String, dynamic> order;
   const CardOrder({
     Key key,
+    this.order,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    OrdertModel orderModel = context.read<OrdertModel>();
+    DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
+    var dateCreate = DateTime.parse(this.order['date_created']).toLocal();
+    Map<String, String> orderStatus = orderModel.orderStatus;
+
     return Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -314,19 +343,21 @@ class CardOrder extends StatelessWidget {
                           child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('ชื่อสินค้า')
+                          Text('${dateFormat.format(dateCreate)}\n'
+                                  '${this.order['owner']}')
                               .text
                               .extraBold
                               .make()
                               .pOnly(bottom: 8.0),
-                          Text('ข้อมูลรายการสั่งซื้อสินค้า'),
+                          Text('น้ำหนัก: ${this.order['weight']} กก.\n'
+                              'สถานะ: ${orderStatus[this.order['status'].toString()]}'),
                         ],
                       )).wFull(context),
-                      Container(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [Text('ดูรายการสั่งซื้อ').text.bold.make()],
-                      )).wFull(context).pOnly(right: 4.0),
+                      // Container(
+                      //     child: Row(
+                      //   mainAxisAlignment: MainAxisAlignment.end,
+                      //   children: [Text('ดูรายการสั่งซื้อ').text.bold.make()],
+                      // )).wFull(context).pOnly(right: 4.0),
                     ],
                   ))
             ],
