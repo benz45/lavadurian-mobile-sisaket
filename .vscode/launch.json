@@ -8,6 +8,42 @@
             "name": "LavaDurian",
             "request": "launch",
             "type": "dart",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter-All",
+            "preLaunchTask": "Flutter-Launch-All",
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter-iOS-All",
+            "preLaunchTask": "Flutter-Launch-iOS-ALL",
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter-iOS",
+            "preLaunchTask": "Flutter-Launch-iOS",
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter-Android",
+            "preLaunchTask": "Flutter-Launch-Android",
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter-Web",
+            "preLaunchTask": "Flutter-Launch-Web",
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "debug"
         }
     ]
 }

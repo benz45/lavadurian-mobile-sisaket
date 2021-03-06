@@ -29,7 +29,7 @@ class CardOrder extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(12.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
@@ -41,32 +41,39 @@ class CardOrder extends StatelessWidget {
                 child: Text('รูปภาพ').centered(),
               ),
               Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${dateFormat.format(dateCreate)}\n'
-                                  '${this.order['owner']}')
-                              .text
-                              .extraBold
-                              .make()
-                              .pOnly(bottom: 8.0),
-                          Text('น้ำหนัก: ${this.order['weight']} กก.\n'
-                              'สถานะ: ${orderStatus[this.order['status'].toString()]}'),
-                        ],
-                      )).wFull(context),
-                      // Container(
-                      //     child: Row(
-                      //   mainAxisAlignment: MainAxisAlignment.end,
-                      //   children: [Text('ดูรายการสั่งซื้อ').text.bold.make()],
-                      // )).wFull(context).pOnly(right: 4.0),
-                    ],
-                  ))
+                width: MediaQuery.of(context).size.width * 0.41,
+                height: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('${dateFormat.format(dateCreate)}')
+                            .text
+                            .extraBold
+                            .make(),
+                        Text('${this.order['owner'].toString().length > 25 ? this.order['owner'].toString().substring(
+                                  0,
+                                  20,
+                                ) + '...' : this.order['owner'].toString()}')
+                            .text
+                            .extraBold
+                            .make()
+                            .pOnly(bottom: 8.0),
+                        Text('น้ำหนัก: ${this.order['weight']} กก.\n'
+                            'สถานะ: ${orderStatus[this.order['status'].toString()]}'),
+                      ],
+                    )).wFull(context),
+                    // Container(
+                    //     child: Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [Text('ดูรายการสั่งซื้อ').text.bold.make()],
+                    // )).wFull(context).pOnly(right: 4.0),
+                  ],
+                ),
+              ).pOnly(left: 16)
             ],
           ),
         ));
