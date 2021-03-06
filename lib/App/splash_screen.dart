@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:LavaDurian/app/operation.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/models/setting_model.dart';
@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
       settingModel.value = jsonDecode(setting);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => OperationPage()),
+        MaterialPageRoute(builder: (context) => OperationScreen()),
       );
     }
   }

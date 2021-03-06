@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:LavaDurian/App/operation.dart';
 import 'package:LavaDurian/Screens/Login/reset_password.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/components/reset_password.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
@@ -70,7 +70,7 @@ class _BodyState extends State<Body> {
           fileProcess.writeData(tokenData);
           _btnController.success();
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => OperationPage()));
+              MaterialPageRoute(builder: (context) => OperationScreen()));
         } catch (e) {
           print(e);
         }

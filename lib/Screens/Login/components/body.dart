@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:LavaDurian/App/operation.dart';
 import 'package:LavaDurian/Screens/Login/reset_password.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/components/reset_password.dart';
-import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
@@ -59,8 +58,8 @@ class _BodyState extends State<Body> {
         FileProcess fileProcess = FileProcess('setting.json');
         fileProcess.writeData(tokenData);
         _btnController.success();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => OperationPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => OperationScreen()));
       } catch (e) {
         print(e);
       }

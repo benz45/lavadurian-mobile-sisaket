@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:intl/intl.dart';
+import 'package:LavaDurian/Screens/Operation/components/cardOrder.dart';
+import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
+import 'package:LavaDurian/models/drawer_model.dart';
+import 'package:flutter/rendering.dart';
 
-import 'package:LavaDurian/Screens/Login/components/background.dart';
 import 'package:LavaDurian/components/drawer_menu.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/profile_model.dart';
@@ -13,12 +15,12 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 import 'package:velocity_x/velocity_x.dart';
 
-class OperationPage extends StatefulWidget {
+class OperationScreen extends StatefulWidget {
   @override
   _OperationPageState createState() => _OperationPageState();
 }
 
-class _OperationPageState extends State<OperationPage> {
+class _OperationPageState extends State<OperationScreen> {
   SettingModel settingModel;
   UserModel userModel;
   StoreModel storeModel;
@@ -135,13 +137,8 @@ class _OperationPageState extends State<OperationPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double appBarHeight = 66.0;
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-    final items = List<String>.generate(20, (i) => 'item $i');
-
     return Scaffold(
-      key: _drawerKey, // assign key to Scaffold
+      key: context.watch<DrawerModel>().getDrawerKey, // assign key to Scaffold
       endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
       drawer: NavDrawer(),
       body: FutureBuilder(
@@ -151,109 +148,56 @@ class _OperationPageState extends State<OperationPage> {
             return Container(
               color: Colors.grey[50],
               child: CustomScrollView(slivers: [
-                SliverAppBar(
-                  shadowColor: Colors.grey[50].withOpacity(0.3),
-                  backgroundColor: Colors.grey[50],
-                  automaticallyImplyLeading: false,
-                  pinned: true,
-                  title: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: IconButton(
-                              onPressed: () =>
-                                  _drawerKey.currentState.openDrawer(),
-                              icon: Icon(Icons.menu),
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Icon(Icons.person, color: kPrimaryColor),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  expandedHeight: 260.0,
-                  flexibleSpace: FlexibleSpaceBar(
-                      background: Container(
-                    color: Colors.grey[50],
-                    padding: EdgeInsets.fromLTRB(0, statusBarHeight, 0, 30),
-                    height: statusBarHeight + appBarHeight,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text('ร้านค้า')
-                            .text
-                            .xl2
-                            .semiBold
-                            .black
-                            .make()
-                            .box
-                            .p12
-                            .make(),
-                        VxSwiper.builder(
-                          itemCount: storeModel.stores.length,
-                          height: 130,
-                          viewportFraction: 0.55,
-                          enableInfiniteScroll: true,
-                          enlargeCenterPage: true,
-                          isFastScrollingEnabled: false,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return "${storeModel.stores[index]['name']}"
-                                .text
-                                .black
-                                .make()
-                                .box
-                                .rounded
-                                .alignCenter
-                                .color(kPrimaryLightColor)
-                                .make()
-                                .p4();
-                          },
-                        ),
-                      ],
-                    ),
-                  )),
-                ),
+                OperationAppBar(),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     ListTile(
-                      title: Text('รายการคำสั่งซื้อ')
+                      leading: Text('รายการคำสั่งซื้อ')
                           .text
                           .xl
                           .black
                           .semiBold
                           .make(),
+                      trailing: TextButton(
+                        child: Text('จัดการคำสั่งซื้อ')
+                            .text
+                            .color(kPrimaryColor)
+                            .make(),
+                        onPressed: () {},
+                      ),
                     ).pLTRB(16.0, 0.0, 16.0, 0.0),
                   ]),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return CardOrder(
-                        order: orderModel.orders[index],
-                      ).px32();
-                    },
-                    childCount: orderModel.orders.length,
+                SliverPadding(
+                  padding: EdgeInsets.only(bottom: 18.0),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return CardOrder(
+                          order: orderModel.orders[index],
+                        ).px32();
+                      },
+                      childCount: orderModel.orders.length,
+                    ),
                   ),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate([
                     ListTile(
-                      title: Text('รายการสินค้า').text.xl.black.semiBold.make(),
+                      leading:
+                          Text('รายการสินค้า').text.xl.black.semiBold.make(),
+                      trailing: TextButton(
+                        onPressed: () {},
+                        child: Text('จัดการสินค้า')
+                            .text
+                            .color(kPrimaryColor)
+                            .make(),
+                      ),
                     ).pLTRB(16.0, 0.0, 16.0, 0.0),
                   ]),
                 ),
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 32.0),
+                  padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 18.0),
                   sliver: SliverGrid(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -296,72 +240,5 @@ class _OperationPageState extends State<OperationPage> {
         },
       ),
     );
-  }
-}
-
-class CardOrder extends StatelessWidget {
-  final Map<String, dynamic> order;
-  const CardOrder({
-    Key key,
-    this.order,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    OrdertModel orderModel = context.read<OrdertModel>();
-    DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
-    var dateCreate = DateTime.parse(this.order['date_created']).toLocal();
-    Map<String, String> orderStatus = orderModel.orderStatus;
-
-    return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(18.0),
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                    color: kPrimaryLightColor,
-                    borderRadius: BorderRadius.all(Radius.circular(13.5))),
-                height: 100,
-                width: 100,
-                child: Text('รูปภาพ').centered(),
-              ),
-              Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  height: 100,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('${dateFormat.format(dateCreate)}\n'
-                                  '${this.order['owner']}')
-                              .text
-                              .extraBold
-                              .make()
-                              .pOnly(bottom: 8.0),
-                          Text('น้ำหนัก: ${this.order['weight']} กก.\n'
-                              'สถานะ: ${orderStatus[this.order['status'].toString()]}'),
-                        ],
-                      )).wFull(context),
-                      // Container(
-                      //     child: Row(
-                      //   mainAxisAlignment: MainAxisAlignment.end,
-                      //   children: [Text('ดูรายการสั่งซื้อ').text.bold.make()],
-                      // )).wFull(context).pOnly(right: 4.0),
-                    ],
-                  ))
-            ],
-          ),
-        ));
   }
 }

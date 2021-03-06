@@ -1,4 +1,5 @@
 import 'package:LavaDurian/app/splash_screen.dart';
+import 'package:LavaDurian/models/drawer_model.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/signup_model.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
         ChangeNotifierProvider<ItemModel>(create: (_) => ItemModel()),
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),
+        ChangeNotifierProvider<DrawerModel>(create: (_) => DrawerModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,5 +1,5 @@
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
-import 'package:LavaDurian/app/operation.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class _NavDrawerState extends State<NavDrawer> {
             title: Text('หน้าแรก'),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => OperationPage()));
+                  MaterialPageRoute(builder: (context) => OperationScreen()));
             },
           ),
           ListTile(
