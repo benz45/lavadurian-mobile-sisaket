@@ -1,5 +1,4 @@
 import 'package:LavaDurian/constants.dart';
-import 'package:LavaDurian/models/drawer_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,12 +11,10 @@ class OperationAppBar extends StatefulWidget {
 
 class _OperationAppBarState extends State<OperationAppBar> {
   StoreModel storeModel;
-  DrawerModel drawerModel;
 
   @override
   void initState() {
     super.initState();
-    drawerModel = context.read<DrawerModel>();
     storeModel = context.read<StoreModel>();
   }
 
@@ -39,7 +36,7 @@ class _OperationAppBarState extends State<OperationAppBar> {
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: IconButton(
-                  onPressed: () => drawerModel.setOpenDrawer(),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
                   icon: Icon(Icons.menu),
                   color: kPrimaryColor,
                 ),
