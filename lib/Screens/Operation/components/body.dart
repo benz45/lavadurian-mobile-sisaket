@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:LavaDurian/Screens/ManageProduct/manage_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/cardOrder.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_sliverlist.dart';
-import 'package:LavaDurian/Screens/Order/OrderScreen.dart';
-import 'package:LavaDurian/Screens/Product/product_screen.dart';
+import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
 import 'package:flutter/rendering.dart';
 
-import 'package:LavaDurian/components/drawer_menu.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
@@ -173,7 +172,7 @@ class _BodyState extends State<Body> {
                 trailing: 'จัดการสินค้า',
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => ProductScreen()));
+                      MaterialPageRoute(builder: (_) => ManageProductScreen()));
                 },
               ),
               SliverPadding(
