@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:LavaDurian/Screens/Operation/components/cardOrder.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_sliverlist.dart';
+import 'package:LavaDurian/Screens/Order/OrderScreen.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:LavaDurian/components/drawer_menu.dart';
@@ -148,6 +149,10 @@ class _BodyState extends State<Body> {
               OperationSliverList(
                 leading: 'รายการสั่งซื้อ',
                 trailing: 'จัดการคำสั่งซื้อ',
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => OrderScreen()));
+                },
               ),
               SliverPadding(
                 padding: EdgeInsets.only(bottom: 18.0),

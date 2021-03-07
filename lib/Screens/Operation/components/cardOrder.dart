@@ -21,7 +21,8 @@ class CardOrder extends StatelessWidget {
     Map<String, String> orderStatus = orderModel.orderStatus;
 
     return Card(
-        elevation: 0.42,
+        elevation: 0.28,
+        shadowColor: kPrimaryLightColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(18.0),
