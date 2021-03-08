@@ -5,6 +5,7 @@ import 'package:LavaDurian/Screens/Operation/components/cardOrder.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_sliverlist.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
+import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:LavaDurian/constants.dart';
@@ -188,49 +189,74 @@ class _BodyState extends State<Body> {
                     (BuildContext context, int index) {
                       final product = productModel.products;
 
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset:
-                                  Offset(0, 1), // changes position of shadow
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ViewProductScreen(
+                                hero: '$index',
+                              ),
                             ),
-                          ],
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(18.0),
+                          );
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset:
+                                    Offset(0, 1), // changes position of shadow
+                              ),
+                            ],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(18.0),
+                            ),
                           ),
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              child: Center(
-                                child: FlutterLogo(
-                                  size: 150.0,
+                          child: Row(
+                            children: [
+                              Hero(
+                                tag: '$index',
+                                child: Container(
+                                  height: double.infinity,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.horizontal(
+                                        left: Radius.circular(18.0)),
+                                    image: DecorationImage(
+                                      fit: BoxFit
+                                          .cover, //I assumed you want to occupy the entire space of the card
+                                      image: AssetImage(
+                                        'assets/images/example.png',
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            Flexible(
-                              child: Container(
-                                padding: EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        "${productGene[product[index]['gene'].toString()]}"),
-                                    Text("จำนวน: ${product[index]['values']}"),
-                                    Text("นน.: ${product[index]['weight']}"),
-                                    Text("ราคา: ${product[index]['price']}"),
-                                    Text(
-                                        "สถานะ: ${productStatus[productModel.products[index]['status'].toString()]}"),
-                                  ],
+                              Flexible(
+                                child: Container(
+                                  padding: EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          "${productGene[product[index]['gene'].toString()]}"),
+                                      Text(
+                                          "จำนวน: ${product[index]['values']}"),
+                                      Text("นน.: ${product[index]['weight']}"),
+                                      Text("ราคา: ${product[index]['price']}"),
+                                      Text(
+                                          "สถานะ: ${productStatus[productModel.products[index]['status'].toString()]}"),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

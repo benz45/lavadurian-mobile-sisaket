@@ -18,13 +18,6 @@
             "flutterMode": "debug"
         },
         {
-            "name": "Flutter-Mobile-All",
-            "preLaunchTask": "Flutter-Launch-Mobile-ALL",
-            "type": "dart",
-            "request": "launch",
-            "flutterMode": "debug"
-        },
-        {
             "name": "Flutter-iOS",
             "preLaunchTask": "Flutter-Launch-iOS",
             "type": "dart",
@@ -51,6 +44,24 @@
             "type": "dart",
             "request": "launch",
             "flutterMode": "debug"
+        },
+		{
+			"name": "iPhone-8",
+			"request": "launch",
+			"type": "dart",
+			"deviceId": "00252235-14B1-4414-8854-9CB7011ECEC4"
+		},
+		{
+			"name": "iPhone-12-Pro-Max",
+			"request": "launch",
+			"type": "dart",
+			"deviceId": "CF05C9B6-061A-4FFB-A4DB-F0ACDC09CDC7"
+		},
+    ],
+    "compounds": [
+        {
+            "name": "Run All",
+            "configurations": ["iPhone-12-Pro-Max", "iPhone-8"],
         }
     ]
 }
