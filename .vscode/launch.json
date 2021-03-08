@@ -18,8 +18,8 @@
             "flutterMode": "debug"
         },
         {
-            "name": "Flutter-iOS-All",
-            "preLaunchTask": "Flutter-Launch-iOS-ALL",
+            "name": "Flutter-Mobile-All",
+            "preLaunchTask": "Flutter-Launch-Mobile-ALL",
             "type": "dart",
             "request": "launch",
             "flutterMode": "debug"
@@ -41,6 +41,13 @@
         {
             "name": "Flutter-Web",
             "preLaunchTask": "Flutter-Launch-Web",
+            "type": "dart",
+            "request": "launch",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter-Test",
+            "preLaunchTask": "Flutter-Test",
             "type": "dart",
             "request": "launch",
             "flutterMode": "debug"

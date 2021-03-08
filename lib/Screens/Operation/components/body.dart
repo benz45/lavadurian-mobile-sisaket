@@ -179,24 +179,58 @@ class _BodyState extends State<Body> {
                 padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 18.0),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.85,
-                      mainAxisSpacing: 20.0,
-                      crossAxisSpacing: 20.0),
+                    crossAxisCount: 1,
+                    childAspectRatio: MediaQuery.of(context).size.height /
+                        (MediaQuery.of(context).size.width * 0.91),
+                    mainAxisSpacing: 16.0,
+                  ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
+                      final product = productModel.products;
+
                       return Container(
                         decoration: BoxDecoration(
-                            color: kPrimaryLightColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(18.0))),
-                        child: Center(
-                          child: Text(
-                              "${productGene[productModel.products[index]['gene'].toString()]}\n"
-                              "จำนวน: ${productModel.products[index]['values']}\n"
-                              "นน.: ${productModel.products[index]['weight']}\n"
-                              "ราคา: ${productModel.products[index]['price']}\n"
-                              "สถานะ: ${productStatus[productModel.products[index]['status'].toString()]}\n"),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 3,
+                              offset:
+                                  Offset(0, 1), // changes position of shadow
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(18.0),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              child: Center(
+                                child: FlutterLogo(
+                                  size: 150.0,
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: Container(
+                                padding: EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        "${productGene[product[index]['gene'].toString()]}"),
+                                    Text("จำนวน: ${product[index]['values']}"),
+                                    Text("นน.: ${product[index]['weight']}"),
+                                    Text("ราคา: ${product[index]['price']}"),
+                                    Text(
+                                        "สถานะ: ${productStatus[productModel.products[index]['status'].toString()]}"),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },

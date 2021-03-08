@@ -36,11 +36,12 @@ class CardOrder extends StatelessWidget {
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-                    color: kPrimaryLightColor,
                     borderRadius: BorderRadius.all(Radius.circular(13.5))),
                 height: 100,
                 width: 100,
-                child: Text('รูปภาพ').centered(),
+                child: FlutterLogo(
+                  size: 150.0,
+                ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.41,
