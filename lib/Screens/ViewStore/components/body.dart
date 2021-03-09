@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/ViewProduct/product_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +91,13 @@ class _BodyState extends State<Body> {
                   itemCount: products.length,
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductEditScreen(products[index]['id'])));
+                      },
                       child: Card(
                         child: ListTile(
                           leading: CircleAvatar(
