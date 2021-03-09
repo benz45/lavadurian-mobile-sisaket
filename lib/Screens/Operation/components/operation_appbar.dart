@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -61,26 +62,32 @@ class _OperationAppBarState extends State<OperationAppBar> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Text('ร้านค้า').text.xl2.semiBold.black.make().box.p12.make(),
-              VxSwiper.builder(
-                itemCount: storeModel.stores.length,
-                height: 130,
-                viewportFraction: 0.55,
-                enableInfiniteScroll: true,
-                enlargeCenterPage: true,
-                isFastScrollingEnabled: false,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return "${storeModel.stores[index]['name']}"
-                      .text
-                      .black
-                      .make()
-                      .box
-                      .rounded
-                      .alignCenter
-                      .color(kPrimaryLightColor)
-                      .make()
-                      .p4();
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => ViewStoreScreen()));
                 },
+                child: VxSwiper.builder(
+                  itemCount: storeModel.stores.length,
+                  height: 130,
+                  viewportFraction: 0.55,
+                  enableInfiniteScroll: true,
+                  enlargeCenterPage: true,
+                  isFastScrollingEnabled: false,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return "${storeModel.stores[index]['name']}"
+                        .text
+                        .black
+                        .make()
+                        .box
+                        .rounded
+                        .alignCenter
+                        .color(kPrimaryLightColor)
+                        .make()
+                        .p4();
+                  },
+                ),
               ),
             ],
           ),
