@@ -12,14 +12,14 @@ class OperationScreen extends StatelessWidget {
       endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
       drawer: NavDrawer(),
       body: Body(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => CreateProductScreen()));
-        },
-        child: Icon(Icons.add),
-        backgroundColor: kPrimaryColor,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(context,
+      //         MaterialPageRoute(builder: (_) => CreateProductScreen()));
+      //   },
+      //   child: Icon(Icons.add),
+      //   backgroundColor: kPrimaryColor,
+      // ),
     );
   }
 }

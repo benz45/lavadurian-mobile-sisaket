@@ -21,6 +21,11 @@ class ViewStoreScreen extends StatelessWidget {
         ),
       ),
       body: Body(storeID: storeID),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+        backgroundColor: kPrimaryColor,
+      ),
     );
   }
 }

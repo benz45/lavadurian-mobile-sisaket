@@ -33,6 +33,11 @@ class ProductModel extends ChangeNotifier {
     '3': 'ยุติการขาย',
   };
 
+  Map<String, String> _grade = {
+    '1': 'เกรดคุณภาพ',
+    '2': 'เกรดพรีเมี่ยม',
+  };
+
   List<Map<String, dynamic>> _products = [];
 
   List<Map<String, dynamic>> get products => _products;
@@ -49,6 +54,7 @@ class ProductModel extends ChangeNotifier {
 
   Map<String, String> get productGene => _gene;
   Map<String, String> get productStatus => _status;
+  Map<String, String> get productGrade => _grade;
 }
 
 class OrdertModel extends ChangeNotifier {

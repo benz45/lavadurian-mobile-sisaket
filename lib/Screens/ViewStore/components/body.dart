@@ -14,6 +14,10 @@ class _BodyState extends State<Body> {
   StoreModel storeModel;
   ProductModel productModel;
   Map<String, dynamic> store;
+  Map<String, String> productGene;
+  Map<String, String> productStatus;
+  Map<String, String> productGrade;
+
   List products = [];
 
   @override
@@ -31,13 +35,18 @@ class _BodyState extends State<Body> {
 
       store = storeModel.stores[index];
       for (var product in productModel.products) {
-        if (product['store'] == widget.storeID && products == []) {
+        if (product['store'] == widget.storeID) {
           products.add(product);
         }
       }
+
+      productGene = productModel.productGene;
+      productStatus = productModel.productStatus;
+      productGrade = productModel.productGrade;
     }
 
     return SingleChildScrollView(
+      physics: ScrollPhysics(),
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Container(
@@ -72,6 +81,33 @@ class _BodyState extends State<Body> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 16.0,
+              ),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {},
+                      child: Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage(
+                                'assets/images/example.png'), // no matter how big it is, it won't overflow
+                          ),
+                          title: Text(
+                              "${productGene[products[index]['gene'].toString()]}\n"
+                              "เกรด : ${productGrade[products[index]['grade'].toString()]}\n"
+                              "สถานะ : ${productStatus[products[index]['status'].toString()]}\n"
+                              "จำนวน : ${products[index]['gene']} ลูก\n"
+                              "นำ้หนัก : ${products[index]['weight']} กก./ลูก\n"
+                              "คำอธิบาย : ${products[index]['desc']}\n"),
+                        ),
+                      ),
+                    );
+                  })
             ],
           ),
         ),
