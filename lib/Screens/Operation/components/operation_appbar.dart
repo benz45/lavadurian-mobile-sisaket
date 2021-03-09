@@ -24,6 +24,8 @@ class _OperationAppBarState extends State<OperationAppBar> {
     final double appBarHeight = 66.0;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
 
+    int storeID = storeModel.stores[0]['id'];
+
     return SliverAppBar(
       shadowColor: Colors.grey[50].withOpacity(0.3),
       backgroundColor: Colors.grey[50],
@@ -64,8 +66,12 @@ class _OperationAppBarState extends State<OperationAppBar> {
               Text('ร้านค้า').text.xl2.semiBold.black.make().box.p12.make(),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => ViewStoreScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ViewStoreScreen(
+                                storeID,
+                              )));
                 },
                 child: VxSwiper.builder(
                   itemCount: storeModel.stores.length,
@@ -75,6 +81,9 @@ class _OperationAppBarState extends State<OperationAppBar> {
                   enlargeCenterPage: true,
                   isFastScrollingEnabled: false,
                   scrollDirection: Axis.horizontal,
+                  onPageChanged: (index) {
+                    storeID = storeModel.stores[index]['id'];
+                  },
                   itemBuilder: (context, index) {
                     return "${storeModel.stores[index]['name']}"
                         .text
