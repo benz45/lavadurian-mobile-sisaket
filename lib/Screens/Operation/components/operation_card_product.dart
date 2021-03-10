@@ -3,8 +3,6 @@ import 'package:LavaDurian/models/store_model.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/constants.dart';
 
-import '../../../constants.dart';
-
 class OperationCardProduct extends StatelessWidget {
   const OperationCardProduct({
     Key key,
@@ -16,6 +14,19 @@ class OperationCardProduct extends StatelessWidget {
   final ProductModel productModel;
   final Map<String, String> productGene;
   final Map<String, String> productStatus;
+
+  Widget _flightShuttleBuilder(
+    BuildContext flightContext,
+    Animation<double> animation,
+    HeroFlightDirection flightDirection,
+    BuildContext fromHeroContext,
+    BuildContext toHeroContext,
+  ) {
+    return DefaultTextStyle(
+      style: DefaultTextStyle.of(toHeroContext).style,
+      child: toHeroContext.widget,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +50,9 @@ class OperationCardProduct extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) => ViewProductScreen(
                       hero: '$index',
+                      status: productStatus[
+                          productModel.products[index]['status'].toString()],
+                      gene: productGene[product[index]['gene'].toString()],
                     ),
                   ),
                 );
@@ -60,45 +74,44 @@ class OperationCardProduct extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Hero(
-                        tag: '$index',
-                        child: Stack(
-                          children: [
-                            Container(
-                              height: double.infinity,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.horizontal(
-                                    left: Radius.circular(18.0)),
-                                image: DecorationImage(
-                                  fit: BoxFit
-                                      .cover, //I assumed you want to occupy the entire space of the card
-                                  image: AssetImage(
-                                    'assets/images/example.png',
-                                  ),
+                    Stack(
+                      children: [
+                        Hero(
+                          tag: 'image$index',
+                          child: Container(
+                            height: double.infinity,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.horizontal(
+                                  left: Radius.circular(18.0)),
+                              image: DecorationImage(
+                                fit: BoxFit
+                                    .cover, //I assumed you want to occupy the entire space of the card
+                                image: AssetImage(
+                                  'assets/images/example.png',
                                 ),
                               ),
                             ),
-                            Container(
-                              margin: EdgeInsets.all(6.8),
-                              padding: EdgeInsets.symmetric(horizontal: 6.0),
-                              decoration: BoxDecoration(
-                                color: kPrimaryColor,
-                                borderRadius: BorderRadius.circular(7.5),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 2),
-                                child: Text(
-                                  "${productStatus[productModel.products[index]['status'].toString()]}",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12.0),
-                                ),
-                              ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(6.8),
+                          padding: EdgeInsets.symmetric(horizontal: 6.0),
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(7.5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Text(
+                              "${productStatus[productModel.products[index]['status'].toString()]}",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12.0),
                             ),
-                            // SizedBox(height: 3.0),
-                          ],
-                        )),
+                          ),
+                        ),
+                      ],
+                    ),
                     Flexible(
                       child: Container(
                         padding: EdgeInsets.all(12.0),
@@ -112,11 +125,20 @@ class OperationCardProduct extends StatelessWidget {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 3.8),
-                                  child: Text(
-                                    "${productGene[product[index]['gene'].toString()]}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                  child: Hero(
+                                    tag: 'gene$index',
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: Text(
+                                          "${productGene[product[index]['gene'].toString()]}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 DetailProduct(
