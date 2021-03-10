@@ -49,13 +49,19 @@
 			"name": "iPhone-8",
 			"request": "launch",
 			"type": "dart",
-			"deviceId": "00252235-14B1-4414-8854-9CB7011ECEC4"
+			"deviceId": "E483C23B-9FCD-4EE5-8B6F-847C655FE1C9"
+		},
+		{
+			"name": "iPhone-12-Pro",
+			"request": "launch",
+			"type": "dart",
+			"deviceId": "343023BE-47FC-4140-AEC7-05D119BEFC03"
 		},
 		{
 			"name": "iPhone-12-Pro-Max",
 			"request": "launch",
 			"type": "dart",
-			"deviceId": "CF05C9B6-061A-4FFB-A4DB-F0ACDC09CDC7"
+			"deviceId": "3D5FAF5E-5572-45FA-9064-901C020997D9"
 		},
     ],
     "compounds": [

@@ -18,7 +18,7 @@ class OperationSliverList extends StatelessWidget {
         ListTile(
           leading: Text('$leading').text.xl.black.semiBold.make(),
           trailing: TextButton(
-            child: Text('$trailing').text.color(kPrimaryColor).make(),
+            child: Text('$trailing').text.bold.color(kPrimaryColor).make(),
             onPressed: onPressed,
           ),
         ).pLTRB(16.0, 0.0, 16.0, 0.0),
