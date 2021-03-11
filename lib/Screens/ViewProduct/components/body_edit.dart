@@ -12,7 +12,6 @@ class _BodyEditState extends State<BodyEdit> {
   @override
   Widget build(BuildContext context) {
     productID = widget.productID;
-    print(productID);
     return Container();
   }
 }
