@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/product_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
@@ -95,8 +96,8 @@ class _BodyState extends State<Body> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductEditScreen(products[index]['id'])));
+                                builder: (context) => EditProductScreen(
+                                    productID: products[index]['id'])));
                       },
                       child: Card(
                         child: ListTile(

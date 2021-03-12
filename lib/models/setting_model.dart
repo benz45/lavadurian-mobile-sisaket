@@ -29,6 +29,9 @@ class SettingModel extends ChangeNotifier {
   // End-point for upload product image
   String get endPointUploadProductImage => 'api/product-img/add';
 
+  // End-point for add new product
+  String get endPointAddProduct => 'api/product/add';
+
   // Setting Value
   Map<String, dynamic> _value = {};
   Map<String, dynamic> get value => _value;

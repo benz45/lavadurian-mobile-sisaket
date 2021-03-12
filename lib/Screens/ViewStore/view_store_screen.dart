@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/components/body.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,14 @@ class ViewStoreScreen extends StatelessWidget {
       ),
       body: Body(storeID: storeID),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreateProductScreen(
+                        storeID: storeID,
+                      )));
+        },
         child: Icon(Icons.add),
         backgroundColor: kPrimaryColor,
       ),
