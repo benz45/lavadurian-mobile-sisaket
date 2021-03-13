@@ -5,8 +5,7 @@ import 'package:velocity_x/velocity_x.dart';
 
 class DeleteProductScreen extends StatelessWidget {
   final int productID;
-  const DeleteProductScreen({Key key, @required this.productID})
-      : super(key: key);
+  const DeleteProductScreen({Key key, this.productID}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
