@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -117,10 +118,22 @@ class _BodyState extends State<Body> {
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status'] == true) {
-        print(jsonData['data']);
+        int index = products.indexWhere(
+            (element) => element['id'] == jsonData['data']['product']['id']);
+
+        products[index] = jsonData['data']['product'];
+
+        // update state
+        productModel.products = products;
+
+        _btnController.success();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ViewStoreScreen(jsonData['data']['product']['store'])));
       }
     } catch (e) {
-      print("Error");
       print(e);
     }
   }

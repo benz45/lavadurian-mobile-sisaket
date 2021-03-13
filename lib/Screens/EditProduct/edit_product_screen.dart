@@ -21,6 +21,11 @@ class EditProductScreen extends StatelessWidget {
         ),
       ),
       body: Body(productID: productID),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.delete_outlined),
+        backgroundColor: kPrimaryColor,
+      ),
     );
   }
 }
