@@ -246,9 +246,11 @@ class _BodyState extends State<Body> {
                                       Text(
                                           "${productGene[product[index]['gene'].toString()]}"),
                                       Text(
-                                          "จำนวน: ${product[index]['values']}"),
-                                      Text("นน.: ${product[index]['weight']}"),
-                                      Text("ราคา: ${product[index]['price']}"),
+                                          "จำนวน: ${product[index]['values']} ลูก"),
+                                      Text(
+                                          "นน.: ${product[index]['weight']} กก."),
+                                      Text(
+                                          "ราคา: ${product[index]['price']} บาท"),
                                       Text(
                                           "สถานะ: ${productStatus[productModel.products[index]['status'].toString()]}"),
                                     ],

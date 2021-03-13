@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
@@ -153,7 +151,7 @@ class _BodyState extends State<Body> {
       color: kPrimaryColor,
       onPressed: () {
         _createProduct();
-        _btnController.stop();
+        // _btnController.stop();
       },
     );
 

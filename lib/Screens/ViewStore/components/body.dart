@@ -1,5 +1,4 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
-import 'package:LavaDurian/Screens/ViewProduct/product_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:provider/provider.dart';
@@ -109,7 +108,7 @@ class _BodyState extends State<Body> {
                               "${productGene[products[index]['gene'].toString()]}\n"
                               "เกรด : ${productGrade[products[index]['grade'].toString()]}\n"
                               "สถานะ : ${productStatus[products[index]['status'].toString()]}\n"
-                              "จำนวน : ${products[index]['gene']} ลูก\n"
+                              "จำนวน : ${products[index]['values']} ลูก\n"
                               "นำ้หนัก : ${products[index]['weight']} กก./ลูก\n"
                               "คำอธิบาย : ${products[index]['desc']}\n"),
                         ),
