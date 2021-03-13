@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/components/body.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,8 @@ class ViewStoreScreen extends StatelessWidget {
         elevation: 0.0,
         title: Text('จัดการร้านค้า').text.color(kTextPrimaryColor).make(),
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => OperationScreen())),
           icon: Icon(Icons.arrow_back_rounded),
           color: kPrimaryColor,
         ),

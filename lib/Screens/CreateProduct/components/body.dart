@@ -107,7 +107,7 @@ class _BodyState extends State<Body> {
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
-      var jsonData = jsonDecode(response.body);
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status']) {
         // Set new product to list
         List<Map<String, dynamic>> products = productModel.products;
