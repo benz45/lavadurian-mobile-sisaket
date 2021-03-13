@@ -1,3 +1,4 @@
+import 'package:LavaDurian/components/DetailOnCard.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:LavaDurian/constants.dart';
@@ -20,65 +21,91 @@ class OperationCardOrder extends StatelessWidget {
     var dateCreate = DateTime.parse(this.order['date_created']).toLocal();
     Map<String, String> orderStatus = orderModel.orderStatus;
 
-    return Card(
-        elevation: 0.28,
-        shadowColor: kPrimaryLightColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(18.0),
+    Size size = MediaQuery.of(context).size;
+    final font = Theme.of(context).textTheme;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 1), // changes position of shadow
           ),
+        ],
+        borderRadius: BorderRadius.all(
+          Radius.circular(18.0),
         ),
-        child: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(13.5))),
-                height: 100,
-                width: 100,
-                child: FlutterLogo(
-                  size: 150.0,
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius:
+                  BorderRadius.horizontal(left: Radius.circular(18.0)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+                  'assets/images/example.png',
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.41,
-                height: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${dateFormat.format(dateCreate)}')
-                            .text
-                            .extraBold
-                            .make(),
-                        Text('${this.order['owner'].toString().length > 25 ? this.order['owner'].toString().substring(
-                                  0,
-                                  20,
-                                ) + '...' : this.order['owner'].toString()}')
-                            .text
-                            .extraBold
-                            .make()
-                            .pOnly(bottom: 8.0),
-                        Text('น้ำหนัก: ${this.order['weight']} กก.\n'
-                            'สถานะ: ${orderStatus[this.order['status'].toString()]}'),
-                      ],
-                    )).wFull(context),
-                    // Container(
-                    //     child: Row(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [Text('ดูรายการสั่งซื้อ').text.bold.make()],
-                    // )).wFull(context).pOnly(right: 4.0),
-                  ],
-                ),
-              ).pOnly(left: 16)
-            ],
+            ),
           ),
-        ));
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  child: Text(
+                    "${dateFormat.format(dateCreate)}",
+                    style: TextStyle(
+                      color: kTextSecondaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: size.height /
+                          size.width *
+                          (font.subtitle2.fontSize / 2.61),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 3.8, top: 2.0),
+                  child: Text(
+                    "${this.order['owner'].toString().length > 25 ? this.order['owner'].toString().substring(
+                          0,
+                          20,
+                        ) + '...' : this.order['owner'].toString()}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: size.height /
+                          size.width *
+                          (font.subtitle1.fontSize / 2.61),
+                    ),
+                  ),
+                ),
+                DetailOnCard(
+                  type: 'น้ำหนัก',
+                  value: this.order['weight'],
+                  fontSize: size.height /
+                      size.width *
+                      (font.subtitle1.fontSize / 2.59),
+                ),
+                DetailOnCard(
+                  type: 'สถานะ',
+                  value: orderStatus[this.order['status'].toString()],
+                  fontSize: size.height /
+                      size.width *
+                      (font.subtitle1.fontSize / 2.59),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

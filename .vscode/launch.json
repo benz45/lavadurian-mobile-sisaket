@@ -41,7 +41,7 @@
             "type": "dart",
             "request": "launch",
             "preLaunchTask": "Pixel-4-XL-API-28",
-            "deviceId": "emulator-5556",
+            "deviceId": "emulator-5554",
         },
 		{
 			"name": "iPhone-8",

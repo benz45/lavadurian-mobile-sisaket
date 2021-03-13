@@ -1,3 +1,4 @@
+import 'package:LavaDurian/components/DetailOnCard.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
@@ -60,21 +61,19 @@ class OperationCardProduct extends StatelessWidget {
                 ),
               ),
               child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Stack(
                     children: [
                       Hero(
                         tag: 'image$index',
                         child: Container(
-                          width: 160,
+                          width: double.infinity,
                           height: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.vertical(
                                 top: Radius.circular(18.0)),
                             image: DecorationImage(
-                              fit: BoxFit
-                                  .cover, //I assumed you want to occupy the entire space of the card
+                              fit: BoxFit.cover,
                               image: AssetImage(
                                 'assets/images/example.png',
                               ),
@@ -129,14 +128,14 @@ class OperationCardProduct extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              DetailProduct(
+                              DetailOnCard(
                                 type: 'จำนวน',
                                 value: product[index]['values'].toString(),
                                 fontSize: size.height /
                                     size.width *
                                     (font.subtitle1.fontSize / 2.58),
                               ),
-                              DetailProduct(
+                              DetailOnCard(
                                 type: 'น้ำหนัก',
                                 value: product[index]['weight'].toString(),
                                 fontSize: size.height /
@@ -148,7 +147,7 @@ class OperationCardProduct extends StatelessWidget {
                         ),
                         Container(
                           padding: EdgeInsets.only(top: 8.0),
-                          child: DetailProduct(
+                          child: DetailOnCard(
                             type: 'ราคา',
                             value: product[index]['price'].toString(),
                             fontSize: size.height /
@@ -166,40 +165,6 @@ class OperationCardProduct extends StatelessWidget {
         },
         staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
       ),
-    );
-  }
-}
-
-class DetailProduct extends StatelessWidget {
-  final String type;
-  final String value;
-  final double fontSize;
-  const DetailProduct({
-    Key key,
-    @required this.type,
-    @required this.value,
-    this.fontSize = 14.0,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          "$type \t",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: fontSize,
-              color: kTextSecondaryColor),
-        ),
-        Text(
-          "$value",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: fontSize,
-              color: kPrimaryColor),
-        ),
-      ],
     );
   }
 }
