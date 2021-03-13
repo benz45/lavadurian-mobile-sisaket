@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
+import 'package:LavaDurian/Screens/ViewStore/edit_store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +70,13 @@ class _BodyState extends State<Body> {
                       children: <Widget>[
                         TextButton(
                           child: const Text('แก้ไข'),
-                          onPressed: () {/* ... */},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditStoreScreen(widget.storeID)));
+                          },
                         ),
                         const SizedBox(width: 8),
                         TextButton(
