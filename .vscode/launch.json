@@ -23,39 +23,25 @@
             "flutterMode": "debug"
         },
         {
-            "name": "Flutter-All",
-            "preLaunchTask": "Flutter-Launch-All",
+            "name": "Mi8",
             "type": "dart",
             "request": "launch",
-            "flutterMode": "debug"
+            "preLaunchTask": "Mi8",
+            "deviceId": "310e522c",
         },
         {
-            "name": "Flutter-iOS",
-            "preLaunchTask": "Flutter-Launch-iOS",
+            "name": "Pixel-3a-XL_API",
             "type": "dart",
             "request": "launch",
-            "flutterMode": "debug"
+            "preLaunchTask": "Pixel-3a-XL_API",
+            "deviceId": "emulator-5556",
         },
         {
-            "name": "Flutter-Android",
-            "preLaunchTask": "Flutter-Launch-Android",
+            "name": "Pixel-4-XL-API-28",
             "type": "dart",
             "request": "launch",
-            "flutterMode": "debug"
-        },
-        {
-            "name": "Flutter-Web",
-            "preLaunchTask": "Flutter-Launch-Web",
-            "type": "dart",
-            "request": "launch",
-            "flutterMode": "debug"
-        },
-        {
-            "name": "Flutter-Test",
-            "preLaunchTask": "Flutter-Test",
-            "type": "dart",
-            "request": "launch",
-            "flutterMode": "debug"
+            "preLaunchTask": "Pixel-4-XL-API-28",
+            "deviceId": "emulator-5556",
         },
 		{
 			"name": "iPhone-8",
@@ -78,8 +64,8 @@
     ],
     "compounds": [
         {
-            "name": "Run All",
-            "configurations": ["iPhone-12-Pro-Max", "iPhone-8"],
+            "name": "Run All Devices",
+            "configurations": ["iPhone-12-Pro", "Pixel-3a-XL_API"],
         }
     ]
 }

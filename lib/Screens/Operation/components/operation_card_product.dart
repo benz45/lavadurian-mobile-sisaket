@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class OperationCardProduct extends StatelessWidget {
   const OperationCardProduct({
@@ -15,160 +16,155 @@ class OperationCardProduct extends StatelessWidget {
   final Map<String, String> productGene;
   final Map<String, String> productStatus;
 
-  Widget _flightShuttleBuilder(
-    BuildContext flightContext,
-    Animation<double> animation,
-    HeroFlightDirection flightDirection,
-    BuildContext fromHeroContext,
-    BuildContext toHeroContext,
-  ) {
-    return DefaultTextStyle(
-      style: DefaultTextStyle.of(toHeroContext).style,
-      child: toHeroContext.widget,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final font = Theme.of(context).textTheme;
+
     return SliverPadding(
       padding: EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 18.0),
-      sliver: SliverGrid(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 1,
-          childAspectRatio: MediaQuery.of(context).size.height /
-              (MediaQuery.of(context).size.width * 0.96),
-          mainAxisSpacing: 16.0,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) {
-            final product = productModel.products;
-
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ViewProductScreen(
-                      hero: '$index',
-                      status: productStatus[
-                          productModel.products[index]['status'].toString()],
-                      gene: productGene[product[index]['gene'].toString()],
-                    ),
-                  ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                      offset: Offset(0, 1), // changes position of shadow
-                    ),
-                  ],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(18.0),
+      sliver: SliverStaggeredGrid.countBuilder(
+        crossAxisCount: 2,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
+        itemCount: productModel.products.length, //staticData.length,
+        itemBuilder: (context, index) {
+          final product = productModel.products;
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ViewProductScreen(
+                    hero: '$index',
+                    status: productStatus[
+                        productModel.products[index]['status'].toString()],
+                    gene: productGene[product[index]['gene'].toString()],
                   ),
                 ),
-                child: Row(
-                  children: [
-                    Stack(
-                      children: [
-                        Hero(
-                          tag: 'image$index',
-                          child: Container(
-                            height: double.infinity,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(18.0)),
-                              image: DecorationImage(
-                                fit: BoxFit
-                                    .cover, //I assumed you want to occupy the entire space of the card
-                                image: AssetImage(
-                                  'assets/images/example.png',
-                                ),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 1), // changes position of shadow
+                  ),
+                ],
+                borderRadius: BorderRadius.all(
+                  Radius.circular(18.0),
+                ),
+              ),
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      Hero(
+                        tag: 'image$index',
+                        child: Container(
+                          width: 160,
+                          height: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(18.0)),
+                            image: DecorationImage(
+                              fit: BoxFit
+                                  .cover, //I assumed you want to occupy the entire space of the card
+                              image: AssetImage(
+                                'assets/images/example.png',
                               ),
                             ),
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.all(6.8),
-                          padding: EdgeInsets.symmetric(horizontal: 6.0),
-                          decoration: BoxDecoration(
-                            color: kPrimaryColor,
-                            borderRadius: BorderRadius.circular(7.5),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 2),
-                            child: Text(
-                              "${productStatus[productModel.products[index]['status'].toString()]}",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 12.0),
-                            ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(6.8),
+                        padding: EdgeInsets.symmetric(horizontal: 6.0),
+                        decoration: BoxDecoration(
+                          color: kPrimaryColor,
+                          borderRadius: BorderRadius.circular(7.5),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Text(
+                            "${productStatus[productModel.products[index]['status'].toString()]}",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 12.0),
                           ),
                         ),
-                      ],
-                    ),
-                    Flexible(
-                      child: Container(
-                        padding: EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 3.8),
-                                  child: Hero(
-                                    tag: 'gene$index',
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: Material(
-                                        color: Colors.transparent,
-                                        child: Text(
-                                          "${productGene[product[index]['gene'].toString()]}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16.0),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 3.8),
+                                child: Hero(
+                                  tag: 'gene$index',
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: Text(
+                                        "${productGene[product[index]['gene'].toString()]}",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: size.height /
+                                              size.width *
+                                              (font.subtitle1.fontSize / 2.61),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                                DetailProduct(
-                                  type: 'จำนวน',
-                                  value: product[index]['values'].toString(),
-                                  fontSize: 14.0,
-                                ),
-                                DetailProduct(
-                                  type: 'น้ำหนัก',
-                                  value: product[index]['weight'].toString(),
-                                  fontSize: 14.0,
-                                ),
-                              ],
-                            ),
-                            DetailProduct(
-                              type: 'ราคา',
-                              value: product[index]['price'].toString(),
-                              fontSize: 16.0,
-                            ),
-                          ],
+                              ),
+                              DetailProduct(
+                                type: 'จำนวน',
+                                value: product[index]['values'].toString(),
+                                fontSize: size.height /
+                                    size.width *
+                                    (font.subtitle1.fontSize / 2.58),
+                              ),
+                              DetailProduct(
+                                type: 'น้ำหนัก',
+                                value: product[index]['weight'].toString(),
+                                fontSize: size.height /
+                                    size.width *
+                                    (font.subtitle1.fontSize / 2.59),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        Container(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child: DetailProduct(
+                            type: 'ราคา',
+                            value: product[index]['price'].toString(),
+                            fontSize: size.height /
+                                size.width *
+                                (font.subtitle1.fontSize / 2.67),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          },
-          childCount: productModel.products.length,
-        ),
+            ),
+          );
+        },
+        staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
       ),
     );
   }

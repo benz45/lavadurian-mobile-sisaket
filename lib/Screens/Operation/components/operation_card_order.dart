@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class CardOrder extends StatelessWidget {
+class OperationCardOrder extends StatelessWidget {
   final Map<String, dynamic> order;
-  const CardOrder({
+  const OperationCardOrder({
     Key key,
     this.order,
   }) : super(key: key);

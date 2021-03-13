@@ -27,10 +27,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Lava Durian Sisaket',
         theme: ThemeData(
-            primaryColor: kPrimaryColor,
-            scaffoldBackgroundColor: Colors.white,
-            fontFamily:
-                GoogleFonts.kanit(fontWeight: FontWeight.w300).fontFamily),
+          primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: Colors.white,
+          fontFamily: GoogleFonts.kanit(fontWeight: FontWeight.w400).fontFamily,
+        ),
         home: SplashPage(),
       ),
     );
