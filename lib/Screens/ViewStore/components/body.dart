@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
+import 'package:LavaDurian/Screens/ViewStore/components/show_alert_dialog.dart';
 import 'package:LavaDurian/Screens/ViewStore/edit_store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
@@ -81,7 +82,9 @@ class _BodyState extends State<Body> {
                         const SizedBox(width: 8),
                         TextButton(
                           child: const Text('ลบร้าน'),
-                          onPressed: () {/* ... */},
+                          onPressed: () {
+                            showAlertDialog(context, widget.storeID);
+                          },
                         ),
                         const SizedBox(width: 8),
                       ],

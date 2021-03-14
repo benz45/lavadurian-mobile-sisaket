@@ -1,6 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
+import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/setting_model.dart';
+import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as Http;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class BodyCreate extends StatefulWidget {
@@ -10,13 +19,93 @@ class BodyCreate extends StatefulWidget {
 
 class _BodyCreateState extends State<BodyCreate> {
   String _chosenDistrict;
+  String _nameValue;
   String _sloganValue;
   String _phone1Value;
-  String _phone2Value;
+  String _phone2Value = "";
   String _aboutValue;
+
+  StoreModel storeModel;
+  SettingModel settingModel;
 
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
+
+  Future<void> _onSubmit() async {
+    String district;
+
+    if (_chosenDistrict == null) {
+      showSnackBar(context, 'กรุณาเลือกเขตอำเภอ');
+      _btnController.reset();
+      return false;
+    } else {
+      district = storeModel.district.keys.firstWhere(
+          (element) => storeModel.district[element] == _chosenDistrict);
+    }
+
+    if (_nameValue == null || _nameValue == "") {
+      showSnackBar(context, 'กรุณากรอกชื่อร้านค้า');
+      _btnController.reset();
+      return false;
+    }
+    if (_sloganValue == null || _sloganValue == "") {
+      showSnackBar(context, 'กรุณากรอกข้อมูลสโลแกนร้านค้า');
+      _btnController.reset();
+      return false;
+    }
+    if (_phone1Value == null || _phone1Value == "") {
+      showSnackBar(context, 'กรุณากรอกหมายเลขติดต่อ');
+      _btnController.reset();
+      return false;
+    }
+    if (_aboutValue == null || _aboutValue == "") {
+      showSnackBar(context, 'กรุณาบรรยายข้อมูลเกี่ยวกับร้านค้า');
+      _btnController.reset();
+      return false;
+    }
+
+    Map<String, dynamic> data = {
+      'name': _nameValue.toString().trim(),
+      'slogan': _sloganValue.toString().trim(),
+      'about': _aboutValue.toString().trim(),
+      'phone1': _phone1Value.toString().trim(),
+      'phone2': _phone2Value.toString().trim(),
+      'district': district.toString(),
+      'status': 0.toString(),
+    };
+
+    try {
+      // get current user token
+      String token = settingModel.value['token'];
+      final response = await Http.post(
+        '${settingModel.baseURL}/${settingModel.endPointAddStore}',
+        body: data,
+        headers: {HttpHeaders.authorizationHeader: "Token $token"},
+      );
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      if (jsonData['status'] == true) {
+        var stores = storeModel.stores;
+        stores.add(jsonData['data']['store']);
+        // update state
+        storeModel.stores = stores;
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => OperationScreen()));
+      } else {
+        showSnackBar(context, "เกิดข้อผิดพลาดไม่สามารถสร้างร้านค้าได้");
+      }
+    } catch (e) {
+      print(e);
+      showSnackBar(context, "เกิดข้อผิดพลาดไม่สามารถสร้างร้านค้าได้");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    storeModel = context.read<StoreModel>();
+    settingModel = context.read<SettingModel>();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +120,7 @@ class _BodyCreateState extends State<BodyCreate> {
       width: MediaQuery.of(context).size.width,
       color: kPrimaryColor,
       onPressed: () {
+        _onSubmit();
         _btnController.stop();
       },
     );
@@ -64,6 +154,14 @@ class _BodyCreateState extends State<BodyCreate> {
                 });
               },
             ),
+          ),
+          RoundedInputField(
+            hintText: "ชื่อร้านค้า",
+            icon: Icons.add_circle_outline,
+            onChanged: (v) => _nameValue = v,
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.text,
+            // inputFormatters: limitingTextInput,
           ),
           RoundedInputField(
             hintText: "สโลแกนร้านค้า",
