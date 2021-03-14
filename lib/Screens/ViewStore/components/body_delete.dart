@@ -49,12 +49,14 @@ class _BodyDeleteState extends State<BodyDelete> {
         stores.removeWhere((element) => element['id'] == store['id']);
         // update state
         storeModel.stores = stores;
+        return "success";
+      } else {
+        return "fail";
       }
     } catch (e) {
       print(e);
+      return "fail";
     }
-
-    return "success";
   }
 
   @override
