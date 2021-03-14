@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class StoreModel extends ChangeNotifier {
+  Map<String, dynamic> _district = {
+    '1': 'กันทรลักษณ์',
+    '2': 'ขุนหาญ',
+    '3': 'ศรีรัตนะ',
+  };
+
   List<Map<String, dynamic>> _stores = [];
 
   List<Map<String, dynamic>> get stores => _stores;
+  Map<String, dynamic> get district => _district;
 
   set stores(List<Map<String, dynamic>> stores) {
     _stores = stores;
