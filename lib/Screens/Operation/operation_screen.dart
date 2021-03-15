@@ -6,7 +6,8 @@ import 'package:LavaDurian/Screens/Operation/components/body.dart' show Body;
 
 // ignore: todo
 //TODO: For Test
-// import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart' show ViewProductScreen;
+// import 'package:LavaDurian/Screens/ViewOrder/view_order_screen.dart'
+//     show ViewOrderScreen;
 
 class OperationScreen extends StatelessWidget {
   @override
@@ -18,7 +19,7 @@ class OperationScreen extends StatelessWidget {
       body: Body(),
       // ignore: todo
       //TODO: For Test
-      // body: ViewProductScreen(),
+      // body: ViewOrderScreen(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,

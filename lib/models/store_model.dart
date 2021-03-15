@@ -64,11 +64,18 @@ class OrdertModel extends ChangeNotifier {
   };
 
   List<Map<String, dynamic>> _orders = [];
+  List<Map<String, dynamic>> _orderItems = [];
 
   List<Map<String, dynamic>> get orders => _orders;
+  List<Map<String, dynamic>> get orderItems => _orderItems;
 
   set orders(List<Map<String, dynamic>> orders) {
     _orders = orders;
+    notifyListeners();
+  }
+
+  set orderItems(List<Map<String, dynamic>> orderItems) {
+    _orderItems = orderItems;
     notifyListeners();
   }
 

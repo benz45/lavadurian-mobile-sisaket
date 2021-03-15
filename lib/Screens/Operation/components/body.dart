@@ -91,6 +91,16 @@ class _BodyState extends State<Body> {
       orderModel.orders = orderList;
     }
 
+    // Set data to ordersItems model
+    if (jsonData['data']['orderItems'] != null) {
+      List<Map<String, dynamic>> orderList = [];
+      for (var order in jsonData['data']['orderItems']) {
+        Map<String, dynamic> map = order;
+        orderList.add(map);
+      }
+      orderModel.orderItems = orderList;
+    }
+
     // Set data to items model
     if (jsonData['data']['items'] != null) {
       List<Map<String, dynamic>> itemList = [];
