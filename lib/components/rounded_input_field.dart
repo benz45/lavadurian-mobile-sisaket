@@ -15,21 +15,23 @@ class RoundedInputField extends StatelessWidget {
   final bool enabled;
   final bool autofocus;
   final obscureText;
+  final maxLines;
 
-  const RoundedInputField(
-      {Key key,
-      this.autofocus = false,
-      this.enabled,
-      this.hintText,
-      this.icon,
-      this.controller,
-      this.onChanged,
-      this.onSubmitted,
-      this.obscureText = false,
-      this.inputFormatters,
-      this.textInputAction,
-      this.keyboardType = TextInputType.text})
-      : super(key: key);
+  const RoundedInputField({
+    Key key,
+    this.autofocus = false,
+    this.enabled,
+    this.hintText,
+    this.icon,
+    this.controller,
+    this.onChanged,
+    this.onSubmitted,
+    this.obscureText = false,
+    this.inputFormatters,
+    this.textInputAction,
+    this.keyboardType = TextInputType.text,
+    this.maxLines = 1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class RoundedInputField extends StatelessWidget {
         onSubmitted: onSubmitted,
         cursorColor: kPrimaryColor,
         textInputAction: textInputAction,
+        maxLines: maxLines,
         decoration: InputDecoration(
           icon: Icon(
             icon,

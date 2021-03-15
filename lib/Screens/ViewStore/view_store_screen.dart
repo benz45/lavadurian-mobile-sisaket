@@ -1,9 +1,14 @@
-import 'package:LavaDurian/Screens/ManageProduct/components/body.dart';
+import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
+import 'package:LavaDurian/Screens/ViewStore/components/body.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ViewStoreScreen extends StatelessWidget {
+  final int storeID;
+  ViewStoreScreen(this.storeID);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,12 +17,25 @@ class ViewStoreScreen extends StatelessWidget {
         elevation: 0.0,
         title: Text('จัดการร้านค้า').text.color(kTextPrimaryColor).make(),
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => OperationScreen())),
           icon: Icon(Icons.arrow_back_rounded),
           color: kPrimaryColor,
         ),
       ),
-      body: Body(),
+      body: Body(storeID: storeID),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreateProductScreen(
+                        storeID: storeID,
+                      )));
+        },
+        child: Icon(Icons.add),
+        backgroundColor: kPrimaryColor,
+      ),
     );
   }
 }

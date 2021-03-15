@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
@@ -12,30 +13,38 @@ import 'package:http/http.dart' as Http;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 class Body extends StatefulWidget {
-  final int storeID;
+  final int productID;
 
-  const Body({Key key, @required this.storeID}) : super(key: key);
+  const Body({Key key, @required this.productID}) : super(key: key);
   @override
   _BodyState createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
-  int storeID;
   String _chosenGrade;
   String _chosenGene;
   String _chosenStatus;
+
   int _productValue;
-  int _productPrice;
+  double _productPrice;
   double _productWeight;
   String _productDetail;
 
-  SettingModel settingModel;
+  TextEditingController _controllerProductValue;
+  TextEditingController _controllerProductPrice;
+  TextEditingController _controllerProductWeight;
+  TextEditingController _controllerProductDetail;
+
+  List<Map<String, dynamic>> products;
+  Map<String, dynamic> product;
+
   ProductModel productModel;
+  SettingModel settingModel;
 
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
 
-  Future<void> _createProduct() async {
+  Future<void> _onSubmit() async {
     // validate data
     if (_chosenGrade == null) {
       showSnackBar(context, 'กรุณาเลือกเกรดทุเรียน');
@@ -67,15 +76,11 @@ class _BodyState extends State<Body> {
       _btnController.reset();
       return false;
     }
-
     if (_chosenStatus == null) {
       showSnackBar(context, 'กรุณาเลือกสถานะการขาย');
       _btnController.reset();
       return false;
     }
-
-    // get current user token
-    String token = settingModel.value['token'];
 
     var _grade = productModel.productGrade.keys.firstWhere(
         (element) => productModel.productGrade[element] == _chosenGrade,
@@ -90,7 +95,8 @@ class _BodyState extends State<Body> {
         orElse: () => null);
 
     Map<String, dynamic> data = {
-      'store_id': storeID.toString(),
+      'store_id': product['store'].toString(),
+      'product_id': product['id'].toString(),
       'grade': _grade.toString(),
       'gene': _gene.toString(),
       'values': _productValue.toString(),
@@ -100,49 +106,83 @@ class _BodyState extends State<Body> {
       'status': _status.toString(),
     };
 
+    // get current user token
+    String token = settingModel.value['token'];
+
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPointAddProduct}',
+        '${settingModel.baseURL}/${settingModel.endPointEditProduct}',
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      if (jsonData['status']) {
-        // Set new product to list
-        List<Map<String, dynamic>> products = productModel.products;
-        products.add(jsonData['data']['product']);
+      if (jsonData['status'] == true) {
+        int index = products.indexWhere(
+            (element) => element['id'] == jsonData['data']['product']['id']);
+
+        products[index] = jsonData['data']['product'];
 
         // update state
         productModel.products = products;
 
         _btnController.success();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ViewStoreScreen(storeID)));
-      } else {
-        _btnController.reset();
-        showSnackBar(context, 'บันทึกข้อมูลไม่สำเร็จ');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ViewStoreScreen(jsonData['data']['product']['store'])));
       }
-    } on Exception catch (e) {
-      showSnackBar(context, e.toString());
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    settingModel = context.read<SettingModel>();
     productModel = context.read<ProductModel>();
+    settingModel = context.read<SettingModel>();
   }
 
   @override
   Widget build(BuildContext context) {
-    storeID = widget.storeID;
+    products = productModel.products;
+    product =
+        products.firstWhere((element) => element['id'] == widget.productID);
+
+    _controllerProductValue =
+        TextEditingController(text: product['values'].toString());
+
+    _controllerProductWeight =
+        TextEditingController(text: product['weight'].toString());
+
+    _controllerProductPrice =
+        TextEditingController(text: product['price'].toString());
+
+    _controllerProductDetail = TextEditingController(text: product['desc']);
+
+    _productValue = product['values'];
+    _productWeight = double.parse(product['weight']);
+    _productPrice = double.parse(product['price']);
+    _productDetail = product['desc'];
+
+    if (_chosenGrade == null) {
+      _chosenGrade = productModel.productGrade[product['grade'].toString()];
+    }
+
+    if (_chosenGene == null) {
+      _chosenGene = productModel.productGene[product['gene'].toString()];
+    }
+
+    if (_chosenStatus == null) {
+      _chosenStatus = productModel.productStatus[product['status'].toString()];
+    }
 
     // Edit Button
-    final editButton = RoundedLoadingButton(
+    final addButton = RoundedLoadingButton(
       child: Text(
-        "สร้างสินค้าใหม่",
+        "บันทึกการแก้ไข",
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white),
       ),
@@ -150,8 +190,8 @@ class _BodyState extends State<Body> {
       width: MediaQuery.of(context).size.width,
       color: kPrimaryColor,
       onPressed: () {
-        _createProduct();
-        // _btnController.stop();
+        _onSubmit();
+        _btnController.stop();
       },
     );
 
@@ -223,25 +263,34 @@ class _BodyState extends State<Body> {
           RoundedInputField(
             hintText: "จำนวนที่มีขาย (ลูก)",
             icon: Icons.add_circle_outline,
-            onChanged: (v) => _productValue = int.parse(v),
+            onChanged: (v) {
+              _productValue = int.parse(v);
+            },
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
+            controller: _controllerProductValue,
             // inputFormatters: limitingTextInput,
           ),
           RoundedInputField(
             hintText: "ราคาต่อกิโลกรัม",
             icon: Icons.add_circle_outline,
-            onChanged: (v) => _productPrice = int.parse(v),
+            onChanged: (v) {
+              _productPrice = double.parse(v);
+            },
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
+            controller: _controllerProductPrice,
             // inputFormatters: limitingTextInput,
           ),
           RoundedInputField(
             hintText: "น้ำหนักเฉลี่ยต่อลูก",
             icon: Icons.add_circle_outline,
-            onChanged: (v) => _productWeight = double.parse(v),
+            onChanged: (v) {
+              _productWeight = double.parse(v);
+            },
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
+            controller: _controllerProductWeight,
             // inputFormatters: limitingTextInput,
           ),
           RoundedInputField(
@@ -250,6 +299,7 @@ class _BodyState extends State<Body> {
             onChanged: (v) => _productDetail = v,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.text,
+            controller: _controllerProductDetail,
             // inputFormatters: limitingTextInput,
           ),
           Padding(
@@ -283,7 +333,7 @@ class _BodyState extends State<Body> {
           ),
           Padding(
             padding: EdgeInsets.all(16),
-            child: editButton,
+            child: addButton,
           ),
         ],
       ),

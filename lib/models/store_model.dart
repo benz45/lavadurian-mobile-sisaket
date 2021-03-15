@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class StoreModel extends ChangeNotifier {
+  Map<String, dynamic> _district = {
+    '1': 'กันทรลักษณ์',
+    '2': 'ขุนหาญ',
+    '3': 'ศรีรัตนะ',
+  };
+
   List<Map<String, dynamic>> _stores = [];
 
   List<Map<String, dynamic>> get stores => _stores;
+  Map<String, dynamic> get district => _district;
 
   set stores(List<Map<String, dynamic>> stores) {
     _stores = stores;
@@ -33,6 +40,11 @@ class ProductModel extends ChangeNotifier {
     '3': 'ยุติการขาย',
   };
 
+  Map<String, String> _grade = {
+    '1': 'เกรดคุณภาพ',
+    '2': 'เกรดพรีเมี่ยม',
+  };
+
   List<Map<String, dynamic>> _products = [];
 
   List<Map<String, dynamic>> get products => _products;
@@ -49,6 +61,7 @@ class ProductModel extends ChangeNotifier {
 
   Map<String, String> get productGene => _gene;
   Map<String, String> get productStatus => _status;
+  Map<String, String> get productGrade => _grade;
 }
 
 class OrdertModel extends ChangeNotifier {

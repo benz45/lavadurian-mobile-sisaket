@@ -1,9 +1,12 @@
-import 'package:LavaDurian/Screens/ManageProduct/components/body.dart';
+import 'package:LavaDurian/Screens/CreateProduct/components/body.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CreateProductScreen extends StatelessWidget {
+  final int storeID;
+  const CreateProductScreen({Key key, @required this.storeID})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +20,7 @@ class CreateProductScreen extends StatelessWidget {
           color: kPrimaryColor,
         ),
       ),
-      body: Body(),
+      body: Body(storeID: storeID),
     );
   }
 }

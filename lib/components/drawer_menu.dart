@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
+import 'package:LavaDurian/Screens/ViewStore/create_store_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/models/profile_model.dart';
@@ -59,8 +60,11 @@ class _NavDrawerState extends State<NavDrawer> {
           ),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('ตั้งค่า'),
-            onTap: () {},
+            title: Text('สร้างร้านค้า'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CreateStoreScreen()));
+            },
           ),
           ListTile(
             leading: Icon(Icons.account_box),

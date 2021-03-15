@@ -1,6 +1,4 @@
-import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/components/drawer_menu.dart';
-import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Operation/components/body.dart' show Body;
 
@@ -17,17 +15,6 @@ class OperationScreen extends StatelessWidget {
       endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
       drawer: NavDrawer(),
       body: Body(),
-      // ignore: todo
-      //TODO: For Test
-      // body: ViewOrderScreen(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (_) => CreateProductScreen()));
-        },
-        child: Icon(Icons.add),
-        backgroundColor: kPrimaryColor,
-      ),
     );
   }
 }
