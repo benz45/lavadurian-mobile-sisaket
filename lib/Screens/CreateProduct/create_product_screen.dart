@@ -20,7 +20,9 @@ class CreateProductScreen extends StatelessWidget {
           color: kPrimaryColor,
         ),
       ),
-      body: Body(storeID: storeID),
+      body: SingleChildScrollView(
+        child: Body(storeID: storeID),
+      ),
     );
   }
 }

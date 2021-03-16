@@ -13,13 +13,19 @@ class CreateStoreScreen extends StatelessWidget {
         elevation: 0.0,
         title: Text('สร้างร้านค้าใหม่').text.color(kTextPrimaryColor).make(),
         leading: IconButton(
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => OperationScreen())),
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OperationScreen(),
+            ),
+          ),
           icon: Icon(Icons.arrow_back_rounded),
           color: kPrimaryColor,
         ),
       ),
-      body: BodyCreate(),
+      body: SingleChildScrollView(
+        child: BodyCreate(),
+      ),
     );
   }
 }

@@ -17,14 +17,18 @@ class EditStoreScreen extends StatelessWidget {
         title: Text('แก้ไขร้านค้า').text.color(kTextPrimaryColor).make(),
         leading: IconButton(
           onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ViewStoreScreen(storeID))),
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewStoreScreen(storeID),
+            ),
+          ),
           icon: Icon(Icons.arrow_back_rounded),
           color: kPrimaryColor,
         ),
       ),
-      body: BodyEdit(storeID: storeID),
+      body: SingleChildScrollView(
+        child: BodyEdit(storeID: storeID),
+      ),
     );
   }
 }
