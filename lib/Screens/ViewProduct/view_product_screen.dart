@@ -101,20 +101,10 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                 ),
                               ),
                             ),
-                            Hero(
-                              tag: 'gene${widget.hero}',
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    "${widget.gene}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0),
-                                  ),
-                                ),
-                              ),
+                            Text(
+                              "${widget.gene}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20.0),
                             ),
                           ],
                         ),

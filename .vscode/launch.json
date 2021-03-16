@@ -28,6 +28,7 @@
             "request": "launch",
             "preLaunchTask": "Mi8",
             "deviceId": "310e522c",
+            "flutterMode": "release"
         },
         {
             "name": "Pixel-3a-XL_API",

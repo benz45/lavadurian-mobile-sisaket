@@ -188,7 +188,7 @@ class _BodyState extends State<Body> {
               OperationCardProduct(
                   productModel: productModel,
                   productGene: productGene,
-                  productStatus: productStatus)
+                  productStatus: productStatus),
             ]),
           );
         } else {

@@ -21,7 +21,7 @@ class OperationSliverList extends StatelessWidget {
             child: Text('$trailing').text.bold.color(kPrimaryColor).make(),
             onPressed: onPressed,
           ),
-        ).pLTRB(16.0, 0.0, 16.0, 0.0),
+        ).pLTRB(16.0, 0.0, 8.0, 0.0),
       ]),
     );
   }

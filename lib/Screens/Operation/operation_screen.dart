@@ -14,7 +14,25 @@ class OperationScreen extends StatelessWidget {
       key: GlobalKey(), // assign key to Scaffold
       endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
       drawer: NavDrawer(),
-      body: Body(),
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Body(),
+          Positioned(
+            child: Container(
+              height: 80,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.white.withOpacity(0.0), Colors.white],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
