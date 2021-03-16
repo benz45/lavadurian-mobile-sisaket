@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class teaderTypeList extends StatefulWidget {
+class TeaderTypeList extends StatefulWidget {
   @override
-  _teaderTypeListState createState() => _teaderTypeListState();
+  _TeaderTypeListState createState() => _TeaderTypeListState();
 }
 
-class _teaderTypeListState extends State<teaderTypeList> {
+class _TeaderTypeListState extends State<TeaderTypeList> {
   String dropdownValue = 'เจ้าของสวน';
   @override
   Widget build(BuildContext context) {

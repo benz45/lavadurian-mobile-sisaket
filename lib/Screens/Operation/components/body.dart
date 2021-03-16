@@ -6,6 +6,7 @@ import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_product.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_sliverlist.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
+import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:LavaDurian/models/profile_model.dart';
@@ -152,45 +153,51 @@ class _BodyState extends State<Body> {
       future: _getUserProfile(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Container(
-            color: Colors.grey[50],
-            child: CustomScrollView(slivers: [
-              OperationAppBar(),
-              OperationSliverList(
-                leading: 'รายการสั่งซื้อ',
-                trailing: 'จัดการคำสั่งซื้อ',
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => OrderScreen()));
-                },
-              ),
-              SliverPadding(
-                padding: EdgeInsets.only(bottom: 18.0),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return OperationCardOrder(
-                        order: orderModel.orders[index],
-                      ).px32();
-                    },
-                    childCount: orderModel.orders.length,
+          if (storeModel.stores.length != 0) {
+            return Container(
+              color: Colors.grey[50],
+              child: CustomScrollView(slivers: [
+                OperationAppBar(),
+                OperationSliverList(
+                  leading: 'รายการสั่งซื้อ',
+                  trailing: 'จัดการคำสั่งซื้อ',
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => OrderScreen()));
+                  },
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.only(bottom: 18.0),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return OperationCardOrder(
+                          order: orderModel.orders[index],
+                        ).px32();
+                      },
+                      childCount: orderModel.orders.length,
+                    ),
                   ),
                 ),
-              ),
-              OperationSliverList(
-                leading: 'รายการสินค้า',
-                trailing: 'จัดการสินค้า',
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => ManageProductScreen()));
-                },
-              ),
-              OperationCardProduct(
-                  productModel: productModel,
-                  productGene: productGene,
-                  productStatus: productStatus),
-            ]),
-          );
+                OperationSliverList(
+                  leading: 'รายการสินค้า',
+                  trailing: 'จัดการสินค้า',
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ManageProductScreen()));
+                  },
+                ),
+                OperationCardProduct(
+                    productModel: productModel,
+                    productGene: productGene,
+                    productStatus: productStatus),
+              ]),
+            );
+          } else {
+            return StoreNodata();
+          }
         } else {
           return Center(
             child: Column(

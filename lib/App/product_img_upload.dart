@@ -18,7 +18,7 @@ class ProductImageUpload extends StatefulWidget {
 class _ProductImageUploadState extends State<ProductImageUpload> {
   SettingModel settingModel;
   List<Asset> images = List<Asset>();
-  String _error;
+  String textError;
 
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
@@ -76,7 +76,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
     setState(() {
       images = resultList;
-      if (error == null) _error = 'No Error Dectected';
+      if (error == null) textError = 'No Error Dectected';
     });
   }
 

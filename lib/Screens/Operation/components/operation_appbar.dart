@@ -1,4 +1,3 @@
-import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/create_store_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
@@ -14,6 +13,7 @@ class OperationAppBar extends StatefulWidget {
 
 class _OperationAppBarState extends State<OperationAppBar> {
   StoreModel storeModel;
+  int storeID;
 
   @override
   void initState() {
@@ -26,8 +26,7 @@ class _OperationAppBarState extends State<OperationAppBar> {
     final double appBarHeight = 66.0;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
 
-    int storeID = storeModel.stores[0]['id'];
-
+    storeID = storeModel.stores[0]['id'];
     return SliverAppBar(
       shadowColor: Colors.grey[50].withOpacity(0.3),
       backgroundColor: Colors.grey[50],

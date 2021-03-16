@@ -4,7 +4,6 @@ import 'package:LavaDurian/Screens/Register_Success/register_success_screen.dart
 import 'package:LavaDurian/components/btnRoundedLoadingButton.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
-import 'package:LavaDurian/models/checkCitizenId_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/signup_model.dart';
 import 'package:flutter/material.dart';
