@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class StoreNodata extends StatelessWidget {
+  final String headText;
+
+  StoreNodata({Key key, this.headText = 'ตอนนี้คุณยังไม่มีร้านค้า'})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -27,7 +32,7 @@ class StoreNodata extends StatelessWidget {
             DelayedDisplay(
               delay: Duration(milliseconds: 1400),
               child: Text(
-                "ตอนนี้คุณยังไม่มีร้านค้า",
+                "$headText",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24,

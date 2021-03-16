@@ -17,9 +17,8 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
   String tradername;
   String phone;
 
-  // Trader Type
-  final String traderMiddleman = 'พ่อค้าคนกลาง';
-  final String traderOwner = 'เจ้าของสวน';
+  // Trader of Type
+  Map tTrader;
 
   SignupModel({
     String password = '',
@@ -30,16 +29,16 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
     String tradertype = '',
     String tradername = '',
     String phone = '',
-    String traderMiddleman,
-    String traderOwner,
+    Map tTrader,
   })  : this.password = password,
         this.email = email,
         this.firstName = firstName,
         this.lastName = lastName,
         this.citizenid = citizenid,
-        this.tradertype = traderMiddleman,
+        this.tradertype = 'พ่อค้าคนกลาง',
         this.tradername = tradername,
-        this.phone = phone;
+        this.phone = phone,
+        this.tTrader = {'0': "พ่อค้าคนกลาง", '1': "เจ้าของสวน"};
 
   factory SignupModel.fromJson(Map<String, dynamic> json) => SignupModel(
         password: json["password"],
@@ -72,14 +71,17 @@ class SignupModel with ChangeNotifier, DiagnosticableTreeMixin {
   String get getTradername => tradername;
   String get getPhoneNumber => phone;
 
-  set setEmail(String value) => {email = value, notifyListeners()};
-  set setPassword(String value) => {password = value, notifyListeners()};
-  set setFirstName(String value) => {firstName = value, notifyListeners()};
-  set setLastName(String value) => {lastName = value, notifyListeners()};
-  set setCitizenid(String value) => {citizenid = value, notifyListeners()};
-  set setTradertype(String value) => {tradertype = value, notifyListeners()};
-  set setTradername(String value) => {tradername = value, notifyListeners()};
-  set setPhoneNumber(String value) => {phone = value, notifyListeners()};
+  // Void notifyListeners
+  void nL() => notifyListeners();
+
+  set setEmail(String val) => {email = val, nL()};
+  set setPassword(String val) => {password = val, nL()};
+  set setFirstName(String val) => {firstName = val, nL()};
+  set setLastName(String val) => {lastName = val, nL()};
+  set setCitizenid(String val) => {citizenid = val, nL()};
+  set setTradername(String val) => {tradername = val, nL()};
+  set setPhoneNumber(String val) => {phone = val, nL()};
+  set setTradertype(String val) => {tradertype = tTrader[val], nL()};
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

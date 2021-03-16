@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
+import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
@@ -63,8 +64,16 @@ class _BodyState extends State<Body> {
           FileProcess fileProcess = FileProcess('setting.json');
           fileProcess.writeData(tokenData);
           _btnController.success();
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => OperationScreen()));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Scaffold(
+                body: StoreNodata(
+                  headText: 'ใกล้สำเร็จแล้ว !',
+                ),
+              ),
+            ),
+          );
         } catch (e) {
           print(e);
         }

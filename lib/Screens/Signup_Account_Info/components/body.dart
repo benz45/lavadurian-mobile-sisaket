@@ -46,20 +46,21 @@ class _BodyState extends State<Body> {
     final storeApi = Provider.of<SettingModel>(context);
     Size size = MediaQuery.of(context).size;
 
-    // print();
-
     // On Event Checkbox && Set Provider tradertype
     void _onChangedCheckbox(_) {
-      !checkboxValue
-          ? storeSignup.tradertype = storeSignup.traderMiddleman
-          : storeSignup.tradertype = storeSignup.traderOwner;
-      setState(() => checkboxValue = !checkboxValue);
+      setState(() {
+        checkboxValue = !checkboxValue;
+        if (checkboxValue)
+          storeSignup.setTradertype = '0';
+        else
+          storeSignup.setTradertype = '1';
+      });
     }
 
     // On Sumit
     Future _onSubmit() async {
       try {
-        bool validate(v) => v == null || v == '' ? false : true;
+        bool validate(v) => v != null || v != '' ? true : false;
 
         if (validate(storeSignup.getFirstName) &&
             validate(storeSignup.getLastName) &&
@@ -166,13 +167,13 @@ class _BodyState extends State<Body> {
                   maskFormatter,
                 ],
               ),
-              RoundedInputField(
-                hintText: "ชื่อร้าน",
-                icon: Icons.shopping_cart_outlined,
-                onChanged: (v) => storeSignup.setTradername = v,
-                textInputAction: TextInputAction.next,
-                inputFormatters: limitingTextInput,
-              ),
+              // RoundedInputField(
+              //   hintText: "ชื่อร้าน",
+              //   icon: Icons.shopping_cart_outlined,
+              //   onChanged: (v) => storeSignup.setTradername = v,
+              //   textInputAction: TextInputAction.next,
+              //   inputFormatters: limitingTextInput,
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -182,7 +183,7 @@ class _BodyState extends State<Body> {
                     onChanged: _onChangedCheckbox,
                     activeColor: kPrimaryColor,
                   ),
-                  Text(storeSignup.traderMiddleman),
+                  Text(storeSignup.tTrader['0']),
                   SizedBox(
                     width: 8.0,
                   ),
@@ -191,7 +192,7 @@ class _BodyState extends State<Body> {
                     onChanged: _onChangedCheckbox,
                     activeColor: kPrimaryColor,
                   ),
-                  Text(storeSignup.traderOwner),
+                  Text(storeSignup.tTrader['1']),
                 ],
               ),
               Padding(
