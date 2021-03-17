@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/constants.dart';

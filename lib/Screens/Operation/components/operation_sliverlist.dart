@@ -16,7 +16,12 @@ class OperationSliverList extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate([
         ListTile(
-          leading: Text('$leading').text.xl.black.semiBold.make(),
+          leading: Text('$leading')
+              .text
+              .xl
+              .color(kTextSecondaryColor)
+              .semiBold
+              .make(),
           trailing: TextButton(
             child: Text('$trailing').text.bold.color(kPrimaryColor).make(),
             onPressed: onPressed,

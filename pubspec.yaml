@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -36,6 +36,8 @@ dependencies:
   animate_do:
   flutter_staggered_grid_view: ^0.3.4
   delayed_display: ^1.1.0
+  salomon_bottom_bar: ^2.0.1
+  modal_bottom_sheet: ^1.0.0
 
 dev_dependencies:
   flutter_test:

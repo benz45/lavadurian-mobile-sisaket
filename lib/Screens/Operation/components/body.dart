@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/Screens/ManageProduct/manage_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
@@ -7,12 +8,14 @@ import 'package:LavaDurian/Screens/Operation/components/operation_card_product.d
 import 'package:LavaDurian/Screens/Operation/components/operation_sliverlist.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 import 'package:velocity_x/velocity_x.dart';
@@ -140,6 +143,7 @@ class _BodyState extends State<Body> {
 
       // Get Store profile after login success
       await _getStoreProfile();
+      print(storeModel.stores);
 
       return userModel.value.toString();
     } else {
@@ -149,6 +153,8 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return FutureBuilder(
       future: _getUserProfile(),
       builder: (context, snapshot) {
@@ -158,14 +164,15 @@ class _BodyState extends State<Body> {
               color: Colors.grey[50],
               child: CustomScrollView(slivers: [
                 OperationAppBar(),
-                OperationSliverList(
-                  leading: 'รายการสั่งซื้อ',
-                  trailing: 'จัดการคำสั่งซื้อ',
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => OrderScreen()));
-                  },
-                ),
+                if (orderModel.orders.length > 0)
+                  OperationSliverList(
+                    leading: 'รายการสั่งซื้อ',
+                    trailing: 'จัดการคำสั่งซื้อ',
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => OrderScreen()));
+                    },
+                  ),
                 SliverPadding(
                   padding: EdgeInsets.only(bottom: 18.0),
                   sliver: SliverList(
@@ -179,20 +186,72 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                 ),
-                OperationSliverList(
-                  leading: 'รายการสินค้า',
-                  trailing: 'จัดการสินค้า',
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ManageProductScreen()));
-                  },
-                ),
+                if (productModel.products.length > 0)
+                  OperationSliverList(
+                    leading: 'รายการสินค้า',
+                    trailing: 'จัดการสินค้า',
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => ManageProductScreen()));
+                    },
+                  ),
                 OperationCardProduct(
                     productModel: productModel,
                     productGene: productGene,
                     productStatus: productStatus),
+                if (productModel.products.length == 0)
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/undraw_add_product.svg",
+                            width: size.width * 0.40,
+                          ),
+                          SizedBox(
+                            height: 16.0,
+                          ),
+                          Center(
+                            child: FlatButton(
+                              height: 40,
+                              color: kPrimaryColor.withOpacity(0.15),
+                              textColor: Colors.white,
+                              padding: EdgeInsets.symmetric(horizontal: 25),
+                              splashColor: kPrimaryColor.withOpacity(0.2),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                "สร้างสินค้าของคุณ",
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                // ignore: todo
+                                // TODO: Navigate to create product screen.
+
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (_) =>
+                                //         CreateProductScreen(storeID: '...'),
+                                //   ),
+                                // );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).padding.top * 1.8,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ]),
             );
           } else {

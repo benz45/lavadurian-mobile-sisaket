@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
             TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
             TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
           }),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.kanit(fontWeight: FontWeight.w400).fontFamily,
