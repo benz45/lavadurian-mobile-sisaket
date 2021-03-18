@@ -143,7 +143,6 @@ class _BodyState extends State<Body> {
 
       // Get Store profile after login success
       await _getStoreProfile();
-      print(storeModel.stores);
 
       return userModel.value.toString();
     } else {
@@ -155,6 +154,8 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    var storeId = Provider.of<StoreModel>(context).stores;
+
     return FutureBuilder(
       future: _getUserProfile(),
       builder: (context, snapshot) {
@@ -165,13 +166,16 @@ class _BodyState extends State<Body> {
               child: CustomScrollView(slivers: [
                 OperationAppBar(),
                 if (orderModel.orders.length > 0)
-                  OperationSliverList(
-                    leading: 'รายการสั่งซื้อ',
-                    trailing: 'จัดการคำสั่งซื้อ',
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => OrderScreen()));
-                    },
+                  SliverPadding(
+                    padding: EdgeInsets.only(top: 18),
+                    sliver: OperationSliverList(
+                      leading: 'รายการสั่งซื้อ',
+                      trailing: 'จัดการคำสั่งซื้อ',
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => OrderScreen()));
+                      },
+                    ),
                   ),
                 SliverPadding(
                   padding: EdgeInsets.only(bottom: 18.0),
@@ -235,13 +239,13 @@ class _BodyState extends State<Body> {
                                 // ignore: todo
                                 // TODO: Navigate to create product screen.
 
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (_) =>
-                                //         CreateProductScreen(storeID: '...'),
-                                //   ),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => CreateProductScreen(
+                                        storeID: storeId[0]['id']),
+                                  ),
+                                );
                               },
                             ),
                           ),

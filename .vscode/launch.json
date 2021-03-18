@@ -45,6 +45,12 @@
             "deviceId": "emulator-5554",
         },
 		{
+			"name": "iPhone-6",
+			"request": "launch",
+			"type": "dart",
+			"deviceId": "B0C2CA02-E635-41C2-93D4-7491DD81952D"
+		},
+		{
 			"name": "iPhone-8",
 			"request": "launch",
 			"type": "dart",
