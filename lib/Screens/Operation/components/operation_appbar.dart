@@ -34,7 +34,7 @@ class _OperationAppBarState extends State<OperationAppBar> {
       automaticallyImplyLeading: false,
       pinned: true,
       title: HeaderTitle(),
-      expandedHeight: 130.0,
+      expandedHeight: 142.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
           padding: EdgeInsets.fromLTRB(0, statusBarHeight, 0, 0),
@@ -43,7 +43,7 @@ class _OperationAppBarState extends State<OperationAppBar> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 32.0),
+                padding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 10),
                 child: Column(
                   children: [
                     Row(
@@ -168,37 +168,6 @@ class _OperationAppBarState extends State<OperationAppBar> {
                                       ],
                                     ),
                                   ),
-                                  // Positioned(
-                                  //   bottom: size.height * 0.05,
-                                  //   child: GestureDetector(
-                                  //     onTap: () {},
-                                  //     child: Center(
-                                  //       child: Row(
-                                  //         crossAxisAlignment:
-                                  //             CrossAxisAlignment.center,
-                                  //         children: [
-                                  //           Icon(
-                                  //             Icons.add_circle_outline_sharp,
-                                  //             color: kPrimaryColor,
-                                  //           ),
-                                  //           SizedBox(
-                                  //             width: 8,
-                                  //           ),
-                                  //           Text(
-                                  //             "สร้างร้านของคุณ",
-                                  //             style: TextStyle(
-                                  //                 color: kPrimaryColor,
-                                  //                 fontSize: Theme.of(context)
-                                  //                     .textTheme
-                                  //                     .subtitle1
-                                  //                     .fontSize,
-                                  //                 fontWeight: FontWeight.bold),
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // )
                                 ],
                               ),
                             );

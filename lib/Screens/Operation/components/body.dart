@@ -5,7 +5,7 @@ import 'package:LavaDurian/Screens/ManageProduct/manage_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_product.dart';
-import 'package:LavaDurian/Screens/Operation/components/operation_sliverlist.dart';
+import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
 import 'package:LavaDurian/constants.dart';
@@ -163,100 +163,167 @@ class _BodyState extends State<Body> {
           if (storeModel.stores.length != 0) {
             return Container(
               color: Colors.grey[50],
-              child: CustomScrollView(slivers: [
-                OperationAppBar(),
-                if (orderModel.orders.length > 0)
-                  SliverPadding(
-                    padding: EdgeInsets.only(top: 18),
-                    sliver: OperationSliverList(
-                      leading: 'รายการสั่งซื้อ',
-                      trailing: 'จัดการคำสั่งซื้อ',
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => OrderScreen()));
-                      },
-                    ),
-                  ),
-                SliverPadding(
-                  padding: EdgeInsets.only(bottom: 18.0),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        return OperationCardOrder(
-                          order: orderModel.orders[index],
-                        ).px32();
-                      },
-                      childCount: orderModel.orders.length,
-                    ),
-                  ),
-                ),
-                if (productModel.products.length > 0)
-                  OperationSliverList(
-                    leading: 'รายการสินค้า',
-                    trailing: 'จัดการสินค้า',
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => ManageProductScreen()));
-                    },
-                  ),
-                OperationCardProduct(
-                    productModel: productModel,
-                    productGene: productGene,
-                    productStatus: productStatus),
-                if (productModel.products.length == 0)
-                  SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/undraw_add_product.svg",
-                            width: size.width * 0.40,
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          ),
-                          Center(
-                            child: FlatButton(
-                              height: 40,
-                              color: kPrimaryColor.withOpacity(0.15),
-                              textColor: Colors.white,
-                              padding: EdgeInsets.symmetric(horizontal: 25),
-                              splashColor: kPrimaryColor.withOpacity(0.2),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Text(
-                                "สร้างสินค้าของคุณ",
-                                style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () {
-                                // ignore: todo
-                                // TODO: Navigate to create product screen.
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => CreateProductScreen(
-                                        storeID: storeId[0]['id']),
+              child: CustomScrollView(
+                  physics: NeverScrollableScrollPhysics(),
+                  primary: true,
+                  slivers: [
+                    OperationAppBar(),
+                    SliverToBoxAdapter(
+                      child: VxSwiper.builder(
+                        itemCount: 4,
+                        height: size.height,
+                        viewportFraction: 1.0,
+                        realPage: 2,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        itemBuilder: (context, index) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                if (orderModel.orders.length > 0)
+                                  OperationList(
+                                    leading: 'รายการสั่งซื้อ',
+                                    trailing: 'จัดการคำสั่งซื้อ',
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => OrderScreen(),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
+                                Container(
+                                  child: ListView.builder(
+                                    padding: EdgeInsets.only(top: 0),
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            32.0, 0.0, 32.0, 8),
+                                        child: OperationCardOrder(
+                                          order: orderModel.orders[index],
+                                        ),
+                                      );
+                                    },
+                                    itemCount: orderModel.orders.length,
+                                  ),
+                                ),
+                                if (productModel.products.length > 0)
+                                  OperationList(
+                                    leading: 'รายการสินค้า',
+                                    trailing: 'จัดการสินค้า',
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => ManageProductScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 32.0),
+                                  child: OperationCardProduct(
+                                      productModel: productModel,
+                                      productGene: productGene,
+                                      productStatus: productStatus),
+                                ),
+                                if (productModel.products.length > 0)
+                                  SizedBox(
+                                    height: size.height * 0.27,
+                                  ),
+                                if (storeModel.stores[0]['status'] == 0)
+                                  Container(
+                                    height: size.height * 0.6,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/undraw_confirmation.svg",
+                                          width: size.width * 0.40,
+                                        ),
+                                        SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            'กำลังรอการ "อนุมัติร้านค้า" จากผู้ดูแลระบบ',
+                                            style: TextStyle(
+                                                color: kTextSecondaryColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                if (productModel.products.length == 0 &&
+                                    storeModel.stores[0]['status'] == 1)
+                                  Container(
+                                    height: size.height * 0.6,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/undraw_add_product.svg",
+                                          width: size.width * 0.40,
+                                        ),
+                                        SizedBox(
+                                          height: 16.0,
+                                        ),
+                                        Center(
+                                          child: FlatButton(
+                                            height: 40,
+                                            color:
+                                                kPrimaryColor.withOpacity(0.15),
+                                            textColor: Colors.white,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 25),
+                                            splashColor:
+                                                kPrimaryColor.withOpacity(0.2),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Text(
+                                              "สร้างสินค้าของคุณ",
+                                              style: TextStyle(
+                                                  color: kPrimaryColor,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            onPressed: () {
+                                              // ignore: todo
+                                              // TODO: Navigate to create product screen.
+
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      CreateProductScreen(
+                                                          storeID: storeId[0]
+                                                              ['id']),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                              ],
                             ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).padding.top * 1.8,
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     ),
-                  ),
-              ]),
+                  ]),
             );
           } else {
             return StoreNodata();
