@@ -1,29 +1,18 @@
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-enum _SelectedTab { home, order, search, store }
-
-class MySalomonBottomBar extends StatefulWidget {
-  @override
-  _MySalomonBottomBar createState() => _MySalomonBottomBar();
-}
-
-class _MySalomonBottomBar extends State<MySalomonBottomBar> {
-  var _selectedTab = _SelectedTab.home;
-
-  void _handleIndexChanged(int i) {
-    setState(() {
-      _selectedTab = _SelectedTab.values[i];
-    });
-  }
-
+class MySalomonBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    BottomBarModel bottomBarModel = Provider.of<BottomBarModel>(context);
+
     return SafeArea(
       child: SalomonBottomBar(
-        currentIndex: _SelectedTab.values.indexOf(_selectedTab),
-        onTap: _handleIndexChanged,
+        currentIndex: bottomBarModel.getCurrentSelectedTab,
+        onTap: bottomBarModel.setSelectedTab,
         items: [
           SalomonBottomBarItem(
             activeIcon: Icon(
