@@ -25,8 +25,7 @@ class MySalomonBottomBar extends StatelessWidget {
             ),
             title: Text(
               "หน้าหลัก",
-              style: TextStyle(
-                  fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
+              style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
             ),
             selectedColor: kPrimaryColor,
           ),
@@ -41,8 +40,7 @@ class MySalomonBottomBar extends StatelessWidget {
             ),
             title: Text(
               "รายการสั่งซื้อ",
-              style: TextStyle(
-                  fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
+              style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
             ),
             selectedColor: kPrimaryColor,
           ),
@@ -57,8 +55,7 @@ class MySalomonBottomBar extends StatelessWidget {
             ),
             title: Text(
               "สินค้า",
-              style: TextStyle(
-                  fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
+              style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
             ),
             selectedColor: kPrimaryColor,
           ),
@@ -73,8 +70,7 @@ class MySalomonBottomBar extends StatelessWidget {
             ),
             title: Text(
               "ร้านค้า",
-              style: TextStyle(
-                  fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
+              style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
             ),
             selectedColor: kPrimaryColor,
           ),

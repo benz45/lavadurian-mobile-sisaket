@@ -1,25 +1,29 @@
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_options.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 
 enum _SelectedTab { home, order, product, store }
 
 class BottomBarModel with ChangeNotifier {
   _SelectedTab _selectedTab = _SelectedTab.home;
-  SwiperController _controller = SwiperController();
+  CarouselController buttonCarouselController = CarouselController();
 
   // Getther
-  get getSelectedTab => _controller.index;
-  get getController => _controller;
+  get getController => buttonCarouselController;
   get getCurrentSelectedTab => _SelectedTab.values.indexOf(_selectedTab);
 
   // Setther
-  void setSelectedTab(int v) {
-    _controller.move(v);
+  void setSelectedTab(int index) {
+    buttonCarouselController.animateToPage(
+      index,
+      duration: Duration(milliseconds: 800),
+      curve: Curves.fastOutSlowIn,
+    );
     notifyListeners();
   }
 
-  void setSelectedTabFromSwipper(int v) {
-    _selectedTab = _SelectedTab.values[v];
+  void setSelectedTabFromSlider(int index, CarouselPageChangedReason reason) {
+    _selectedTab = _SelectedTab.values[index];
     notifyListeners();
   }
 }

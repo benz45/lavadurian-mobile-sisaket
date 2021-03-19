@@ -38,7 +38,7 @@ dependencies:
   delayed_display: ^1.1.0
   salomon_bottom_bar: ^2.0.1
   modal_bottom_sheet: ^1.0.0
-  flutter_swiper: ^1.1.6
+  carousel_slider: ^3.0.0
 
 dev_dependencies:
   flutter_test:
