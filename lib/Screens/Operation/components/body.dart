@@ -57,8 +57,12 @@ class _BodyState extends State<Body> {
   // Set data to state.
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
-    final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
-        headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
+    final response = await Http.get(
+        '${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Token $token"
+        });
 
     var jsonData = json.decode(utf8.decode(response.bodyBytes));
 
@@ -118,8 +122,12 @@ class _BodyState extends State<Body> {
 
     // Get only one time after login
     if (userModel.value.isEmpty) {
-      final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointUserProfile}',
-          headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
+      final response = await Http.get(
+          '${settingModel.baseURL}/${settingModel.endPointUserProfile}',
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            HttpHeaders.authorizationHeader: "Token $token"
+          });
 
       var jsonData = json.decode(utf8.decode(response.bodyBytes));
 
@@ -172,34 +180,49 @@ class _BodyState extends State<Body> {
                             initialPage: 0,
                             height: size.height,
                             enlargeCenterPage: true,
-                            onPageChanged: bottomBarModel.setSelectedTabFromSlider),
-                        items: [1, 2, 3, 4].map(
-                          (i) {
-                            return Builder(builder: (context) {
-                              return SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    if (storeModel.stores[0]['status'] == 0)
-                                      StoreWaitApproval()
-                                    else
-                                      Column(
-                                        children: [
-                                          if (productModel.products.length == 0) StoreApproval(storeId: storeId),
-                                          // Check item order and current page.
-
-                                          if (orderModel.orders.length > 0 && i == 1 || i == 2) OperationOrderList(orderModel: orderModel),
-                                          // Check item order and current page.
-
-                                          if (productModel.products.length > 0 && i == 1 || i == 3)
-                                            OperationProductList(productModel: productModel, productGene: productGene, productStatus: productStatus),
-                                        ],
-                                      ),
-                                  ],
-                                ),
-                              );
-                            });
-                          },
-                        ).toList(),
+                            onPageChanged:
+                                bottomBarModel.setSelectedTabFromSlider),
+                        items: [
+                          // Home Page
+                          HOCpage(
+                            widget: [
+                              if (productModel.products.length == 0)
+                                StoreApproval(storeId: storeId),
+                              if (orderModel.orders.length > 0)
+                                OperationOrderList(orderModel: orderModel),
+                              if (productModel.products.length > 0)
+                                OperationProductList(
+                                    productModel: productModel,
+                                    productGene: productGene,
+                                    productStatus: productStatus)
+                            ],
+                          ),
+                          // Orders Page
+                          HOCpage(
+                            widget: [
+                              if (orderModel.orders.length > 0)
+                                OperationOrderList(orderModel: orderModel),
+                            ],
+                          ),
+                          // Products Page
+                          HOCpage(
+                            widget: [
+                              if (productModel.products.length > 0)
+                                OperationProductList(
+                                    productModel: productModel,
+                                    productGene: productGene,
+                                    productStatus: productStatus)
+                            ],
+                          ),
+                          // Store Page
+                          HOCpage(
+                            widget: [
+                              Center(
+                                child: Text('Store Coming soon...'),
+                              )
+                            ],
+                          ),
+                        ].toList(),
                       ),
                     ),
                   ),
@@ -220,6 +243,20 @@ class _BodyState extends State<Body> {
           );
         }
       },
+    );
+  }
+}
+
+// Higher order components
+class HOCpage extends StatelessWidget {
+  final List<Widget> widget;
+  HOCpage({Key key, this.widget}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: widget,
+      ),
     );
   }
 }
@@ -300,7 +337,10 @@ class OperationProductList extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 32.0),
-          child: OperationCardProduct(productModel: productModel, productGene: productGene, productStatus: productStatus),
+          child: OperationCardProduct(
+              productModel: productModel,
+              productGene: productGene,
+              productStatus: productStatus),
         ),
         SizedBox(
           height: size.height * 0.37,
@@ -342,10 +382,12 @@ class StoreApproval extends StatelessWidget {
               textColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 25),
               splashColor: kPrimaryColor.withOpacity(0.2),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
               child: Text(
                 "สร้างสินค้าของคุณ",
-                style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    color: kPrimaryColor, fontWeight: FontWeight.bold),
               ),
               onPressed: () {
                 // ignore: todo
@@ -392,7 +434,8 @@ class StoreWaitApproval extends StatelessWidget {
           Center(
             child: Text(
               'กำลังรอการ "อนุมัติร้านค้า" จากผู้ดูแลระบบ',
-              style: TextStyle(color: kTextSecondaryColor, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: kTextSecondaryColor, fontWeight: FontWeight.bold),
             ),
           ),
         ],
