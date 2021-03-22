@@ -30,10 +30,11 @@ class _SplashPageState extends State<SplashPage> {
       );
     } else {
       settingModel.value = jsonDecode(setting);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => OperationScreen()),
-      );
+
+      // Clear Navigate route
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => OperationScreen()),
+          (Route<dynamic> route) => false);
     }
   }
 

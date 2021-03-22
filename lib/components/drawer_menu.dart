@@ -23,13 +23,17 @@ class _NavDrawerState extends State<NavDrawer> {
   @override
   Widget build(BuildContext context) {
     final storeUser = Provider.of<UserModel>(context);
+
     Future<void> _logout() async {
       FileProcess fileProcess = FileProcess('setting.json');
       try {
         storeUser.clear();
         fileProcess.writeData('{}');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
+
+        // Clear Navigate route
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => WelcomeScreen()),
+            (Route<dynamic> route) => false);
       } catch (e) {
         print(e);
       }

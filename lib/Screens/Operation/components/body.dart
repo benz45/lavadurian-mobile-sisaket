@@ -170,62 +170,69 @@ class _BodyState extends State<Body> {
                 primary: true,
                 slivers: [
                   OperationAppBar(),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      height: size.height,
-                      child: CarouselSlider(
-                        carouselController: bottomBarModel.getController,
-                        options: CarouselOptions(
-                            viewportFraction: 1.0,
-                            initialPage: 0,
-                            height: size.height,
-                            enlargeCenterPage: true,
-                            onPageChanged:
-                                bottomBarModel.setSelectedTabFromSlider),
-                        items: [
-                          // Home Page
-                          HOCpage(
-                            widget: [
-                              if (productModel.products.length == 0)
-                                StoreApproval(storeId: storeId),
-                              if (orderModel.orders.length > 0)
-                                OperationOrderList(orderModel: orderModel),
-                              if (productModel.products.length > 0)
-                                OperationProductList(
-                                    productModel: productModel,
-                                    productGene: productGene,
-                                    productStatus: productStatus)
-                            ],
-                          ),
-                          // Orders Page
-                          HOCpage(
-                            widget: [
-                              if (orderModel.orders.length > 0)
-                                OperationOrderList(orderModel: orderModel),
-                            ],
-                          ),
-                          // Products Page
-                          HOCpage(
-                            widget: [
-                              if (productModel.products.length > 0)
-                                OperationProductList(
-                                    productModel: productModel,
-                                    productGene: productGene,
-                                    productStatus: productStatus)
-                            ],
-                          ),
-                          // Store Page
-                          HOCpage(
-                            widget: [
-                              Center(
-                                child: Text('Store Coming soon...'),
-                              )
-                            ],
-                          ),
-                        ].toList(),
-                      ),
+                  if (storeModel.stores[0]['status'] == 0)
+                    SliverToBoxAdapter(
+                      child: StoreWaitApproval(),
                     ),
-                  ),
+                  if (storeModel.stores[0]['status'] == 1)
+                    Builder(builder: (context) {
+                      return SliverToBoxAdapter(
+                        child: Container(
+                          height: size.height,
+                          child: CarouselSlider(
+                            carouselController: bottomBarModel.getController,
+                            options: CarouselOptions(
+                                viewportFraction: 1.0,
+                                initialPage: 0,
+                                height: size.height,
+                                enlargeCenterPage: true,
+                                onPageChanged:
+                                    bottomBarModel.setSelectedTabFromSlider),
+                            items: [
+                              // Home Page
+                              HOCpage(
+                                widget: [
+                                  if (productModel.products.length == 0)
+                                    StoreApproval(storeId: storeId),
+                                  if (orderModel.orders.length > 0)
+                                    OperationOrderList(orderModel: orderModel),
+                                  if (productModel.products.length > 0)
+                                    OperationProductList(
+                                        productModel: productModel,
+                                        productGene: productGene,
+                                        productStatus: productStatus)
+                                ],
+                              ),
+                              // Orders Page
+                              HOCpage(
+                                widget: [
+                                  if (orderModel.orders.length > 0)
+                                    OperationOrderList(orderModel: orderModel),
+                                ],
+                              ),
+                              // Products Page
+                              HOCpage(
+                                widget: [
+                                  if (productModel.products.length > 0)
+                                    OperationProductList(
+                                        productModel: productModel,
+                                        productGene: productGene,
+                                        productStatus: productStatus)
+                                ],
+                              ),
+                              // Store Page
+                              HOCpage(
+                                widget: [
+                                  Center(
+                                    child: Text('Store Coming soon...'),
+                                  )
+                                ],
+                              ),
+                            ].toList(),
+                          ),
+                        ),
+                      );
+                    })
                 ],
               ),
             );

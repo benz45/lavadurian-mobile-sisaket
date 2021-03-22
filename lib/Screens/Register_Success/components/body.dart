@@ -68,7 +68,7 @@ class _BodyState extends State<Body> {
             MaterialPageRoute(
               builder: (context) => Scaffold(
                 body: StoreNodata(
-                  headText: 'ใกล้สำเร็จแล้ว !',
+                  headText: 'ยินดีต้อนรับเข้าสู่ระบบ !',
                 ),
               ),
             ),
@@ -111,7 +111,7 @@ class _BodyState extends State<Body> {
           SizedBox(height: size.height * 0.03),
           SvgPicture.asset(
             "assets/icons/undraw_order_confirmed_aaw7.svg",
-            height: size.height * 0.30,
+            width: size.width * 0.6,
           ),
           SizedBox(height: size.height * 0.03),
           Text(

@@ -16,18 +16,18 @@ class StoreNodata extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Center(
       child: Container(
-        height: size.height / 1.8,
+        height: size.height / 2.2,
         child: Column(
           children: [
             DelayedDisplay(
               delay: Duration(seconds: 1),
               child: SvgPicture.asset(
                 "assets/icons/undraw_add_to_cart_vkjp.svg",
-                height: size.height * 0.30,
+                width: size.width * 0.60,
               ),
             ),
             SizedBox(
-              height: 16,
+              height: 26,
             ),
             DelayedDisplay(
               delay: Duration(milliseconds: 1400),
