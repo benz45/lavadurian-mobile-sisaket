@@ -22,12 +22,10 @@ class _NavDrawerState extends State<NavDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    final storeUser = Provider.of<UserModel>(context);
-
     Future<void> _logout() async {
       FileProcess fileProcess = FileProcess('setting.json');
       try {
-        storeUser.clear();
+        userModel.clear();
         fileProcess.writeData('{}');
 
         // Clear Navigate route
