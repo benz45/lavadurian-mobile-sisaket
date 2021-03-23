@@ -156,7 +156,7 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
 
     BottomBarModel bottomBarModel = Provider.of<BottomBarModel>(context);
-    var storeId = Provider.of<StoreModel>(context).stores;
+    StoreModel store = Provider.of<StoreModel>(context);
 
     return FutureBuilder(
       future: _getUserProfile(),
@@ -170,11 +170,11 @@ class _BodyState extends State<Body> {
                 primary: true,
                 slivers: [
                   OperationAppBar(),
-                  if (storeModel.stores[0]['status'] == 0)
+                  if (storeModel.getCurrentStoreStatus == 0)
                     SliverToBoxAdapter(
                       child: StoreWaitApproval(),
                     ),
-                  if (storeModel.stores[0]['status'] == 1)
+                  if (storeModel.getCurrentStoreStatus == 1)
                     Builder(builder: (context) {
                       return SliverToBoxAdapter(
                         child: Container(
@@ -193,7 +193,7 @@ class _BodyState extends State<Body> {
                               HOCpage(
                                 widget: [
                                   if (productModel.products.length == 0)
-                                    StoreApproval(storeId: storeId),
+                                    StoreApproval(storeId: store.stores),
                                   if (orderModel.orders.length > 0)
                                     OperationOrderList(orderModel: orderModel),
                                   if (productModel.products.length > 0)

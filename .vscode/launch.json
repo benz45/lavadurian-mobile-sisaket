@@ -47,7 +47,6 @@
 		{
 			"name": "iPhone-6",
 			"request": "launch",
-            "showMemoryUsage": true,
 			"type": "dart",
 			"deviceId": "B0C2CA02-E635-41C2-93D4-7491DD81952D"
 		},

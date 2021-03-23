@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class StoreModel extends ChangeNotifier {
+  // Current store
+  int _currentStore = 1;
+
   Map<String, dynamic> _district = {
     '1': 'กันทรลักษณ์',
     '2': 'ขุนหาญ',
@@ -11,6 +14,29 @@ class StoreModel extends ChangeNotifier {
 
   List<Map<String, dynamic>> get stores => _stores;
   Map<String, dynamic> get district => _district;
+
+  int get getCurrentIdStore => _currentStore;
+
+  _filterCurrentStore() {
+    List<Map> res = _stores.where((i) => i['id'] == _currentStore).toList();
+    return res.length != 0 ? res : [];
+  }
+
+  List get getCurrentStore {
+    List res = _filterCurrentStore();
+    return res;
+  }
+
+  // Get status current store.
+  get getCurrentStoreStatus {
+    final res = _filterCurrentStore();
+    return res[0]['status'];
+  }
+
+  set setCurrentStore(v) {
+    _currentStore = v;
+    notifyListeners();
+  }
 
   set stores(List<Map<String, dynamic>> stores) {
     _stores = stores;

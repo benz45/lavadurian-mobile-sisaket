@@ -23,7 +23,6 @@ class _OperationScreenState extends State<OperationScreen> {
       providers: [
         ChangeNotifierProvider<BottomBarModel>(create: (_) => BottomBarModel()),
         ChangeNotifierProvider<UserModel>(create: (_) => UserModel()),
-        ChangeNotifierProvider<ProductModel>(create: (_) => ProductModel()),
         ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
         ChangeNotifierProvider<ItemModel>(create: (_) => ItemModel()),
       ],
