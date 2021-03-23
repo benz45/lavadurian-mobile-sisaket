@@ -63,16 +63,16 @@ class _BodyState extends State<Body> {
           FileProcess fileProcess = FileProcess('setting.json');
           fileProcess.writeData(tokenData);
           _btnController.success();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(
-                body: StoreNodata(
-                  headText: 'ยินดีต้อนรับเข้าสู่ระบบ !',
+          // Clear Navigate route
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => Scaffold(
+                  body: StoreNodata(
+                    headText: 'ยินดีต้อนรับเข้าสู่ระบบ !',
+                  ),
                 ),
               ),
-            ),
-          );
+              (Route<dynamic> route) => false);
         } catch (e) {
           print(e);
         }

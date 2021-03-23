@@ -22,34 +22,33 @@ class _OperationScreenState extends State<OperationScreen> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<BottomBarModel>(create: (_) => BottomBarModel()),
-        ChangeNotifierProvider<UserModel>(create: (_) => UserModel()),
-        ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
         ChangeNotifierProvider<ItemModel>(create: (_) => ItemModel()),
       ],
       child: Scaffold(
-          key: GlobalKey(), // assign key to Scaffold
-          endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
-          drawer: NavDrawer(),
-          body: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Body(),
-              Positioned(
-                child: Container(
-                  height: 80,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.white.withOpacity(0.0), Colors.white],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
+        key: GlobalKey(), // assign key to Scaffold
+        endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
+        drawer: NavDrawer(),
+        body: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Body(),
+            Positioned(
+              child: Container(
+                height: 80,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.white.withOpacity(0.0), Colors.white],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                 ),
-              )
-            ],
-          ),
-          bottomNavigationBar: MySalomonBottomBar()),
+              ),
+            )
+          ],
+        ),
+        bottomNavigationBar: MySalomonBottomBar(),
+      ),
     );
   }
 }

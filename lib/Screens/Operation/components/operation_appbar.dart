@@ -24,8 +24,8 @@ class _OperationAppBarState extends State<OperationAppBar> {
     StoreModel storeModel = Provider.of<StoreModel>(context);
     final currentStore = storeModel.getCurrentStore;
     Size size = MediaQuery.of(context).size;
-
     storeID = storeModel.getCurrentIdStore;
+
     return SliverAppBar(
       shadowColor: Colors.grey[50].withOpacity(0.5),
       backgroundColor: Colors.grey[50],
@@ -80,8 +80,9 @@ class _OperationAppBarState extends State<OperationAppBar> {
                               builder: (context, constaints) {
                                 // Build the textspan
                                 final text = TextSpan(
-                                  text: '${currentStore[0]['name']}'
-                                      .replaceAll("", "\u{200B}"),
+                                  text:
+                                      '${currentStore.length != 0 || currentStore != null ? currentStore[0]['name'] : ''}'
+                                          .replaceAll("", "\u{200B}"),
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: kTextPrimaryColor,

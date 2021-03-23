@@ -21,6 +21,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Body extends StatefulWidget {
   @override
   _BodyState createState() => _BodyState();
@@ -73,6 +75,18 @@ class _BodyState extends State<Body> {
         Map<String, dynamic> map = store;
         storeList.add(map);
       }
+
+      // Set persistent storage initial id store
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String currentStoreById = 'USERID_${userModel.value['id']}_CURRENT_STORE';
+
+      if (prefs.getInt(currentStoreById) != null) {
+        storeModel.setCurrentStore = prefs.getInt(currentStoreById);
+      } else {
+        prefs.setInt(currentStoreById, storeList.first['id']);
+      }
+
+      // Set store list
       storeModel.stores = storeList;
     }
 
@@ -163,79 +177,86 @@ class _BodyState extends State<Body> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (storeModel.stores.length != 0) {
-            return Container(
-              color: Colors.grey[50],
-              child: CustomScrollView(
-                physics: NeverScrollableScrollPhysics(),
-                primary: true,
-                slivers: [
-                  OperationAppBar(),
-                  if (storeModel.getCurrentStoreStatus == 0)
-                    SliverToBoxAdapter(
-                      child: StoreWaitApproval(),
-                    ),
-                  if (storeModel.getCurrentStoreStatus == 1)
-                    Builder(builder: (context) {
-                      return SliverToBoxAdapter(
-                        child: Container(
-                          height: size.height,
-                          child: CarouselSlider(
-                            carouselController: bottomBarModel.getController,
-                            options: CarouselOptions(
-                                viewportFraction: 1.0,
-                                initialPage: 0,
-                                height: size.height,
-                                enlargeCenterPage: true,
-                                onPageChanged:
-                                    bottomBarModel.setSelectedTabFromSlider),
-                            items: [
-                              // Home Page
-                              HOCpage(
-                                widget: [
-                                  if (productModel.products.length == 0)
-                                    StoreApproval(storeId: store.stores),
-                                  if (orderModel.orders.length > 0)
-                                    OperationOrderList(orderModel: orderModel),
-                                  if (productModel.products.length > 0)
-                                    OperationProductList(
-                                        productModel: productModel,
-                                        productGene: productGene,
-                                        productStatus: productStatus)
-                                ],
-                              ),
-                              // Orders Page
-                              HOCpage(
-                                widget: [
-                                  if (orderModel.orders.length > 0)
-                                    OperationOrderList(orderModel: orderModel),
-                                ],
-                              ),
-                              // Products Page
-                              HOCpage(
-                                widget: [
-                                  if (productModel.products.length > 0)
-                                    OperationProductList(
-                                        productModel: productModel,
-                                        productGene: productGene,
-                                        productStatus: productStatus)
-                                ],
-                              ),
-                              // Store Page
-                              HOCpage(
-                                widget: [
-                                  Center(
-                                    child: Text('Store Coming soon...'),
-                                  )
-                                ],
-                              ),
-                            ].toList(),
+            if (storeModel.getCurrentIdStore != null) {
+              return Container(
+                color: Colors.grey[50],
+                child: CustomScrollView(
+                  physics: NeverScrollableScrollPhysics(),
+                  primary: true,
+                  slivers: [
+                    if (storeModel.getCurrentStore.length != 0)
+                      OperationAppBar(),
+                    if (storeModel.getCurrentStoreStatus == 0)
+                      SliverToBoxAdapter(
+                        child: StoreWaitApproval(),
+                      ),
+                    if (storeModel.getCurrentStoreStatus == 1)
+                      Builder(builder: (context) {
+                        return SliverToBoxAdapter(
+                          child: Container(
+                            height: size.height,
+                            child: CarouselSlider(
+                              carouselController: bottomBarModel.getController,
+                              options: CarouselOptions(
+                                  viewportFraction: 1.0,
+                                  initialPage: 0,
+                                  height: size.height,
+                                  enlargeCenterPage: true,
+                                  onPageChanged:
+                                      bottomBarModel.setSelectedTabFromSlider),
+                              items: [
+                                // Home Page
+                                HOCpage(
+                                  widget: [
+                                    if (productModel.products.length == 0)
+                                      StoreApproval(storeId: store.stores),
+                                    if (orderModel.orders.length > 0)
+                                      OperationOrderList(
+                                          orderModel: orderModel),
+                                    if (productModel.products.length > 0)
+                                      OperationProductList(
+                                          productModel: productModel,
+                                          productGene: productGene,
+                                          productStatus: productStatus)
+                                  ],
+                                ),
+                                // Orders Page
+                                HOCpage(
+                                  widget: [
+                                    if (orderModel.orders.length > 0)
+                                      OperationOrderList(
+                                          orderModel: orderModel),
+                                  ],
+                                ),
+                                // Products Page
+                                HOCpage(
+                                  widget: [
+                                    if (productModel.products.length > 0)
+                                      OperationProductList(
+                                          productModel: productModel,
+                                          productGene: productGene,
+                                          productStatus: productStatus)
+                                  ],
+                                ),
+                                // Store Page
+                                HOCpage(
+                                  widget: [
+                                    Center(
+                                      child: Text('Store Coming soon...'),
+                                    )
+                                  ],
+                                ),
+                              ].toList(),
+                            ),
                           ),
-                        ),
-                      );
-                    })
-                ],
-              ),
-            );
+                        );
+                      })
+                  ],
+                ),
+              );
+            } else {
+              return Container();
+            }
           } else {
             return StoreNodata();
           }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class StoreModel extends ChangeNotifier {
   // Current store
-  int _currentStore = 1;
+  int _currentStore;
 
   Map<String, dynamic> _district = {
     '1': 'กันทรลักษณ์',
@@ -15,11 +15,17 @@ class StoreModel extends ChangeNotifier {
   List<Map<String, dynamic>> get stores => _stores;
   Map<String, dynamic> get district => _district;
 
-  int get getCurrentIdStore => _currentStore;
+  get getCurrentIdStore {
+    if (_currentStore != null) {
+      return _currentStore;
+    }
+  }
 
   _filterCurrentStore() {
-    List<Map> res = _stores.where((i) => i['id'] == _currentStore).toList();
-    return res.length != 0 ? res : [];
+    if (_currentStore != null) {
+      List<Map> res = _stores.where((i) => i['id'] == _currentStore).toList();
+      return res.length != 0 ? res : [];
+    }
   }
 
   List get getCurrentStore {
@@ -29,8 +35,8 @@ class StoreModel extends ChangeNotifier {
 
   // Get status current store.
   get getCurrentStoreStatus {
-    final res = _filterCurrentStore();
-    return res[0]['status'];
+    List res = _filterCurrentStore();
+    return res.length != 0 ? res[0]['status'] : [];
   }
 
   set setCurrentStore(v) {
@@ -45,6 +51,7 @@ class StoreModel extends ChangeNotifier {
 
   void clear() {
     _stores.clear();
+    _currentStore = null;
     notifyListeners();
   }
 }

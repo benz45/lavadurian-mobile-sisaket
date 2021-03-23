@@ -6,7 +6,10 @@ class UserModel extends ChangeNotifier {
   Map<String, dynamic> get value => _value;
 
   // Clear State
-  void clear() => {_value.clear(), notifyListeners()};
+  void clear() {
+    _value.clear();
+    notifyListeners();
+  }
 
   set value(Map<String, dynamic> value) {
     _value = value;

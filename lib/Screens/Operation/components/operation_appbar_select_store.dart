@@ -1,8 +1,10 @@
 import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OperationAppBarSelectStore extends StatelessWidget {
   const OperationAppBarSelectStore({
@@ -12,8 +14,8 @@ class OperationAppBarSelectStore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     StoreModel storeModel = Provider.of<StoreModel>(context);
+    final userModel = Provider.of<UserModel>(context, listen: false);
     final currentIdStore = storeModel.getCurrentIdStore;
-
     return Expanded(
       child: ListView.builder(
         itemCount: storeModel.stores.length,
@@ -42,7 +44,11 @@ class OperationAppBarSelectStore extends StatelessWidget {
                 );
               },
             ),
-            onChanged: (value) {
+            onChanged: (value) async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              String currentStoreById =
+                  'USERID_${userModel.value['id']}_CURRENT_STORE';
+              prefs.setInt(currentStoreById, value);
               storeModel.setCurrentStore = value;
             },
             activeColor: kPrimaryColor,
