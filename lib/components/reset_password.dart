@@ -16,13 +16,13 @@ class ResetPasswordCheck extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          'Forgot Password ? ',
+          'ลืมรหัสผ่าน ? ',
           style: TextStyle(color: kPrimaryColor),
         ),
         GestureDetector(
           onTap: press,
           child: Text(
-            'Reset Password',
+            'รีเซ็ตรหัสผ่าน',
             style: TextStyle(
               color: kPrimaryColor,
               fontWeight: FontWeight.bold,

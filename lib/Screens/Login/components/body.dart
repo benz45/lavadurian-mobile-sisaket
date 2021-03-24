@@ -69,9 +69,9 @@ class _BodyState extends State<Body> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Can not login !!'),
-            content:
-                Text("Invalid Username or Password !, Please login again."),
+            title: Text('เข้าสู่ระบบไม่สำเร็จ !!'),
+            content: Text(
+                "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องโปรดเข้าสู่ระบบอีกครั้ง."),
           );
         },
       );
@@ -89,7 +89,7 @@ class _BodyState extends State<Body> {
     // Login Button
     final loginButton = RoundedLoadingButton(
       child: Text(
-        "LOGIN",
+        "เข้าสู่ระบบ",
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white),
       ),
@@ -111,18 +111,14 @@ class _BodyState extends State<Body> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "LOGIN",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
             SizedBox(height: size.height * 0.03),
             SvgPicture.asset(
-              "assets/icons/login.svg",
-              height: size.height * 0.35,
+              "assets/icons/logo_lava_durian_sisaket_top.svg",
+              width: size.width * 0.80,
             ),
             SizedBox(height: size.height * 0.03),
             RoundedInputField(
-              hintText: "Your Email",
+              hintText: "ชื่อบัญชี/อีเมล",
               icon: Icons.person,
               onChanged: (value) {
                 email = value;
