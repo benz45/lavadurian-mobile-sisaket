@@ -83,14 +83,31 @@ class _BodyCreateState extends State<BodyCreate> {
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
-      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      var jsonData = jsonDecode(response.body);
       if (jsonData['status'] == true) {
-        var stores = storeModel.stores;
-        stores.add(jsonData['data']['store']);
-        // update state
-        storeModel.stores = stores;
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => OperationScreen()));
+        // Convert data type from response api.
+        Map<String, dynamic> toMap() => {
+              "id": jsonData["data"]["store"]["id"],
+              "owner": jsonData["data"]["store"]["owner"],
+              "name": jsonData["data"]["store"]["name"],
+              "slogan": jsonData["data"]["store"]["slogan"],
+              "about": jsonData["data"]["store"]["about"],
+              "phone1": jsonData["data"]["store"]["phone1"],
+              "phone2": jsonData["data"]["store"]["phone2"],
+              "district": jsonData["data"]["store"]["district"],
+              "status": int.parse(jsonData["data"]["store"]["status"]),
+            };
+
+        storeModel.addStore = toMap();
+
+        // Clear Navigate route
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => Scaffold(
+                body: OperationScreen(),
+              ),
+            ),
+            (Route<dynamic> route) => false);
       } else {
         showSnackBar(context, "เกิดข้อผิดพลาดไม่สามารถสร้างร้านค้าได้");
       }

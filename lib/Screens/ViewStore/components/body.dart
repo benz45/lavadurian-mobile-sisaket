@@ -32,11 +32,11 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    if (storeModel.stores.length != 0) {
-      int index = storeModel.stores
+    if (storeModel.getStores.length != 0) {
+      int index = storeModel.getStores
           .indexWhere((element) => element['id'] == widget.storeID);
 
-      store = storeModel.stores[index];
+      store = storeModel.getStores[index];
       for (var product in productModel.products) {
         if (product['store'] == widget.storeID) {
           products.add(product);

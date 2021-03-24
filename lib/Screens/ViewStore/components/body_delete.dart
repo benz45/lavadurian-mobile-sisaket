@@ -26,7 +26,7 @@ class _BodyDeleteState extends State<BodyDelete> {
       new RoundedLoadingButtonController();
 
   Future<String> _deleteStore() async {
-    List<Map<String, dynamic>> stores = storeModel.stores;
+    List<Map<String, dynamic>> stores = storeModel.getStores;
     int index = stores.indexWhere((element) => element['id'] == storeID);
     Map<String, dynamic> store = stores[index];
 
@@ -47,8 +47,9 @@ class _BodyDeleteState extends State<BodyDelete> {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status'] == true) {
         stores.removeWhere((element) => element['id'] == store['id']);
+        storeModel.onRemoveCurrentStore(id: storeID);
         // update state
-        storeModel.stores = stores;
+        storeModel.setStores = stores;
         return "success";
       } else {
         return "fail";

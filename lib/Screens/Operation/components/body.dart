@@ -81,13 +81,15 @@ class _BodyState extends State<Body> {
       String currentStoreById = 'USERID_${userModel.value['id']}_CURRENT_STORE';
 
       if (prefs.getInt(currentStoreById) != null) {
-        storeModel.setCurrentStore = prefs.getInt(currentStoreById);
+        storeModel.setCurrentStore(
+            value: prefs.getInt(currentStoreById), user: currentStoreById);
       } else {
         prefs.setInt(currentStoreById, storeList.first['id']);
+        storeModel.setCurrentStore(value: storeList.first['id']);
       }
 
       // Set store list
-      storeModel.stores = storeList;
+      storeModel.setStores = storeList;
     }
 
     // Set data to products model
@@ -167,97 +169,17 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    BottomBarModel bottomBarModel = Provider.of<BottomBarModel>(context);
     StoreModel store = Provider.of<StoreModel>(context);
 
     return FutureBuilder(
       future: _getUserProfile(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          if (storeModel.stores.length != 0) {
-            if (storeModel.getCurrentIdStore != null) {
-              return Container(
-                color: Colors.grey[50],
-                child: CustomScrollView(
-                  physics: NeverScrollableScrollPhysics(),
-                  primary: true,
-                  slivers: [
-                    if (storeModel.getCurrentStore.length != 0)
-                      OperationAppBar(),
-                    if (storeModel.getCurrentStoreStatus == 0)
-                      SliverToBoxAdapter(
-                        child: StoreWaitApproval(),
-                      ),
-                    if (storeModel.getCurrentStoreStatus == 1)
-                      Builder(builder: (context) {
-                        return SliverToBoxAdapter(
-                          child: Container(
-                            height: size.height,
-                            child: CarouselSlider(
-                              carouselController: bottomBarModel.getController,
-                              options: CarouselOptions(
-                                  viewportFraction: 1.0,
-                                  initialPage: 0,
-                                  height: size.height,
-                                  enlargeCenterPage: true,
-                                  onPageChanged:
-                                      bottomBarModel.setSelectedTabFromSlider),
-                              items: [
-                                // Home Page
-                                HOCpage(
-                                  widget: [
-                                    if (productModel.products.length == 0)
-                                      StoreApproval(storeId: store.stores),
-                                    if (orderModel.orders.length > 0)
-                                      OperationOrderList(
-                                          orderModel: orderModel),
-                                    if (productModel.products.length > 0)
-                                      OperationProductList(
-                                          productModel: productModel,
-                                          productGene: productGene,
-                                          productStatus: productStatus)
-                                  ],
-                                ),
-                                // Orders Page
-                                HOCpage(
-                                  widget: [
-                                    if (orderModel.orders.length > 0)
-                                      OperationOrderList(
-                                          orderModel: orderModel),
-                                  ],
-                                ),
-                                // Products Page
-                                HOCpage(
-                                  widget: [
-                                    if (productModel.products.length > 0)
-                                      OperationProductList(
-                                          productModel: productModel,
-                                          productGene: productGene,
-                                          productStatus: productStatus)
-                                  ],
-                                ),
-                                // Store Page
-                                HOCpage(
-                                  widget: [
-                                    Center(
-                                      child: Text('Store Coming soon...'),
-                                    )
-                                  ],
-                                ),
-                              ].toList(),
-                            ),
-                          ),
-                        );
-                      })
-                  ],
-                ),
-              );
-            } else {
-              return Container();
-            }
+          if (store.getCurrentIdStore != null && store.getStores.length != 0) {
+            // Screen for user have store data.
+            return ContainerStore();
           } else {
+            // Screen for user not yet store data.
             return StoreNodata();
           }
         } else {
@@ -275,15 +197,118 @@ class _BodyState extends State<Body> {
   }
 }
 
-// Higher order components
-class HOCpage extends StatelessWidget {
-  final List<Widget> widget;
-  HOCpage({Key key, this.widget}) : super(key: key);
+class ContainerStore extends StatelessWidget {
+  const ContainerStore({
+    Key key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: widget,
+    // Size for custom screen.
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      color: Colors.grey[50],
+      child: CustomScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        primary: true,
+        slivers: [
+          //! Operation App Bar
+          OperationAppBar(),
+
+          //! Screen store approval success from admin.
+          Consumer<StoreModel>(
+            builder: (_, store, child) {
+              if (store.getCurrentStoreStatus == 1) {
+                return SliverToBoxAdapter(
+                  child: Container(
+                    height: size.height,
+                    child: Consumer<BottomBarModel>(
+                      builder: (_, bottomBarModel, c) {
+                        return CarouselSlider(
+                          carouselController: bottomBarModel.getController,
+                          options: CarouselOptions(
+                              viewportFraction: 1.0,
+                              initialPage: 0,
+                              height: size.height,
+                              enlargeCenterPage: true,
+                              onPageChanged:
+                                  bottomBarModel.setSelectedTabFromSlider),
+                          items: [
+                            //! Home page on swiper.
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  StoreApproval(),
+                                  Consumer<OrdertModel>(
+                                      builder: (_, orderModel, c) {
+                                    return SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          if (orderModel.orders.length > 0)
+                                            OperationOrderList(),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                                  OperationProductList()
+                                ],
+                              ),
+                            ),
+
+                            //! Orders page on swiper.
+                            Consumer<OrdertModel>(builder: (_, orderModel, c) {
+                              return SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    if (orderModel.orders.length > 0)
+                                      OperationOrderList(),
+                                  ],
+                                ),
+                              );
+                            }),
+
+                            //! Products page on swiper.
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [OperationProductList()],
+                              ),
+                            ),
+
+                            //! Store page on swiper.
+                            SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Center(
+                                    child: Text('Store Coming soon...'),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ].toList(),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              }
+              // Return Default.
+              return SliverToBoxAdapter();
+            },
+          ),
+
+          //! Screen store waiting approval from admin.
+          Consumer<StoreModel>(
+            builder: (_, store, child) {
+              // print(store.getCurrentStoreStatus.runtimeType);
+              if (store.getCurrentStoreStatus == 0) {
+                return StoreWaitApproval();
+              }
+              // Return Default.
+              return SliverToBoxAdapter();
+            },
+          )
+        ],
       ),
     );
   }
@@ -292,10 +317,7 @@ class HOCpage extends StatelessWidget {
 class OperationOrderList extends StatelessWidget {
   const OperationOrderList({
     Key key,
-    @required this.orderModel,
   }) : super(key: key);
-
-  final OrdertModel orderModel;
 
   @override
   Widget build(BuildContext context) {
@@ -313,39 +335,30 @@ class OperationOrderList extends StatelessWidget {
             );
           },
         ),
-        Container(
-          child: ListView.builder(
-            padding: EdgeInsets.only(top: 0),
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 8),
-                child: OperationCardOrder(
-                  order: orderModel.orders[index],
-                ),
-              );
-            },
-            itemCount: orderModel.orders.length,
-          ),
-        ),
+        Consumer<OrdertModel>(builder: (_, orderModel, c) {
+          return Container(
+            child: ListView.builder(
+              padding: EdgeInsets.only(top: 0),
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 8),
+                  child: OperationCardOrder(
+                    order: orderModel.orders[index],
+                  ),
+                );
+              },
+              itemCount: orderModel.orders.length,
+            ),
+          );
+        }),
       ],
     );
   }
 }
 
 class OperationProductList extends StatelessWidget {
-  const OperationProductList({
-    Key key,
-    @required this.productModel,
-    @required this.productGene,
-    @required this.productStatus,
-  }) : super(key: key);
-
-  final ProductModel productModel;
-  final Map<String, String> productGene;
-  final Map<String, String> productStatus;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -365,10 +378,7 @@ class OperationProductList extends StatelessWidget {
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 32.0),
-          child: OperationCardProduct(
-              productModel: productModel,
-              productGene: productGene,
-              productStatus: productStatus),
+          child: OperationCardProduct(),
         ),
         SizedBox(
           height: size.height * 0.37,
@@ -379,94 +389,93 @@ class OperationProductList extends StatelessWidget {
 }
 
 class StoreApproval extends StatelessWidget {
-  const StoreApproval({
-    Key key,
-    @required this.storeId,
-  }) : super(key: key);
-
-  final List<Map<String, dynamic>> storeId;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      height: size.height * 0.6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            "assets/icons/undraw_add_product.svg",
-            width: size.width * 0.40,
-          ),
-          SizedBox(
-            height: 16.0,
-          ),
-          Center(
-            child: FlatButton(
-              height: 40,
-              color: kPrimaryColor.withOpacity(0.15),
-              textColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 25),
-              splashColor: kPrimaryColor.withOpacity(0.2),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Text(
-                "สร้างสินค้าของคุณ",
-                style: TextStyle(
-                    color: kPrimaryColor, fontWeight: FontWeight.bold),
-              ),
-              onPressed: () {
-                // ignore: todo
-                // TODO: Navigate to create product screen.
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => CreateProductScreen(
-                      storeID: storeId[0]['id'],
+    return Consumer2<StoreModel, ProductModel>(
+      builder: (context, storeModel, productModel, child) {
+        if (productModel.products.length == 0) {
+          return Container(
+            height: size.height * 0.6,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  "assets/icons/undraw_add_product.svg",
+                  width: size.width * 0.40,
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                Center(
+                  child: FlatButton(
+                    height: 40,
+                    color: kPrimaryColor.withOpacity(0.15),
+                    textColor: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    splashColor: kPrimaryColor.withOpacity(0.2),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      "สร้างสินค้าของคุณ",
+                      style: TextStyle(
+                          color: kPrimaryColor, fontWeight: FontWeight.bold),
                     ),
+                    onPressed: () {
+                      // ignore: todo
+                      // TODO: Navigate to create product screen.
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CreateProductScreen(
+                            storeID: storeModel.getCurrentIdStore,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
+          );
+        }
+        // Reture Default.
+        return Container();
+      },
     );
   }
 }
 
 class StoreWaitApproval extends StatelessWidget {
-  const StoreWaitApproval({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      height: size.height * 0.6,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            "assets/icons/undraw_confirmation.svg",
-            width: size.width * 0.40,
-          ),
-          SizedBox(
-            height: 16.0,
-          ),
-          Center(
-            child: Text(
-              'กำลังรอการ "อนุมัติร้านค้า" จากผู้ดูแลระบบ',
-              style: TextStyle(
-                  color: kTextSecondaryColor, fontWeight: FontWeight.bold),
+    return SliverToBoxAdapter(
+      child: Container(
+        height: size.height * 0.6,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              "assets/icons/undraw_confirmation.svg",
+              width: size.width * 0.40,
             ),
-          ),
-        ],
+            SizedBox(
+              height: 16.0,
+            ),
+            Center(
+              child: Text(
+                'กำลังรอการ "อนุมัติร้านค้า" จากผู้ดูแลระบบ',
+                style: TextStyle(
+                    color: kTextSecondaryColor, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

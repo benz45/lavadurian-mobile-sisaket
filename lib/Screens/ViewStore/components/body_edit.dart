@@ -127,7 +127,7 @@ class _BodyEditState extends State<BodyEdit> {
   @override
   Widget build(BuildContext context) {
     // get current store
-    stores = storeModel.stores;
+    stores = storeModel.getStores;
     store = stores.firstWhere((element) => element['id'] == widget.storeID);
 
     // initial value
