@@ -35,6 +35,8 @@ class OperationCardProduct extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (_) => ViewProductScreen(
+                        productId:
+                            productModel.products[index]['id'].toString(),
                         hero: '$index',
                         status: productModel.productStatus[
                             productModel.products[index]['status'].toString()],

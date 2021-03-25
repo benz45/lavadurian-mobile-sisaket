@@ -184,11 +184,9 @@ class _BodyState extends State<Body> {
           }
         } else {
           return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircularProgressIndicator(),
-              ],
+            child: CircularProgressIndicator(
+              backgroundColor: kPrimaryColor,
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           );
         }

@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -68,7 +70,11 @@ class _SplashPageState extends State<SplashPage> {
                     startTime();
                     return Column(
                       children: [
-                        // CircularProgressIndicator(),
+                        CircularProgressIndicator(
+                          backgroundColor: kPrimaryColor,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
                         SizedBox(
                           height: 10.0,
                         )
