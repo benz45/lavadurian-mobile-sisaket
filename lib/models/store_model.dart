@@ -118,6 +118,12 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Filter product from id.
+  getProductFromId({@required int id}) {
+    final mapId = _products.where((e) => id == e['id']).toList();
+    return mapId;
+  }
+
   Map<String, String> get productGene => _gene;
   Map<String, String> get productStatus => _status;
   Map<String, String> get productGrade => _grade;
