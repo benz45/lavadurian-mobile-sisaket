@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
@@ -25,235 +26,266 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
     final double statusBarHeight = MediaQuery.of(context).padding.top;
 
     // Filter index id on orderItems id.
-    final Map mapOrderItems = Map<String, dynamic>.from(
-        orderItems.where((e) => e['id'] == widget.order['id']).single);
+    final mapOrderItems =
+        orderItems.where((e) => e['id'] == widget.order['id']);
 
-    // Filter product id on the mapOrderItems id.
-    final Map mapProduct = Map<String, dynamic>.from(product.products
-        .where((e) => e['id'] == mapOrderItems['product'])
-        .single);
+    //If there are no elements in this mapOrderItems.
+    if (mapOrderItems.isEmpty) {
+      return Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Center(
+              child: Text('สินค้าของผู้ขายถูกลบไปแล้ว'),
+            ),
+            OutlineButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => OperationScreen(),
+                  ),
+                );
+              },
+              child: Text('ย้อนกลับ'),
+            )
+          ],
+        ),
+      );
+    } else {
+      final Map resultMapOrder = mapOrderItems.first;
 
-    // Filter product gene.
-    final String mapProductGene = product.productGene['${mapProduct['gene']}'];
+      // Filter product id on the mapOrderItems id.
+      final Map mapProduct = Map<String, dynamic>.from(product.products
+          .where((e) => e['id'] == resultMapOrder['product'])
+          .single);
 
-    return Scaffold(
-      body: Container(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              floating: false,
-              elevation: 0,
-              shadowColor: Colors.grey[50].withOpacity(0.3),
-              backgroundColor: Colors.white,
-              pinned: true,
-              expandedHeight: 280.0,
-              automaticallyImplyLeading: false,
-              title: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: IconButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          icon: Icon(Icons.arrow_back_rounded),
-                          color: kTextPrimaryColor,
+      // Filter product gene.
+      final String mapProductGene =
+          product.productGene['${mapProduct['gene']}'];
+
+      return Scaffold(
+        body: Container(
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                floating: false,
+                elevation: 0,
+                shadowColor: Colors.grey[50].withOpacity(0.3),
+                backgroundColor: Colors.white,
+                pinned: true,
+                expandedHeight: 280.0,
+                automaticallyImplyLeading: false,
+                title: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: IconButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            icon: Icon(Icons.arrow_back_rounded),
+                            color: kTextPrimaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Icon(Icons.more_vert, color: kTextPrimaryColor),
+                      Container(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child:
+                              Icon(Icons.more_vert, color: kTextPrimaryColor),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  height: statusBarHeight + appBarHeight,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 100,
-                                width: 100,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(18.0)),
-                                  image: DecorationImage(
-                                    fit: BoxFit
-                                        .cover, //I assumed you want to occupy the entire space of the card
-                                    image: AssetImage(
-                                      'assets/images/example.png',
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Container(
+                    height: statusBarHeight + appBarHeight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 100,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(18.0)),
+                                    image: DecorationImage(
+                                      fit: BoxFit
+                                          .cover, //I assumed you want to occupy the entire space of the card
+                                      image: AssetImage(
+                                        'assets/images/example.png',
+                                      ),
                                     ),
                                   ),
                                 ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 17.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '$mapProductGene',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: kTextPrimaryColor,
+                                            fontSize: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1
+                                                .fontSize),
+                                      ),
+                                      Text(
+                                        '${mapProduct['price']}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: kPrimaryColor,
+                                            fontSize: Theme.of(context)
+                                                .textTheme
+                                                .subtitle1
+                                                .fontSize),
+                                      ),
+                                      SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        'น้ำหนัก',
+                                        style:
+                                            TextStyle(color: kTextPrimaryColor),
+                                      ),
+                                      Text(
+                                        '${mapProduct['weight']}',
+                                        style: TextStyle(color: kPrimaryColor),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Icon(
+                                Icons.arrow_downward_rounded,
+                                color: Colors.grey[400],
+                                size: 40,
                               ),
-                              Container(
-                                padding: EdgeInsets.only(left: 17.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '$mapProductGene',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: kTextPrimaryColor,
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1
-                                              .fontSize),
-                                    ),
-                                    Text(
-                                      '${mapProduct['price']}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: kPrimaryColor,
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1
-                                              .fontSize),
-                                    ),
-                                    SizedBox(
-                                      height: 8,
-                                    ),
-                                    Text(
-                                      'น้ำหนัก',
-                                      style:
-                                          TextStyle(color: kTextPrimaryColor),
-                                    ),
-                                    Text(
-                                      '${mapProduct['weight']}',
-                                      style: TextStyle(color: kPrimaryColor),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Icon(
-                              Icons.arrow_downward_rounded,
-                              color: Colors.grey[400],
-                              size: 40,
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(bottom: 16),
-                            child: Text(
-                              'คุณ${widget.order['owner']}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: kTextPrimaryColor,
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      .fontSize),
+                            Container(
+                              padding: EdgeInsets.only(bottom: 16),
+                              child: Text(
+                                'คุณ${widget.order['owner']}',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: kTextPrimaryColor,
+                                    fontSize: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .fontSize),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.all(32),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      BuildHeadText(text: 'รายละเอียดผู้ชื้อ'),
+                      BuildSubText(
+                        leading: 'ชื่อ',
+                        text: '${widget.order['owner']}',
+                      ),
+                      BuildSubText(
+                        leading: 'ที่อยู่',
+                        text: '${widget.order['receive_address']}',
+                        width: MediaQuery.of(context).size.width / 2,
+                      ),
+                      SizedBox(
+                        height: 16.0,
+                      ),
+                      BuildHeadText(text: 'รายละเอียดการสั่งซื้อ'),
+                      BuildSubText(
+                        leading: 'น้ำหนัก',
+                        text: '${mapProduct['weight']}',
+                      ),
+                      BuildSubText(
+                        leading: 'น้ำหนักที่สั่งซื้อ',
+                        text: '${resultMapOrder['price_kg']}',
+                      ),
+                      BuildSubText(
+                        leading: 'ค่าจัดส่ง',
+                        text: '${widget.order['shipping']}',
+                      ),
+                      BuildSubText(
+                        leading: 'รวมราคา',
+                        text: '${resultMapOrder['price']}',
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            SliverPadding(
-              padding: EdgeInsets.all(32),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    BuildHeadText(text: 'รายละเอียดผู้ชื้อ'),
-                    BuildSubText(
-                      leading: 'ชื่อ',
-                      text: '${widget.order['owner']}',
-                    ),
-                    BuildSubText(
-                      leading: 'ที่อยู่',
-                      text: '${widget.order['receive_address']}',
-                      width: MediaQuery.of(context).size.width / 2,
-                    ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    BuildHeadText(text: 'รายละเอียดการสั่งซื้อ'),
-                    BuildSubText(
-                      leading: 'น้ำหนัก',
-                      text: '${mapProduct['weight']}',
-                    ),
-                    BuildSubText(
-                      leading: 'น้ำหนักที่สั่งซื้อ',
-                      text: '${mapOrderItems['price_kg']}',
-                    ),
-                    BuildSubText(
-                      leading: 'ค่าจัดส่ง',
-                      text: '${widget.order['shipping']}',
-                    ),
-                    BuildSubText(
-                      leading: 'รวมราคา',
-                      text: '${mapOrderItems['price']}',
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 36),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              child: OutlineButton(
-                highlightColor: kPrimaryLightColor,
-                highlightedBorderColor: kPrimaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0)),
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                color: kPrimaryColor,
-                onPressed: () {},
-                child: Text(
-                  'ยกเลิกคำสั่งซื้อ',
-                  style: TextStyle(color: kPrimaryColor, fontSize: 16.0),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 16,
-            ),
-            Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: FlatButton(
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(bottom: 36),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                child: OutlineButton(
+                  highlightColor: kPrimaryLightColor,
+                  highlightedBorderColor: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0)),
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
                   color: kPrimaryColor,
                   onPressed: () {},
                   child: Text(
-                    'ยืนยันคำสั่งซื้อ',
-                    style: TextStyle(color: kPrimaryLightColor, fontSize: 16),
+                    'ยกเลิกคำสั่งซื้อ',
+                    style: TextStyle(color: kPrimaryColor, fontSize: 16.0),
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                width: 16,
+              ),
+              Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: FlatButton(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                    color: kPrimaryColor,
+                    onPressed: () {},
+                    child: Text(
+                      'ยืนยันคำสั่งซื้อ',
+                      style: TextStyle(color: kPrimaryLightColor, fontSize: 16),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 

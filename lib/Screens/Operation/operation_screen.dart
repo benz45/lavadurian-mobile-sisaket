@@ -34,7 +34,7 @@ class _OperationScreenState extends State<OperationScreen> {
             Body(),
             Positioned(
               child: Container(
-                height: 80,
+                height: 35,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
