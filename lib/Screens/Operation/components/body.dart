@@ -238,16 +238,21 @@ class ContainerStore extends StatelessWidget {
                               child: Column(
                                 children: [
                                   StoreApproval(),
-                                  Consumer<OrdertModel>(
-                                      builder: (_, orderModel, c) {
-                                    return SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          if (orderModel.orders.length > 0)
-                                            OperationOrderList(),
-                                        ],
-                                      ),
-                                    );
+                                  Consumer2<OrdertModel, ProductModel>(builder:
+                                      (_, orderModel, productModel, c) {
+                                    if (productModel.products != null &&
+                                        productModel.products.length != 0) {
+                                      return SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            if (orderModel.orders.length > 0)
+                                              OperationOrderList(),
+                                          ],
+                                        ),
+                                      );
+                                    }
+
+                                    return Container();
                                   }),
                                   OperationProductList()
                                 ],
@@ -321,35 +326,42 @@ class OperationOrderList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        OperationList(
-          leading: 'รายการสั่งซื้อ',
-          trailing: 'จัดการคำสั่งซื้อ',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => OrderScreen(),
-              ),
-            );
-          },
-        ),
         Consumer<OrdertModel>(builder: (_, orderModel, c) {
-          return Container(
-            child: ListView.builder(
-              padding: EdgeInsets.only(top: 0),
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 8),
-                  child: OperationCardOrder(
-                    order: orderModel.orders[index],
+          if (orderModel.orders != null && orderModel.orders.length != 0) {
+            return Column(
+              children: [
+                OperationList(
+                  leading: 'รายการสั่งซื้อ',
+                  trailing: 'จัดการคำสั่งซื้อ',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => OrderScreen(),
+                      ),
+                    );
+                  },
+                ),
+                Container(
+                  child: ListView.builder(
+                    padding: EdgeInsets.only(top: 0),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 8),
+                        child: OperationCardOrder(
+                          order: orderModel.orders[index],
+                        ),
+                      );
+                    },
+                    itemCount: orderModel.orders.length,
                   ),
-                );
-              },
-              itemCount: orderModel.orders.length,
-            ),
-          );
+                ),
+              ],
+            );
+          }
+          return Container();
         }),
       ],
     );
@@ -362,18 +374,25 @@ class OperationProductList extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Column(
       children: [
-        OperationList(
-          leading: 'รายการสินค้า',
-          trailing: 'จัดการสินค้า',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ManageProductScreen(),
-              ),
+        Consumer<ProductModel>(builder: (_, productModel, c) {
+          if (productModel.products.length != null &&
+              productModel.products.length != 0) {
+            return OperationList(
+              leading: 'รายการสินค้า',
+              trailing: 'จัดการสินค้า',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ManageProductScreen(),
+                  ),
+                );
+              },
             );
-          },
-        ),
+          }
+
+          return Container();
+        }),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 32.0),
           child: OperationCardProduct(),
