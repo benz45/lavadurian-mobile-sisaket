@@ -1,10 +1,13 @@
 import 'package:LavaDurian/Screens/EditProduct/delete_product_screen.dart';
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
+import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_delete_product.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
+
+import 'components/dialog_delete_product copy.dart';
 
 class ViewProductScreen extends StatefulWidget {
   final String hero;
@@ -23,66 +26,23 @@ class ViewProductScreen extends StatefulWidget {
 
 class _ViewProductScreenState extends State<ViewProductScreen> {
   AnimationController animateController;
-  BuildContext dialogContext;
 
   Future<void> _showOnDeleteDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
-        dialogContext = context;
-        return AlertDialog(
-          title: Text(
-            'ยืนยันการลบสินค้า',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(18),
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                FlatButton(
-                  minWidth: double.infinity,
-                  color: kErrorColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  onPressed: () {
-                    if (widget.productId != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DeleteProductScreen(
-                            productID: widget.productId,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text(
-                    'ตกลง',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                FlatButton(
-                  minWidth: double.infinity,
-                  color: Colors.grey[300],
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  onPressed: () => Navigator.pop(dialogContext),
-                  child: Text(
-                    'ยกเลิก',
-                    style: TextStyle(color: kTextPrimaryColor),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        return Consumer<OrdertModel>(builder: (_, ordertModel, c) {
+          // Filter order id
+          final order = ordertModel.orderItems
+              .where((e) => e['product'] == widget.productId);
+
+          if (order.isEmpty) {
+            return DialogDeleteProduct();
+          } else {
+            return DialoCanNotgDeleteProduct(orderId: order.first['id']);
+          }
+        });
       },
     );
   }
@@ -152,26 +112,18 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           SizedBox(
                             width: 8,
                           ),
-                          Consumer2<OrdertModel, ProductModel>(
-                              builder: (_, ordertModel, productModel, c) {
-                            print(productModel.products);
-                            if (ordertModel.orderItems[0]['product'] !=
-                                productModel.products[0]['id']) {
-                              return ClipOval(
-                                child: Material(
-                                  color: Colors.white.withOpacity(0.2),
-                                  child: InkWell(
-                                    child: IconButton(
-                                      onPressed: () => _showOnDeleteDialog(),
-                                      icon: Icon(Icons.delete),
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                          ClipOval(
+                            child: Material(
+                              color: Colors.white.withOpacity(0.2),
+                              child: InkWell(
+                                child: IconButton(
+                                  onPressed: () => _showOnDeleteDialog(),
+                                  icon: Icon(Icons.delete),
+                                  color: Colors.white,
                                 ),
-                              );
-                            }
-                            return Container();
-                          }),
+                              ),
+                            ),
+                          ),
                         ],
                       )
                     ],
