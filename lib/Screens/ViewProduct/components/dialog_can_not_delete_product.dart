@@ -25,7 +25,7 @@ class DialoCanNotgDeleteProduct extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'เนื่องจากมีคำสั่งซื้อที่ยังไม่ดำเนินการ',
+              'เนื่องจากสินค้ามีคำสั่งซื้อที่ยังไม่ดำเนินการจากผู้ขาย กรุณาตรวจสอบคำสั่งซื้อ',
             ),
             SizedBox(
               height: 16,
