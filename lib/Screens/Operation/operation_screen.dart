@@ -1,7 +1,6 @@
 import 'package:LavaDurian/components/drawer_menu.dart';
 import 'package:LavaDurian/components/salomon_bottom_bar.dart';
 import 'package:LavaDurian/models/bottomBar_model.dart';
-import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/Screens/Operation/components/body.dart' show Body;

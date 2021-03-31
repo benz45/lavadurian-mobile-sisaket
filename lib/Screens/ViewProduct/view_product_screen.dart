@@ -152,18 +152,26 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           SizedBox(
                             width: 8,
                           ),
-                          ClipOval(
-                            child: Material(
-                              color: Colors.white.withOpacity(0.2),
-                              child: InkWell(
-                                child: IconButton(
-                                  onPressed: () => _showOnDeleteDialog(),
-                                  icon: Icon(Icons.delete),
-                                  color: Colors.white,
+                          Consumer2<OrdertModel, ProductModel>(
+                              builder: (_, ordertModel, productModel, c) {
+                            print(productModel.products);
+                            if (ordertModel.orderItems[0]['product'] !=
+                                productModel.products[0]['id']) {
+                              return ClipOval(
+                                child: Material(
+                                  color: Colors.white.withOpacity(0.2),
+                                  child: InkWell(
+                                    child: IconButton(
+                                      onPressed: () => _showOnDeleteDialog(),
+                                      icon: Icon(Icons.delete),
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
+                              );
+                            }
+                            return Container();
+                          }),
                         ],
                       )
                     ],

@@ -38,6 +38,8 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
       child: TextField(
         key: key,
+        autocorrect: false,
+        enableSuggestions: false,
         autofocus: autofocus,
         enabled: enabled,
         inputFormatters: inputFormatters,

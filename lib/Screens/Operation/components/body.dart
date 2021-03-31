@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
+import 'package:LavaDurian/Screens/Login/login_screen.dart';
 import 'package:LavaDurian/Screens/ManageProduct/manage_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
@@ -35,6 +36,7 @@ class _BodyState extends State<Body> {
   ProductModel productModel;
   OrdertModel orderModel;
   ItemModel itemModel;
+  bool isGetUserProfile = true;
 
   Map<String, String> productGene;
   Map<String, String> orderStatus;
@@ -146,22 +148,23 @@ class _BodyState extends State<Body> {
           });
 
       var jsonData = json.decode(utf8.decode(response.bodyBytes));
-
-      for (var item in jsonData['results']) {
-        userModel.value = {
-          'url': item['url'],
-          'id': item['id'],
-          'username': item['username'],
-          'first_name': item['first_name'],
-          'last_name': item['last_name'],
-          'email': item['email'],
-        };
+      if (jsonData['results'] != null) {
+        for (var item in jsonData['results']) {
+          userModel.value = {
+            'url': item['url'],
+            'id': item['id'],
+            'username': item['username'],
+            'first_name': item['first_name'],
+            'last_name': item['last_name'],
+            'email': item['email'],
+          };
+        }
+        // Get Store profile after login success
+        await _getStoreProfile();
+        return userModel.value.toString();
       }
-
-      // Get Store profile after login success
-      await _getStoreProfile();
-
-      return userModel.value.toString();
+      // ! Error code 101
+      return '101';
     } else {
       return userModel.value.toString();
     }
@@ -172,26 +175,69 @@ class _BodyState extends State<Body> {
     StoreModel store = Provider.of<StoreModel>(context);
 
     return FutureBuilder(
-      future: _getUserProfile(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (store.getCurrentIdStore != null && store.getStores.length != 0) {
-            // Screen for user have store data.
-            return ContainerStore();
+        future: _getUserProfile(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            // ! Error code 101
+            if (snapshot.data == '101') {
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Text(
+                      '101',
+                      style: TextStyle(
+                          color: kPrimaryColor,
+                          fontSize:
+                              Theme.of(context).textTheme.headline3.fontSize),
+                    ),
+                  ),
+                  Container(
+                    child: Text('เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => LoginScreen(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'เข้าสู่ระบบ',
+                      style: TextStyle(color: kPrimaryColor),
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            // * Fetch data success
+            if (store.getCurrentIdStore != null &&
+                store.getStores.length != 0) {
+              // Screen for user have store data.
+              return ContainerStore();
+            } else {
+              // Screen for user not yet store data.
+              return StoreNodata();
+            }
           } else {
-            // Screen for user not yet store data.
-            return StoreNodata();
+            // ! Fetching data
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: kPrimaryColor,
+                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            );
           }
-        } else {
-          return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: kPrimaryColor,
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          );
         }
-      },
-    );
+
+        // return Container();
+
+        );
   }
 }
 
