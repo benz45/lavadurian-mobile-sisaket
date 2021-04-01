@@ -58,7 +58,7 @@ class _SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('WELCOME TO LAVADURIAN ONLINE'),
+            Text('กำลังเชื่อมต่อกับเซิร์ฟเวอร์'),
             SizedBox(
               height: 20.0,
             ),

@@ -31,6 +31,13 @@
             "flutterMode": "debug"
         },
         {
+            "name": "Pixel-2-API-24",
+            "type": "dart",
+            "request": "launch",
+            "preLaunchTask": "Pixel_2_API_24",
+            "deviceId": "emulator-5554",
+        },
+        {
             "name": "Pixel-3a-XL_API",
             "type": "dart",
             "request": "launch",

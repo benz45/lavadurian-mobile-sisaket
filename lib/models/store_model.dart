@@ -124,6 +124,12 @@ class ProductModel extends ChangeNotifier {
     return mapId;
   }
 
+  // Remove product.
+  void removeProduct({@required productId}) {
+    _products.removeWhere((element) => element['id'] == productId);
+    notifyListeners();
+  }
+
   Map<String, String> get productGene => _gene;
   Map<String, String> get productStatus => _status;
   Map<String, String> get productGrade => _grade;
