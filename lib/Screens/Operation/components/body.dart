@@ -36,7 +36,6 @@ class _BodyState extends State<Body> {
   ProductModel productModel;
   OrdertModel orderModel;
   ItemModel itemModel;
-  bool isGetUserProfile = true;
 
   Map<String, String> productGene;
   Map<String, String> orderStatus;
@@ -175,69 +174,65 @@ class _BodyState extends State<Body> {
     StoreModel store = Provider.of<StoreModel>(context);
 
     return FutureBuilder(
-        future: _getUserProfile(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // ! Error code 101
-            if (snapshot.data == '101') {
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Text(
-                      '101',
-                      style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize:
-                              Theme.of(context).textTheme.headline3.fontSize),
-                    ),
+      future: _getUserProfile(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          // ! Error code 101
+          if (snapshot.data == '101') {
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Text(
+                    '101',
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize:
+                            Theme.of(context).textTheme.headline3.fontSize),
                   ),
-                  Container(
-                    child: Text('เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง'),
+                ),
+                Container(
+                  child: Text('เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LoginScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'เข้าสู่ระบบ',
+                    style: TextStyle(color: kPrimaryColor),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'เข้าสู่ระบบ',
-                      style: TextStyle(color: kPrimaryColor),
-                    ),
-                  ),
-                ],
-              );
-            }
-
-            // * Fetch data success
-            if (store.getCurrentIdStore != null &&
-                store.getStores.length != 0) {
-              // Screen for user have store data.
-              return ContainerStore();
-            } else {
-              // Screen for user not yet store data.
-              return StoreNodata();
-            }
-          } else {
-            // ! Fetching data
-            return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: kPrimaryColor,
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
+                ),
+              ],
             );
           }
+
+          // * Fetch data success
+          if (store.getCurrentIdStore != null && store.getStores.length != 0) {
+            // Screen for user have store data.
+            return ContainerStore();
+          } else {
+            // Screen for user not yet store data.
+            return StoreNodata();
+          }
+        } else {
+          // ! Fetching data
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: kPrimaryColor,
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          );
         }
-
-        // return Container();
-
-        );
+      },
+    );
   }
 }
 
