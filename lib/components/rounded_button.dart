@@ -4,7 +4,7 @@ import 'package:LavaDurian/constants.dart';
 class RoundedButton extends StatelessWidget {
   final String text;
   final Function press;
-  final Color color, textColor;
+  final Color textColor;
   final Color disabledColor;
   final bool enabled;
 
@@ -14,8 +14,8 @@ class RoundedButton extends StatelessWidget {
     this.press,
     this.enabled,
     this.disabledColor = kDisabledPrimaryColor,
-    this.color = kPrimaryColor,
     this.textColor = Colors.white,
+    Color color,
   }) : super(key: key);
 
   @override
@@ -28,8 +28,8 @@ class RoundedButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(29),
         child: FlatButton(
           disabledColor: disabledColor,
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-          color: color,
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 40),
+          color: kPrimaryColor,
           onPressed: press,
           child: Text(
             text,

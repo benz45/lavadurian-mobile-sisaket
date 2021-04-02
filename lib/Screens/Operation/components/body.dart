@@ -9,6 +9,7 @@ import 'package:LavaDurian/Screens/Operation/components/operation_card_product.d
 import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
+import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -77,20 +78,23 @@ class _BodyState extends State<Body> {
         storeList.add(map);
       }
 
-      // Set persistent storage initial id store
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String currentStoreById = 'USERID_${userModel.value['id']}_CURRENT_STORE';
+      if (storeList.length != 0) {
+        // Set persistent storage initial id store
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String currentStoreById =
+            'USERID_${userModel.value['id']}_CURRENT_STORE';
 
-      if (prefs.getInt(currentStoreById) != null) {
-        storeModel.setCurrentStore(
-            value: prefs.getInt(currentStoreById), user: currentStoreById);
-      } else {
-        prefs.setInt(currentStoreById, storeList.first['id']);
-        storeModel.setCurrentStore(value: storeList.first['id']);
+        if (prefs.getInt(currentStoreById) != null) {
+          storeModel.setCurrentStore(
+              value: prefs.getInt(currentStoreById), user: currentStoreById);
+        } else if (storeList != null) {
+          prefs.setInt(currentStoreById, storeList.first['id']);
+          storeModel.setCurrentStore(value: storeList.first['id']);
+        }
+
+        // Set store list
+        storeModel.setStores = storeList;
       }
-
-      // Set store list
-      storeModel.setStores = storeList;
     }
 
     // Set data to products model

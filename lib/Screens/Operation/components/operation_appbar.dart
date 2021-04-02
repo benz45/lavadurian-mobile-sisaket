@@ -74,71 +74,84 @@ class _OperationAppBarState extends State<OperationAppBar> {
                               ),
                             );
                           },
-                          child: Container(
-                            width: size.width * 0.8,
-                            child: LayoutBuilder(
-                              builder: (context, constaints) {
-                                // Build the textspan
-                                final text = TextSpan(
-                                  text:
-                                      '${currentStore.length != 0 || currentStore != null ? currentStore[0]['name'] : ''}'
-                                          .replaceAll("", "\u{200B}"),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: kTextPrimaryColor,
-                                    fontSize: size.height /
-                                        size.width *
-                                        (font.headline4.fontSize / 3.31),
-                                  ),
-                                );
+                          child: currentStore.length != 0
+                              ? Container(
+                                  width: size.width * 0.8,
+                                  child: LayoutBuilder(
+                                    builder: (context, constaints) {
+                                      // Build the textspan
+                                      final text = TextSpan(
+                                        text:
+                                            '${currentStore.length != 0 || currentStore != null ? currentStore[0]['name'] : ''}'
+                                                .replaceAll("", "\u{200B}"),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: kTextPrimaryColor,
+                                          fontSize: size.height /
+                                              size.width *
+                                              (font.headline4.fontSize / 3.31),
+                                        ),
+                                      );
 
-                                // Use a textpainter to determine if it will exceed max lines
-                                final textPainter = TextPainter(
-                                    maxLines: 1,
-                                    textAlign: TextAlign.left,
-                                    textDirection: TextDirection.ltr,
-                                    text: text);
+                                      // Use a textpainter to determine if it will exceed max lines
+                                      final textPainter = TextPainter(
+                                          maxLines: 1,
+                                          textAlign: TextAlign.left,
+                                          textDirection: TextDirection.ltr,
+                                          text: text);
 
-                                // trigger it to layout
-                                textPainter.layout(
-                                    minWidth: constaints.minWidth,
-                                    maxWidth: constaints.maxWidth);
+                                      // trigger it to layout
+                                      textPainter.layout(
+                                          minWidth: constaints.minWidth,
+                                          maxWidth: constaints.maxWidth);
 
-                                // whether the text overflowed or not
-                                bool exceeded = textPainter.didExceedMaxLines;
+                                      // whether the text overflowed or not
+                                      bool exceeded =
+                                          textPainter.didExceedMaxLines;
 
-                                return Row(
-                                  children: [
-                                    exceeded
-                                        ? Container(
-                                            width: size.width * 0.7,
-                                            child: Text.rich(
-                                              text,
-                                              maxLines: 1,
-                                              softWrap: true,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
+                                      return Row(
+                                        children: [
+                                          exceeded
+                                              ? Container(
+                                                  width: size.width * 0.7,
+                                                  child: Text.rich(
+                                                    text,
+                                                    maxLines: 1,
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                )
+                                              : Container(
+                                                  child: Text.rich(
+                                                    text,
+                                                    maxLines: 1,
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                          Icon(
+                                            Icons.keyboard_arrow_down_rounded,
+                                            size: Theme.of(context)
+                                                .textTheme
+                                                .headline4
+                                                .fontSize,
                                           )
-                                        : Container(
-                                            child: Text.rich(
-                                              text,
-                                              maxLines: 1,
-                                              softWrap: true,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                    Icon(
-                                      Icons.keyboard_arrow_down_rounded,
-                                      size: Theme.of(context)
-                                          .textTheme
-                                          .headline4
-                                          .fontSize,
-                                    )
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Container(
+                                  child: Text(
+                                    'เลือกร้านค้าที่นี้',
+                                    style: TextStyle(
+                                        color: kPrimaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: font.headline5.fontSize),
+                                  ),
+                                ),
                         )
                       ],
                     ),
