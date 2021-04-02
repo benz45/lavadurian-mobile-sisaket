@@ -186,3 +186,19 @@ class ItemModel extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class BookBankModel extends ChangeNotifier {
+  List<Map<String, dynamic>> _bookbank = [];
+
+  List<Map<String, dynamic>> get bookbank => _bookbank;
+
+  set bookbank(List<Map<String, dynamic>> bookbank) {
+    _bookbank = bookbank;
+    notifyListeners();
+  }
+
+  void clear() {
+    _bookbank.clear();
+    notifyListeners();
+  }
+}

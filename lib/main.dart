@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<UserModel>(create: (_) => UserModel()),
         ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
         ChangeNotifierProvider<ProductModel>(create: (_) => ProductModel()),
+        ChangeNotifierProvider<BookBankModel>(create: (_) => BookBankModel()),
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),
       ],
       child: MaterialApp(
