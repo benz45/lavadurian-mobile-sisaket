@@ -16,7 +16,9 @@ class _BodyState extends State<Body> {
   int storeID;
   StoreModel storeModel;
   ProductModel productModel;
+  BookBankModel bookBankModel;
   Map<String, dynamic> store;
+  Map<String, dynamic> bookbank;
   Map<String, String> productGene;
   Map<String, String> productStatus;
   Map<String, String> productGrade;
@@ -28,6 +30,7 @@ class _BodyState extends State<Body> {
     super.initState();
     storeModel = context.read<StoreModel>();
     productModel = context.read<ProductModel>();
+    bookBankModel = context.read<BookBankModel>();
   }
 
   @override
@@ -95,7 +98,11 @@ class _BodyState extends State<Body> {
               SizedBox(
                 height: 16.0,
               ),
-              Text("Hello"),
+              Text("บัญชีของร้านค้า"),
+              SizedBox(
+                height: 16.0,
+              ),
+              Text("สินค้าในร้าน"),
               SizedBox(
                 height: 16.0,
               ),
