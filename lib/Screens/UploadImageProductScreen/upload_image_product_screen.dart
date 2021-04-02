@@ -161,8 +161,6 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
       onPressed: () => _uploadProcess(),
     );
 
-    print(images);
-
     return Scaffold(
       key: _scaffoldKey,
       body: CustomScrollView(
@@ -226,11 +224,12 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                       children: [
                           for (var index = 0; index < images.length; index++)
                             Stack(
+                              fit: StackFit.expand,
                               children: [
                                 // * Container image.
                                 Container(
-                                  width: size.height * 0.2,
-                                  height: size.height * 0.2,
+                                  width: (size.height * 0.2).round() + .0,
+                                  height: (size.height * 0.2).round() + .0,
                                   child: Card(
                                     margin: EdgeInsets.all(0),
                                     semanticContainer: true,
