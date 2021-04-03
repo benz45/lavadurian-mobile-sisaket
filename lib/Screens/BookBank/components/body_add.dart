@@ -1,6 +1,7 @@
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
@@ -17,6 +18,8 @@ class _BodyState extends State<Body> {
   String _bookbankTypeValue;
   String _accountName;
   String _accountNumber;
+
+  SettingModel settingModel;
 
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
@@ -48,6 +51,9 @@ class _BodyState extends State<Body> {
       _btnController.reset();
       return false;
     }
+
+    // get current user token
+    String token = settingModel.value['token'];
 
     _btnController.reset();
     return false;

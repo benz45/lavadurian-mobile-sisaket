@@ -1,4 +1,5 @@
-import 'package:LavaDurian/Screens/BookBank/components/body.dart';
+import 'package:LavaDurian/Screens/BookBank/components/body_edit.dart';
+import 'package:LavaDurian/Screens/BookBank/components/show_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -20,7 +21,14 @@ class BookBankScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Body(bookbankID: bookbankID),
+        child: BodyEdit(bookbankID: this.bookbankID),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showAlertDialog(context, this.bookbankID);
+        },
+        child: Icon(Icons.delete),
+        backgroundColor: kPrimaryColor,
       ),
     );
   }

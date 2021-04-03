@@ -1,4 +1,4 @@
-import 'package:LavaDurian/Screens/BookBank/bookbank_screen.dart';
+import 'package:LavaDurian/Screens/BookBank/bookbank_edit_screen.dart';
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/components/show_alert_dialog.dart';
 import 'package:LavaDurian/Screens/ViewStore/edit_store_screen.dart';
@@ -56,7 +56,6 @@ class _BodyState extends State<Body> {
     if (bookBankModel.bookbank.length != 0 && bookbanks.length == 0) {
       for (var bookbankItem in bookBankModel.bookbank) {
         if (bookbankItem['store'] == widget.storeID) {
-          print(bookbankItem);
           bookbanks.add(bookbankItem);
         }
       }

@@ -47,6 +47,9 @@ class SettingModel extends ChangeNotifier {
   // End-point for delete store
   String get endPoinDeleteStore => 'api/store/delete';
 
+  // End-point for edit bookbank
+  String get endPoinUpdateBookBank => 'api/bookbank/edit';
+
   // Setting Value
   Map<String, dynamic> _value = {};
   Map<String, dynamic> get value => _value;
