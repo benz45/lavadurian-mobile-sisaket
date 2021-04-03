@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/BookBank/bookbank_screen.dart';
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/components/show_alert_dialog.dart';
 import 'package:LavaDurian/Screens/ViewStore/edit_store_screen.dart';
@@ -24,6 +25,7 @@ class _BodyState extends State<Body> {
   Map<String, String> productGrade;
 
   List products = [];
+  List bookbanks = [];
 
   @override
   void initState() {
@@ -49,6 +51,15 @@ class _BodyState extends State<Body> {
       productGene = productModel.productGene;
       productStatus = productModel.productStatus;
       productGrade = productModel.productGrade;
+    }
+
+    if (bookBankModel.bookbank.length != 0 && bookbanks.length == 0) {
+      for (var bookbankItem in bookBankModel.bookbank) {
+        if (bookbankItem['store'] == widget.storeID) {
+          print(bookbankItem);
+          bookbanks.add(bookbankItem);
+        }
+      }
     }
 
     return SingleChildScrollView(
@@ -99,8 +110,30 @@ class _BodyState extends State<Body> {
                 height: 16.0,
               ),
               Text("บัญชีของร้านค้า"),
-              SizedBox(
-                height: 16.0,
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: bookbanks.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BookBankScreen(
+                                  bookbankID: bookbanks[index]['id'])));
+                    },
+                    child: Card(
+                      child: ListTile(
+                        leading: Icon(Icons.ac_unit),
+                        title: Text(
+                            "ชื่อบัญชี: ${bookbanks[index]['account_name']}\n"
+                            "หมายเลข: ${bookbanks[index]['account_number']}\n"
+                            "สาขา: ${bookbanks[index]['bank_branch']}\n"),
+                      ),
+                    ),
+                  );
+                },
               ),
               Text("สินค้าในร้าน"),
               SizedBox(
