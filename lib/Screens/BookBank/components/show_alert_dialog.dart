@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/BookBank/bookbank_delete_screen.dart';
 import 'package:flutter/material.dart';
 
 showAlertDialog(BuildContext context, int bookbankID) {
@@ -11,8 +12,11 @@ showAlertDialog(BuildContext context, int bookbankID) {
   Widget continueButton = FlatButton(
     child: Text("ยืนยันการลบ"),
     onPressed: () {
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => DeleteStoreScreen(storeID)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  BookbankDeleteScreen(bookbankID: bookbankID)));
     },
   );
   // set up the AlertDialog
