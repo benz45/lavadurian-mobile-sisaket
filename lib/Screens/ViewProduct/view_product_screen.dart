@@ -1,5 +1,5 @@
-import 'package:LavaDurian/Screens/EditProduct/delete_product_screen.dart';
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
+import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_delete_product.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +61,19 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     }
   }
 
+  void _onNavigatorUploadImageProductScreen() {
+    if (widget.productId != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductImageUpload(
+            productId: widget.productId,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -116,8 +129,27 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           ),
                         ),
                       ),
+                      // ! Icons header
                       Row(
                         children: [
+                          // * Icons Upload Image Product
+                          ClipOval(
+                            child: Material(
+                              color: Colors.white.withOpacity(0.2),
+                              child: InkWell(
+                                child: IconButton(
+                                  onPressed:
+                                      _onNavigatorUploadImageProductScreen,
+                                  icon: Icon(Icons.add_photo_alternate),
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          // * Icons Edit Product
                           ClipOval(
                             child: Material(
                               color: Colors.white.withOpacity(0.2),
@@ -133,6 +165,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           SizedBox(
                             width: 8,
                           ),
+                          // * Icons Delete Product
                           ClipOval(
                             child: Material(
                               color: Colors.white.withOpacity(0.2),

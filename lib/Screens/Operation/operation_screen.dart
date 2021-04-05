@@ -31,6 +31,7 @@ class _OperationScreenState extends State<OperationScreen> {
           alignment: Alignment.bottomCenter,
           children: [
             Body(),
+            // * Gradient color white bottom
             Positioned(
               child: Container(
                 height: 35,

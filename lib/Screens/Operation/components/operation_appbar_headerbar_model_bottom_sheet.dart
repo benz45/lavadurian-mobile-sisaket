@@ -1,4 +1,4 @@
-import 'package:LavaDurian/Screens/ViewStore/create_store_screen.dart';
+import 'package:LavaDurian/Screens/CreateStore/create_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +26,9 @@ class OperationAppBarHeaderBarModalBottomSheet extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => CreateStoreScreen(),
+                    builder: (_) => CreateStoreScreen(
+                      backArrowButton: true,
+                    ),
                   ),
                 );
               },

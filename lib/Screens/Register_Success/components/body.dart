@@ -91,8 +91,8 @@ class _BodyState extends State<Body> {
       }
     }
 
-    // Login Button
-    final loginButton = RoundedLoadingButton(
+    // Get started app Button
+    final getstartedButton = RoundedLoadingButton(
         child: Text(
           "เริ่มต้นใช้งาน",
           textAlign: TextAlign.center,
@@ -142,7 +142,7 @@ class _BodyState extends State<Body> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-            child: loginButton,
+            child: getstartedButton,
           ),
           SizedBox(height: size.height * 0.01),
           AlreadyHaveAnAccountCheck(

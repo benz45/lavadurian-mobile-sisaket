@@ -1,24 +1,31 @@
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class OperationList extends StatelessWidget {
-  final String leading;
-  final String trailing;
-  final onPressed;
+  final Key _key;
+  final String _leading;
+  final Widget _trailing;
 
-  const OperationList({Key key, this.leading, this.trailing, this.onPressed})
-      : super(key: key);
+  OperationList({Key key, String leading, Widget trailing, Function onPressed})
+      : this._key = key,
+        this._leading = leading,
+        this._trailing = trailing;
 
   @override
   Widget build(BuildContext context) {
+    final font = Theme.of(context).textTheme;
     return ListTile(
-      leading:
-          Text('$leading').text.xl.color(kTextSecondaryColor).semiBold.make(),
-      trailing: TextButton(
-        child: Text('$trailing').text.bold.color(kPrimaryColor).make(),
-        onPressed: onPressed,
+      contentPadding: EdgeInsets.all(0),
+      key: _key,
+      leading: Text(
+        '$_leading',
+        style: TextStyle(
+          color: kTextSecondaryColor,
+          fontSize: font.subtitle1.fontSize,
+          fontWeight: FontWeight.w600,
+        ),
       ),
-    ).pLTRB(16.0, 0.0, 8.0, 0.0);
+      trailing: _trailing,
+    );
   }
 }

@@ -1,5 +1,5 @@
+import 'package:LavaDurian/Screens/CreateStore/create_store_screen.dart';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
-import 'package:LavaDurian/Screens/ViewStore/create_store_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/models/profile_model.dart';

@@ -1,4 +1,4 @@
-import 'package:LavaDurian/Screens/ViewStore/create_store_screen.dart';
+import 'package:LavaDurian/Screens/CreateStore/create_store_screen.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:delayed_display/delayed_display.dart';
@@ -16,8 +16,9 @@ class StoreNodata extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Center(
       child: Container(
-        height: size.height / 2.2,
+        height: size.height,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DelayedDisplay(
               delay: Duration(seconds: 1),
@@ -64,7 +65,9 @@ class StoreNodata extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => CreateStoreScreen(),
+                      builder: (_) => CreateStoreScreen(
+                        backArrowButton: false,
+                      ),
                     ),
                   );
                 },

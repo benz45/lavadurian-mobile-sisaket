@@ -9,9 +9,11 @@ import 'package:LavaDurian/Screens/Operation/components/operation_card_product.d
 import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
+import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:LavaDurian/models/profile_model.dart';
@@ -80,20 +82,23 @@ class _BodyState extends State<Body> {
         storeList.add(map);
       }
 
-      // Set persistent storage initial id store
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String currentStoreById = 'USERID_${userModel.value['id']}_CURRENT_STORE';
+      if (storeList.length != 0) {
+        // Set persistent storage initial id store
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String currentStoreById =
+            'USERID_${userModel.value['id']}_CURRENT_STORE';
 
-      if (prefs.getInt(currentStoreById) != null) {
-        storeModel.setCurrentStore(
-            value: prefs.getInt(currentStoreById), user: currentStoreById);
-      } else {
-        prefs.setInt(currentStoreById, storeList.first['id']);
-        storeModel.setCurrentStore(value: storeList.first['id']);
+        if (prefs.getInt(currentStoreById) != null) {
+          storeModel.setCurrentStore(
+              value: prefs.getInt(currentStoreById), user: currentStoreById);
+        } else if (storeList != null) {
+          prefs.setInt(currentStoreById, storeList.first['id']);
+          storeModel.setCurrentStore(value: storeList.first['id']);
+        }
+
+        // Set store list
+        storeModel.setStores = storeList;
       }
-
-      // Set store list
-      storeModel.setStores = storeList;
     }
 
     // Set data to products model
@@ -186,69 +191,65 @@ class _BodyState extends State<Body> {
     StoreModel store = Provider.of<StoreModel>(context);
 
     return FutureBuilder(
-        future: _getUserProfile(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // ! Error code 101
-            if (snapshot.data == '101') {
-              return Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Text(
-                      '101',
-                      style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize:
-                              Theme.of(context).textTheme.headline3.fontSize),
-                    ),
+      future: _getUserProfile(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          // ! Error code 101
+          if (snapshot.data == '101') {
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Text(
+                    '101',
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize:
+                            Theme.of(context).textTheme.headline3.fontSize),
                   ),
-                  Container(
-                    child: Text('เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง'),
+                ),
+                Container(
+                  child: Text('เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => LoginScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'เข้าสู่ระบบ',
+                    style: TextStyle(color: kPrimaryColor),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => LoginScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'เข้าสู่ระบบ',
-                      style: TextStyle(color: kPrimaryColor),
-                    ),
-                  ),
-                ],
-              );
-            }
-
-            // * Fetch data success
-            if (store.getCurrentIdStore != null &&
-                store.getStores.length != 0) {
-              // Screen for user have store data.
-              return ContainerStore();
-            } else {
-              // Screen for user not yet store data.
-              return StoreNodata();
-            }
-          } else {
-            // ! Fetching data
-            return Center(
-              child: CircularProgressIndicator(
-                backgroundColor: kPrimaryColor,
-                valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
+                ),
+              ],
             );
           }
+
+          // * Fetch data success
+          if (store.getCurrentIdStore != null && store.getStores.length != 0) {
+            // Screen for user have store data.
+            return ContainerStore();
+          } else {
+            // Screen for user not yet store data.
+            return StoreNodata();
+          }
+        } else {
+          // ! Fetching data
+          return Center(
+            child: CircularProgressIndicator(
+              backgroundColor: kPrimaryColor,
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          );
         }
-
-        // return Container();
-
-        );
+      },
+    );
   }
 }
 
@@ -261,7 +262,7 @@ class ContainerStore extends StatelessWidget {
   Widget build(BuildContext context) {
     // Size for custom screen.
     Size size = MediaQuery.of(context).size;
-
+    final font = Theme.of(context).textTheme;
     return Container(
       color: Colors.grey[50],
       child: CustomScrollView(
@@ -279,63 +280,151 @@ class ContainerStore extends StatelessWidget {
                   child: Container(
                     height: size.height,
                     child: Consumer<BottomBarModel>(
-                      builder: (_, bottomBarModel, c) {
+                      builder: (_, _bottomBarModel, c) {
                         return CarouselSlider(
-                          carouselController: bottomBarModel.getController,
+                          carouselController: _bottomBarModel.getController,
                           options: CarouselOptions(
                               viewportFraction: 1.0,
                               initialPage: 0,
                               height: size.height,
                               enlargeCenterPage: true,
                               onPageChanged:
-                                  bottomBarModel.setSelectedTabFromSlider),
+                                  _bottomBarModel.setSelectedTabFromSlider),
                           items: [
-                            //! Home page on swiper.
+                            //! 1. Home page on swiper.
                             SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  StoreApproval(),
-                                  Consumer2<OrdertModel, ProductModel>(builder:
-                                      (_, orderModel, productModel, c) {
-                                    if (productModel.products != null &&
-                                        productModel.products.length != 0) {
-                                      return SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            if (orderModel.orders.length > 0)
-                                              OperationOrderList(),
-                                          ],
-                                        ),
-                                      );
-                                    }
+                              child: Container(
+                                width: size.width * 0.85,
+                                child: Column(
+                                  children: [
+                                    StoreApproval(),
 
-                                    return Container();
-                                  }),
-                                  OperationProductList()
-                                ],
+                                    // * List order
+                                    OperationList(
+                                      leading: 'รายการสั่งซื้อ',
+                                      trailing: TextButton(
+                                        child: Text(
+                                          'ดูทั้งหมด',
+                                          style: TextStyle(
+                                              color: kPrimaryColor,
+                                              fontSize: font.subtitle2.fontSize,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          _bottomBarModel.setSelectedTab(1);
+                                        },
+                                      ),
+                                    ),
+                                    Consumer2<OrdertModel, ProductModel>(
+                                        builder:
+                                            (_, orderModel, productModel, c) {
+                                      if (productModel.products != null &&
+                                          productModel.products.length != 0) {
+                                        return SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              if (orderModel.orders.length > 0)
+                                                OperationOrderList(),
+                                            ],
+                                          ),
+                                        );
+                                      }
+
+                                      return Container();
+                                    }),
+                                    SizedBox(
+                                      height: size.height * 0.02,
+                                    ),
+
+                                    // * List product
+                                    OperationList(
+                                      leading: 'รายการสินค้า',
+                                      trailing: TextButton(
+                                        child: Text(
+                                          'ดูทั้งหมด',
+                                          style: TextStyle(
+                                              color: kPrimaryColor,
+                                              fontSize: font.subtitle2.fontSize,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        onPressed: () {
+                                          _bottomBarModel.setSelectedTab(2);
+                                        },
+                                      ),
+                                    ),
+
+                                    OperationProductList()
+                                  ],
+                                ),
                               ),
                             ),
 
-                            //! Orders page on swiper.
+                            //! 2. Orders page on swiper.
                             Consumer<OrdertModel>(builder: (_, orderModel, c) {
                               return SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    if (orderModel.orders.length > 0)
-                                      OperationOrderList(),
-                                  ],
+                                child: Container(
+                                  width: size.width * 0.85,
+                                  child: Column(
+                                    children: [
+                                      Consumer<BottomBarModel>(
+                                          builder: (_, _bottomBarModel, c) {
+                                        return OperationList(
+                                          leading: 'รายการสั่งซื้อ',
+                                        );
+                                      }),
+                                      if (orderModel.orders.length > 0)
+                                        OperationOrderList(),
+                                    ],
+                                  ),
                                 ),
                               );
                             }),
 
-                            //! Products page on swiper.
+                            //! 3. Products page on swiper.
                             SingleChildScrollView(
-                              child: Column(
-                                children: [OperationProductList()],
+                              child: Container(
+                                width: size.width * 0.85,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        OutlineButton(
+                                          highlightColor: kPrimaryLightColor,
+                                          highlightedBorderColor: kPrimaryColor,
+                                          color: kPrimaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          onPressed: () {},
+                                          child: Text(
+                                            'สร้างสินค้าใหม่',
+                                            style:
+                                                TextStyle(color: kPrimaryColor),
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.filter_list,
+                                          color: kTextSecondaryColor,
+                                        )
+                                      ],
+                                    ),
+                                    Divider(),
+                                    OperationList(
+                                      leading: 'รายการสินค้า',
+                                    ),
+                                    OperationProductList()
+                                  ],
+                                ),
                               ),
                             ),
 
-                            //! Store page on swiper.
+                            //! 4. Store page on swiper.
                             SingleChildScrollView(
                               child: Column(
                                 children: [
@@ -381,35 +470,21 @@ class OperationOrderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final font = Theme.of(context).textTheme;
     return Column(
       children: [
         Consumer<OrdertModel>(builder: (_, orderModel, c) {
           if (orderModel.orders != null && orderModel.orders.length != 0) {
             return Column(
               children: [
-                OperationList(
-                  leading: 'รายการสั่งซื้อ',
-                  trailing: 'จัดการคำสั่งซื้อ',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => OrderScreen(),
-                      ),
-                    );
-                  },
-                ),
                 Container(
                   child: ListView.builder(
                     padding: EdgeInsets.only(top: 0),
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(32.0, 0.0, 32.0, 8),
-                        child: OperationCardOrder(
-                          order: orderModel.orders[index],
-                        ),
+                      return OperationCardOrder(
+                        order: orderModel.orders[index],
                       );
                     },
                     itemCount: orderModel.orders.length,
@@ -429,31 +504,10 @@ class OperationProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final font = Theme.of(context).textTheme;
     return Column(
       children: [
-        Consumer<ProductModel>(builder: (_, productModel, c) {
-          if (productModel.products.length != null &&
-              productModel.products.length != 0) {
-            return OperationList(
-              leading: 'รายการสินค้า',
-              trailing: 'จัดการสินค้า',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ManageProductScreen(),
-                  ),
-                );
-              },
-            );
-          }
-
-          return Container();
-        }),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 32.0),
-          child: OperationCardProduct(),
-        ),
+        OperationCardProduct(),
         SizedBox(
           height: size.height * 0.37,
         ),
