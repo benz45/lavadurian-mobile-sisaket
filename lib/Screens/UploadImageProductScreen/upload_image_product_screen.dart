@@ -14,7 +14,8 @@ import 'components/select_Image_product_container.dart';
 
 class ProductImageUpload extends StatefulWidget {
   final productId;
-  ProductImageUpload({this.productId});
+  final Function onPressed;
+  ProductImageUpload({this.productId, this.onPressed});
   @override
   _ProductImageUploadState createState() => new _ProductImageUploadState();
 }
@@ -304,11 +305,11 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0)),
                 padding: EdgeInsets.symmetric(
-                    vertical: 20, horizontal: size.width * 0.14),
+                    vertical: 20, horizontal: size.width * 0.10),
                 color: kPrimaryColor,
-                onPressed: () => Navigator.pop(context),
+                onPressed: widget.onPressed ?? () => Navigator.pop(context),
                 child: Text(
-                  'ยกเลิก',
+                  widget.onPressed != null ? 'ไม่ใช่ตอนนี้' : 'ยกเลิก',
                   style: TextStyle(color: kPrimaryColor, fontSize: 16.0),
                 ),
               ),
@@ -321,7 +322,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
               child: FlatButton(
                 disabledColor: kTextSecondaryColor.withOpacity(0.12),
                 padding: EdgeInsets.symmetric(
-                    vertical: 20, horizontal: size.width * 0.08),
+                    vertical: 20, horizontal: size.width * 0.10),
                 color: kPrimaryColor,
                 onPressed: isSelectedImage && images.length != 0
                     ? () {
@@ -329,7 +330,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                       }
                     : null,
                 child: Text(
-                  'อัพโหลดรูปภาพ',
+                  'อัพโหลด',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),

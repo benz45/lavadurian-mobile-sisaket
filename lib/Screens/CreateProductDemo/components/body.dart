@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/Register_Success/components/background.dart';
+import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
@@ -253,33 +254,43 @@ class _BodyState extends State<Body> {
 
             createProductModel.clear();
 
-            // * Navigate operation screen and show snackbar create store success
-            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-              builder: (_) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _scaffoldKey.currentState.showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          Icon(
-                            Icons.check,
-                            color: Colors.green[600],
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Text('สร้างสินค้าสำเร็จ')
-                        ],
-                      ),
-                    ),
-                  );
-                });
-                return Scaffold(
-                  key: _scaffoldKey,
-                  body: OperationScreen(),
-                );
-              },
-            ), (Route<dynamic> route) => false);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => ProductImageUpload(
+                  productId: widget.storeID,
+                  onPressed: () {
+                    // * Navigate operation screen and show snackbar create store success
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                      builder: (_) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          _scaffoldKey.currentState.showSnackBar(
+                            SnackBar(
+                              content: Row(
+                                children: [
+                                  Icon(
+                                    Icons.check,
+                                    color: Colors.green[600],
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text('สร้างสินค้าสำเร็จ')
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                        return Scaffold(
+                          key: _scaffoldKey,
+                          body: OperationScreen(),
+                        );
+                      },
+                    ), (Route<dynamic> route) => false);
+                  },
+                ),
+              ),
+            );
           } else {
             showSnackBar(context, 'บันทึกข้อมูลไม่สำเร็จ');
           }
