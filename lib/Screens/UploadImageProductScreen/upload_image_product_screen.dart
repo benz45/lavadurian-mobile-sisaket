@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
+import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:async';
@@ -20,10 +22,14 @@ class ProductImageUpload extends StatefulWidget {
 }
 
 class _ProductImageUploadState extends State<ProductImageUpload> {
+  int productID;
   SettingModel settingModel;
+  ProductImageModel productImageModel;
+
   List<Asset> images = List<Asset>();
   String textError;
   bool isSelectedImage = false;
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final RoundedLoadingButtonController _btnController =
@@ -33,6 +39,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
   void initState() {
     super.initState();
     settingModel = context.read<SettingModel>();
+    productImageModel = context.read<ProductImageModel>();
   }
 
   // Seledt image from device
@@ -125,19 +132,34 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
       // add file to multipart
       request.files.add(multipartFile);
+    }
 
-      //adding params Product ID
-      request.fields['product'] = widget.productId.toString();
+    //adding params Product ID
+    request.fields['product'] = widget.productId.toString();
 
-      // Upload photo and wait for response
+    // Upload photo and wait for response
+    try {
       Response response = await Response.fromStream(await request.send());
       final jsonData = jsonDecode(response.body);
-      print(jsonData);
+      if (jsonData['status'] == true) {
+        for (var imageData in jsonData['data']) {
+          productImageModel.images.add(imageData);
+        }
+        print(productImageModel.images);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ViewProductScreen(productId: productID.toString())));
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    productID = widget.productId;
     // Media Query
     final double appBarHeight = 66;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
@@ -321,7 +343,6 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                 color: kPrimaryColor,
                 onPressed: isSelectedImage && images.length != 0
                     ? () {
-                        print("${images.length}");
                         _uploadProcess();
                       }
                     : null,

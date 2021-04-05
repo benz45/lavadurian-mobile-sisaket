@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<UserModel>(create: (_) => UserModel()),
         ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
         ChangeNotifierProvider<ProductModel>(create: (_) => ProductModel()),
+        ChangeNotifierProvider<ProductImageModel>(
+            create: (_) => ProductImageModel()),
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),
         ChangeNotifierProvider<CreateStoreModel>(
             create: (_) => CreateStoreModel()),
