@@ -41,6 +41,8 @@ class _BodyState extends State<Body> {
   ProductModel productModel;
   OrdertModel orderModel;
   ItemModel itemModel;
+  BookBankModel bookBankModel;
+  bool isGetUserProfile = true;
 
   Map<String, String> productGene;
   Map<String, String> orderStatus;
@@ -55,6 +57,7 @@ class _BodyState extends State<Body> {
     productModel = context.read<ProductModel>();
     orderModel = context.read<OrdertModel>();
     itemModel = context.read<ItemModel>();
+    bookBankModel = context.read<BookBankModel>();
 
     productGene = productModel.productGene;
     productStatus = productModel.productStatus;
@@ -139,6 +142,15 @@ class _BodyState extends State<Body> {
         itemList.add(map);
       }
       itemModel.items = itemList;
+    }
+
+    if (jsonData['data']['bookbank'] != null) {
+      List<Map<String, dynamic>> bookbankList = [];
+      for (var bookbank in jsonData['data']['bookbank']) {
+        Map<String, dynamic> map = bookbank;
+        bookbankList.add(map);
+      }
+      bookBankModel.bookbank = bookbankList;
     }
   }
 

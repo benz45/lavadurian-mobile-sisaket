@@ -186,3 +186,54 @@ class ItemModel extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class BookBankModel extends ChangeNotifier {
+  List<Map<String, dynamic>> _bookbank = [];
+
+  Map<String, String> _type = {
+    '1': "กระแสรายวัน",
+    '2': "ออมทรัพย์",
+    '3': "เงินฝากประจำ",
+  };
+
+  Map<String, String> _bank = {
+    "002": "ธนาคารกรุงเทพ",
+    "004": "ธนาคารกสิกรไทย",
+    "006": "ธนาคารกรุงไทย",
+    "011": "ธนาคารทหารไทย",
+    "014": "ธนาคารไทยพาณิชย์",
+    "025": "ธนาคารกรุงศรีอยุธยา",
+    "030": "ธนาคารออมสิน",
+    "034": "ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร",
+  };
+
+  List<Map<String, dynamic>> get bookbank => _bookbank;
+  Map<String, String> get type => _type;
+  Map<String, String> get bank => _bank;
+
+  set bookbank(List<Map<String, dynamic>> bookbank) {
+    _bookbank = bookbank;
+    notifyListeners();
+  }
+
+  void clear() {
+    _bookbank.clear();
+    notifyListeners();
+  }
+}
+
+class ProductImageModel extends ChangeNotifier {
+  List<Map<String, dynamic>> _images = [];
+
+  List<Map<String, dynamic>> get images => _images;
+
+  set images(List<Map<String, dynamic>> images) {
+    _images = images;
+    notifyListeners();
+  }
+
+  void clear() {
+    _images.clear();
+    notifyListeners();
+  }
+}
