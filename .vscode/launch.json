@@ -28,7 +28,7 @@
             "request": "launch",
             "preLaunchTask": "Mi8",
             "deviceId": "310e522c",
-            "flutterMode": "debug"
+            "flutterMode": "release"
         },
         {
             "name": "Pixel-2-API-24",

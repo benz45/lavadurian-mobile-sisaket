@@ -23,31 +23,34 @@ class _OperationScreenState extends State<OperationScreen> {
         ChangeNotifierProvider<BottomBarModel>(create: (_) => BottomBarModel()),
         ChangeNotifierProvider<ItemModel>(create: (_) => ItemModel()),
       ],
-      child: Scaffold(
-        key: GlobalKey(), // assign key to Scaffold
-        endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
-        drawer: NavDrawer(),
-        body: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Body(),
-            // * Gradient color white bottom
-            Positioned(
-              child: Container(
-                height: 35,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.white.withOpacity(0.0), Colors.white],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+      child: WillPopScope(
+        onWillPop: () => Future.value(false),
+        child: Scaffold(
+          key: GlobalKey(), // assign key to Scaffold
+          endDrawerEnableOpenDragGesture: false, // THIS WAY IT WILL NOT OPEN
+          drawer: NavDrawer(),
+          body: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Body(),
+              // * Gradient color white bottom
+              Positioned(
+                child: Container(
+                  height: 35,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.white.withOpacity(0.0), Colors.white],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
+          bottomNavigationBar: MySalomonBottomBar(),
         ),
-        bottomNavigationBar: MySalomonBottomBar(),
       ),
     );
   }
