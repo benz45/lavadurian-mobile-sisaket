@@ -1,13 +1,18 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
+import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -21,117 +26,166 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String _chosenGrade;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // ! All State
   String _chosenGene;
+  String _chosenGrade;
   String _chosenStatus;
-
-  int _productValue;
-  double _productPrice;
-  double _productWeight;
   String _productDetail;
+  String _productValue;
+  double _productWeight;
+  double _productPrice;
+  Map<String, dynamic> _product;
 
-  TextEditingController _controllerProductValue;
-  TextEditingController _controllerProductPrice;
-  TextEditingController _controllerProductWeight;
-  TextEditingController _controllerProductDetail;
+  // ! All Controller text field
+  TextEditingController _controllerProductDetail = TextEditingController();
+  TextEditingController _controllerProductValue = TextEditingController();
+  TextEditingController _controllerProductWeight = TextEditingController();
+  TextEditingController _controllerProductPrice = TextEditingController();
 
-  List<Map<String, dynamic>> products;
-  Map<String, dynamic> product;
+  // ! Provider
+  ProductModel _productModel;
+  SettingModel _settingModel;
 
-  ProductModel productModel;
-  SettingModel settingModel;
-
+  // ! Controller button
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
+
+  @override
+  void initState() {
+    super.initState();
+    _productModel = context.read<ProductModel>();
+    _settingModel = context.read<SettingModel>();
+
+    _product = _productModel.products
+        .firstWhere((element) => element['id'] == widget.productID);
+
+    _controllerProductDetail.text = _product['desc'].toString();
+    _controllerProductValue.text = _product['values'].toString();
+    _controllerProductWeight.text = _product['weight'].toString();
+    _controllerProductPrice.text = _product['price'].toString();
+
+    _controllerProductDetail.addListener(_onControllerProductDetail);
+    _controllerProductValue.addListener(_onControllerProductValue);
+    _controllerProductWeight.addListener(_onControllerProductWeight);
+    _controllerProductPrice.addListener(_onControllerProductPrice);
+
+    _productDetail = _product['desc'].toString();
+    _productValue = _product['values'].toString();
+    _productWeight = double.parse(_product['weight']);
+    _productPrice = double.parse(_product['price']);
+    _chosenGrade ??= _productModel.productGrade[_product['grade'].toString()];
+    _chosenGene ??= _productModel.productGene[_product['gene'].toString()];
+    _chosenStatus ??=
+        _productModel.productStatus[_product['status'].toString()];
+  }
+
+  _onControllerProductDetail() {
+    setState(() => _productDetail = _controllerProductDetail.text);
+  }
+
+  _onControllerProductValue() {
+    setState(() => _productValue = _controllerProductValue.text);
+  }
+
+  _onControllerProductWeight() {
+    double _cvProductWeight = double.parse(_controllerProductWeight.text);
+    setState(() => _productWeight = _cvProductWeight);
+  }
+
+  _onControllerProductPrice() {
+    double _cvProductPrice = double.parse(_controllerProductPrice.text);
+    setState(() => _productPrice = _cvProductPrice);
+  }
 
   Future<void> _onSubmit() async {
     // validate data
     if (_chosenGrade == null) {
-      showSnackBar(context, 'กรุณาเลือกเกรดทุเรียน');
+      showFlashBar(context, message: 'กรุณาเลือกเกรดทุเรียน', warning: true);
       _btnController.reset();
       return false;
     }
     if (_chosenGene == null) {
-      showSnackBar(context, 'กรุณาเลือกสายพันธุ์');
+      showFlashBar(context, message: 'กรุณาเลือกสายพันธุ์', warning: true);
       _btnController.reset();
       return false;
     }
     if (_productValue == null) {
-      showSnackBar(context, 'กรุณากรอกจำนวนสินค้า');
+      showFlashBar(context, message: 'กรุณากรอกจำนวนสินค้า', warning: true);
       _btnController.reset();
       return false;
     }
     if (_productPrice == null) {
-      showSnackBar(context, 'กรุณากรอกราคาสินค้า');
+      showFlashBar(context, message: 'กรุณากรอกราคาสินค้า', warning: true);
       _btnController.reset();
       return false;
     }
     if (_productWeight == null) {
-      showSnackBar(context, 'กรุณากรอกน้ำหนักสินค้า');
+      showFlashBar(context, message: 'กรุณากรอกน้ำหนักสินค้า', warning: true);
       _btnController.reset();
       return false;
     }
     if (_productDetail == null) {
-      showSnackBar(context, 'กรุณาบรรยายรายละเอียดสินค้า');
+      showFlashBar(context,
+          message: 'กรุณาบรรยายรายละเอียดสินค้า', warning: true);
       _btnController.reset();
       return false;
     }
     if (_chosenStatus == null) {
-      showSnackBar(context, 'กรุณาเลือกสถานะการขาย');
+      showFlashBar(context, message: 'กรุณาระบุสถานะสินค้า', warning: true);
       _btnController.reset();
       return false;
     }
 
-    var _grade = productModel.productGrade.keys.firstWhere(
-        (element) => productModel.productGrade[element] == _chosenGrade,
+    var _grade = _productModel.productGrade.keys.firstWhere(
+        (element) => _productModel.productGrade[element] == _chosenGrade,
         orElse: () => null);
 
-    var _gene = productModel.productGene.keys.firstWhere(
-        (element) => productModel.productGene[element] == _chosenGene,
+    var _gene = _productModel.productGene.keys.firstWhere(
+        (element) => _productModel.productGene[element] == _chosenGene,
         orElse: () => null);
 
-    var _status = productModel.productStatus.keys.firstWhere(
-        (element) => productModel.productStatus[element] == _chosenStatus,
+    var _status = _productModel.productStatus.keys.firstWhere(
+        (element) => _productModel.productStatus[element] == _chosenStatus,
         orElse: () => null);
 
     Map<String, dynamic> data = {
-      'store_id': product['store'].toString(),
-      'product_id': product['id'].toString(),
+      'store_id': _product['store'].toString(),
+      'product_id': _product['id'].toString(),
       'grade': _grade.toString(),
       'gene': _gene.toString(),
       'values': _productValue.toString(),
       'price': _productPrice.toString(),
       'weight': _productWeight.toString(),
-      'desc': _productDetail,
+      'desc': _productDetail.toString(),
       'status': _status.toString(),
     };
 
     // get current user token
-    String token = settingModel.value['token'];
+    String token = _settingModel.value['token'];
 
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPointEditProduct}',
+        '${_settingModel.baseURL}/${_settingModel.endPointEditProduct}',
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status'] == true) {
-        int index = products.indexWhere(
+        int index = _productModel.products.indexWhere(
             (element) => element['id'] == jsonData['data']['product']['id']);
-
-        products[index] = jsonData['data']['product'];
-
-        // update state
-        productModel.products = products;
+        _productModel.products[index] = jsonData['data']['product'];
 
         _btnController.success();
+        showFlashBar(context, message: 'แก้ไขสินค้าสำเร็จ', success: true);
+
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ViewStoreScreen(jsonData['data']['product']['store'])));
+          context,
+          MaterialPageRoute(builder: (_) {
+            return ViewProductScreen(productId: '${widget.productID}');
+          }),
+        );
       }
     } catch (e) {
       print(e);
@@ -139,46 +193,7 @@ class _BodyState extends State<Body> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    productModel = context.read<ProductModel>();
-    settingModel = context.read<SettingModel>();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    products = productModel.products;
-    product =
-        products.firstWhere((element) => element['id'] == widget.productID);
-
-    _controllerProductValue =
-        TextEditingController(text: product['values'].toString());
-
-    _controllerProductWeight =
-        TextEditingController(text: product['weight'].toString());
-
-    _controllerProductPrice =
-        TextEditingController(text: product['price'].toString());
-
-    _controllerProductDetail = TextEditingController(text: product['desc']);
-
-    _productValue = product['values'];
-    _productWeight = double.parse(product['weight']);
-    _productPrice = double.parse(product['price']);
-    _productDetail = product['desc'];
-
-    if (_chosenGrade == null) {
-      _chosenGrade = productModel.productGrade[product['grade'].toString()];
-    }
-
-    if (_chosenGene == null) {
-      _chosenGene = productModel.productGene[product['gene'].toString()];
-    }
-
-    if (_chosenStatus == null) {
-      _chosenStatus = productModel.productStatus[product['status'].toString()];
-    }
-
     // Edit Button
     final addButton = RoundedLoadingButton(
       child: Text(
@@ -195,43 +210,36 @@ class _BodyState extends State<Body> {
       },
     );
 
-    return Padding(
-      padding: EdgeInsets.all(26.0),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: DropdownButton<String>(
-              value: _chosenGrade,
-              isExpanded: true,
-              hint: Text(
-                "เกรดทุเรียน",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
-              ),
-              items: <String>[
-                'เกรดคุณภาพ',
-                'เกรดพรีเมี่ยม',
-              ].map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList(),
-              onChanged: (String value) {
-                setState(() {
-                  _chosenGrade = value;
-                });
-              },
+    Size size = MediaQuery.of(context).size;
+    final double sizeSpaceHeight = size.height * 0.025;
+
+    return Container(
+      alignment: Alignment.center,
+      child: Container(
+        padding: EdgeInsets.only(top: sizeSpaceHeight),
+        width: size.width * 0.8,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              height: sizeSpaceHeight,
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: DropdownButton<String>(
+            // * Chosen Gene
+            Row(
+              children: [
+                Text(
+                  'สายพันธุ์',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                  ),
+                )
+              ],
+            ),
+            DropdownButton<String>(
               isExpanded: true,
               value: _chosenGene,
+              icon: Icon(Icons.keyboard_arrow_down_rounded),
               hint: Text(
                 "สายพันธุ์",
                 style: TextStyle(
@@ -259,54 +267,65 @@ class _BodyState extends State<Body> {
                 });
               },
             ),
-          ),
-          RoundedInputField(
-            hintText: "จำนวนที่มีขาย (ลูก)",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) {
-              _productValue = int.parse(v);
-            },
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.number,
-            controller: _controllerProductValue,
-            // inputFormatters: limitingTextInput,
-          ),
-          RoundedInputField(
-            hintText: "ราคาต่อกิโลกรัม",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) {
-              _productPrice = double.parse(v);
-            },
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.number,
-            controller: _controllerProductPrice,
-            // inputFormatters: limitingTextInput,
-          ),
-          RoundedInputField(
-            hintText: "น้ำหนักเฉลี่ยต่อลูก",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) {
-              _productWeight = double.parse(v);
-            },
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.number,
-            controller: _controllerProductWeight,
-            // inputFormatters: limitingTextInput,
-          ),
-          RoundedInputField(
-            hintText: "รายละเอียดเพิ่มเติม",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) => _productDetail = v,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            controller: _controllerProductDetail,
-            // inputFormatters: limitingTextInput,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: DropdownButton<String>(
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+            // * Chosen Grade
+            Row(
+              children: [
+                Text(
+                  'เกรดทุเรียน',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                  ),
+                )
+              ],
+            ),
+            DropdownButton<String>(
+              value: _chosenGrade,
+              isExpanded: true,
+              icon: Icon(Icons.keyboard_arrow_down_rounded),
+              hint: Text(
+                "เกรดทุเรียน",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w100),
+              ),
+              items: <String>[
+                'เกรดคุณภาพ',
+                'เกรดพรีเมี่ยม',
+              ].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: (String value) {
+                setState(() {
+                  _chosenGrade = value;
+                });
+              },
+            ),
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+
+            // * Chosen Status
+            Row(
+              children: [
+                Text(
+                  'สถานะการขาย',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                  ),
+                )
+              ],
+            ),
+            DropdownButton<String>(
               value: _chosenStatus,
               isExpanded: true,
+              icon: Icon(Icons.keyboard_arrow_down_rounded),
               hint: Text(
                 "สถานะการขาย",
                 style: TextStyle(
@@ -330,12 +349,180 @@ class _BodyState extends State<Body> {
                 });
               },
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: addButton,
-          ),
-        ],
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+
+            // * Product Detail
+            Row(
+              children: [
+                Text(
+                  'รายละเอียดเกี่ยวกับสินค้า',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
+              decoration: BoxDecoration(
+                color: kPrimaryLightColor,
+                borderRadius: BorderRadius.circular(29),
+              ),
+              child: TextField(
+                cursorColor: kPrimaryColor,
+                maxLines: 3,
+                textInputAction: TextInputAction.next,
+                controller: _controllerProductDetail,
+                decoration: InputDecoration(
+                  hintText: 'รายละเอียดเกี่ยวกับสินค้า',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+            // * Product Value
+            Row(
+              children: [
+                Text(
+                  'จำนวนที่มีขาย (ลูก)',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
+              decoration: BoxDecoration(
+                color: kPrimaryLightColor,
+                borderRadius: BorderRadius.circular(29),
+              ),
+              child: TextField(
+                cursorColor: kPrimaryColor,
+                maxLines: 1,
+                textInputAction: TextInputAction.next,
+                controller: _controllerProductValue,
+                keyboardType: TextInputType.numberWithOptions(
+                    signed: true, decimal: true),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                  suffix: Text('ลูก'),
+                  icon: Icon(
+                    Icons.drag_indicator_outlined,
+                    color: kPrimaryColor,
+                  ),
+                  hintText: 'จำนวนที่มีขาย (ลูก)',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+
+            // * Product Weight
+            Row(
+              children: [
+                Text(
+                  'น้ำหนักเฉลี่ยต่อลูก',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
+              decoration: BoxDecoration(
+                color: kPrimaryLightColor,
+                borderRadius: BorderRadius.circular(29),
+              ),
+              child: TextField(
+                keyboardType: TextInputType.numberWithOptions(
+                    signed: true, decimal: true),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                cursorColor: kPrimaryColor,
+                maxLines: 1,
+                textInputAction: TextInputAction.next,
+                controller: _controllerProductWeight,
+                decoration: InputDecoration(
+                  suffix: Text('กิโลกรัม'),
+                  icon: Icon(
+                    Icons.snooze_outlined,
+                    color: kPrimaryColor,
+                  ),
+                  hintText: 'น้ำหนักเฉลี่ยต่อลูก',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+
+            // * Product Price
+            Row(
+              children: [
+                Text(
+                  'ราคาต่อกิโลกรัม',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                  ),
+                )
+              ],
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
+              decoration: BoxDecoration(
+                color: kPrimaryLightColor,
+                borderRadius: BorderRadius.circular(29),
+              ),
+              child: TextField(
+                keyboardType: TextInputType.numberWithOptions(
+                    signed: true, decimal: true),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                cursorColor: kPrimaryColor,
+                maxLines: 1,
+                textInputAction: TextInputAction.done,
+                controller: _controllerProductPrice,
+                decoration: InputDecoration(
+                  suffix: Text('บาท'),
+                  icon: Icon(
+                    Icons.money,
+                    color: kPrimaryColor,
+                  ),
+                  hintText: 'ราคาต่อกิโลกรัม',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: sizeSpaceHeight,
+            ),
+            addButton,
+            SizedBox(
+              height: sizeSpaceHeight * 4,
+            ),
+          ],
+        ),
       ),
     );
   }

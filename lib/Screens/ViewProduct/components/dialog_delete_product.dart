@@ -6,6 +6,7 @@ import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
@@ -40,27 +41,10 @@ class DialogDeleteProduct extends StatelessWidget {
           // Remove product from list
           productModel.removeProduct(productId: productId);
 
+          showFlashBar(context, message: 'ลบสินค้าสำเร็จ', success: true);
           // * Navigate operation screen and show snackbar delete product success
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
             builder: (_) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                _scaffoldKey.currentState.showSnackBar(
-                  SnackBar(
-                    content: Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.green[600],
-                        ),
-                        SizedBox(
-                          width: 16,
-                        ),
-                        Text('ลบสินค้าสำเร็จ')
-                      ],
-                    ),
-                  ),
-                );
-              });
               return Scaffold(
                 key: _scaffoldKey,
                 body: OperationScreen(),

@@ -118,7 +118,8 @@ class _BodyState extends State<Body> {
     Future _valdatatePageOne() async {
       if (createProductModel.getChosenGene == null ||
           createProductModel.getChosenGene == "") {
-        showSnackBar(context, 'กรุณาเลือกสายพันธ์ุทุเรียน');
+        showFlashBar(context,
+            message: 'กรุณาเลือกสายพันธ์ุทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 0) {
           carouselControllerAnimateToPage(0);
@@ -128,7 +129,7 @@ class _BodyState extends State<Body> {
 
       if (createProductModel.getChosenGrade == null ||
           createProductModel.getChosenGrade == "") {
-        showSnackBar(context, 'กรุณาเลือกเกรดทุเรียน');
+        showFlashBar(context, message: 'กรุณาเลือกเกรดทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 0) {
           carouselControllerAnimateToPage(0);
@@ -138,7 +139,8 @@ class _BodyState extends State<Body> {
 
       if (createProductModel.getProductDetail == null ||
           createProductModel.getProductDetail == "") {
-        showSnackBar(context, 'กรุณาระบุข้อมูลเกี่ยวกับสินค้า');
+        showFlashBar(context,
+            message: 'กรุณาระบุข้อมูลเกี่ยวกับสินค้า', warning: true);
         if (createProductModel.getCurrentIndexPage != 0) {
           carouselControllerAnimateToPage(0);
         }
@@ -152,7 +154,7 @@ class _BodyState extends State<Body> {
     Future _valdatatePageTwo() async {
       if (createProductModel.getChosenStatus == null ||
           createProductModel.getChosenStatus == "") {
-        showSnackBar(context, 'กรุณาสถานะการขาย');
+        showFlashBar(context, message: 'กรุณาสถานะการขาย', warning: true);
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
         }
@@ -160,43 +162,52 @@ class _BodyState extends State<Body> {
       }
 
       if (createProductModel.getProductValue == null) {
-        showSnackBar(context, 'กรุณาระบุจำนวนทุเรียนที่มีขาย');
+        showFlashBar(context,
+            message: 'กรุณาระบุจำนวนทุเรียนที่มีขาย', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
+          return false;
         }
         return false;
       } else if (createProductModel.getProductValue.length > 8) {
         // จำนวนไม่เกิน 10^7 ลูก
-        showSnackBar(context, 'กรุณาระบุจำนวนทุเรียนตามความเป็นจริง');
+        showFlashBar(context,
+            message: 'กรุณาระบุจำนวนทุเรียนตามความเป็นจริง', warning: true);
         return false;
       }
 
       if (createProductModel.getProductWeight == null ||
           createProductModel.getProductWeight == "") {
-        showSnackBar(context, 'กรุณาระบุน้ำหนักของทุเรียน');
+        showFlashBar(context,
+            message: 'กรุณาระบุน้ำหนักของทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
+          return false;
         }
         return false;
       } else if (createProductModel.getProductWeight.length > 2) {
         // น้ำหนักไม่เกิน 100 กก.
-        showSnackBar(context, 'กรุณาระบุน้ำหนักทุเรียนตามความเป็นจริง');
+        showFlashBar(context,
+            message: 'กรุณาระบุน้ำหนักทุเรียนตามความเป็นจริง', warning: true);
         return false;
       }
 
       if (createProductModel.getProductPrice == null ||
           createProductModel.getProductPrice == "") {
-        showSnackBar(context, 'กรุณาระบุราคาของทุเรียน');
+        showFlashBar(context,
+            message: 'กรุณาระบุราคาของทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
+          return false;
         }
         return false;
       } else if (createProductModel.getProductPrice.length > 8) {
         // จำนวนไม่เกิน 10^7 ลูก
-        showSnackBar(context, 'กรุณาระบุราคาทุเรียนตามความเป็นจริง');
+        showFlashBar(context,
+            message: 'กรุณาระบุราคาทุเรียนตามความเป็นจริง', warning: true);
         return false;
       }
 
@@ -260,27 +271,14 @@ class _BodyState extends State<Body> {
                 builder: (_) => ProductImageUpload(
                   productId: widget.storeID,
                   onPressed: () {
+                    showFlashBar(context,
+                        title: 'สร้างสินค้าสำเร็จ',
+                        message: 'ระบบกำลังอัพเดทข้อมูลและเผยแผร่ไปยังผู้ซื้อ',
+                        success: true,
+                        duration: 3500);
                     // * Navigate operation screen and show snackbar create store success
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                       builder: (_) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          _scaffoldKey.currentState.showSnackBar(
-                            SnackBar(
-                              content: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check,
-                                    color: Colors.green[600],
-                                  ),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Text('สร้างสินค้าสำเร็จ')
-                                ],
-                              ),
-                            ),
-                          );
-                        });
                         return Scaffold(
                           key: _scaffoldKey,
                           body: OperationScreen(),
@@ -292,10 +290,12 @@ class _BodyState extends State<Body> {
               ),
             );
           } else {
-            showSnackBar(context, 'บันทึกข้อมูลไม่สำเร็จ');
+            showFlashBar(context,
+                message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
           }
         } catch (e) {
-          showSnackBar(context, "เกิดข้อผิดพลาดไม่สามารถสร้างสินค้าได้");
+          showFlashBar(context,
+              message: 'เกิดข้อผิดพลาดไม่สามารถสร้างสินค้าได้', error: true);
         }
       }
     }
@@ -624,6 +624,11 @@ class _BodyState extends State<Body> {
                                         (consumerCreateProductModel
                                                 .getCurrentIndexPage) +
                                             1;
+                                  } else {
+                                    showFlashBar(context,
+                                        message:
+                                            'กรุณาระบุข้อมูลให้ครบถ้วนตามความเป็นจริง',
+                                        warning: true);
                                   }
                                 },
                               ),
