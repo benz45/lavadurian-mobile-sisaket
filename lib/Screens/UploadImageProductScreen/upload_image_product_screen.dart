@@ -127,16 +127,12 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
       request.files.add(multipartFile);
 
       //adding params Product ID
-      request.fields['product'] = widget.productId;
+      request.fields['product'] = widget.productId.toString();
 
       // Upload photo and wait for response
       Response response = await Response.fromStream(await request.send());
       final jsonData = jsonDecode(response.body);
-      if (jsonData['status']) {
-        _btnController.success();
-      } else {
-        _btnController.error();
-      }
+      print(jsonData);
     }
   }
 
@@ -325,7 +321,8 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                 color: kPrimaryColor,
                 onPressed: isSelectedImage && images.length != 0
                     ? () {
-                        // TODO:
+                        print("${images.length}");
+                        _uploadProcess();
                       }
                     : null,
                 child: Text(
