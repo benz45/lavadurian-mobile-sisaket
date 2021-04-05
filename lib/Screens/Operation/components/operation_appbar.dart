@@ -28,7 +28,7 @@ class _OperationAppBarState extends State<OperationAppBar> {
 
     return SliverAppBar(
       shadowColor: Colors.grey[50].withOpacity(0.5),
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.transparent,
       automaticallyImplyLeading: false,
       pinned: true,
       title: OperationAppHeaderMenu(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
+import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
 import 'package:LavaDurian/Screens/ManageProduct/manage_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
@@ -8,6 +9,7 @@ import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_product.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
+import 'package:LavaDurian/Screens/Register_Success/components/background.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/constants.dart';
@@ -252,7 +254,7 @@ class ContainerStore extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final font = Theme.of(context).textTheme;
     return Container(
-      color: Colors.grey[50],
+      color: Color(0xFFFAFAFA),
       child: CustomScrollView(
         physics: NeverScrollableScrollPhysics(),
         primary: true,
@@ -389,7 +391,23 @@ class ContainerStore extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    Consumer<StoreModel>(
+                                                  builder: (_, _storeModel, c) {
+                                                    int stireId = _storeModel
+                                                        .getCurrentIdStore;
+                                                    return CreateProductDemoScreen(
+                                                        backArrowButton: true,
+                                                        storeID: stireId);
+                                                  },
+                                                ),
+                                              ),
+                                            );
+                                          },
                                           child: Text(
                                             'สร้างสินค้าใหม่',
                                             style:
