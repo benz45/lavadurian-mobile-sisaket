@@ -145,7 +145,9 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
         for (var imageData in jsonData['data']) {
           productImageModel.images.add(imageData);
         }
+
         print(productImageModel.images);
+
         Navigator.push(
             context,
             MaterialPageRoute(
