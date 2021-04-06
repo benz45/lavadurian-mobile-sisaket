@@ -1,6 +1,6 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
-import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_delete_product.dart';
+import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
@@ -15,8 +15,8 @@ class ViewProductScreen extends StatefulWidget {
   final int productId;
 
   ViewProductScreen(
-      {Key key, this.hero, this.status, this.gene, @required String productId})
-      : this.productId = int.parse(productId),
+      {Key key, this.hero, this.status, this.gene, @required int productId})
+      : this.productId = productId,
         super(key: key);
 
   @override
@@ -25,6 +25,13 @@ class ViewProductScreen extends StatefulWidget {
 
 class _ViewProductScreenState extends State<ViewProductScreen> {
   AnimationController animateController;
+
+  OrdertModel ordertModel;
+  @override
+  void initState() {
+    super.initState();
+    ordertModel = context.read<OrdertModel>();
+  }
 
   Future<void> _showOnDeleteDialog() async {
     return showDialog<void>(
@@ -41,7 +48,10 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
               productId: widget.productId,
             );
           } else {
-            return DialoCanNotgDeleteProduct(orderId: order.first['id']);
+            return DialoCanNotgActionProduct(
+              orderId: order.first['id'],
+              title: 'ไม่สามารถลบสินค้าได้',
+            );
           }
         });
       },
@@ -50,14 +60,30 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
 
   void _onNavigatorEditProductScreen() {
     if (widget.productId != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditProductScreen(
-            productID: widget.productId,
+      final order = ordertModel.orderItems
+          .firstWhere((e) => e['product'] == widget.productId);
+
+      if (order.isEmpty) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditProductScreen(
+              productID: widget.productId,
+            ),
           ),
-        ),
-      );
+        );
+      } else {
+        showDialog<void>(
+          context: context,
+          barrierDismissible: true, // user must tap button!
+          builder: (BuildContext context) {
+            return DialoCanNotgActionProduct(
+              orderId: order['id'],
+              title: 'ไม่สามารถแก้ไขสินค้าได้',
+            );
+          },
+        );
+      }
     }
   }
 

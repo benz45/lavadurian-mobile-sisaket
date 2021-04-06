@@ -1,17 +1,11 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
-
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
-import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
-import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
-import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
@@ -26,7 +20,6 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // ! All State
   String _chosenGene;
   String _chosenGrade;
@@ -183,7 +176,7 @@ class _BodyState extends State<Body> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) {
-            return ViewProductScreen(productId: '${widget.productID}');
+            return ViewProductScreen(productId: widget.productID);
           }),
         );
       }

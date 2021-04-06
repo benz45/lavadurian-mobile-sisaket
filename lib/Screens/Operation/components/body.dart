@@ -336,7 +336,9 @@ class ContainerStore extends StatelessWidget {
                                                     if (orderModel
                                                             .orders.length >
                                                         0)
-                                                      OperationOrderList(),
+                                                      OperationOrderList(
+                                                        maxlength: 1,
+                                                      ),
                                                   ],
                                                 ),
                                               );
@@ -489,13 +491,11 @@ class ContainerStore extends StatelessWidget {
 }
 
 class OperationOrderList extends StatelessWidget {
-  const OperationOrderList({
-    Key key,
-  }) : super(key: key);
+  final int maxlength;
+  const OperationOrderList({Key key, this.maxlength}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final font = Theme.of(context).textTheme;
     return Column(
       children: [
         Consumer<OrdertModel>(builder: (_, orderModel, c) {
@@ -512,7 +512,10 @@ class OperationOrderList extends StatelessWidget {
                         order: orderModel.orders[index],
                       );
                     },
-                    itemCount: orderModel.orders.length,
+                    itemCount: maxlength != null &&
+                            orderModel.orders.length > maxlength
+                        ? maxlength
+                        : orderModel.orders.length,
                   ),
                 ),
               ],
@@ -529,7 +532,6 @@ class OperationProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final font = Theme.of(context).textTheme;
     return Column(
       children: [
         OperationCardProduct(),

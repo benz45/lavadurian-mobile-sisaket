@@ -6,14 +6,13 @@ import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
-import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
 class DialogDeleteProduct extends StatelessWidget {
-  final productId;
-  DialogDeleteProduct({@required this.productId});
+  final int _productId;
+  DialogDeleteProduct({@required int productId}) : this._productId = productId;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class DialogDeleteProduct extends StatelessWidget {
     void _onDeleteProduct() async {
       try {
         Map<String, dynamic> data = {
-          'id': productId.toString(),
+          'id': _productId.toString(),
         };
 
         // get current user token
@@ -39,7 +38,7 @@ class DialogDeleteProduct extends StatelessWidget {
         //* Delete product success
         if (jsonData['status'] == true) {
           // Remove product from list
-          productModel.removeProduct(productId: productId);
+          productModel.removeProduct(productId: _productId);
 
           showFlashBar(context, message: 'ลบสินค้าสำเร็จ', success: true);
           // * Navigate operation screen and show snackbar delete product success

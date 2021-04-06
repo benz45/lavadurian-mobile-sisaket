@@ -4,14 +4,22 @@ import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DialoCanNotgDeleteProduct extends StatelessWidget {
-  final orderId;
-  DialoCanNotgDeleteProduct({this.orderId});
+class DialoCanNotgActionProduct extends StatelessWidget {
+  final int _orderId;
+  final String _title;
+  final String _message;
+
+  DialoCanNotgActionProduct(
+      {@required int orderId, String title, String message})
+      : this._orderId = orderId,
+        this._title = title,
+        this._message = message;
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-        'ไม่สามารถลบสินค้าได้',
+        _title ?? 'ไม่สามารถจัดการได้',
         style: TextStyle(
           fontWeight: FontWeight.bold,
         ),
@@ -25,7 +33,8 @@ class DialoCanNotgDeleteProduct extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              'เนื่องจากสินค้ามีคำสั่งซื้อที่ยังไม่ดำเนินการจากผู้ขาย กรุณาตรวจสอบคำสั่งซื้อ',
+              _message ??
+                  'เนื่องจากสินค้ามีคำสั่งซื้อที่ยังไม่ดำเนินการจากผู้ขาย กรุณาตรวจสอบคำสั่งซื้อ',
             ),
             SizedBox(
               height: 16,
@@ -43,7 +52,7 @@ class DialoCanNotgDeleteProduct extends StatelessWidget {
                         Consumer<OrdertModel>(builder: (_, ordertModel, c) {
                       // Filter orders from id
                       final order = ordertModel.orders
-                          .where((element) => element['id'] == orderId);
+                          .where((element) => element['id'] == _orderId);
 
                       //! Is not order data
                       if (order.isEmpty) {

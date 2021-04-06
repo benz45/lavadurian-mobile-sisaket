@@ -1,11 +1,13 @@
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
+import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:im_stepper/stepper.dart';
 import 'package:provider/provider.dart';
 
 class ViewOrderScreen extends StatefulWidget {
-  final order;
+  final Map order;
   const ViewOrderScreen({Key key, this.order}) : super(key: key);
 
   @override
@@ -14,23 +16,30 @@ class ViewOrderScreen extends StatefulWidget {
 
 class _ViewOrderScreenState extends State<ViewOrderScreen> {
   AnimationController animateController;
+  OrdertModel orderModel;
+  ProductModel productModel;
+  @override
+  void initState() {
+    orderModel = context.read<OrdertModel>();
+    productModel = context.read<ProductModel>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Provider
-    final orderItems = Provider.of<OrdertModel>(context).orderItems;
-    final product = Provider.of<ProductModel>(context);
-
-    // Media Query
-    final double appBarHeight = 66.0;
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
+    Size size = MediaQuery.of(context).size;
+    TextTheme textTheme = Theme.of(context).textTheme;
 
     // Filter index id on orderItems id.
-    final mapOrderItems =
-        orderItems.where((e) => e['id'] == widget.order['id']);
+    final Map mapOrder = orderModel.orders
+        .firstWhere((e) => e['id'] == widget?.order['id'], orElse: () => {});
+
+    // Filter index id on orderItems id.
+    final Map mapOrderItems = orderModel.orderItems
+        .firstWhere((e) => e['order'] == mapOrder['id'], orElse: () => {});
 
     //If there are no elements in this mapOrderItems.
-    if (mapOrderItems.isEmpty) {
+    if (mapOrder.isEmpty) {
       return Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -54,238 +63,491 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
         ),
       );
     } else {
-      final Map resultMapOrder = mapOrderItems.first;
-
-      // Filter product id on the mapOrderItems id.
-      final Map mapProduct = Map<String, dynamic>.from(product.products
-          .where((e) => e['id'] == resultMapOrder['product'])
-          .single);
-
-      // Filter product gene.
-      final String mapProductGene =
-          product.productGene['${mapProduct['gene']}'];
-
       return Scaffold(
-        body: Container(
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                floating: false,
-                elevation: 0,
-                shadowColor: Colors.grey[50].withOpacity(0.3),
-                backgroundColor: Colors.white,
-                pinned: true,
-                expandedHeight: 280.0,
-                automaticallyImplyLeading: false,
-                title: Container(
-                  child: Row(
+        body: Center(
+          child: Container(
+            color: Colors.grey[50],
+            child: CustomScrollView(
+              slivers: [
+                // ! App bar
+                SliverAppBar(
+                  floating: false,
+                  elevation: 0,
+                  shadowColor: Colors.grey[50].withOpacity(0.3),
+                  backgroundColor: Colors.grey[50],
+                  automaticallyImplyLeading: false,
+                  leading: Container(
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(Icons.arrow_back_rounded),
+                      color: kTextPrimaryColor,
+                    ),
+                  ),
+                ),
+
+                // ! Title header
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Container(
+                      width: size.width * 0.9,
+                      margin: EdgeInsets.only(bottom: size.height * 0.028),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'รายการคำสั่งซื้อ',
+                                style: textTheme.headline6,
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Text(
+                                '#${mapOrder['id']}',
+                                style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontSize: textTheme.headline6.fontSize,
+                                    fontWeight: textTheme.headline6.fontWeight),
+                              ),
+                            ],
+                          ),
+                          Consumer<StoreModel>(builder: (_, _storeModel, c) {
+                            return Text(
+                              _storeModel.getCurrentStore[0]['name'],
+                              style: TextStyle(
+                                  color: kTextSecondaryColor,
+                                  fontWeight: FontWeight.bold),
+                            );
+                          }),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+                // ! Box status
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Container(
+                      padding: EdgeInsets.all(22),
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.04),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20)),
+                      width: size.width * 0.9,
+                      child: Consumer<OrdertModel>(
+                        builder: (_, _ordertModel, c) {
+                          // Filter orders by id
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // * Box status header
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'สถานะคำสั่งซื้อ',
+                                    style: TextStyle(
+                                        color: kTextSecondaryColor,
+                                        fontSize: textTheme.subtitle1.fontSize,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  if (mapOrder['status'] != 8)
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'ขั้นตอนที่',
+                                          style: TextStyle(
+                                              color: kTextSecondaryColor,
+                                              fontSize:
+                                                  textTheme.subtitle1.fontSize,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text(
+                                          '${mapOrder['status']}/7',
+                                          style: TextStyle(
+                                              color: kPrimaryColor,
+                                              fontSize:
+                                                  textTheme.subtitle1.fontSize,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    )
+                                ],
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 26, bottom: 16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      '${_ordertModel.orderStatus['${mapOrder['status']}']}',
+                                      style: TextStyle(
+                                          fontSize:
+                                              textTheme.subtitle1.fontSize + 4,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
+                                children: [
+                                  IconStepper(
+                                    stepReachedAnimationEffect:
+                                        Curves.fastOutSlowIn,
+                                    stepColor:
+                                        kTextSecondaryColor.withOpacity(0.15),
+                                    nextButtonIcon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: textTheme.subtitle1.fontSize,
+                                      color: kTextSecondaryColor,
+                                    ),
+                                    enableNextPreviousButtons: false,
+                                    steppingEnabled: false,
+                                    scrollingDisabled: false,
+                                    previousButtonIcon: Icon(
+                                      Icons.arrow_back_ios_rounded,
+                                      size: textTheme.subtitle1.fontSize,
+                                      color: kTextSecondaryColor,
+                                    ),
+                                    activeStepBorderColor:
+                                        mapOrder['status'] == 8
+                                            ? Colors.red[300]
+                                            : kPrimaryColor.withOpacity(0.75),
+                                    activeStepColor: mapOrder['status'] == 8
+                                        ? Colors.red[300]
+                                        : kPrimaryColor.withOpacity(0.75),
+                                    lineColor: kTextSecondaryColor,
+                                    icons: mapOrder['status'] != 8
+                                        ? [
+                                            Icon(
+                                              Icons.flag_outlined,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons.access_time_sharp,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons.fact_check_outlined,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons.mobile_friendly,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons.delivery_dining,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons
+                                                  .assignment_turned_in_outlined,
+                                              color: Colors.white,
+                                            ),
+                                            Icon(
+                                              Icons.check_circle_outline,
+                                              color: Colors.white,
+                                            ),
+                                          ]
+                                        : [
+                                            Icon(
+                                              Icons.close,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                    activeStep: mapOrder['status'] != 8
+                                        ? mapOrder['status'] - 1
+                                        : 0,
+                                  ),
+                                ],
+                              ),
+                              Divider(
+                                height: 36,
+                              ),
+                              // ! Box change status
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // * จัดการสถานะคำสั่งซื้อ
+                                  Center(
+                                    child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(29)),
+                                      onPressed: () {},
+                                      color: kPrimaryColor,
+                                      child: Text(
+                                        'เปลี่ยนสถานะคำสั่งซื้อ',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
+                // ! รายละเอียดสินค้า
+                SliverPadding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  sliver: ViewOrderDetailProduct(
+                    productId: /*value product id ->*/ mapOrderItems['product'],
+                  ),
+                ),
+                // ! รายละเอียดผู้ซื้อ & รายละเอียดผู้ซื้อ
+                SliverPadding(
+                  padding: EdgeInsets.only(top: 20),
+                  sliver: SliverToBoxAdapter(
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.all(22),
+                        decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.04),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20)),
+                        width: size.width * 0.9,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // * 1. รายละเอียดผู้ซื้อ
+                            BuildHeadText(text: 'รายละเอียดผู้ชื้อ'),
+                            BuildSubText(
+                              leading: 'ชื่อ',
+                              text: '${widget.order['owner']}',
+                            ),
+                            BuildSubText(
+                              leading: 'ที่อยู่',
+                              text: '${widget.order['receive_address']}',
+                              width: MediaQuery.of(context).size.width * .4,
+                            ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+
+                            Divider(
+                              height: size.height * 0.05,
+                            ),
+
+                            // * 2. รายละเอียดผู้ซื้อ
+
+                            BuildSubText(
+                              leading: 'น้ำหนักที่สั่งซื้อ',
+                              text: '${mapOrderItems['price_kg']}',
+                            ),
+                            BuildSubText(
+                              leading: 'ค่าจัดส่ง',
+                              text: '${widget.order['shipping']}',
+                            ),
+                            BuildSubText(
+                              leading: 'รวมราคา',
+                              text: '${mapOrderItems['price']}',
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.only(bottom: size.height * 0.1),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+  }
+}
+
+class ViewOrderDetailProduct extends StatelessWidget {
+  final int productId;
+  const ViewOrderDetailProduct({
+    Key key,
+    @required this.productId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Consumer<ProductModel>(
+      builder: (_, _productModel, c) {
+        // Filter product id on the mapOrderItems id.
+        final Map mapProduct = _productModel.products
+            .firstWhere((e) => e['id'] == productId, orElse: () => {});
+
+        // Filter product gene.
+        final String mapProductGene =
+            _productModel.productGene['${mapProduct['gene']}'];
+
+        return SliverToBoxAdapter(
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.all(22),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.04),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
+              width: size.width * 0.9,
+              child: Column(
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: IconButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            icon: Icon(Icons.arrow_back_rounded),
-                            color: kTextPrimaryColor,
+                      Text(
+                        'รายละเอียดสินค้า',
+                        style: TextStyle(
+                            color: kTextSecondaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                Theme.of(context).textTheme.subtitle1.fontSize),
+                      ),
+                      Icon(
+                        Icons.more_vert_rounded,
+                        size: Theme.of(context).textTheme.subtitle1.fontSize,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.02,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ViewProductScreen(
+                            productId: mapProduct['id'],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: size.height * 0.09,
+                      width: size.height * 0.09,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(18.0)),
+                        image: DecorationImage(
+                          fit: BoxFit
+                              .cover, //I assumed you want to occupy the entire space of the card
+                          image: AssetImage(
+                            'assets/images/example.png',
                           ),
                         ),
                       ),
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child:
-                              Icon(Icons.more_vert, color: kTextPrimaryColor),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    height: statusBarHeight + appBarHeight,
+                  Container(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          child: Center(
+                            child: Text(
+                              '$mapProductGene',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: kTextPrimaryColor,
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2
+                                      .fontSize),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(18.0)),
-                                    image: DecorationImage(
-                                      fit: BoxFit
-                                          .cover, //I assumed you want to occupy the entire space of the card
-                                      image: AssetImage(
-                                        'assets/images/example.png',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 17.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '$mapProductGene',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: kTextPrimaryColor,
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1
-                                                .fontSize),
-                                      ),
-                                      Text(
-                                        '${mapProduct['price']}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: kPrimaryColor,
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .subtitle1
-                                                .fontSize),
-                                      ),
-                                      SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text(
-                                        'น้ำหนัก',
-                                        style:
-                                            TextStyle(color: kTextPrimaryColor),
-                                      ),
-                                      Text(
-                                        '${mapProduct['weight']}',
-                                        style: TextStyle(color: kPrimaryColor),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
+                            Text(
+                              'เกรดทุเรียน',
+                              style: TextStyle(color: kTextSecondaryColor),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: Icon(
-                                Icons.arrow_downward_rounded,
-                                color: Colors.grey[400],
-                                size: 40,
+                            Text(
+                              '${_productModel.productGrade['${mapProduct['grade']}']}',
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'น้ำหนัก (กก.)',
+                              style: TextStyle(color: kTextSecondaryColor),
+                            ),
+                            Text(
+                              '${mapProduct['weight']} กก.',
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'ราคา (ต่อ/กก.)',
+                              style: TextStyle(
+                                color: kTextSecondaryColor,
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.only(bottom: 16),
-                              child: Text(
-                                'คุณ${widget.order['owner']}',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: kTextPrimaryColor,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .headline6
-                                        .fontSize),
-                              ),
+                            Text(
+                              '${mapProduct['price']} บาท',
                             ),
                           ],
                         ),
                       ],
                     ),
-                  ),
-                ),
+                  )
+                ],
               ),
-              SliverPadding(
-                padding: EdgeInsets.all(32),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(
-                    [
-                      BuildHeadText(text: 'รายละเอียดผู้ชื้อ'),
-                      BuildSubText(
-                        leading: 'ชื่อ',
-                        text: '${widget.order['owner']}',
-                      ),
-                      BuildSubText(
-                        leading: 'ที่อยู่',
-                        text: '${widget.order['receive_address']}',
-                        width: MediaQuery.of(context).size.width / 2,
-                      ),
-                      SizedBox(
-                        height: 16.0,
-                      ),
-                      BuildHeadText(text: 'รายละเอียดการสั่งซื้อ'),
-                      BuildSubText(
-                        leading: 'น้ำหนัก',
-                        text: '${mapProduct['weight']}',
-                      ),
-                      BuildSubText(
-                        leading: 'น้ำหนักที่สั่งซื้อ',
-                        text: '${resultMapOrder['price_kg']}',
-                      ),
-                      BuildSubText(
-                        leading: 'ค่าจัดส่ง',
-                        text: '${widget.order['shipping']}',
-                      ),
-                      BuildSubText(
-                        leading: 'รวมราคา',
-                        text: '${resultMapOrder['price']}',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 36),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                child: OutlineButton(
-                  highlightColor: kPrimaryLightColor,
-                  highlightedBorderColor: kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16.0)),
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                  color: kPrimaryColor,
-                  onPressed: () {},
-                  child: Text(
-                    'ยกเลิกคำสั่งซื้อ',
-                    style: TextStyle(color: kPrimaryColor, fontSize: 16.0),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 16,
-              ),
-              Container(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                    color: kPrimaryColor,
-                    onPressed: () {},
-                    child: Text(
-                      'ยืนยันคำสั่งซื้อ',
-                      style: TextStyle(color: kPrimaryLightColor, fontSize: 16),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+        );
+      },
+    );
   }
 }
 
@@ -300,6 +562,7 @@ class BuildHeadText extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
+            color: kTextSecondaryColor,
             fontWeight: FontWeight.bold,
             fontSize: Theme.of(context).textTheme.subtitle1.fontSize),
       ),
@@ -325,6 +588,7 @@ class BuildSubText extends StatelessWidget {
           Text(
             leading,
             style: TextStyle(
+                color: kTextSecondaryColor,
                 fontSize: Theme.of(context).textTheme.subtitle2.fontSize),
           ),
           Container(

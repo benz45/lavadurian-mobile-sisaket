@@ -35,6 +35,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Lava Durian Sisaket',
         theme: ThemeData(
+          textTheme: TextTheme(
+            headline6: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           pageTransitionsTheme: PageTransitionsTheme(builders: {
             TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
             TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),

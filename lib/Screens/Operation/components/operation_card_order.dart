@@ -35,6 +35,7 @@ class OperationCardOrder extends StatelessWidget {
         );
       },
       child: Container(
+        margin: EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -85,10 +86,8 @@ class OperationCardOrder extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 3.8, top: 2.0),
                     child: Text(
-                      "${this.order['owner'].toString().length > 25 ? this.order['owner'].toString().substring(
-                            0,
-                            20,
-                          ) + '...' : this.order['owner'].toString()}",
+                      "${this.order['owner']}",
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: size.height /

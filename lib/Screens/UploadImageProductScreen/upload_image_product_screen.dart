@@ -150,10 +150,11 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
         print(productImageModel.images);
 
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ViewProductScreen(productId: productID.toString())));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ViewProductScreen(productId: productID),
+          ),
+        );
       }
     } catch (e) {
       print(e.toString());
