@@ -187,8 +187,8 @@ class _BodyState extends State<Body> {
           return false;
         }
         return false;
-      } else if (createProductModel.getProductWeight.length > 2) {
-        // น้ำหนักไม่เกิน 100 กก.
+      } else if (createProductModel.getProductWeight.length > 5) {
+        // น้ำหนักไม่เกิน 99.99 กก.
         showFlashBar(context,
             message: 'กรุณาระบุน้ำหนักทุเรียนตามความเป็นจริง', warning: true);
         return false;
@@ -269,7 +269,7 @@ class _BodyState extends State<Body> {
               context,
               MaterialPageRoute(
                 builder: (_) => ProductImageUpload(
-                  productId: widget.storeID,
+                  productId: jsonData['data']['product']['id'],
                   onPressed: () {
                     showFlashBar(context,
                         title: 'สร้างสินค้าสำเร็จ',
@@ -776,9 +776,10 @@ class _BodyState extends State<Body> {
                                 controller: _textProductWeight,
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.numberWithOptions(
-                                    signed: true, decimal: true),
+                                    decimal: true),
                                 inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
                                 ], // Onl
                               ),
                               //  * _productPrice
