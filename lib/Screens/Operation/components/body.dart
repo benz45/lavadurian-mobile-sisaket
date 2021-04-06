@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:LavaDurian/Screens/AllStatusOrder/all_status_order_screen.dart';
 import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
@@ -384,6 +385,42 @@ class ContainerStore extends StatelessWidget {
                                         width: size.width * 0.85,
                                         child: Column(
                                           children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                OutlineButton(
+                                                  highlightColor:
+                                                      kPrimaryLightColor,
+                                                  highlightedBorderColor:
+                                                      kPrimaryColor,
+                                                  color: kPrimaryColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              AllStatusOrderScreen()),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    'สถานะคำสั่งซื้อทั้งหมด',
+                                                    style: TextStyle(
+                                                        color: kPrimaryColor),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Divider(),
                                             Consumer<BottomBarModel>(builder:
                                                 (_, _bottomBarModel, c) {
                                               return OperationList(
