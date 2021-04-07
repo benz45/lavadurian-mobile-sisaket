@@ -4,6 +4,8 @@ import 'package:LavaDurian/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AllStatusOrderScreen extends StatelessWidget {
+  final storeID;
+  const AllStatusOrderScreen({Key key, this.storeID}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class AllStatusOrderScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        child: Body(),
+        child: Body(storeID: this.storeID),
       ),
     );
   }
