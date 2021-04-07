@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/AllStatusOrder/fillterd_status_order_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,13 @@ class _StatusListTileState extends State<StatusListTile> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    FillterdStatusOrderScreen(widget.title, widget.statusID)));
+      },
       child: ListTile(
         title: Text(widget.title),
         subtitle: Text(

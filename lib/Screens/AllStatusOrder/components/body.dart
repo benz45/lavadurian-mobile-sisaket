@@ -75,17 +75,6 @@ class _BodyState extends State<Body> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   StatusCard(),
-                  SizedBox(height: 20),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: orderModel.orders.length,
-                    itemBuilder: (context, index) {
-                      return OperationCardOrder(
-                        order: orderModel.orders[index],
-                      );
-                    },
-                  )
                 ],
               ),
             ),
