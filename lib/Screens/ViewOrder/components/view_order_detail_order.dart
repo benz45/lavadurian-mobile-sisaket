@@ -61,7 +61,7 @@ class ViewOrderDetailOrder extends StatelessWidget {
                   color: kPrimaryColor,
                 ),
                 BuildSubText(
-                  leading: 'เวลาสั่งซื้อ',
+                  leading: 'เวลาที่สั่งซื้อ',
                   text:
                       '${DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(orderItems['date_created']))}',
                 ),

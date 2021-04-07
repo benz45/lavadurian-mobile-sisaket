@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/ViewOrder/view_order_screen.dart';
 import 'package:LavaDurian/app/splash_screen.dart';
 import 'package:LavaDurian/models/createProduct_model.dart';
 import 'package:LavaDurian/models/createStore_model.dart';
@@ -23,6 +24,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
         ChangeNotifierProvider<ProductModel>(create: (_) => ProductModel()),
         ChangeNotifierProvider<BookBankModel>(create: (_) => BookBankModel()),
+        ChangeNotifierProvider<SizeViewOrderModel>(
+            create: (_) => SizeViewOrderModel()),
         ChangeNotifierProvider<ProductImageModel>(
             create: (_) => ProductImageModel()),
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),

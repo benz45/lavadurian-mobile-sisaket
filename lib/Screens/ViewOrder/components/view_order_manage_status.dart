@@ -9,13 +9,14 @@ class ViewOrderManageStatus extends StatelessWidget {
     Key key,
     @required this.mapOrder,
   }) : super(key: key);
-
   final Map mapOrder;
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
+    OrdertModel ordertModel = Provider.of<OrdertModel>(context, listen: false);
+
     return SliverToBoxAdapter(
       child: Center(
         child: Container(
@@ -31,6 +32,7 @@ class ViewOrderManageStatus extends StatelessWidget {
           width: size.width * 0.9,
           child: Consumer<OrdertModel>(
             builder: (_, _ordertModel, c) {
+              final _order = _ordertModel.getOrderFromId(mapOrder['id']);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,7 +48,7 @@ class ViewOrderManageStatus extends StatelessWidget {
                             fontSize: textTheme.subtitle1.fontSize,
                             fontWeight: FontWeight.bold),
                       ),
-                      if (mapOrder['status'] != 8)
+                      if (_order['status'] != 8)
                         Row(
                           children: [
                             Text(
@@ -60,7 +62,7 @@ class ViewOrderManageStatus extends StatelessWidget {
                               width: 8,
                             ),
                             Text(
-                              '${mapOrder['status']}/7',
+                              '${_order['status']}/7',
                               style: TextStyle(
                                   color: kPrimaryColor,
                                   fontSize: textTheme.subtitle1.fontSize,
@@ -77,7 +79,7 @@ class ViewOrderManageStatus extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
-                          '${_ordertModel.orderStatus['${mapOrder['status']}']}',
+                          '${_ordertModel.orderStatus['${_order['status']}']}',
                           style: TextStyle(
                               fontSize: textTheme.subtitle1.fontSize + 4,
                               fontWeight: FontWeight.bold),
@@ -98,82 +100,68 @@ class ViewOrderManageStatus extends StatelessWidget {
                         enableNextPreviousButtons: false,
                         steppingEnabled: false,
                         scrollingDisabled: false,
+                        lineDotRadius: 1.5,
                         previousButtonIcon: Icon(
                           Icons.arrow_back_ios_rounded,
                           size: textTheme.subtitle1.fontSize,
                           color: kTextSecondaryColor,
                         ),
-                        activeStepBorderColor: mapOrder['status'] == 8
+                        activeStepBorderColor: _order['status'] == 8
                             ? Colors.red[300]
                             : kPrimaryColor.withOpacity(0.75),
-                        activeStepColor: mapOrder['status'] == 8
+                        activeStepColor: _order['status'] == 8
                             ? Colors.red[300]
                             : kPrimaryColor.withOpacity(0.75),
-                        lineColor: kTextSecondaryColor,
-                        icons: mapOrder['status'] != 8
+                        lineColor: kTextSecondaryColor.withOpacity(0.25),
+                        icons: _order['status'] != 8
                             ? [
-                                Icon(
-                                  Icons.flag_outlined,
-                                  color: Colors.white,
-                                ),
+                                // * status 1
                                 Icon(
                                   Icons.access_time_sharp,
                                   color: Colors.white,
                                 ),
+                                // * status 2
                                 Icon(
-                                  Icons.fact_check_outlined,
+                                  Icons.flag_outlined,
                                   color: Colors.white,
                                 ),
+                                // * status 3
+                                Icon(
+                                  Icons.timer,
+                                  color: Colors.white,
+                                ),
+                                // * status 4
+                                Icon(
+                                  Icons.mark_chat_read_outlined,
+                                  color: Colors.white,
+                                ),
+                                // * status 5
                                 Icon(
                                   Icons.mobile_friendly,
                                   color: Colors.white,
                                 ),
+                                // * status 6
                                 Icon(
                                   Icons.delivery_dining,
                                   color: Colors.white,
                                 ),
-                                Icon(
-                                  Icons.assignment_turned_in_outlined,
-                                  color: Colors.white,
-                                ),
+
+                                // * status 7
                                 Icon(
                                   Icons.check_circle_outline,
                                   color: Colors.white,
                                 ),
                               ]
                             : [
+                                // * status 8
                                 Icon(
                                   Icons.close,
                                   color: Colors.white,
                                 ),
                               ],
-                        activeStep: mapOrder['status'] != 8
-                            ? mapOrder['status'] - 1
-                            : 0,
+                        activeStep:
+                            _order['status'] != 8 ? _order['status'] - 1 : 0,
                       ),
-                    ],
-                  ),
-                  Divider(
-                    height: 36,
-                  ),
-                  // ! Box change status
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // * จัดการสถานะคำสั่งซื้อ
-                      Center(
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(29)),
-                          onPressed: () {},
-                          color: kPrimaryColor,
-                          child: Text(
-                            'เปลี่ยนสถานะคำสั่งซื้อ',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ],

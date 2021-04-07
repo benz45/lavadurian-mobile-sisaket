@@ -8,7 +8,7 @@ class SettingModel extends ChangeNotifier {
   // End-point for Login
   String get endPointLogin => 'api/login';
 
-  // End-point for Login
+  // End-point for register
   String get endPointRegis => 'api/regis';
 
   // End-point for get User Profile
@@ -55,6 +55,9 @@ class SettingModel extends ChangeNotifier {
 
   // End-point for delete new bookbank
   String get endPoinDeleteBookBank => 'api/bookbank/delete';
+
+  // End-point for order status update
+  String get endPoinOrderStatusUpdate => 'api/order/update';
 
   // Setting Value
   Map<String, dynamic> _value = {};

@@ -153,6 +153,19 @@ class OrdertModel extends ChangeNotifier {
   List<Map<String, dynamic>> get orders => _orders;
   List<Map<String, dynamic>> get orderItems => _orderItems;
 
+  // Get order by id
+  getOrderFromId(int idOrder) {
+    final order = _orders.firstWhere((element) => element['id'] == idOrder);
+    return order;
+  }
+
+  // Get order item by id
+  getOrderItemFromId(int idOrder) {
+    final order =
+        _orderItems.firstWhere((element) => element['order'] == idOrder);
+    return order;
+  }
+
   set orders(List<Map<String, dynamic>> orders) {
     _orders = orders;
     notifyListeners();
@@ -160,6 +173,14 @@ class OrdertModel extends ChangeNotifier {
 
   set orderItems(List<Map<String, dynamic>> orderItems) {
     _orderItems = orderItems;
+    notifyListeners();
+  }
+
+  // Update order
+  void updateOrder(Map value) {
+    final indexListOrder =
+        _orders.indexWhere((element) => element['id'] == value['id']);
+    _orders[indexListOrder] = value;
     notifyListeners();
   }
 
