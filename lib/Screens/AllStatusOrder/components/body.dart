@@ -23,9 +23,13 @@ class _BodyState extends State<Body> {
   int storeID;
 
   Future<String> _getOrderStatus() async {
+    if (storeID == null) {
+      storeID = 1;
+    }
+
     String token = settingModel.value['token'];
     try {
-      Map<String, dynamic> data = {'store': 1.toString()};
+      Map<String, dynamic> data = {'store': storeID.toString()};
 
       final response = await Http.post(
         '${settingModel.baseURL}/${settingModel.endPoinGetOrderStatus}',
