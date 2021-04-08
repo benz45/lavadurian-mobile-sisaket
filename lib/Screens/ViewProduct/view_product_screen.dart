@@ -3,6 +3,7 @@ import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
@@ -25,12 +26,14 @@ class ViewProductScreen extends StatefulWidget {
 
 class _ViewProductScreenState extends State<ViewProductScreen> {
   AnimationController animateController;
+  ProductImageModel productImageModel;
 
   OrdertModel ordertModel;
   @override
   void initState() {
     super.initState();
     ordertModel = context.read<OrdertModel>();
+    productImageModel = context.read<ProductImageModel>();
   }
 
   Future<void> _showOnDeleteDialog() async {
@@ -100,6 +103,38 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     }
   }
 
+  // ! setup current product images
+  List _consumeProductImage(productID) {
+    List data = [];
+
+    if (productImageModel.images.length != 0) {
+      int count = 1;
+      for (var image in productImageModel.images) {
+        if (image['product'] == productID) {
+          Map<String, dynamic> map = {
+            "title": "ภาพที่ ${count.toString()}",
+            "url": image['image'],
+          };
+          data.add(map);
+          count += 1;
+        }
+      }
+    }
+
+    // * if have no any image
+    // * setup default image to current product
+    // if (data.length == 0) {
+    //   var img = AssetImage('assets/images/example.png');
+    //   Map<String, dynamic> map = {
+    //     "title": "ภาพที่ 1",
+    //     "url": img.toString(),
+    //   };
+    //   data.add(map);
+    // }
+
+    return data;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -124,6 +159,10 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     //* Filter product status.
     final String productStatus =
         productModel.productStatus['${dataProduct['status']}'];
+
+    // * for store image list
+    final List data = _consumeProductImage(id);
+
     return Scaffold(
       body: Container(
         child: CustomScrollView(
@@ -218,22 +257,46 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Hero(
-                          tag: 'image${widget.hero}',
-                          child: Container(
+                        CarouselSlider(
+                          options: CarouselOptions(
+                            autoPlay: false,
+                            autoPlayInterval: Duration(seconds: 10),
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 400),
                             height: 400,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit
-                                    .cover, //I assumed you want to occupy the entire space of the card
-                                image: AssetImage(
-                                  'assets/images/example.png',
-                                ),
-                              ),
-                            ),
                           ),
+                          items: data.map((item) {
+                            return GridTile(
+                              child:
+                                  Image.network(item["url"], fit: BoxFit.cover),
+                              footer: Container(
+                                  padding: EdgeInsets.all(15),
+                                  color: Colors.black54,
+                                  child: Text(
+                                    item["title"],
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                    textAlign: TextAlign.right,
+                                  )),
+                            );
+                          }).toList(),
                         ),
+                        // Hero(
+                        //   tag: 'image${widget.hero}',
+                        //   child: Container(
+                        //     height: 400,
+                        //     width: double.infinity,
+                        //     decoration: BoxDecoration(
+                        //       image: DecorationImage(
+                        //         fit: BoxFit
+                        //             .cover, //I assumed you want to occupy the entire space of the card
+                        //         image: AssetImage(
+                        //           'assets/images/example.png',
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Container(
                           padding:
                               EdgeInsets.only(left: 28, top: 26, right: 28),

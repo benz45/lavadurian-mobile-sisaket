@@ -43,6 +43,7 @@ class _BodyState extends State<Body> {
   OrdertModel orderModel;
   ItemModel itemModel;
   BookBankModel bookBankModel;
+  ProductImageModel productImageModel;
   bool isGetUserProfile = true;
 
   Map<String, String> productGene;
@@ -59,6 +60,7 @@ class _BodyState extends State<Body> {
     orderModel = context.read<OrdertModel>();
     itemModel = context.read<ItemModel>();
     bookBankModel = context.read<BookBankModel>();
+    productImageModel = context.read<ProductImageModel>();
 
     productGene = productModel.productGene;
     productStatus = productModel.productStatus;
@@ -152,6 +154,15 @@ class _BodyState extends State<Body> {
         bookbankList.add(map);
       }
       bookBankModel.bookbank = bookbankList;
+    }
+
+    if (jsonData['data']['images'] != null) {
+      List<Map<String, dynamic>> imageList = [];
+      for (var image in jsonData['data']['images']) {
+        Map<String, dynamic> map = image;
+        imageList.add(map);
+      }
+      productImageModel.images = imageList;
     }
   }
 
