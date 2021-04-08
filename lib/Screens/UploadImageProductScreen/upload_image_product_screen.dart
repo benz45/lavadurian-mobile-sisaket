@@ -43,6 +43,16 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     productImageModel = context.read<ProductImageModel>();
   }
 
+  int _imageCount(int productID) {
+    int count = 0;
+    for (var image in productImageModel.images) {
+      if (image['product'] == productID) {
+        count += 1;
+      }
+    }
+    return count;
+  }
+
   // Seledt image from device
   Future<void> loadAssets() async {
     List<Asset> resultList;
@@ -163,12 +173,17 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
   @override
   Widget build(BuildContext context) {
+    // * setup product id
     productID = widget.productId;
+
     // Media Query
     final double appBarHeight = 66;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final font = Theme.of(context).textTheme;
     Size size = MediaQuery.of(context).size;
+
+    int imageCount = _imageCount(productID);
+    print("$productID : $imageCount");
 
     // Login Button
     final uploadButton = RoundedLoadingButton(
@@ -296,7 +311,8 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                               ],
                             ),
                           SelectImageProductContainer(
-                              onPressed: () => loadAssets())
+                            onPressed: () => loadAssets(),
+                          ),
                         ])
                   :
                   // * First container select image.
