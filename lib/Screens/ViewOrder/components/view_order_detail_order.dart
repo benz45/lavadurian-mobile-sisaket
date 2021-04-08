@@ -233,62 +233,65 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder>
                       ),
 
                       // * 3. รายละเอียดคำสั่งซื้อ
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'หมายเหตุ',
-                            style: TextStyle(
-                                color: kTextSecondaryColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  'กรณีน้ำหนักที่มีอยู่ไม่เพียงพอ',
-                                  style: TextStyle(color: kTextSecondaryColor),
+                      if (_order['status'] == 1)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'หมายเหตุ',
+                              style: TextStyle(
+                                  color: kTextSecondaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    'กรณีน้ำหนักที่มีอยู่ไม่เพียงพอ',
+                                    style:
+                                        TextStyle(color: kTextSecondaryColor),
+                                  ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isShowTextFieldEditWeigth =
-                                        !_isShowTextFieldEditWeigth;
-                                  });
-                                },
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'ปรับน้ำหนัก',
-                                      style: TextStyle(
-                                          color: kTextSecondaryColor,
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2
-                                              .fontSize),
-                                    ),
-                                    Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      color: kTextSecondaryColor,
-                                      size: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2
-                                          .fontSize,
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        height: size.height * 0.05,
-                      ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _isShowTextFieldEditWeigth =
+                                          !_isShowTextFieldEditWeigth;
+                                    });
+                                  },
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'ปรับน้ำหนัก',
+                                        style: TextStyle(
+                                            color: kTextSecondaryColor,
+                                            fontSize: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2
+                                                .fontSize),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: kTextSecondaryColor,
+                                        size: Theme.of(context)
+                                            .textTheme
+                                            .subtitle2
+                                            .fontSize,
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            Divider(
+                              height: size.height * 0.05,
+                            ),
+                          ],
+                        ),
                       AnimatedSize(
                         curve: Curves.easeOutQuart,
                         duration: Duration(milliseconds: 300),

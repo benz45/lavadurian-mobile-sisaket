@@ -5,16 +5,25 @@ import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
-class ViewOrderBottomSheetStatusFour extends StatelessWidget {
+class ViewOrderBottomSheetStatusFour extends StatefulWidget {
   const ViewOrderBottomSheetStatusFour({Key key, this.orderId})
       : super(key: key);
 
   final int orderId;
 
+  @override
+  _ViewOrderBottomSheetStatusFourState createState() =>
+      _ViewOrderBottomSheetStatusFourState();
+}
+
+class _ViewOrderBottomSheetStatusFourState
+    extends State<ViewOrderBottomSheetStatusFour> {
+  int _statusFromRadio;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -24,13 +33,13 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
     SettingModel settingModel =
         Provider.of<SettingModel>(context, listen: false);
 
-    final _orderItem = _ordertModel.getOrderItemFromId(orderId);
+    final _orderItem = _ordertModel.getOrderItemFromId(widget.orderId);
 
     Future _onSubmitConfirmPayment() async {
       try {
         Map<String, dynamic> data = {
           "order_id": _orderItem['order'].toString(),
-          "status": "5"
+          "status": "${_statusFromRadio ?? 5}"
         };
         // get current user token
         String token = settingModel.value['token'];
@@ -46,12 +55,28 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
           // Update order
           _ordertModel.updateOrder(jsonData['data']['order']);
           Navigator.of(context).pop();
-          showFlashBar(context,
-              title: 'ยืนยันชำระเงินแล้ว',
-              message:
-                  'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
-              success: true,
-              duration: 3500);
+          jsonData['data']['order']['status'] == 3
+              ? showFlashBar(context,
+                  title: 'ปรับสถานะรอการชำระเงินแล้ว',
+                  message: 'ระบบกำลังแจ้งข้อมูลการปรับสถานะให้กับผู้สั่งซื้อ',
+                  success: true,
+                  duration: 3500)
+              : jsonData['data']['order']['status'] == 5
+                  ? showFlashBar(context,
+                      title: 'ยืนยันชำระเงินแล้ว',
+                      message:
+                          'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
+                      success: true,
+                      duration: 3500)
+                  : jsonData['data']['order']['status'] == 8
+                      ? showFlashBar(context,
+                          title: 'ยกเลิกคำสั่งซื้อแล้วแล้ว',
+                          message:
+                              'ระบบกำลังแจ้งข้อมูลการปรับสถานะให้กับผู้สั่งซื้อ',
+                          success: true,
+                          duration: 3500)
+                      : showFlashBar(context,
+                          message: 'บันทึกข้อมูลสำเร็จ', success: true);
         } else {
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
@@ -62,7 +87,7 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
       }
     }
 
-    void _onShowDialogConfirmPayment() {
+    void _onShowDialogConfirm() {
       showDialog(
         context: context,
         child: AlertDialog(
@@ -74,7 +99,7 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(28),
+              Radius.circular(29),
             ),
           ),
           content: SingleChildScrollView(
@@ -126,6 +151,139 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
       );
     }
 
+    // f: Future for change  status order.
+    Future _onChangeStatusOrder() async {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          // * Init state dialog only.
+          int selectedRadio;
+
+          return AlertDialog(
+            title: Text(
+              'เลือกสถานะคำสั่งซื้อ',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+            ),
+            content: StatefulBuilder(
+              builder: (context, setDialogState) {
+                return Container(
+                  width: size.width * 0.8,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      RadioListTile(
+                          title: Text(
+                            '${_ordertModel.orderStatus["3"]}'
+                                .replaceAll("", "\u{200B}"),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: 3,
+                          groupValue: selectedRadio,
+                          selected: selectedRadio == 3 ? true : false,
+                          activeColor: kPrimaryColor,
+                          onChanged: (value) {
+                            // * set state dialog only.
+                            setDialogState(() {
+                              selectedRadio = value;
+                            });
+                            // * set state global only.
+                            setState(() {
+                              _statusFromRadio = value;
+                            });
+                          }),
+                      RadioListTile(
+                          title: Text(
+                            '${_ordertModel.orderStatus["8"]}'
+                                .replaceAll("", "\u{200B}"),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          value: 8,
+                          groupValue: selectedRadio,
+                          selected: selectedRadio == 8 ? true : false,
+                          activeColor: kPrimaryColor,
+                          onChanged: (value) {
+                            // * set state dialog only.
+                            setDialogState(() {
+                              selectedRadio = value;
+                            });
+                            // * set state global only.
+                            setState(() {
+                              _statusFromRadio = value;
+                            });
+                          }),
+                    ],
+                  ),
+                );
+              },
+            ),
+            actionsPadding: EdgeInsets.only(bottom: 16),
+            actions: [
+              // * Action dialog
+              SizedBox(
+                width: size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      child: OutlineButton(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        color: kPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(19),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          // * set state global only.
+                          setState(() {
+                            _statusFromRadio = null;
+                          });
+                        },
+                        child: Text(
+                          'ยกเลิก',
+                          style: TextStyle(color: kPrimaryColor),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Container(
+                      child: FlatButton(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        color: kPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(19),
+                          ),
+                        ),
+                        onPressed: () async => _onSubmitConfirmPayment(),
+                        child: Text(
+                          'ตกลง',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Container(
       width: size.width,
       child: Column(
@@ -142,7 +300,7 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
             height: 8,
           ),
           Text(
-            'ขณะนี้ผู้สั่งซื้อได้ทำการแจ้งชำระเงินเรียบร้อยแล้ว กรุณายืนยันการชำระเงิน',
+            'ขณะนี้ผู้สั่งซื้อได้ทำการแจ้งชำระเงินเรียบร้อยแล้ว กรุณาตรวจสอบและยืนยันการชำระเงิน',
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -154,7 +312,7 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
           FlatButton(
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
-            onPressed: () => _onShowDialogConfirmPayment(),
+            onPressed: () => _onShowDialogConfirm(),
             color: kPrimaryColor,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
@@ -166,6 +324,13 @@ class ViewOrderBottomSheetStatusFour extends StatelessWidget {
               ),
             ),
           ),
+          TextButton(
+            onPressed: _onChangeStatusOrder,
+            child: Text(
+              'หากยังไม่ได้รับการชำระเงิน',
+              style: TextStyle(color: kPrimaryColor),
+            ),
+          )
         ],
       ),
     );

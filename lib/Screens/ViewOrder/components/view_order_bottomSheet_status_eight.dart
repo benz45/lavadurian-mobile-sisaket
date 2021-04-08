@@ -10,21 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
-class ViewOrderBottomSheetStatusSix extends StatefulWidget {
-  const ViewOrderBottomSheetStatusSix({Key key, this.orderId})
+class ViewOrderBottomSheetStatusEight extends StatefulWidget {
+  const ViewOrderBottomSheetStatusEight({Key key, this.orderId})
       : super(key: key);
 
   final int orderId;
 
   @override
-  _ViewOrderBottomSheetStatusSixState createState() =>
-      _ViewOrderBottomSheetStatusSixState();
+  _ViewOrderBottomSheetStatusEightState createState() =>
+      _ViewOrderBottomSheetStatusEightState();
 }
 
-class _ViewOrderBottomSheetStatusSixState
-    extends State<ViewOrderBottomSheetStatusSix> {
+class _ViewOrderBottomSheetStatusEightState
+    extends State<ViewOrderBottomSheetStatusEight> {
   int _statusFromRadio;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -37,13 +36,12 @@ class _ViewOrderBottomSheetStatusSixState
     final _orders = _ordertModel.getOrderFromId(widget.orderId);
     final _orderItem = _ordertModel.getOrderItemFromId(widget.orderId);
 
-    void _onSubmitConfirm() async {
+    void _onSubmitConfirm(String status) async {
       try {
         Map<String, dynamic> data = {
           "order_id": _orderItem['order'].toString(),
-          "status": "${_statusFromRadio ?? 7}"
+          "status": "$_statusFromRadio"
         };
-        print(data);
         // get current user token
         String token = settingModel.value['token'];
 
@@ -58,40 +56,7 @@ class _ViewOrderBottomSheetStatusSixState
           // Update order
           _ordertModel.updateOrder(jsonData['data']['order']);
           Navigator.of(context).pop();
-          if (_statusFromRadio > 6) {
-            if (jsonData['data']['order']['status'] == 5) {
-              showFlashBar(context,
-                  title: 'ยืนยันชำระเงินแล้ว',
-                  message:
-                      'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
-                  success: true,
-                  duration: 3500);
-            }
-            if (jsonData['data']['order']['status'] == 6) {
-              showFlashBar(context,
-                  title: 'จัดส่งสินค้าแล้ว',
-                  message: 'ระบบกำลังแจ้งข้อมูลดำเนินการให้กับผู้สั่งซื้อ',
-                  success: true,
-                  duration: 3500);
-            }
-            if (jsonData['data']['order']['status'] == 7) {
-              showFlashBar(context,
-                  title: 'ดำเนินการเสร็จสิ้น',
-                  message:
-                      'ระบบกำลังแจ้งข้อมูลดำเนินการเสร็จสิ้นให้กับผู้สั่งซื้อ',
-                  success: true,
-                  duration: 3500);
-            }
-            if (jsonData['data']['order']['status'] == 8) {
-              showFlashBar(context,
-                  title: 'ยกเลิกคำสั่งซื้อแล้วแล้ว',
-                  message: 'ระบบกำลังแจ้งข้อมูลการยกเลิกให้กับผู้สั่งซื้อ',
-                  success: true,
-                  duration: 3500);
-            }
-          } else {
-            showFlashBar(context, message: 'บันทึกข้อมูลสำเร็จ', success: true);
-          }
+          showFlashBar(context, message: 'บันทึกข้อมูลสำเร็จ', success: true);
         } else {
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
@@ -156,6 +121,7 @@ class _ViewOrderBottomSheetStatusSixState
                                 setDialogState(() {
                                   selectedRadio = value;
                                 });
+
                                 // * set state global only.
                                 setState(() {
                                   _statusFromRadio = value + 1;
@@ -211,7 +177,8 @@ class _ViewOrderBottomSheetStatusSixState
                             Radius.circular(19),
                           ),
                         ),
-                        onPressed: () async => _onSubmitConfirm(),
+                        onPressed: () async =>
+                            _onSubmitConfirm('${selectedRadio + 1}'),
                         child: Text(
                           'ตกลง',
                           style: TextStyle(color: Colors.white),
@@ -227,70 +194,6 @@ class _ViewOrderBottomSheetStatusSixState
       );
     }
 
-    void _onShowDialogConfirm() {
-      showDialog(
-        context: context,
-        child: AlertDialog(
-          title: Text(
-            'จัดส่งสินค้าแล้ว',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(28),
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  'ระบบจะแจ้งข้อมูลจัดส่งสินค้าให้กับผู้สั่งซื้อ และปรับสถานะคำสั่งซื้อเป็น "จัดส่งสินค้าแล้ว"',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                SizedBox(
-                  height: 26,
-                ),
-                FlatButton(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  minWidth: double.infinity,
-                  color: kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(19),
-                    ),
-                  ),
-                  onPressed: () => _onSubmitConfirm,
-                  child: Text(
-                    'ตกลง',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                FlatButton(
-                  minWidth: double.infinity,
-                  color: Colors.grey[300],
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(19))),
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    'ยกเลิก',
-                    style: TextStyle(color: kTextPrimaryColor),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
     return Container(
       width: size.width,
       child: Column(
@@ -301,36 +204,18 @@ class _ViewOrderBottomSheetStatusSixState
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0),
             child: Icon(
-              Icons.delivery_dining,
+              Icons.remove_circle_outline_sharp,
               size: textTheme.headline4.fontSize,
-              color: kPrimaryColor,
+              color: kErrorColor,
             ),
           ),
           Text(
-            'อยู่ระหว่างการนำส่ง . . .',
+            'ดำเนินการยกเลิกคำสั่งซื้อนี้แล้ว',
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: textTheme.subtitle1.fontSize),
           ),
-          SizedBox(
-            height: 18,
-          ),
-          // FlatButton(
-          //   shape:
-          //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
-          //   onPressed: () => _onShowDialogConfirm(),
-          //   color: kPrimaryColor,
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-          //     child: Text(
-          //       'จัดส่งเรียบร้อยแล้ว',
-          //       style: TextStyle(
-          //           color: Colors.white,
-          //           fontSize: textTheme.subtitle1.fontSize),
-          //     ),
-          //   ),
-          // ),
           TextButton(
             onPressed: _onChangeStatusOrder,
             child: Text(

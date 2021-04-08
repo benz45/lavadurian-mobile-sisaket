@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_eight.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_fire.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_four.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_one.dart';
@@ -37,21 +38,18 @@ class _ViewOrderBottomSheetState extends State<ViewOrderBottomSheet> {
             orderId: _order['id'],
           );
         }
-
         // * Bottom Sheet Status 4
         if (_order['status'] == 4) {
           return ViewOrderBottomSheetStatusFour(
             orderId: _order['id'],
           );
         }
-
         // * Bottom Sheet Status 5
         if (_order['status'] == 5) {
           return ViewOrderBottomSheetStatusFire(
             orderId: _order['id'],
           );
         }
-
         // * Bottom Sheet Status 6
         if (_order['status'] == 6) {
           return ViewOrderBottomSheetStatusSix(
@@ -61,6 +59,12 @@ class _ViewOrderBottomSheetState extends State<ViewOrderBottomSheet> {
         // * Bottom Sheet Status 7
         if (_order['status'] == 7) {
           return ViewOrderBottomSheetStatusSeven(
+            orderId: _order['id'],
+          );
+        }
+        // * Bottom Sheet Status 8
+        if (_order['status'] == 8) {
+          return ViewOrderBottomSheetStatusEight(
             orderId: _order['id'],
           );
         }

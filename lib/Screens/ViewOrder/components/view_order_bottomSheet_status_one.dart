@@ -74,7 +74,7 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(28),
+              Radius.circular(29),
             ),
           ),
           content: SingleChildScrollView(

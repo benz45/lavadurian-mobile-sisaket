@@ -155,7 +155,7 @@ class ViewOrderManageStatus extends StatelessWidget {
                             : [
                                 // * status 8
                                 Icon(
-                                  Icons.close,
+                                  Icons.remove_circle_outline_sharp,
                                   color: Colors.white,
                                 ),
                               ],

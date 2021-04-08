@@ -56,11 +56,12 @@ class SettingModel extends ChangeNotifier {
   // End-point for delete new bookbank
   String get endPoinDeleteBookBank => 'api/bookbank/delete';
 
-  // End-point for order status update
+  // End-point for order status update (POST)
   String get endPoinOrderStatusUpdate => 'api/order/update';
 
-  // End-point for get order status
+  // End-point for get order status (GET)
   String get endPoinGetOrderStatus => 'api/order/status';
+
   // End-point for get order status
   String get endPoinGetOrderUpdateWeight => 'api/order/weight';
 

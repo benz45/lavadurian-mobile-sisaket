@@ -10,12 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
-class ViewOrderBottomSheetStatusSeven extends StatelessWidget {
+class ViewOrderBottomSheetStatusSeven extends StatefulWidget {
   const ViewOrderBottomSheetStatusSeven({Key key, this.orderId})
       : super(key: key);
 
   final int orderId;
 
+  @override
+  _ViewOrderBottomSheetStatusSevenState createState() =>
+      _ViewOrderBottomSheetStatusSevenState();
+}
+
+class _ViewOrderBottomSheetStatusSevenState
+    extends State<ViewOrderBottomSheetStatusSeven> {
+  int _statusFromRadio;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -25,14 +33,14 @@ class ViewOrderBottomSheetStatusSeven extends StatelessWidget {
     SettingModel settingModel =
         Provider.of<SettingModel>(context, listen: false);
 
-    final _orders = _ordertModel.getOrderFromId(orderId);
-    final _orderItem = _ordertModel.getOrderItemFromId(orderId);
+    final _orders = _ordertModel.getOrderFromId(widget.orderId);
+    final _orderItem = _ordertModel.getOrderItemFromId(widget.orderId);
 
     void _onSubmitConfirm(String status) async {
       try {
         Map<String, dynamic> data = {
           "order_id": _orderItem['order'].toString(),
-          "status": status ?? "6"
+          "status": "$_statusFromRadio"
         };
         // get current user token
         String token = settingModel.value['token'];
@@ -48,12 +56,17 @@ class ViewOrderBottomSheetStatusSeven extends StatelessWidget {
           // Update order
           _ordertModel.updateOrder(jsonData['data']['order']);
           Navigator.of(context).pop();
-          showFlashBar(context,
-              title: 'จัดส่งเรียบร้อยแล้ว',
-              message:
-                  'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
-              success: true,
-              duration: 3500);
+          if (_statusFromRadio > 7) {
+            if (jsonData['data']['order']['status'] == 8) {
+              showFlashBar(context,
+                  title: 'ยกเลิกคำสั่งซื้อแล้วแล้ว',
+                  message: 'ระบบกำลังแจ้งข้อมูลการยกเลิกให้กับผู้สั่งซื้อ',
+                  success: true,
+                  duration: 3500);
+            }
+          } else {
+            showFlashBar(context, message: 'บันทึกข้อมูลสำเร็จ', success: true);
+          }
         } else {
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
@@ -86,7 +99,7 @@ class ViewOrderBottomSheetStatusSeven extends StatelessWidget {
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
-                Radius.circular(18),
+                Radius.circular(29),
               ),
             ),
             content: StatefulBuilder(
@@ -118,6 +131,11 @@ class ViewOrderBottomSheetStatusSeven extends StatelessWidget {
                                 setDialogState(() {
                                   selectedRadio = value;
                                 });
+
+                                // * set state global only.
+                                setState(() {
+                                  _statusFromRadio = value + 1;
+                                });
                               }
                             : null,
                       );
@@ -145,6 +163,10 @@ class ViewOrderBottomSheetStatusSeven extends StatelessWidget {
                         ),
                         onPressed: () {
                           Navigator.of(context).pop();
+                          // * set state global only.
+                          setState(() {
+                            _statusFromRadio = null;
+                          });
                         },
                         child: Text(
                           'ยกเลิก',
