@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:LavaDurian/Screens/UploadImageProductScreen/components/image_selected.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
@@ -183,7 +184,6 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     Size size = MediaQuery.of(context).size;
 
     int imageCount = _imageCount(productID);
-    print("$productID : $imageCount");
 
     // Login Button
     final uploadButton = RoundedLoadingButton(
@@ -208,7 +208,8 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
             shadowColor: Colors.grey[50].withOpacity(0.3),
             backgroundColor: Colors.white,
             pinned: true,
-            expandedHeight: size.height * 0.19,
+            // expandedHeight: size.height * 0.19,
+            expandedHeight: size.height * 0.15,
             automaticallyImplyLeading: false,
             leading: Padding(
               padding: EdgeInsets.only(left: size.width * 0.09),
@@ -246,6 +247,12 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                   ],
                 ),
               ),
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
+            sliver: SliverToBoxAdapter(
+              child: ImageSelected(productID: productID),
             ),
           ),
           SliverPadding(
@@ -317,7 +324,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                   :
                   // * First container select image.
                   Container(
-                      height: size.height * 0.55,
+                      height: size.height * 0.19,
                       child: Center(
                           child: SelectImageProductContainer(
                         onPressed: () => loadAssets(),
