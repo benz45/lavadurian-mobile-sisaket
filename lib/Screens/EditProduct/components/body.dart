@@ -444,10 +444,9 @@ class _BodyState extends State<Body> {
                 borderRadius: BorderRadius.circular(29),
               ),
               child: TextField(
-                keyboardType: TextInputType.numberWithOptions(
-                    signed: true, decimal: true),
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9.,]+')),
                 ],
                 cursorColor: kPrimaryColor,
                 maxLines: 1,

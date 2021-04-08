@@ -157,14 +157,15 @@ class OrdertModel extends ChangeNotifier {
 
   // Get order by id
   getOrderFromId(int idOrder) {
-    final order = _orders.firstWhere((element) => element['id'] == idOrder);
+    final order = _orders.firstWhere((element) => element['id'] == idOrder,
+        orElse: () => {});
     return order;
   }
 
   // Get order item by id
   getOrderItemFromId(int idOrder) {
-    final order =
-        _orderItems.firstWhere((element) => element['order'] == idOrder);
+    final order = _orderItems
+        .firstWhere((element) => element['order'] == idOrder, orElse: () => {});
     return order;
   }
 
