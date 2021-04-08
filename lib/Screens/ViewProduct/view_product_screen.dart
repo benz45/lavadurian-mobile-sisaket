@@ -120,18 +120,6 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
         }
       }
     }
-
-    // * if have no any image
-    // * setup default image to current product
-    // if (data.length == 0) {
-    //   var img = AssetImage('assets/images/example.png');
-    //   Map<String, dynamic> map = {
-    //     "title": "ภาพที่ 1",
-    //     "url": img.toString(),
-    //   };
-    //   data.add(map);
-    // }
-
     return data;
   }
 
@@ -257,46 +245,50 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        CarouselSlider(
-                          options: CarouselOptions(
-                            autoPlay: false,
-                            autoPlayInterval: Duration(seconds: 10),
-                            autoPlayAnimationDuration:
-                                Duration(milliseconds: 400),
-                            height: 400,
-                          ),
-                          items: data.map((item) {
-                            return GridTile(
-                              child:
-                                  Image.network(item["url"], fit: BoxFit.cover),
-                              footer: Container(
-                                  padding: EdgeInsets.all(15),
-                                  color: Colors.black54,
-                                  child: Text(
-                                    item["title"],
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                    textAlign: TextAlign.right,
-                                  )),
-                            );
-                          }).toList(),
-                        ),
-                        // Hero(
-                        //   tag: 'image${widget.hero}',
-                        //   child: Container(
-                        //     height: 400,
-                        //     width: double.infinity,
-                        //     decoration: BoxDecoration(
-                        //       image: DecorationImage(
-                        //         fit: BoxFit
-                        //             .cover, //I assumed you want to occupy the entire space of the card
-                        //         image: AssetImage(
-                        //           'assets/images/example.png',
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
+                        // ! if current product have no any image
+                        // ! will show default product
+                        data.length != 0
+                            ? CarouselSlider(
+                                options: CarouselOptions(
+                                  autoPlay: false,
+                                  autoPlayInterval: Duration(seconds: 10),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 400),
+                                  height: 400,
+                                ),
+                                items: data.map((item) {
+                                  return GridTile(
+                                    child: Image.network(item["url"],
+                                        fit: BoxFit.cover),
+                                    footer: Container(
+                                        padding: EdgeInsets.all(15),
+                                        color: Colors.black54,
+                                        child: Text(
+                                          item["title"],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                          textAlign: TextAlign.right,
+                                        )),
+                                  );
+                                }).toList(),
+                              )
+                            : Hero(
+                                tag: 'image${widget.hero}',
+                                child: Container(
+                                  height: 400,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit
+                                          .cover, //I assumed you want to occupy the entire space of the card
+                                      image: AssetImage(
+                                        'assets/images/example.png',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                         Container(
                           padding:
                               EdgeInsets.only(left: 28, top: 26, right: 28),
