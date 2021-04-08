@@ -11,7 +11,6 @@ import 'package:LavaDurian/components/GetSize.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 
 // ! Provider Size View Order Model For Custom Size
@@ -45,8 +44,6 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    SizeViewOrderModel sizeViewOrderModel =
-        Provider.of<SizeViewOrderModel>(context, listen: false);
 
     // f: Filter index id on orderItems id.
     final Map mapOrder = orderModel.orders
@@ -84,7 +81,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
                   orders: mapOrder,
                 ),
                 SliverPadding(
-                  padding: EdgeInsets.only(bottom: size.height * 0.02),
+                  padding: EdgeInsets.only(bottom: size.height * 0.06),
                 ),
                 SliverToBoxAdapter(
                   child: Consumer<SizeViewOrderModel>(

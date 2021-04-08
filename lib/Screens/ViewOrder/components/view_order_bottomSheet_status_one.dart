@@ -24,6 +24,7 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
     SettingModel settingModel =
         Provider.of<SettingModel>(context, listen: false);
 
+    final _order = _ordertModel.getOrderFromId(orderId);
     final _orderItem = _ordertModel.getOrderItemFromId(orderId);
 
     Future _onSubmitConfirmOrder() async {
@@ -145,7 +146,7 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
                   width: size.width * 0.02,
                 ),
                 Text(
-                  '${_orderItem['weight']} กก.',
+                  '${_order['weight']} กก.',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: kPrimaryColor,

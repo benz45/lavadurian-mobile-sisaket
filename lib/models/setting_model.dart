@@ -61,6 +61,8 @@ class SettingModel extends ChangeNotifier {
 
   // End-point for get order status
   String get endPoinGetOrderStatus => 'api/order/status';
+  // End-point for get order status
+  String get endPoinGetOrderUpdateWeight => 'api/order/weight';
 
   // Setting Value
   Map<String, dynamic> _value = {};

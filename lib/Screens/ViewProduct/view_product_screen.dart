@@ -60,8 +60,9 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
 
   void _onNavigatorEditProductScreen() {
     if (widget.productId != null) {
-      final order = ordertModel.orderItems
-          .firstWhere((e) => e['product'] == widget.productId);
+      final Map order = ordertModel.orderItems.firstWhere(
+          (e) => e['product'] == widget.productId,
+          orElse: () => {});
 
       if (order.isEmpty) {
         Navigator.push(
