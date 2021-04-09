@@ -61,7 +61,6 @@ class _ImageSelectedState extends State<ImageSelected> {
         setState(() {
           productImageModel.images
               .removeWhere((element) => element['id'] == imgID);
-          Navigator.pop(context);
         });
       } else {
         print(jsonData['message']);
@@ -109,7 +108,7 @@ class _ImageSelectedState extends State<ImageSelected> {
                 ),
                 onPressed: () {
                   _deleteImage(productID, imgID);
-                  // Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 child: Text(
                   'ตกลง',
