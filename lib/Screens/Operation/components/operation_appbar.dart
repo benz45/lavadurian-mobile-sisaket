@@ -3,7 +3,9 @@ import 'package:LavaDurian/Screens/Operation/components/operation_appbar_headerb
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar_select_store.dart';
 // import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +15,21 @@ class OperationAppBar extends StatefulWidget {
   _OperationAppBarState createState() => _OperationAppBarState();
 }
 
-class _OperationAppBarState extends State<OperationAppBar> {
+class _OperationAppBarState extends State<OperationAppBar>
+    with TickerProviderStateMixin {
   int storeID;
+
+  AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3),
+    );
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,16 +92,15 @@ class _OperationAppBarState extends State<OperationAppBar> {
                               ),
                             );
                           },
-                          child: currentStore.length != 0
+                          child: currentStore != null
                               ? Container(
-                                  width: size.width * 0.8,
+                                  width: size.width * 0.82,
                                   child: LayoutBuilder(
                                     builder: (context, constaints) {
                                       // Build the textspan
                                       final text = TextSpan(
-                                        text:
-                                            '${currentStore.length != 0 || currentStore != null ? currentStore[0]['name'] : ''}'
-                                                .replaceAll("", "\u{200B}"),
+                                        text: '${currentStore['name']}'
+                                            .replaceAll("", "\u{200B}"),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: kTextPrimaryColor,

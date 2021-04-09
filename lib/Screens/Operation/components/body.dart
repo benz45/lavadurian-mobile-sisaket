@@ -10,6 +10,7 @@ import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_product.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
+import 'package:LavaDurian/Screens/Operation/components/operation_page_four.dart';
 import 'package:LavaDurian/Screens/Register_Success/components/background.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
@@ -538,15 +539,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                   ),
 
                                   //! 4. Store page on swiper.
-                                  SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Center(
-                                          child: Text('Store Coming soon...'),
-                                        )
-                                      ],
-                                    ),
-                                  ),
+                                  OperationPageFour(),
                                 ].toList(),
                               );
                             },

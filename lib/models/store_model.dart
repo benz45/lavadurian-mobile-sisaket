@@ -17,30 +17,23 @@ class StoreModel extends ChangeNotifier {
 
   Map<String, dynamic> get district => _district;
 
-  get getCurrentIdStore {
-    if (_idCurrentStore != null) {
-      return _idCurrentStore;
-    }
+  get getCurrentIdStore => _idCurrentStore ?? null;
+
+  Map _filterCurrentStore() {
+    Map res =
+        _stores.firstWhere((i) => i['id'] == _idCurrentStore, orElse: () => {});
+    return res ?? {};
   }
 
-  _filterCurrentStore() {
-    if (_idCurrentStore != null) {
-      List<Map> res = _stores.where((i) => i['id'] == _idCurrentStore).toList();
-      return res.length != 0 ? res : [];
-    }
-  }
-
-  List get getCurrentStore {
-    List res = _filterCurrentStore();
+  Map get getCurrentStore {
+    Map res = _filterCurrentStore();
     return res;
   }
 
   // Get status current store.
-  get getCurrentStoreStatus {
-    List res = _filterCurrentStore();
-    if (res != null && res.length != 0) {
-      return res[0]['status'];
-    }
+  int get getCurrentStoreStatus {
+    Map res = _filterCurrentStore();
+    return res['status'] ?? 0;
   }
 
   // Set current store and save id store to SharedPreferences.

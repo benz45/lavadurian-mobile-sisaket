@@ -43,7 +43,7 @@ class ViewOrderHeaderTitle extends StatelessWidget {
               ),
               Consumer<StoreModel>(builder: (_, _storeModel, c) {
                 return Text(
-                  _storeModel.getCurrentStore[0]['name'],
+                  _storeModel?.getCurrentStore['name'],
                   style: TextStyle(
                       color: kTextSecondaryColor, fontWeight: FontWeight.bold),
                 );

@@ -286,17 +286,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                               // ! Store name
                               Consumer<StoreModel>(builder: (_, storeModel, c) {
                                 final Map dataStore =
-                                    storeModel.getCurrentStore[0];
-                                if (dataStore != null) {
-                                  return Text(
-                                    "${dataStore['name']}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: kTextSecondaryColor,
-                                        fontSize: font.subtitle2.fontSize),
-                                  );
-                                }
-                                return Container();
+                                    storeModel?.getCurrentStore;
+                                return Text(
+                                  "${dataStore['name']}",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: kTextSecondaryColor,
+                                      fontSize: font.subtitle2.fontSize),
+                                );
                               }),
                               SizedBox(
                                 height: 18,

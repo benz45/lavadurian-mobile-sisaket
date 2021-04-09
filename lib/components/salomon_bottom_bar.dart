@@ -13,7 +13,6 @@ class MySalomonBottomBar extends StatelessWidget {
 
     return storeModel.getStores.length != 0 &&
             storeModel.getCurrentIdStore != null &&
-            storeModel.getCurrentStoreStatus != null &&
             storeModel.getCurrentStoreStatus != 0
         ? SafeArea(
             child: SalomonBottomBar(
