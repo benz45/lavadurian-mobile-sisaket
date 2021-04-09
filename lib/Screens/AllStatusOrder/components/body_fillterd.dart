@@ -59,7 +59,7 @@ class _BodyFillterdState extends State<BodyFillterd> {
                           itemCount: orderList.length,
                           itemBuilder: (context, index) {
                             return OperationCardOrder(
-                              order: orderList[index],
+                              orderId: orderList[index]['id'],
                             );
                           },
                         ),

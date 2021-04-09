@@ -163,10 +163,26 @@ class OrdertModel extends ChangeNotifier {
   }
 
   // Get order item by id
-  getOrderItemFromId(int idOrder) {
+  Map getOrderItemFromId(int idOrder) {
     final order = _orderItems
         .firstWhere((element) => element['order'] == idOrder, orElse: () => {});
     return order;
+  }
+
+  // Filter order by id
+  List filterOrderFromId({int orderId}) {
+    final order =
+        _orders.where((element) => element['order'] == orderId).toList();
+    return order;
+  }
+
+  // Filter order by id
+  List filterOrderItemOfProductFromId({int productId}) {
+    final List _listorderItems = _orderItems
+        .where((element) => element['product'] == productId)
+        .toList();
+
+    return _listorderItems;
   }
 
   set orders(List<Map<String, dynamic>> orders) {

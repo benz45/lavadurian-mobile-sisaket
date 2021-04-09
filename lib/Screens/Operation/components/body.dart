@@ -381,63 +381,57 @@ class _ContainerStoreState extends State<ContainerStore> {
                                   ),
 
                                   //! 2. Orders page on swiper.
-                                  SingleChildScrollView(
-                                    child: Consumer<OrdertModel>(
-                                      builder: (_, orderModel, c) {
-                                        return Container(
-                                          width: size.width * 0.85,
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  OutlineButton(
-                                                    highlightColor:
-                                                        kPrimaryLightColor,
-                                                    highlightedBorderColor:
-                                                        kPrimaryColor,
-                                                    color: kPrimaryColor,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (_) =>
-                                                                AllStatusOrderScreen()),
-                                                      );
-                                                    },
-                                                    child: Text(
-                                                      'สถานะคำสั่งซื้อทั้งหมด',
-                                                      style: TextStyle(
-                                                          color: kPrimaryColor),
-                                                    ),
+                                  Consumer<OrdertModel>(
+                                    builder: (_, orderModel, c) {
+                                      return Container(
+                                        width: size.width * 0.85,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: [
+                                                OutlineButton(
+                                                  highlightColor:
+                                                      kPrimaryLightColor,
+                                                  highlightedBorderColor:
+                                                      kPrimaryColor,
+                                                  color: kPrimaryColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
                                                   ),
-                                                ],
-                                              ),
-                                              Divider(),
-                                              Consumer<BottomBarModel>(builder:
-                                                  (_, _bottomBarModel, c) {
-                                                return OperationList(
-                                                  leading: 'รายการสั่งซื้อ',
-                                                );
-                                              }),
-                                              if (orderModel.orders.length > 0)
-                                                OperationOrderList(),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              AllStatusOrderScreen()),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    'สถานะคำสั่งซื้อทั้งหมด',
+                                                    style: TextStyle(
+                                                        color: kPrimaryColor),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Divider(),
+                                            OperationList(
+                                              leading: 'รายการสั่งซื้อ',
+                                            ),
+                                            if (orderModel.orders.length > 0)
+                                              OperationOrderList(),
+                                          ],
+                                        ),
+                                      );
+                                    },
                                   ),
 
                                   //! 3. Products page on swiper.
@@ -542,25 +536,21 @@ class OperationOrderList extends StatelessWidget {
       children: [
         Consumer<OrdertModel>(builder: (_, orderModel, c) {
           if (orderModel.orders != null && orderModel.orders.length != 0) {
-            return Column(
-              children: [
-                Container(
-                  child: ListView.builder(
-                    padding: EdgeInsets.only(top: 0),
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return OperationCardOrder(
-                        order: orderModel.orders[index],
-                      );
-                    },
-                    itemCount: maxlength != null &&
-                            orderModel.orders.length > maxlength
+            return Container(
+              child: ListView.builder(
+                padding: EdgeInsets.only(top: 0),
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return OperationCardOrder(
+                    orderId: orderModel.orders[index]['id'],
+                  );
+                },
+                itemCount:
+                    maxlength != null && orderModel.orders.length > maxlength
                         ? maxlength
                         : orderModel.orders.length,
-                  ),
-                ),
-              ],
+              ),
             );
           }
           return Container();

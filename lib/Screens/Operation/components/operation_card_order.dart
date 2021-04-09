@@ -8,28 +8,30 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OperationCardOrder extends StatelessWidget {
-  final Map<String, dynamic> order;
+  final int orderId;
   const OperationCardOrder({
     Key key,
-    this.order,
+    @required this.orderId,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    OrdertModel orderModel = context.read<OrdertModel>();
+    final _orderModel = Provider.of<OrdertModel>(context);
+    final _order = _orderModel.getOrderFromId(orderId);
+
     DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
-    var dateCreate = DateTime.parse(this.order['date_created']).toLocal();
-    Map<String, String> orderStatus = orderModel.orderStatus;
+    var dateCreate = DateTime.parse(_order['date_created']).toLocal();
 
     Size size = MediaQuery.of(context).size;
     final font = Theme.of(context).textTheme;
+
     return GestureDetector(
       onTap: () {
         return Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => ViewOrderScreen(
-              order: order,
+              order: _order,
             ),
           ),
         );
@@ -86,7 +88,7 @@ class OperationCardOrder extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 3.8, top: 2.0),
                     child: Text(
-                      "${this.order['owner']}",
+                      "${_order['owner']}",
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -98,14 +100,14 @@ class OperationCardOrder extends StatelessWidget {
                   ),
                   DetailOnCard(
                     type: 'น้ำหนัก',
-                    value: this.order['weight'],
+                    value: _order['weight'],
                     fontSize: size.height /
                         size.width *
                         (font.subtitle1.fontSize / 2.59),
                   ),
                   DetailOnCard(
                     type: 'สถานะ',
-                    value: orderStatus[this.order['status'].toString()],
+                    value: _orderModel.orderStatus['${_order['status']}'],
                     fontSize: size.height /
                         size.width *
                         (font.subtitle1.fontSize / 2.59),

@@ -500,25 +500,45 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                           SizedBox(
                                             height: size.height * 0.02,
                                           ),
-                                          Container(
-                                            child: ListView.builder(
-                                                padding:
-                                                    EdgeInsets.only(top: 0),
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                itemBuilder: (context, index) {
-                                                  return OperationCardOrder(
-                                                    order: orderModel
-                                                        .orders[index],
-                                                  );
-                                                },
-                                                itemCount: 1),
-                                          ),
+                                          Consumer<OrdertModel>(
+                                              builder: (_, _ordertModel, c) {
+                                            final List _listorderItems =
+                                                _ordertModel
+                                                    .filterOrderItemOfProductFromId(
+                                                        productId:
+                                                            widget.productId);
+                                            if (_listorderItems.length != 0) {
+                                              return Container(
+                                                child: ListView.builder(
+                                                    padding:
+                                                        EdgeInsets.only(top: 0),
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return OperationCardOrder(
+                                                        orderId:
+                                                            _listorderItems[
+                                                                index]['order'],
+                                                      );
+                                                    },
+                                                    itemCount:
+                                                        _listorderItems.length),
+                                              );
+                                            }
+                                            return Center(
+                                              child: Text(
+                                                'ยังไม่มีรายการสั่งซื้อของสินค้านี้',
+                                                style: TextStyle(
+                                                    color: kTextSecondaryColor),
+                                              ),
+                                            );
+                                          })
                                         ],
                                       );
                                     }
-                                    return Container();
+                                    return SizedBox();
                                   }),
                                 ],
                               ),
