@@ -28,6 +28,9 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
   SettingModel settingModel;
   ProductImageModel productImageModel;
 
+  final int imageLimit = 3;
+  int remainImage;
+
   List<Asset> images = List<Asset>();
   String textError;
   bool isSelectedImage = false;
@@ -61,7 +64,8 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: images.length < 3 ? 3 - images.length : 1,
+        maxImages:
+            images.length < remainImage ? remainImage - images.length : 0,
       );
     } on Exception catch (e) {
       // Set previous images if user cancel select image.
@@ -79,7 +83,8 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
     if (images.length != 0) {
       // Add image if images not fully. (3 Image).
-      if (images.length < 3 && (resultList.length + images.length) <= 3) {
+      if (images.length < remainImage &&
+          (resultList.length + images.length) <= remainImage) {
         setState(() {
           images.addAll(resultList);
           isSelectedImage = true;
@@ -89,7 +94,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
       }
 
       // Add image if image fully. (3 Image).
-      else if (images.length == 3 && resultList.length != 0) {
+      else if (images.length == remainImage && resultList.length != 0) {
         setState(() {
           images.removeRange(0, resultList.length);
           images.addAll(resultList);
@@ -181,7 +186,11 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     final font = Theme.of(context).textTheme;
     Size size = MediaQuery.of(context).size;
 
+    // * count uploaded product image
     int imageCount = _imageCount(productID);
+
+    // * setup remain image that user can upload
+    remainImage = imageLimit - imageCount;
 
     // Login Button
     final uploadButton = RoundedLoadingButton(
