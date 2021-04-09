@@ -58,6 +58,9 @@ class _ImageSelectedState extends State<ImageSelected> {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (jsonData['status'] == true) {
+        // * update state
+        // * rebuild widget
+        // ! bug is here.
         setState(() {
           productImageModel.images
               .removeWhere((element) => element['id'] == imgID);

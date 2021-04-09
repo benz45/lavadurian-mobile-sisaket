@@ -177,6 +177,9 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
   @override
   Widget build(BuildContext context) {
+    // ! Debug
+    print("Rebuild Main Widget");
+
     // * setup product id
     productID = widget.productId;
 
