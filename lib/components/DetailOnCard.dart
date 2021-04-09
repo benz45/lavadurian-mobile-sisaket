@@ -5,10 +5,12 @@ class DetailOnCard extends StatelessWidget {
   final String type;
   final String value;
   final double fontSize;
+  final Color color;
   const DetailOnCard({
     Key key,
     @required this.type,
     @required this.value,
+    this.color,
     this.fontSize = 14.0,
   }) : super(key: key);
 
@@ -28,7 +30,7 @@ class DetailOnCard extends StatelessWidget {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: fontSize,
-              color: kPrimaryColor),
+              color: color ?? kPrimaryColor),
         ),
       ],
     );

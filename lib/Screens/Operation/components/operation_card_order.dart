@@ -111,6 +111,13 @@ class OperationCardOrder extends StatelessWidget {
                     fontSize: size.height /
                         size.width *
                         (font.subtitle1.fontSize / 2.59),
+                    color: _order['status'] == 1
+                        ? kPrimaryColor
+                        : _order['status'] == 3
+                            ? Colors.orange[400]
+                            : _order['status'] == 8
+                                ? kErrorColor
+                                : kPrimaryColor,
                   ),
                 ],
               ),

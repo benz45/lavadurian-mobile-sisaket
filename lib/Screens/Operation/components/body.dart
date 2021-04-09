@@ -344,8 +344,12 @@ class _ContainerStoreState extends State<ContainerStore> {
                                                       OperationOrderList(
                                                         maxlength: 3,
                                                       ),
-                                                    if (orderModel
-                                                            .orders.length >
+                                                    if (orderModel.orders
+                                                            .where((element) =>
+                                                                element[
+                                                                    'status'] ==
+                                                                1)
+                                                            .length >
                                                         3)
                                                       SizedBox(
                                                         width: double.infinity,
@@ -376,7 +380,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                                                     1);
                                                           },
                                                           child: Text(
-                                                            'ขณะนี้มีรายคำสั่งซื้อมากกว่า 3 รายการ',
+                                                            'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .orange),
