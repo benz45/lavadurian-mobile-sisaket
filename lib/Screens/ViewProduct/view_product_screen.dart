@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
 import 'package:LavaDurian/models/store_model.dart';
@@ -175,7 +176,10 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           color: Colors.white.withOpacity(0.2),
                           child: InkWell(
                             child: IconButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => OperationScreen())),
                               icon: Icon(Icons.arrow_back_rounded),
                               color: Colors.white,
                             ),

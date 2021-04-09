@@ -158,8 +158,6 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
           productImageModel.images.add(imageData);
         }
 
-        print(productImageModel.images);
-
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -351,7 +349,13 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                 padding: EdgeInsets.symmetric(
                     vertical: 20, horizontal: size.width * 0.10),
                 color: kPrimaryColor,
-                onPressed: widget.onPressed ?? () => Navigator.pop(context),
+                // onPressed: widget.onPressed ?? () => Navigator.pop(context),
+                onPressed: widget.onPressed ??
+                    () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ViewProductScreen(productId: productID))),
                 child: Text(
                   widget.onPressed != null ? 'ไม่ใช่ตอนนี้' : 'ยกเลิก',
                   style: TextStyle(color: kPrimaryColor, fontSize: 16.0),
