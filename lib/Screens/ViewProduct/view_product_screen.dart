@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
+import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
 import 'package:LavaDurian/models/store_model.dart';
@@ -474,6 +475,51 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: font.subtitle1.fontSize),
                                   ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Consumer<OrdertModel>(
+                                      builder: (_, orderModel, c) {
+                                    if (orderModel.orders != null &&
+                                        orderModel.orders.length != 0) {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Divider(
+                                            height: size.height * 0.05,
+                                          ),
+                                          Text(
+                                            "รายการคำสั่งซื้อของสินค้านี้",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    font.subtitle1.fontSize),
+                                          ),
+                                          SizedBox(
+                                            height: size.height * 0.02,
+                                          ),
+                                          Container(
+                                            child: ListView.builder(
+                                                padding:
+                                                    EdgeInsets.only(top: 0),
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemBuilder: (context, index) {
+                                                  return OperationCardOrder(
+                                                    order: orderModel
+                                                        .orders[index],
+                                                  );
+                                                },
+                                                itemCount: 1),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                    return Container();
+                                  }),
                                 ],
                               ),
                               // ! Space bottom

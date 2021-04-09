@@ -257,11 +257,16 @@ class _BodyState extends State<Body> {
   }
 }
 
-class ContainerStore extends StatelessWidget {
+class ContainerStore extends StatefulWidget {
   const ContainerStore({
     Key key,
   }) : super(key: key);
 
+  @override
+  _ContainerStoreState createState() => _ContainerStoreState();
+}
+
+class _ContainerStoreState extends State<ContainerStore> {
   @override
   Widget build(BuildContext context) {
     // Size for custom screen.
@@ -270,8 +275,6 @@ class ContainerStore extends StatelessWidget {
     return Container(
       color: Color(0xFFFAFAFA),
       child: CustomScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        primary: true,
         slivers: [
           //! Operation App Bar
           OperationAppBar(),
@@ -378,62 +381,64 @@ class ContainerStore extends StatelessWidget {
                                   ),
 
                                   //! 2. Orders page on swiper.
-                                  Consumer<OrdertModel>(
+                                  SingleChildScrollView(
+                                    child: Consumer<OrdertModel>(
                                       builder: (_, orderModel, c) {
-                                    return SingleChildScrollView(
-                                      child: Container(
-                                        width: size.width * 0.85,
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                OutlineButton(
-                                                  highlightColor:
-                                                      kPrimaryLightColor,
-                                                  highlightedBorderColor:
-                                                      kPrimaryColor,
-                                                  color: kPrimaryColor,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
+                                        return Container(
+                                          width: size.width * 0.85,
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  OutlineButton(
+                                                    highlightColor:
+                                                        kPrimaryLightColor,
+                                                    highlightedBorderColor:
+                                                        kPrimaryColor,
+                                                    color: kPrimaryColor,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (_) =>
+                                                                AllStatusOrderScreen()),
+                                                      );
+                                                    },
+                                                    child: Text(
+                                                      'สถานะคำสั่งซื้อทั้งหมด',
+                                                      style: TextStyle(
+                                                          color: kPrimaryColor),
+                                                    ),
                                                   ),
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (_) =>
-                                                              AllStatusOrderScreen()),
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    'สถานะคำสั่งซื้อทั้งหมด',
-                                                    style: TextStyle(
-                                                        color: kPrimaryColor),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Divider(),
-                                            Consumer<BottomBarModel>(builder:
-                                                (_, _bottomBarModel, c) {
-                                              return OperationList(
-                                                leading: 'รายการสั่งซื้อ',
-                                              );
-                                            }),
-                                            if (orderModel.orders.length > 0)
-                                              OperationOrderList(),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  }),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Consumer<BottomBarModel>(builder:
+                                                  (_, _bottomBarModel, c) {
+                                                return OperationList(
+                                                  leading: 'รายการสั่งซื้อ',
+                                                );
+                                              }),
+                                              if (orderModel.orders.length > 0)
+                                                OperationOrderList(),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
 
                                   //! 3. Products page on swiper.
                                   SingleChildScrollView(
