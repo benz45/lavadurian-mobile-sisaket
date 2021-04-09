@@ -68,7 +68,7 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder>
         Provider.of<SettingModel>(context, listen: false);
     OrdertModel _ordertModel = Provider.of<OrdertModel>(context, listen: false);
 
-    Future _onSubmitConfirmOrder() async {
+    Future _onSubmitConfirmEditWeightOrder() async {
       try {
         Map<String, dynamic> data = {
           "order_id": widget.orders['id'].toString(),
@@ -93,9 +93,10 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder>
             _isShowTextFieldEditWeigth = false;
             _isShowTextButtonOnSubmit = false;
           });
+
           showFlashBar(context,
-              title: 'ยืนยันคำสั่งซื้อแล้ว',
-              message: 'ระบบกำลังแจ้งข้อมูลชำระเงินไปยังผู้ซื้อ',
+              title: 'แก้ไขน้ำหนักสินค้าเรียบร้อย',
+              message: 'ระบบกำลังแจ้งข้อมูลไปยังผู้ซื้อ',
               success: true,
               duration: 3500);
         } else {
@@ -143,7 +144,7 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder>
                       Radius.circular(19),
                     ),
                   ),
-                  onPressed: _onSubmitConfirmOrder,
+                  onPressed: _onSubmitConfirmEditWeightOrder,
                   child: Text(
                     'ตกลง',
                     style: TextStyle(color: Colors.white),
