@@ -341,7 +341,46 @@ class _ContainerStoreState extends State<ContainerStore> {
                                                             .orders.length >
                                                         0)
                                                       OperationOrderList(
-                                                        maxlength: 1,
+                                                        maxlength: 3,
+                                                      ),
+                                                    if (orderModel
+                                                            .orders.length >
+                                                        3)
+                                                      SizedBox(
+                                                        width: double.infinity,
+                                                        child: OutlineButton(
+                                                          highlightedBorderColor:
+                                                              Colors.orange,
+                                                          splashColor: Colors
+                                                              .orange
+                                                              .withOpacity(0.1),
+                                                          focusColor:
+                                                              Colors.white,
+                                                          highlightColor: Colors
+                                                              .orange
+                                                              .withOpacity(0.2),
+                                                          borderSide:
+                                                              BorderSide(
+                                                                  color: Colors
+                                                                      .orange),
+                                                          color: Colors.orange,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          12))),
+                                                          onPressed: () {
+                                                            _bottomBarModel
+                                                                .setSelectedTab(
+                                                                    1);
+                                                          },
+                                                          child: Text(
+                                                            'ขณะนี้มีรายคำสั่งซื้อมากกว่า 3 รายการ',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .orange),
+                                                          ),
+                                                        ),
                                                       ),
                                                   ],
                                                 ),
