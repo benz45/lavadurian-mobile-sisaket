@@ -2,12 +2,16 @@ import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
+import 'package:LavaDurian/Screens/ViewProduct/components/preview_product_image.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'components/dialog_delete_product.dart';
 
 class ViewProductScreen extends StatefulWidget {
@@ -28,10 +32,12 @@ class ViewProductScreen extends StatefulWidget {
 class _ViewProductScreenState extends State<ViewProductScreen> {
   AnimationController animateController;
   ProductImageModel productImageModel;
+  int productId;
 
   OrdertModel ordertModel;
   @override
   void initState() {
+    productId = widget.productId;
     super.initState();
     ordertModel = context.read<OrdertModel>();
     productImageModel = context.read<ProductImageModel>();
@@ -104,26 +110,6 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     }
   }
 
-  // ! setup current product images
-  List _consumeProductImage(productID) {
-    List data = [];
-
-    if (productImageModel.images.length != 0) {
-      int count = 1;
-      for (var image in productImageModel.images) {
-        if (image['product'] == productID) {
-          Map<String, dynamic> map = {
-            "title": "ภาพที่ ${count.toString()}",
-            "url": image['image'],
-          };
-          data.add(map);
-          count += 1;
-        }
-      }
-    }
-    return data;
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -148,9 +134,6 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     //* Filter product status.
     final String productStatus =
         productModel.productStatus['${dataProduct['status']}'];
-
-    // * for store image list
-    final List data = _consumeProductImage(id);
 
     return Scaffold(
       body: Container(
@@ -251,36 +234,18 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       children: <Widget>[
                         // ! if current product have no any image
                         // ! will show default product
-                        data.length != 0
-                            ? CarouselSlider(
-                                options: CarouselOptions(
-                                  autoPlay: false,
-                                  autoPlayInterval: Duration(seconds: 10),
-                                  autoPlayAnimationDuration:
-                                      Duration(milliseconds: 400),
-                                  height: 400,
-                                ),
-                                items: data.map((item) {
-                                  return GridTile(
-                                    child: Image.network(item["url"],
-                                        fit: BoxFit.cover),
-                                    footer: Container(
-                                        padding: EdgeInsets.all(15),
-                                        color: Colors.black54,
-                                        child: Text(
-                                          item["title"],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20),
-                                          textAlign: TextAlign.right,
-                                        )),
-                                  );
-                                }).toList(),
-                              )
-                            : Hero(
+                        Consumer<ProductImageModel>(
+                          builder: (_, _productImageModel, c) {
+                            List _listProductImage =
+                                _productImageModel.getProductImageFromProductId(
+                                    productId: productId);
+                            if (_listProductImage.length != 0) {
+                              return PreviewProductImage(productId: productId);
+                            } else {
+                              return Hero(
                                 tag: 'image${widget.hero}',
                                 child: Container(
-                                  height: 400,
+                                  height: size.height * .5,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
@@ -292,7 +257,10 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
+                              );
+                            }
+                          },
+                        ),
                         Container(
                           padding:
                               EdgeInsets.only(left: 28, top: 26, right: 28),

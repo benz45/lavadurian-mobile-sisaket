@@ -2,6 +2,7 @@ import 'package:LavaDurian/Screens/ViewOrder/view_order_screen.dart';
 import 'package:LavaDurian/app/splash_screen.dart';
 import 'package:LavaDurian/models/createProduct_model.dart';
 import 'package:LavaDurian/models/createStore_model.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/signup_model.dart';

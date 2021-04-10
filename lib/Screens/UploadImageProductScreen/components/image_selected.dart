@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:LavaDurian/Screens/UploadImageProductScreen/components/select_Image_product_container.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
-import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
@@ -146,65 +147,5 @@ class _ImageSelectedState extends State<ImageSelected> {
 
     imageList = consumeImage(widget.productID);
     Size size = MediaQuery.of(context).size;
-
-    return imageList.length != 0
-        ? GridView.count(
-            shrinkWrap: true,
-            padding: EdgeInsets.all(12),
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            crossAxisCount: 2,
-            children: [
-              for (var index = 0; index < imageList.length; index++)
-                Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    // * Container image.
-                    Container(
-                      width: (size.height * 0.2).round() + .0,
-                      height: (size.height * 0.2).round() + .0,
-                      child: Card(
-                        margin: EdgeInsets.all(0),
-                        semanticContainer: true,
-                        elevation: 0.2,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0)),
-                        child: Image.network(imageList[index]['image'],
-                            fit: BoxFit.fill),
-                      ),
-                    ),
-                    // * Cancel select image.
-                    Positioned(
-                      right: 6,
-                      top: 6,
-                      child: Container(
-                        height: 28,
-                        width: 28,
-                        child: Center(
-                          child: ClipOval(
-                            child: Material(
-                              color: Colors.white.withOpacity(0.75),
-                              child: IconButton(
-                                onPressed: () {
-                                  // ! To Do Remove Action.
-                                  _onShowDialogConfirm(imageList[index]['id']);
-                                },
-                                icon: Icon(
-                                  Icons.close,
-                                  size: 13,
-                                ),
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-            ],
-          )
-        : Container();
   }
 }
