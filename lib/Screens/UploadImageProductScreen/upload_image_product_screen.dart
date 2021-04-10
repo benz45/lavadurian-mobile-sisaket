@@ -12,6 +12,7 @@ import 'dart:async';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import 'components/select_Image_product_container.dart';
 
@@ -196,6 +197,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     remainImage = imageLimit - imageCount;
 
     // Login Button
+    // ignore: unused_local_variable
     final uploadButton = RoundedLoadingButton(
       child: Text(
         "UPLOAD PHOTO",
