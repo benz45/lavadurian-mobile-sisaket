@@ -1,11 +1,8 @@
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar_header_menu.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar_headerbar_model_bottom_sheet.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar_select_store.dart';
-// import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
-import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -18,18 +15,6 @@ class OperationAppBar extends StatefulWidget {
 class _OperationAppBarState extends State<OperationAppBar>
     with TickerProviderStateMixin {
   int storeID;
-
-  AnimationController _animationController;
-
-  @override
-  void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 3),
-    );
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

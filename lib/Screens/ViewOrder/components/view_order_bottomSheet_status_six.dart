@@ -227,70 +227,6 @@ class _ViewOrderBottomSheetStatusSixState
       );
     }
 
-    void _onShowDialogConfirm() {
-      showDialog(
-        context: context,
-        child: AlertDialog(
-          title: Text(
-            'จัดส่งสินค้าแล้ว',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(28),
-            ),
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  'ระบบจะแจ้งข้อมูลจัดส่งสินค้าให้กับผู้สั่งซื้อ และปรับสถานะคำสั่งซื้อเป็น "จัดส่งสินค้าแล้ว"',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                SizedBox(
-                  height: 26,
-                ),
-                FlatButton(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  minWidth: double.infinity,
-                  color: kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(19),
-                    ),
-                  ),
-                  onPressed: () => _onSubmitConfirm,
-                  child: Text(
-                    'ตกลง',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                FlatButton(
-                  minWidth: double.infinity,
-                  color: Colors.grey[300],
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(19))),
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(
-                    'ยกเลิก',
-                    style: TextStyle(color: kTextPrimaryColor),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-
     return Container(
       width: size.width,
       child: Column(
@@ -316,21 +252,6 @@ class _ViewOrderBottomSheetStatusSixState
           SizedBox(
             height: 18,
           ),
-          // FlatButton(
-          //   shape:
-          //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
-          //   onPressed: () => _onShowDialogConfirm(),
-          //   color: kPrimaryColor,
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-          //     child: Text(
-          //       'จัดส่งเรียบร้อยแล้ว',
-          //       style: TextStyle(
-          //           color: Colors.white,
-          //           fontSize: textTheme.subtitle1.fontSize),
-          //     ),
-          //   ),
-          // ),
           TextButton(
             onPressed: _onChangeStatusOrder,
             child: Text(

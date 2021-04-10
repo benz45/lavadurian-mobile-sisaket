@@ -6,13 +6,10 @@ import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_
 import 'package:LavaDurian/Screens/ViewProduct/components/preview_product_image.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'components/dialog_delete_product.dart';
 
 class ViewProductScreen extends StatefulWidget {

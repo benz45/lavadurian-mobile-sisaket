@@ -7,7 +7,6 @@ import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
@@ -25,16 +24,6 @@ class ViewOrderBottomSheetStatusFire extends StatefulWidget {
 class _ViewOrderBottomSheetStatusFireState
     extends State<ViewOrderBottomSheetStatusFire> {
   int _statusFromRadio;
-  TextEditingController _controllerParcelNumber = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    // * Listen text field edit weight
-    // _controllerParcelNumber.addListener(() {
-    //   print(_controllerParcelNumber.text);
-    // });
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -25,8 +25,6 @@ class _ViewOrderBottomSheetState extends State<ViewOrderBottomSheet> {
   int count = 0;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Consumer<OrdertModel>(
       builder: (_, _ordertModel, c) {
         final _order =

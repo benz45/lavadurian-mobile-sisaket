@@ -15,7 +15,6 @@ class ViewOrderManageStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
-    OrdertModel ordertModel = Provider.of<OrdertModel>(context, listen: false);
 
     return SliverToBoxAdapter(
       child: Center(

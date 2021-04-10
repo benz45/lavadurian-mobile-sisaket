@@ -32,7 +32,6 @@ class _PreviewProductImageState extends State<PreviewProductImage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    TextTheme font = Theme.of(context).textTheme;
 
     ProductImageModel _productImageModel =
         Provider.of<ProductImageModel>(context);
