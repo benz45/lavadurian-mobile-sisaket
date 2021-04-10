@@ -1,12 +1,18 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
+import 'package:LavaDurian/Screens/ViewProduct/components/preview_product_image.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'components/dialog_delete_product.dart';
 
 class ViewProductScreen extends StatefulWidget {
@@ -26,12 +32,16 @@ class ViewProductScreen extends StatefulWidget {
 
 class _ViewProductScreenState extends State<ViewProductScreen> {
   AnimationController animateController;
+  ProductImageModel productImageModel;
+  int productId;
 
   OrdertModel ordertModel;
   @override
   void initState() {
+    productId = widget.productId;
     super.initState();
     ordertModel = context.read<OrdertModel>();
+    productImageModel = context.read<ProductImageModel>();
   }
 
   Future<void> _showOnDeleteDialog() async {
@@ -126,6 +136,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     //* Filter product status.
     final String productStatus =
         productModel.productStatus['${dataProduct['status']}'];
+
     return Scaffold(
       body: Container(
         child: CustomScrollView(
@@ -150,7 +161,10 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           color: Colors.white.withOpacity(0.2),
                           child: InkWell(
                             child: IconButton(
-                              onPressed: () => Navigator.pop(context),
+                              onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => OperationScreen())),
                               icon: Icon(Icons.arrow_back_rounded),
                               color: Colors.white,
                             ),
@@ -220,21 +234,34 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Hero(
-                          tag: 'image${widget.hero}',
-                          child: Container(
-                            height: 400,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit
-                                    .cover, //I assumed you want to occupy the entire space of the card
-                                image: AssetImage(
-                                  'assets/images/example.png',
+                        // ! if current product have no any image
+                        // ! will show default product
+                        Consumer<ProductImageModel>(
+                          builder: (_, _productImageModel, c) {
+                            List _listProductImage =
+                                _productImageModel.getProductImageFromProductId(
+                                    productId: productId);
+                            if (_listProductImage.length != 0) {
+                              return PreviewProductImage(productId: productId);
+                            } else {
+                              return Hero(
+                                tag: 'image${widget.hero}',
+                                child: Container(
+                                  height: size.height * .5,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit
+                                          .cover, //I assumed you want to occupy the entire space of the card
+                                      image: AssetImage(
+                                        'assets/images/example.png',
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
+                              );
+                            }
+                          },
                         ),
                         Container(
                           padding:

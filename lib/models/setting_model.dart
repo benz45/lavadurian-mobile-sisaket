@@ -26,6 +26,9 @@ class SettingModel extends ChangeNotifier {
   // End-point for get Store Profile of Current Trader
   String get endPointGetStoreProfile => 'api/store/get';
 
+  // End-point for delete product image
+  String get endPointDeleteProductImage => 'api/product-img/delete';
+
   // End-point for upload product image
   String get endPointUploadProductImage => 'api/product-img/add';
 

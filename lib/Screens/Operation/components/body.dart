@@ -4,7 +4,6 @@ import 'package:LavaDurian/Screens/AllStatusOrder/all_status_order_screen.dart';
 import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
-import 'package:LavaDurian/Screens/ManageProduct/manage_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_product.dart';
@@ -13,11 +12,10 @@ import 'package:LavaDurian/Screens/ManageOrder/manage_order_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_page_four.dart';
 import 'package:LavaDurian/Screens/Register_Success/components/background.dart';
 import 'package:LavaDurian/Screens/StoreNoData/store_no_data.dart';
-import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/bottomBar_model.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 
 import 'package:LavaDurian/models/profile_model.dart';
@@ -44,6 +42,7 @@ class _BodyState extends State<Body> {
   OrdertModel orderModel;
   ItemModel itemModel;
   BookBankModel bookBankModel;
+  ProductImageModel productImageModel;
   bool isGetUserProfile = true;
 
   Map<String, String> productGene;
@@ -60,6 +59,7 @@ class _BodyState extends State<Body> {
     orderModel = context.read<OrdertModel>();
     itemModel = context.read<ItemModel>();
     bookBankModel = context.read<BookBankModel>();
+    productImageModel = context.read<ProductImageModel>();
 
     productGene = productModel.productGene;
     productStatus = productModel.productStatus;
@@ -153,6 +153,15 @@ class _BodyState extends State<Body> {
         bookbankList.add(map);
       }
       bookBankModel.bookbank = bookbankList;
+    }
+
+    if (jsonData['data']['images'] != null) {
+      List<Map<String, dynamic>> imageList = [];
+      for (var image in jsonData['data']['images']) {
+        Map<String, dynamic> map = image;
+        imageList.add(map);
+      }
+      productImageModel.images = imageList;
     }
   }
 

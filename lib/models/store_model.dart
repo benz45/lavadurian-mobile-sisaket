@@ -259,19 +259,3 @@ class BookBankModel extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-class ProductImageModel extends ChangeNotifier {
-  List<Map<String, dynamic>> _images = [];
-
-  List<Map<String, dynamic>> get images => _images;
-
-  set images(List<Map<String, dynamic>> images) {
-    _images = images;
-    notifyListeners();
-  }
-
-  void clear() {
-    _images.clear();
-    notifyListeners();
-  }
-}

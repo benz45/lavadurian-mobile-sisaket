@@ -46,6 +46,8 @@ dependencies:
   flash: ^1.3.2
   im_stepper: ^0.1.2+8
   intl: ^0.16.1
+  progress_dialog: ^1.2.4
+  cached_network_image: ^2.5.0
 
 dev_dependencies:
   flutter_test:
