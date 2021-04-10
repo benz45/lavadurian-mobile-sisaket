@@ -29,6 +29,9 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
   SettingModel settingModel;
   ProductImageModel productImageModel;
 
+  // * progress dialog
+  ProgressDialog pr;
+
   final int imageLimit = 3;
   int remainImage;
 
@@ -157,9 +160,12 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
     // Upload photo and wait for response
     try {
+      pr.show();
       Response response = await Response.fromStream(await request.send());
       final jsonData = jsonDecode(response.body);
+
       if (jsonData['status'] == true) {
+        pr.hide();
         for (var imageData in jsonData['data']) {
           productImageModel.images.add(imageData);
         }
@@ -172,19 +178,28 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
         );
       }
     } catch (e) {
+      pr.hide();
       print(e.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // ! Debug
+    // ! bug here
     print("Rebuild Main Widget");
 
     // * setup product id
     productID = widget.productId;
 
-    // Media Query
+    // * setup progress dialog
+    pr = ProgressDialog(context);
+    pr.style(
+      message: 'Uploading image...',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+    );
+
+    // * Media Query
     final double appBarHeight = 66;
     final double statusBarHeight = MediaQuery.of(context).padding.top;
     final font = Theme.of(context).textTheme;
