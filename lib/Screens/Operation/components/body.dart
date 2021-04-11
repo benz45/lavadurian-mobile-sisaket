@@ -283,6 +283,7 @@ class _ContainerStoreState extends State<ContainerStore> {
     return Container(
       color: Color(0xFFFAFAFA),
       child: CustomScrollView(
+        physics: NeverScrollableScrollPhysics(),
         slivers: [
           //! Operation App Bar
           OperationAppBar(),
@@ -294,267 +295,264 @@ class _ContainerStoreState extends State<ContainerStore> {
                 duration: Duration(milliseconds: 300),
                 child: store.getCurrentStoreStatus == 1
                     ? SliverToBoxAdapter(
-                        child: Container(
-                          height: size.height,
-                          child: Consumer<BottomBarModel>(
-                            builder: (_, _bottomBarModel, c) {
-                              return CarouselSlider(
-                                carouselController:
-                                    _bottomBarModel.getController,
-                                options: CarouselOptions(
-                                    viewportFraction: 1.0,
-                                    initialPage: 0,
-                                    height: size.height,
-                                    enlargeCenterPage: true,
-                                    onPageChanged: _bottomBarModel
-                                        .setSelectedTabFromSlider),
-                                items: [
-                                  //! 1. Home page on swiper.
-                                  SingleChildScrollView(
-                                    child: Container(
-                                      width: size.width * 0.85,
-                                      child: Column(
-                                        children: [
-                                          StoreApproval(),
+                        child: Consumer<BottomBarModel>(
+                          builder: (_, _bottomBarModel, c) {
+                            return CarouselSlider(
+                              carouselController: _bottomBarModel.getController,
+                              options: CarouselOptions(
+                                  viewportFraction: 1.0,
+                                  initialPage: 0,
+                                  height: size.height,
+                                  enlargeCenterPage: true,
+                                  onPageChanged:
+                                      _bottomBarModel.setSelectedTabFromSlider),
+                              items: [
+                                //! 1. Home page on swiper.
+                                Container(
+                                  width: size.width * 0.85,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        StoreApproval(),
 
-                                          // * List order
-                                          OperationList(
-                                            leading: 'รายการสั่งซื้อ',
-                                            trailing: TextButton(
-                                              child: Text(
-                                                'ดูทั้งหมด',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    fontSize:
-                                                        font.subtitle2.fontSize,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              onPressed: () {
-                                                _bottomBarModel
-                                                    .setSelectedTab(1);
-                                              },
+                                        // * List order
+                                        OperationList(
+                                          leading: 'รายการสั่งซื้อ',
+                                          trailing: TextButton(
+                                            child: Text(
+                                              'ดูทั้งหมด',
+                                              style: TextStyle(
+                                                  color: kPrimaryColor,
+                                                  fontSize:
+                                                      font.subtitle2.fontSize,
+                                                  fontWeight: FontWeight.bold),
                                             ),
+                                            onPressed: () {
+                                              _bottomBarModel.setSelectedTab(1);
+                                            },
                                           ),
-                                          Consumer2<OrdertModel, ProductModel>(
-                                              builder: (_, orderModel,
-                                                  productModel, c) {
-                                            if (productModel.products != null &&
-                                                productModel.products.length !=
-                                                    0) {
-                                              return SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    if (orderModel
-                                                            .orders.length >
-                                                        0)
-                                                      OperationOrderList(
-                                                        maxlength: 3,
-                                                      ),
-                                                    if (orderModel.orders
-                                                            .where((element) =>
-                                                                element[
-                                                                    'status'] ==
-                                                                1)
-                                                            .length >
-                                                        3)
-                                                      SizedBox(
-                                                        width: double.infinity,
-                                                        child: OutlineButton(
-                                                          highlightedBorderColor:
-                                                              Colors.orange,
-                                                          splashColor: Colors
-                                                              .orange
-                                                              .withOpacity(0.1),
-                                                          focusColor:
-                                                              Colors.white,
-                                                          highlightColor: Colors
-                                                              .orange
-                                                              .withOpacity(0.2),
-                                                          borderSide:
-                                                              BorderSide(
-                                                                  color: Colors
-                                                                      .orange),
-                                                          color: Colors.orange,
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
+                                        ),
+                                        Consumer2<OrdertModel, ProductModel>(
+                                            builder: (_, orderModel,
+                                                productModel, c) {
+                                          if (productModel.products != null &&
+                                              productModel.products.length !=
+                                                  0) {
+                                            return Column(
+                                              children: [
+                                                if (orderModel.orders.length >
+                                                    0)
+                                                  OperationOrderList(
+                                                    maxlength: 3,
+                                                  ),
+                                                if (orderModel.orders
+                                                        .where((element) =>
+                                                            element['status'] ==
+                                                            1)
+                                                        .length >
+                                                    3)
+                                                  SizedBox(
+                                                    width: double.infinity,
+                                                    child: OutlineButton(
+                                                      highlightedBorderColor:
+                                                          Colors.orange,
+                                                      splashColor: Colors.orange
+                                                          .withOpacity(0.1),
+                                                      focusColor: Colors.white,
+                                                      highlightColor: Colors
+                                                          .orange
+                                                          .withOpacity(0.2),
+                                                      borderSide: BorderSide(
+                                                          color: Colors.orange),
+                                                      color: Colors.orange,
+                                                      shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
                                                                       .circular(
                                                                           12))),
-                                                          onPressed: () {
-                                                            _bottomBarModel
-                                                                .setSelectedTab(
-                                                                    1);
-                                                          },
-                                                          child: Text(
-                                                            'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .orange),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                  ],
-                                                ),
-                                              );
-                                            }
-
-                                            return Container();
-                                          }),
-                                          SizedBox(
-                                            height: size.height * 0.02,
-                                          ),
-
-                                          // * List product
-                                          OperationList(
-                                            leading: 'รายการสินค้า',
-                                            trailing: TextButton(
-                                              child: Text(
-                                                'ดูทั้งหมด',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor,
-                                                    fontSize:
-                                                        font.subtitle2.fontSize,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              onPressed: () {
-                                                _bottomBarModel
-                                                    .setSelectedTab(2);
-                                              },
-                                            ),
-                                          ),
-
-                                          OperationProductList()
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-
-                                  //! 2. Orders page on swiper.
-                                  Consumer<OrdertModel>(
-                                    builder: (_, orderModel, c) {
-                                      return Container(
-                                        width: size.width * 0.85,
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              mainAxisSize: MainAxisSize.max,
-                                              children: [
-                                                OutlineButton(
-                                                  highlightColor:
-                                                      kPrimaryLightColor,
-                                                  highlightedBorderColor:
-                                                      kPrimaryColor,
-                                                  color: kPrimaryColor,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (_) =>
-                                                              AllStatusOrderScreen()),
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    'สถานะคำสั่งซื้อทั้งหมด',
-                                                    style: TextStyle(
-                                                        color: kPrimaryColor),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Divider(),
-                                            OperationList(
-                                              leading: 'รายการสั่งซื้อ',
-                                            ),
-                                            if (orderModel.orders.length > 0)
-                                              OperationOrderList(),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-
-                                  //! 3. Products page on swiper.
-                                  SingleChildScrollView(
-                                    child: Container(
-                                      width: size.width * 0.85,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: [
-                                              OutlineButton(
-                                                highlightColor:
-                                                    kPrimaryLightColor,
-                                                highlightedBorderColor:
-                                                    kPrimaryColor,
-                                                color: kPrimaryColor,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          Consumer<StoreModel>(
-                                                        builder: (_,
-                                                            _storeModel, c) {
-                                                          int stireId = _storeModel
-                                                              .getCurrentIdStore;
-                                                          return CreateProductDemoScreen(
-                                                              backArrowButton:
-                                                                  true,
-                                                              storeID: stireId);
-                                                        },
+                                                      onPressed: () {
+                                                        _bottomBarModel
+                                                            .setSelectedTab(1);
+                                                      },
+                                                      child: Text(
+                                                        'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.orange),
                                                       ),
                                                     ),
-                                                  );
-                                                },
-                                                child: Text(
-                                                  'สร้างสินค้าใหม่',
-                                                  style: TextStyle(
-                                                      color: kPrimaryColor),
-                                                ),
-                                              ),
-                                              Icon(
-                                                Icons.filter_list,
-                                                color: kTextSecondaryColor,
-                                              )
-                                            ],
+                                                  ),
+                                              ],
+                                            );
+                                          }
+
+                                          return SizedBox();
+                                        }),
+
+                                        SizedBox(
+                                          height: size.height * 0.02,
+                                        ),
+
+                                        // * List product
+                                        OperationList(
+                                          leading: 'รายการสินค้า',
+                                          trailing: TextButton(
+                                            child: Text(
+                                              'ดูทั้งหมด',
+                                              style: TextStyle(
+                                                  color: kPrimaryColor,
+                                                  fontSize:
+                                                      font.subtitle2.fontSize,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            onPressed: () {
+                                              _bottomBarModel.setSelectedTab(2);
+                                            },
                                           ),
-                                          Divider(),
-                                          OperationList(
-                                            leading: 'รายการสินค้า',
-                                          ),
-                                          OperationProductList()
-                                        ],
-                                      ),
+                                        ),
+
+                                        OperationProductList()
+                                      ],
                                     ),
                                   ),
+                                ),
 
-                                  //! 4. Store page on swiper.
-                                  OperationPageFour(),
-                                ].toList(),
-                              );
-                            },
-                          ),
+                                //! 2. Orders page on swiper.
+                                Container(
+                                  width: size.width * 0.85,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: size.width * 0.85,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: [
+                                                    OutlineButton(
+                                                      highlightColor:
+                                                          kPrimaryLightColor,
+                                                      highlightedBorderColor:
+                                                          kPrimaryColor,
+                                                      color: kPrimaryColor,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (_) =>
+                                                                  AllStatusOrderScreen()),
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        'สถานะคำสั่งซื้อทั้งหมด',
+                                                        style: TextStyle(
+                                                            color:
+                                                                kPrimaryColor),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Divider(),
+                                                OperationList(
+                                                  leading: 'รายการสั่งซื้อ',
+                                                ),
+                                                OperationOrderList()
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .4,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                //! 3. Products page on swiper.
+                                SingleChildScrollView(
+                                  child: Container(
+                                    width: size.width * 0.85,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            OutlineButton(
+                                              highlightColor:
+                                                  kPrimaryLightColor,
+                                              highlightedBorderColor:
+                                                  kPrimaryColor,
+                                              color: kPrimaryColor,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        Consumer<StoreModel>(
+                                                      builder:
+                                                          (_, _storeModel, c) {
+                                                        int stireId = _storeModel
+                                                            .getCurrentIdStore;
+                                                        return CreateProductDemoScreen(
+                                                            backArrowButton:
+                                                                true,
+                                                            storeID: stireId);
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Text(
+                                                'สร้างสินค้าใหม่',
+                                                style: TextStyle(
+                                                    color: kPrimaryColor),
+                                              ),
+                                            ),
+                                            Icon(
+                                              Icons.filter_list,
+                                              color: kTextSecondaryColor,
+                                            )
+                                          ],
+                                        ),
+                                        Divider(),
+                                        OperationList(
+                                          leading: 'รายการสินค้า',
+                                        ),
+                                        OperationProductList()
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                                //! 4. Store page on swiper.
+                                OperationPageFour(),
+                              ].toList(),
+                            );
+                          },
                         ),
                       )
                     :
@@ -575,30 +573,26 @@ class OperationOrderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Consumer<OrdertModel>(builder: (_, orderModel, c) {
-          if (orderModel.orders != null && orderModel.orders.length != 0) {
-            return Container(
-              child: ListView.builder(
-                padding: EdgeInsets.only(top: 0),
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return OperationCardOrder(
-                    orderId: orderModel.orders[index]['id'],
-                  );
-                },
-                itemCount:
-                    maxlength != null && orderModel.orders.length > maxlength
-                        ? maxlength
-                        : orderModel.orders.length,
-              ),
-            );
-          }
-          return Container();
-        }),
-      ],
+    return Consumer<OrdertModel>(
+      builder: (_, orderModel, c) {
+        if (orderModel.orders != null && orderModel.orders.length != 0) {
+          return ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(top: 0),
+            scrollDirection: Axis.vertical,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return OperationCardOrder(
+                orderId: orderModel.orders[index]['id'],
+              );
+            },
+            itemCount: maxlength != null && orderModel.orders.length > maxlength
+                ? maxlength
+                : orderModel.orders.length,
+          );
+        }
+        return null;
+      },
     );
   }
 }

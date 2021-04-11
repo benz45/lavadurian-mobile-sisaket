@@ -27,15 +27,16 @@ class _OperationCardProductState extends State<OperationCardProduct> {
       builder: (context, productModel, productImageModel, child) {
         if (productModel.products.length != 0) {
           return StaggeredGridView.countBuilder(
+            physics: NeverScrollableScrollPhysics(),
             padding: EdgeInsets.only(
               top: 0,
             ),
             crossAxisCount: 2,
             mainAxisSpacing: 16,
+            shrinkWrap: true,
             crossAxisSpacing: 16,
             staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+
             itemCount: productModel.products.length, //staticData.length,
             itemBuilder: (context, index) {
               final product = productModel.products;
@@ -84,8 +85,9 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                   height: size.height * .21,
                                   viewportFraction: 1.0,
                                   enlargeCenterPage: true,
-                                  autoPlay: true,
-                                  pauseAutoPlayInFiniteScroll: true,
+                                  autoPlay: listProductImage.length > 1
+                                      ? true
+                                      : false,
                                   autoPlayInterval: Duration(
                                       seconds: Random().nextInt(
                                               listProductImage.length) +
@@ -94,10 +96,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                       Duration(milliseconds: 800),
                                   autoPlayCurve: Curves.fastOutSlowIn,
                                 ),
-                                items: productImageModel
-                                    .getProductImageFromProductId(
-                                        productId: productModel.products[index]
-                                            ['id'])
+                                items: listProductImage
                                     .map(
                                       (e) => Container(
                                         decoration: ShapeDecoration(

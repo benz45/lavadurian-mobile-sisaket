@@ -32,8 +32,6 @@ class _OperationAppBarState extends State<OperationAppBar>
       elevation: 0.5,
       automaticallyImplyLeading: false,
       pinned: true,
-      snap: false,
-      floating: true,
       title: OperationAppHeaderMenu(),
       expandedHeight: 142.0,
       flexibleSpace: FlexibleSpaceBar(
