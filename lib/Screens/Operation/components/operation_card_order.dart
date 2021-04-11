@@ -1,5 +1,7 @@
 import 'package:LavaDurian/Screens/ViewOrder/view_order_screen.dart';
 import 'package:LavaDurian/components/DetailOnCard.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:LavaDurian/constants.dart';
@@ -16,8 +18,15 @@ class OperationCardOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _orderModel = Provider.of<OrdertModel>(context);
+    OrdertModel _orderModel = Provider.of<OrdertModel>(context);
+    ProductImageModel productImageModel =
+        Provider.of<ProductImageModel>(context);
+
     final _order = _orderModel.getOrderFromId(orderId);
+    final _orderItem = _orderModel.getOrderItemFromId(orderId);
+
+    List listProductImage = productImageModel.getProductImageFromProductId(
+        productId: _orderItem['product']);
 
     DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
     var dateCreate = DateTime.parse(_order['date_created']).toLocal();
@@ -54,20 +63,50 @@ class OperationCardOrder extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.horizontal(left: Radius.circular(18.0)),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                    'assets/images/example.png',
+            if (listProductImage.length != 0)
+              CachedNetworkImage(
+                imageUrl: listProductImage[0]['image'],
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.horizontal(left: Radius.circular(18.0)),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  height: 100,
+                  width: 100,
+                  color: Colors.grey[400].withOpacity(.75),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.horizontal(left: Radius.circular(18.0)),
+                  ),
+                  child: Icon(
+                    Icons.error_outline_rounded,
+                    color: Colors.white,
                   ),
                 ),
               ),
-            ),
+            if (listProductImage.length == 0)
+              Container(
+                height: 100,
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.horizontal(left: Radius.circular(18.0)),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      'assets/images/example.png',
+                    ),
+                  ),
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

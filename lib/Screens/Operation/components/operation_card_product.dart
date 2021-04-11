@@ -1,19 +1,30 @@
+import 'dart:math';
+
 import 'package:LavaDurian/components/DetailOnCard.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as Http;
 
-class OperationCardProduct extends StatelessWidget {
+class OperationCardProduct extends StatefulWidget {
+  @override
+  _OperationCardProductState createState() => _OperationCardProductState();
+}
+
+class _OperationCardProductState extends State<OperationCardProduct> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final font = Theme.of(context).textTheme;
 
-    return Consumer<ProductModel>(
-      builder: (context, productModel, child) {
+    return Consumer2<ProductModel, ProductImageModel>(
+      builder: (context, productModel, productImageModel, child) {
         if (productModel.products.length != 0) {
           return StaggeredGridView.countBuilder(
             padding: EdgeInsets.only(
@@ -28,6 +39,9 @@ class OperationCardProduct extends StatelessWidget {
             itemCount: productModel.products.length, //staticData.length,
             itemBuilder: (context, index) {
               final product = productModel.products;
+              final List listProductImage =
+                  productImageModel.getProductImageFromProductId(
+                      productId: product[index]['id']);
 
               return GestureDetector(
                 onTap: () {
@@ -64,11 +78,110 @@ class OperationCardProduct extends StatelessWidget {
                     children: [
                       Stack(
                         children: [
-                          Hero(
-                            tag: 'image$index',
-                            child: Container(
+                          if (listProductImage.length != 0)
+                            CarouselSlider(
+                                options: CarouselOptions(
+                                  height: size.height * .21,
+                                  viewportFraction: 1.0,
+                                  enlargeCenterPage: true,
+                                  autoPlay: true,
+                                  pauseAutoPlayInFiniteScroll: true,
+                                  autoPlayInterval: Duration(
+                                      seconds: Random().nextInt(
+                                              listProductImage.length) +
+                                          5),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 800),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                ),
+                                items: productImageModel
+                                    .getProductImageFromProductId(
+                                        productId: productModel.products[index]
+                                            ['id'])
+                                    .map(
+                                      (e) => Container(
+                                        decoration: ShapeDecoration(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                                top: Radius.circular(18.0)),
+                                          ),
+                                        ),
+                                        // TODO:
+                                        // child: Hero(
+                                        //   tag: 'image$index',
+                                        child: CachedNetworkImage(
+                                          filterQuality: FilterQuality.low,
+                                          imageUrl: e['image'],
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            decoration: ShapeDecoration(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  top: Radius.circular(18.0),
+                                                ),
+                                              ),
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          placeholder: (context, url) {
+                                            Future<bool> checkImg() async {
+                                              var response =
+                                                  await Http.get(url);
+                                              if (response.statusCode == 200) {
+                                                return true;
+                                              }
+                                              return false;
+                                            }
+
+                                            return FutureBuilder(
+                                                future: checkImg(),
+                                                builder: (context, snap) {
+                                                  if (snap.data != true)
+                                                    return SizedBox();
+                                                  return Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        width: 20,
+                                                        height: 20,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          strokeWidth: 2,
+                                                          backgroundColor:
+                                                              kPrimaryColor,
+                                                          valueColor:
+                                                              AlwaysStoppedAnimation<
+                                                                      Color>(
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          errorWidget: (context, url, error) =>
+                                              Container(
+                                            child: Icon(
+                                              Icons.error_outline_rounded,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        ),
+                                        // ),
+                                      ),
+                                    )
+                                    .toList()),
+                          if (listProductImage.length == 0)
+                            Container(
                               width: double.infinity,
-                              height: 150,
+                              height: 140,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(18.0)),
@@ -80,7 +193,6 @@ class OperationCardProduct extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          ),
                           Container(
                             margin: EdgeInsets.all(6.8),
                             padding: EdgeInsets.symmetric(horizontal: 6.0),

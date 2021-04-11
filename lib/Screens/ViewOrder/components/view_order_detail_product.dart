@@ -1,7 +1,9 @@
 import 'package:LavaDurian/Screens/ViewOrder/components/build_subtext.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +19,8 @@ class ViewOrderDetailProduct extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return SliverPadding(
       padding: const EdgeInsets.only(top: 20.0),
-      sliver: Consumer<ProductModel>(
-        builder: (_, _productModel, c) {
+      sliver: Consumer2<ProductModel, ProductImageModel>(
+        builder: (_, _productModel, productImageModel, c) {
           // Filter product id on the mapOrderItems id.
           final Map mapProduct = _productModel.products
               .firstWhere((e) => e['id'] == productId, orElse: () => {});
@@ -26,6 +28,9 @@ class ViewOrderDetailProduct extends StatelessWidget {
           // Filter product gene.
           final String mapProductGene =
               _productModel.productGene['${mapProduct['gene']}'];
+
+          final listProductImage = productImageModel
+              .getProductImageFromProductId(productId: productId);
 
           return SliverToBoxAdapter(
             child: Center(
@@ -111,20 +116,51 @@ class ViewOrderDetailProduct extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Container(
-                        height: size.height * 0.09,
-                        width: size.height * 0.09,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(18.0)),
-                          image: DecorationImage(
-                            fit: BoxFit
-                                .cover, //I assumed you want to occupy the entire space of the card
-                            image: AssetImage(
-                              'assets/images/example.png',
+                      child: listProductImage.length != 0
+                          ? CachedNetworkImage(
+                              imageUrl: listProductImage[0]['image'],
+                              imageBuilder: (context, imageProvider) =>
+                                  Container(
+                                height: size.height * 0.09,
+                                width: size.height * 0.09,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(18.0)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Container(
+                                height: size.height * 0.09,
+                                width: size.height * 0.09,
+                                color: Colors.grey[400].withOpacity(.75),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(18.0)),
+                                ),
+                                child: Icon(
+                                  Icons.error_outline_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          : Container(
+                              height: size.height * 0.09,
+                              width: size.height * 0.09,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(18.0)),
+                                image: DecorationImage(
+                                  fit: BoxFit
+                                      .cover, //I assumed you want to occupy the entire space of the card
+                                  image: AssetImage(
+                                    'assets/images/example.png',
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                     ),
 
                     // ! Content

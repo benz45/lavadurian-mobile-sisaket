@@ -50,6 +50,8 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     productID = widget.productId;
     settingModel = context.read<SettingModel>();
     productImageModel = context.read<ProductImageModel>();
+
+    // * Add init image for preview only from product immage.
     List images =
         productImageModel.getProductImageFromProductId(productId: productID);
     if (images.length != 0) {
@@ -80,10 +82,6 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     final font = Theme.of(context).textTheme;
     Size size = MediaQuery.of(context).size;
 
-    // ! images = _productImageModel
-    List listProductImage =
-        productImageModel.getProductImageFromProductId(productId: productID);
-
     // Seledt image from device
     Future<void> loadAssets() async {
       List<Asset> resultList = [];
@@ -106,9 +104,6 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
         return;
       }
 
-      // If the widget was removed from the tree while the asynchronous platform
-      // message was in flight, we want to discard the reply rather than calling
-      // setState to update our non-existent appearance.
       if (!mounted) return;
 
       if (listImageForPreview.length != 0) {
@@ -119,16 +114,6 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
             listImagesForUpload.addAll(resultList);
             listImageForPreview.addAll(resultList);
 
-            isSelectedImage = true;
-          });
-          return;
-        }
-
-        // Add image if image fully. (3 Image).
-        else if (listImagesForUpload.length == 3 && resultList.length != 0) {
-          setState(() {
-            listImagesForUpload.addAll(resultList);
-            listImageForPreview.addAll(resultList);
             isSelectedImage = true;
           });
           return;
@@ -271,7 +256,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                                                 ? _onRemoveImageSelected(
                                                     listImageForPreview[index])
                                                 : _onShowDialogConfirmRemove(
-                                                    listProductImage[index]
+                                                    listImageForPreview[index]
                                                         ['id']);
                                           },
                                           icon: Icon(

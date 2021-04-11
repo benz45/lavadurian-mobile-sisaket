@@ -46,6 +46,7 @@ class _PreviewProductImageState extends State<PreviewProductImage> {
           options: CarouselOptions(
             height: size.height * .4,
             viewportFraction: 1.0,
+            enableInfiniteScroll: false,
             initialPage: 0,
             onPageChanged: (index, reason) {
               setState(() {
@@ -106,23 +107,24 @@ class _PreviewProductImageState extends State<PreviewProductImage> {
         ),
 
         // * Indicator select image
-        Positioned(
-          width: size.width,
-          bottom: size.height * 0.035,
-          child: Center(
-            child: AnimatedSmoothIndicator(
-              activeIndex: currentIndex,
-              count: listProductImage.length,
-              effect: ExpandingDotsEffect(
-                activeDotColor: Colors.white,
-                dotColor: kTextSecondaryColor.withOpacity(0.2),
-                dotHeight: size.height * 0.0135,
-                dotWidth: size.height * 0.0135,
-                expansionFactor: 4,
+        if (listProductImage.length > 1)
+          Positioned(
+            width: size.width,
+            bottom: size.height * 0.035,
+            child: Center(
+              child: AnimatedSmoothIndicator(
+                activeIndex: currentIndex,
+                count: listProductImage.length,
+                effect: ExpandingDotsEffect(
+                  activeDotColor: Colors.white,
+                  dotColor: kTextSecondaryColor.withOpacity(0.2),
+                  dotHeight: size.height * 0.0135,
+                  dotWidth: size.height * 0.0135,
+                  expansionFactor: 3.2,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
