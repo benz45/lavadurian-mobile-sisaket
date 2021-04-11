@@ -9,8 +9,10 @@ import 'package:LavaDurian/models/signup_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:flutter/physics.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 void main() => runApp(MyApp());
 
@@ -35,25 +37,39 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<CreateStoreModel>(
             create: (_) => CreateStoreModel()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Lava Durian Sisaket',
-        theme: ThemeData(
-          textTheme: TextTheme(
-            headline6: TextStyle(
-              fontWeight: FontWeight.bold,
+      child: RefreshConfiguration(
+        headerBuilder: () => ClassicHeader(),
+        footerBuilder: () => ClassicFooter(),
+        headerTriggerDistance: 80.0,
+        springDescription:
+            SpringDescription(stiffness: 170, damping: 16, mass: 1.9),
+        maxOverScrollExtent: 100,
+        maxUnderScrollExtent: 0,
+        enableScrollWhenRefreshCompleted: true,
+        enableLoadingWhenFailed: true,
+        hideFooterWhenNotFull: false,
+        enableBallisticLoad: true,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Lava Durian Sisaket',
+          theme: ThemeData(
+            textTheme: TextTheme(
+              headline6: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
+            pageTransitionsTheme: PageTransitionsTheme(builders: {
+              TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+              TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+            }),
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            primaryColor: kPrimaryColor,
+            scaffoldBackgroundColor: Colors.white,
+            fontFamily:
+                GoogleFonts.kanit(fontWeight: FontWeight.w400).fontFamily,
           ),
-          pageTransitionsTheme: PageTransitionsTheme(builders: {
-            TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
-            TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-          }),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: GoogleFonts.kanit(fontWeight: FontWeight.w400).fontFamily,
+          home: SplashPage(),
         ),
-        home: SplashPage(),
       ),
     );
   }
