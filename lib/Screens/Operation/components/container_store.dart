@@ -200,7 +200,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                               carouselController: _bottomBarModel.getController,
                               options: CarouselOptions(
                                   viewportFraction: 1.0,
-                                  initialPage: 0,
+                                  initialPage: 3,
                                   height: size.height,
                                   enlargeCenterPage: true,
                                   onPageChanged:
@@ -230,6 +230,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                       completeText: 'โหลดข้อมูลสำเร็จ',
                                       idleText: 'รีเฟรชข้อมูล',
                                       failedText: 'โหลดข้อมูลไม่สำเร็จ',
+                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
                                     ),
                                     onLoading: _onLoading,
                                     child: ListView(
@@ -342,61 +343,70 @@ class _ContainerStoreState extends State<ContainerStore> {
                                 //! 2. Orders page on swiper.
                                 Container(
                                   width: size.width * 0.85,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width: size.width * 0.85,
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    OutlineButton(
-                                                      highlightColor:
-                                                          kPrimaryLightColor,
-                                                      highlightedBorderColor:
-                                                          kPrimaryColor,
-                                                      color: kPrimaryColor,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (_) =>
-                                                                  AllStatusOrderScreen()),
-                                                        );
-                                                      },
-                                                      child: Text(
-                                                        'สถานะคำสั่งซื้อทั้งหมด',
-                                                        style: TextStyle(
-                                                            color:
-                                                                kPrimaryColor),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Divider(),
-                                                OperationList(
-                                                  leading: 'รายการสั่งซื้อ',
-                                                ),
-                                                OperationOrderList()
-                                              ],
-                                            ),
+                                  child: SmartRefresher(
+                                    enablePullDown: true,
+                                    enablePullUp: true,
+                                    controller: _controller,
+                                    onRefresh: _onRefresh,
+                                    footer: ClassicFooter(
+                                      iconPos: IconPosition.top,
+                                      outerBuilder: (child) {
+                                        return Container(
+                                          width: 80.0,
+                                          child: Center(
+                                            child: child,
                                           ),
+                                        );
+                                      },
+                                    ),
+                                    header: ClassicHeader(
+                                      refreshingText: 'กำลังโหลดข้อมูล',
+                                      completeText: 'โหลดข้อมูลสำเร็จ',
+                                      idleText: 'รีเฟรชข้อมูล',
+                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
+                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
+                                    ),
+                                    onLoading: _onLoading,
+                                    child: ListView(
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            OutlineButton(
+                                              highlightColor:
+                                                  kPrimaryLightColor,
+                                              highlightedBorderColor:
+                                                  kPrimaryColor,
+                                              color: kPrimaryColor,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          AllStatusOrderScreen()),
+                                                );
+                                              },
+                                              child: Text(
+                                                'สถานะคำสั่งซื้อทั้งหมด',
+                                                style: TextStyle(
+                                                    color: kPrimaryColor),
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                        Divider(),
+                                        OperationList(
+                                          leading: 'รายการสั่งซื้อ',
+                                        ),
+                                        OperationOrderList(),
                                         SizedBox(
                                           height: size.height * .4,
                                         ),
@@ -406,10 +416,33 @@ class _ContainerStoreState extends State<ContainerStore> {
                                 ),
 
                                 //! 3. Products page on swiper.
-                                SingleChildScrollView(
-                                  child: Container(
-                                    width: size.width * 0.85,
-                                    child: Column(
+                                Container(
+                                  width: size.width * 0.85,
+                                  child: SmartRefresher(
+                                    enablePullDown: true,
+                                    enablePullUp: true,
+                                    controller: _controller,
+                                    onRefresh: _onRefresh,
+                                    footer: ClassicFooter(
+                                      iconPos: IconPosition.top,
+                                      outerBuilder: (child) {
+                                        return Container(
+                                          width: 80.0,
+                                          child: Center(
+                                            child: child,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    header: ClassicHeader(
+                                      refreshingText: 'กำลังโหลดข้อมูล',
+                                      completeText: 'โหลดข้อมูลสำเร็จ',
+                                      idleText: 'รีเฟรชข้อมูล',
+                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
+                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
+                                    ),
+                                    onLoading: _onLoading,
+                                    child: ListView(
                                       children: [
                                         Row(
                                           crossAxisAlignment:
@@ -470,7 +503,36 @@ class _ContainerStoreState extends State<ContainerStore> {
                                 ),
 
                                 //! 4. Store page on swiper.
-                                OperationPageFour(),
+
+                                Container(
+                                  width: size.width * .85,
+                                  child: SmartRefresher(
+                                    enablePullDown: true,
+                                    enablePullUp: true,
+                                    controller: _controller,
+                                    onRefresh: _onRefresh,
+                                    footer: ClassicFooter(
+                                      iconPos: IconPosition.top,
+                                      outerBuilder: (child) {
+                                        return Container(
+                                          width: 80.0,
+                                          child: Center(
+                                            child: child,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    header: ClassicHeader(
+                                      refreshingText: 'กำลังโหลดข้อมูล',
+                                      completeText: 'โหลดข้อมูลสำเร็จ',
+                                      idleText: 'รีเฟรชข้อมูล',
+                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
+                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
+                                    ),
+                                    onLoading: _onLoading,
+                                    child: OperationPageFour(),
+                                  ),
+                                ),
                               ].toList(),
                             );
                           },

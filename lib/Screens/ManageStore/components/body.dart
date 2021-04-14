@@ -94,7 +94,8 @@ class _BodyState extends State<Body> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => EditStoreScreen(
-                                        storeId: widget.storeID)));
+                                          storeId: widget.storeID,
+                                        )));
                           },
                         ),
                         const SizedBox(width: 8),
@@ -163,6 +164,65 @@ class _BodyState extends State<Body> {
                   );
                 },
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "สินค้าภายในร้าน",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(width: 8),
+                  TextButton(
+                    child: const Text(
+                      'เพิ่มสิ้นค้า',
+                      style: TextStyle(fontSize: 16, color: kPrimaryColor),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateProductScreen(
+                            storeID: storeID,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16.0,
+              ),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditProductScreen(
+                                    productID: products[index]['id'])));
+                      },
+                      child: Card(
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage(
+                                'assets/images/example.png'), // no matter how big it is, it won't overflow
+                          ),
+                          title: Text(
+                              "${productGene[products[index]['gene'].toString()]}\n"
+                              "เกรด : ${productGrade[products[index]['grade'].toString()]}\n"
+                              "สถานะ : ${productStatus[products[index]['status'].toString()]}\n"
+                              "จำนวน : ${products[index]['values']} ลูก\n"
+                              "นำ้หนัก : ${products[index]['weight']} กก./ลูก\n"
+                              "คำอธิบาย : ${products[index]['desc']}\n"),
+                        ),
+                      ),
+                    );
+                  })
             ],
           ),
         ),

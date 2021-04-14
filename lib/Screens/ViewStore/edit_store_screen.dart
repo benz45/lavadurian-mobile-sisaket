@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class EditStoreScreen extends StatelessWidget {
-  final int storeID;
-  EditStoreScreen(this.storeID);
+  final int storeId;
+  EditStoreScreen({this.storeId});
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +16,13 @@ class EditStoreScreen extends StatelessWidget {
         elevation: 0.0,
         title: Text('แก้ไขร้านค้า').text.color(kTextPrimaryColor).make(),
         leading: IconButton(
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ViewStoreScreen(storeID),
-            ),
-          ),
+          onPressed: () => Navigator.of(context).pop(),
           icon: Icon(Icons.arrow_back_rounded),
           color: kPrimaryColor,
         ),
       ),
       body: SingleChildScrollView(
-        child: BodyEdit(storeID: storeID),
+        child: BodyEdit(storeID: storeId),
       ),
     );
   }
