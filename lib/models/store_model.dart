@@ -245,6 +245,12 @@ class BookBankModel extends ChangeNotifier {
     "034": "ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร",
   };
 
+  List getBookBankFromStoreId({@required int storeId}) {
+    final List result =
+        _bookbank.where((element) => element['store'] == storeId).toList();
+    return result;
+  }
+
   List<Map<String, dynamic>> get bookbank => _bookbank;
   Map<String, String> get type => _type;
   Map<String, String> get bank => _bank;

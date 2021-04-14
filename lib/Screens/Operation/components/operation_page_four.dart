@@ -1,5 +1,5 @@
+import 'package:LavaDurian/Screens/BookBankEdit/bookbank_edit_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/edit_store_screen.dart';
-import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -161,9 +161,12 @@ class OperationPageFour extends StatelessWidget {
                         Row(
                           children: [
                             Flexible(
-                              child: Consumer<BookBankModel>(
-                                builder: (_, bookBankModel, __) {
-                                  bookBankModel.bookbank;
+                              child: Consumer2<BookBankModel, StoreModel>(
+                                builder: (_, bookBankModel, storeModel, __) {
+                                  final int storeId =
+                                      storeModel.getCurrentIdStore;
+                                  final List listBookBank = bookBankModel
+                                      .getBookBankFromStoreId(storeId: storeId);
                                   return Column(
                                     mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -183,8 +186,7 @@ class OperationPageFour extends StatelessWidget {
                                       ListView.builder(
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
-                                        itemCount:
-                                            bookBankModel.bookbank.length,
+                                        itemCount: listBookBank.length,
                                         itemBuilder: (_, index) {
                                           return Container(
                                             height: 175,
@@ -209,7 +211,7 @@ class OperationPageFour extends StatelessWidget {
                                                           .spaceBetween,
                                                   children: [
                                                     Text(
-                                                      '${bookBankModel.bank['${bookBankModel.bookbank[index]['bank']}']}',
+                                                      '${bookBankModel.bank['${listBookBank[index]['bank']}']}',
                                                       style: TextStyle(
                                                           color:
                                                               kTextPrimaryColor,
@@ -219,16 +221,32 @@ class OperationPageFour extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
-                                                    Text(
-                                                      'แก้ไข',
-                                                      style: TextStyle(
-                                                          color:
-                                                              kTextSecondaryColor,
-                                                          fontSize: textTheme
-                                                              .subtitle2
-                                                              .fontSize,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (_) =>
+                                                                BookBankEditScreen(
+                                                                    bookbankID:
+                                                                        listBookBank[index]
+                                                                            [
+                                                                            'id']),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        'แก้ไข',
+                                                        style: TextStyle(
+                                                            color:
+                                                                kTextSecondaryColor,
+                                                            fontSize: textTheme
+                                                                .subtitle2
+                                                                .fontSize,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
@@ -237,7 +255,7 @@ class OperationPageFour extends StatelessWidget {
                                                   padding: const EdgeInsets
                                                       .symmetric(vertical: 4),
                                                   child: Text(
-                                                    '${bookBankModel.bookbank[index]['account_number']}',
+                                                    '${listBookBank[index]['account_number']}',
                                                     style: TextStyle(
                                                         color: kPrimaryColor,
                                                         fontSize: textTheme
@@ -248,7 +266,7 @@ class OperationPageFour extends StatelessWidget {
                                                 ),
                                                 // * Account name
                                                 Text(
-                                                  '${bookBankModel.bookbank[index]['account_name']}',
+                                                  '${listBookBank[index]['account_name']}',
                                                   style: TextStyle(
                                                       color:
                                                           kTextSecondaryColor,
@@ -276,7 +294,7 @@ class OperationPageFour extends StatelessWidget {
                                                               FontWeight.bold),
                                                     ),
                                                     Text(
-                                                      '${bookBankModel.bookbank[index]['bank_branch']}',
+                                                      '${listBookBank[index]['bank_branch']}',
                                                       style: TextStyle(
                                                           color: kPrimaryColor,
                                                           fontSize: textTheme
@@ -304,7 +322,7 @@ class OperationPageFour extends StatelessWidget {
                                                               FontWeight.bold),
                                                     ),
                                                     Text(
-                                                      '${bookBankModel.type['${bookBankModel.bookbank[index]['account_type']}']}',
+                                                      '${bookBankModel.type['${listBookBank[index]['account_type']}']}',
                                                       style: TextStyle(
                                                           color: kPrimaryColor,
                                                           fontSize: textTheme
