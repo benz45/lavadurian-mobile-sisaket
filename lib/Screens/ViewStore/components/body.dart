@@ -1,9 +1,7 @@
-import 'package:LavaDurian/Screens/BookBank/bookbank_add_screen.dart';
+import 'package:LavaDurian/Screens/CreateBookBank/bookbank_add_screen.dart';
 import 'package:LavaDurian/Screens/BookBank/bookbank_edit_screen.dart';
-import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
-import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/components/show_alert_dialog.dart';
-import 'package:LavaDurian/Screens/ViewStore/edit_store_screen.dart';
+import 'package:LavaDurian/Screens/EditStore/edit_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/models/store_model.dart';

@@ -90,15 +90,15 @@ class _BodyAddState extends State<BodyAdd> {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
 
       // update state
-      bookBankModel.bookbank.add(jsonData['data']['bookbank']);
+      bookBankModel.addBookbank = jsonData['data']['bookbank'];
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  ViewStoreScreen(jsonData['data']['bookbank']['store'])));
+      Navigator.of(context).pop();
+      showFlashBar(context,
+          message: 'เพิ่มหมายเลขบัญชีเรียบร้อยแล้ว',
+          success: true,
+          duration: 3500);
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
       _btnController.reset();
     }
 

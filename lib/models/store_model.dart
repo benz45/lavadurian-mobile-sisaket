@@ -260,6 +260,16 @@ class BookBankModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  set addBookbank(Map<String, dynamic> bookbank) {
+    _bookbank.addAll([bookbank]);
+    notifyListeners();
+  }
+
+  void removeBookbank({@required int bookbankId}) {
+    _bookbank.removeWhere((element) => element['id'] == bookbankId);
+    notifyListeners();
+  }
+
   void clear() {
     _bookbank.clear();
     notifyListeners();

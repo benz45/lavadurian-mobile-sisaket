@@ -1,8 +1,6 @@
 import 'package:LavaDurian/Screens/ViewStore/components/body_edit.dart';
-import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class EditStoreScreen extends StatelessWidget {
   final int storeId;
@@ -10,15 +8,21 @@ class EditStoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Text('แก้ไขร้านค้า').text.color(kTextPrimaryColor).make(),
+        title: Text(
+          'แก้ไขร้านค้า',
+          style: TextStyle(
+              color: kTextPrimaryColor, fontSize: textTheme.subtitle1.fontSize),
+        ),
         leading: IconButton(
           onPressed: () => Navigator.of(context).pop(),
           icon: Icon(Icons.arrow_back_rounded),
-          color: kPrimaryColor,
+          color: kTextPrimaryColor,
         ),
       ),
       body: SingleChildScrollView(

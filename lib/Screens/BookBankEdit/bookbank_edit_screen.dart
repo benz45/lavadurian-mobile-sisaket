@@ -2,7 +2,6 @@ import 'package:LavaDurian/Screens/BookBankEdit/components/body_edit.dart';
 import 'package:LavaDurian/Screens/BookBankEdit/components/show_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class BookBankEditScreen extends StatelessWidget {
   final bookbankID;
@@ -11,11 +10,16 @@ class BookBankEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Text('จัดการบัญชีธนาคาร').text.color(kTextPrimaryColor).make(),
+        title: Text(
+          'จัดการบัญชีธนาคาร',
+          style: TextStyle(
+              color: kTextPrimaryColor, fontSize: textTheme.subtitle1.fontSize),
+        ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_rounded),

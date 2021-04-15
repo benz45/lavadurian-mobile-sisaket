@@ -48,7 +48,7 @@
             "name": "Pixel-4-XL-API-28",
             "type": "dart",
             "request": "launch",
-            "preLaunchTask": "Pixel-4-XL-API-28",
+            "preLaunchTask": "adb_reverse",
             "deviceId": "emulator-5554",
         },
 		{

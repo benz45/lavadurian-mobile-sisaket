@@ -27,6 +27,14 @@ class _BodyEditState extends State<BodyEdit> {
   String _phone1Value;
   String _phone2Value;
   String _aboutValue;
+
+  bool _isChosenDistrict = false;
+  bool _isNameValue = false;
+  bool _isSloganValue = false;
+  bool _isPhone1Value = false;
+  bool _isPhone2Value = false;
+  bool _isAboutValue = false;
+
   List<Map<String, dynamic>> stores;
   Map<String, dynamic> store;
 
@@ -157,6 +165,7 @@ class _BodyEditState extends State<BodyEdit> {
       controller: _btnController,
       width: MediaQuery.of(context).size.width,
       color: kPrimaryColor,
+      borderRadius: 10,
       onPressed: () {
         _onSubmit();
         _btnController.stop();
@@ -167,9 +176,46 @@ class _BodyEditState extends State<BodyEdit> {
       padding: EdgeInsets.all(16.0),
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: DropdownButton<String>(
+          // * เขตอำเภอ
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isChosenDistrict = !_isChosenDistrict;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'เขตอำเภอ',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                    Text(
+                      '$_chosenDistrict',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                  ],
+                ),
+                if (!_isChosenDistrict)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: kTextSecondaryColor,
+                  ),
+                if (_isChosenDistrict)
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 22,
+                    color: kTextSecondaryColor,
+                  )
+              ],
+            ),
+          ),
+          if (_isChosenDistrict)
+            DropdownButton<String>(
               value: _chosenDistrict,
               isExpanded: true,
               hint: Text(
@@ -192,56 +238,259 @@ class _BodyEditState extends State<BodyEdit> {
                 });
               },
             ),
+          Divider(),
+          // * ชื่อร้านค้า
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isNameValue = !_isNameValue;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ชื่อร้านค้า',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                    Text(
+                      '$_nameValue',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                  ],
+                ),
+                if (!_isNameValue)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: kTextSecondaryColor,
+                  ),
+                if (_isNameValue)
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 22,
+                    color: kTextSecondaryColor,
+                  )
+              ],
+            ),
           ),
-          RoundedInputField(
-            hintText: "ชื่อร้านค้า",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) => _nameValue = v,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            controller: _controllerNameValue,
-            // inputFormatters: limitingTextInput,
+          if (_isNameValue)
+            RoundedInputField(
+              hintText: "ชื่อร้านค้า",
+              icon: Icons.add_circle_outline,
+              onChanged: (v) => _nameValue = v,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.text,
+              controller: _controllerNameValue,
+              // inputFormatters: limitingTextInput,
+            ),
+          Divider(),
+          // * ชื่อร้านค้า
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isSloganValue = !_isSloganValue;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'สโลแกนร้านค้า',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                    Text(
+                      '$_sloganValue',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                  ],
+                ),
+                if (!_isSloganValue)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: kTextSecondaryColor,
+                  ),
+                if (_isSloganValue)
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 22,
+                    color: kTextSecondaryColor,
+                  )
+              ],
+            ),
           ),
-          RoundedInputField(
-            hintText: "สโลแกนร้านค้า",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) => _sloganValue = v,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.text,
-            controller: _controllerSloganValue,
-            // inputFormatters: limitingTextInput,
+          if (_isSloganValue)
+            RoundedInputField(
+              hintText: "สโลแกนร้านค้า",
+              icon: Icons.add_circle_outline,
+              onChanged: (v) => _sloganValue = v,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.text,
+              controller: _controllerSloganValue,
+              // inputFormatters: limitingTextInput,
+            ),
+          Divider(),
+          // * เบอร์โทรติดต่อหลัก
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isPhone1Value = !_isPhone1Value;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'เบอร์โทรติดต่อหลัก',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                    Text(
+                      '$_phone1Value',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                  ],
+                ),
+                if (!_isPhone1Value)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: kTextSecondaryColor,
+                  ),
+                if (_isPhone1Value)
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 22,
+                    color: kTextSecondaryColor,
+                  )
+              ],
+            ),
           ),
-          RoundedInputField(
-            hintText: "เบอร์โทรติดต่อหลัก",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) => _phone1Value = v,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.number,
-            controller: _controllerPhone1Value,
-            // inputFormatters: limitingTextInput,
+          if (_isPhone1Value)
+            RoundedInputField(
+              hintText: "เบอร์โทรติดต่อหลัก",
+              icon: Icons.add_circle_outline,
+              onChanged: (v) => _phone1Value = v,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.number,
+              controller: _controllerPhone1Value,
+              // inputFormatters: limitingTextInput,
+            ),
+          Divider(),
+          // * เบอร์โทรติดต่อสำรอง
+          if (_phone2Value != '')
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _isPhone2Value = !_isPhone2Value;
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'เบอร์โทรติดต่อสำรอง',
+                        style: TextStyle(color: kTextSecondaryColor),
+                      ),
+                      Text(
+                        '$_phone2Value',
+                        style: TextStyle(color: kTextSecondaryColor),
+                      ),
+                    ],
+                  ),
+                  if (!_isPhone2Value)
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 14,
+                      color: kTextSecondaryColor,
+                    ),
+                  if (_isPhone2Value)
+                    Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: 22,
+                      color: kTextSecondaryColor,
+                    )
+                ],
+              ),
+            ),
+          if (_isPhone2Value)
+            RoundedInputField(
+              hintText: "เบอร์โทรติดต่อสำรอง (ถ้ามี)",
+              icon: Icons.add_circle_outline,
+              onChanged: (v) => _phone2Value = v,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.number,
+              controller: _controllerPhone2Value,
+              // inputFormatters: limitingTextInput,
+            ),
+          Divider(),
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isAboutValue = !_isAboutValue;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'เกี่ยวกับร้านค้า',
+                        style: TextStyle(color: kTextSecondaryColor),
+                      ),
+                      Text(
+                        '$_aboutValue',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: kTextSecondaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+                if (!_isAboutValue)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: kTextSecondaryColor,
+                  ),
+                if (_isAboutValue)
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 22,
+                    color: kTextSecondaryColor,
+                  )
+              ],
+            ),
           ),
-          RoundedInputField(
-            hintText: "เบอร์โทรติดต่อสำรอง (ถ้ามี)",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) => _phone2Value = v,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.number,
-            controller: _controllerPhone2Value,
-            // inputFormatters: limitingTextInput,
-          ),
-          RoundedInputField(
-            hintText: "เกี่ยวกับร้านค้า",
-            icon: Icons.add_circle_outline,
-            onChanged: (v) => _aboutValue = v,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.multiline,
-            maxLines: 3,
-            controller: _controllerAboutValue,
-          ),
+          if (_isAboutValue)
+            RoundedInputField(
+              hintText: "เกี่ยวกับร้านค้า",
+              icon: Icons.add_circle_outline,
+              onChanged: (v) => _aboutValue = v,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.multiline,
+              maxLines: 3,
+              controller: _controllerAboutValue,
+            ),
+          Divider(),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(vertical: 16),
             child: submitButton,
-          )
+          ),
         ],
       ),
     );
