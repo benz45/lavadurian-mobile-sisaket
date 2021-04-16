@@ -21,11 +21,11 @@ class MySalomonBottomBar extends StatelessWidget {
               items: [
                 SalomonBottomBarItem(
                   activeIcon: Icon(
-                    Icons.home,
+                    Icons.home_outlined,
                     color: kPrimaryColor,
                   ),
                   icon: Icon(
-                    Icons.home,
+                    Icons.home_outlined,
                     color: kTextSecondaryColor,
                   ),
                   title: Text(
@@ -55,11 +55,11 @@ class MySalomonBottomBar extends StatelessWidget {
                 ),
                 SalomonBottomBarItem(
                   activeIcon: Icon(
-                    Icons.shopping_basket_rounded,
+                    Icons.shopping_basket_outlined,
                     color: kPrimaryColor,
                   ),
                   icon: Icon(
-                    Icons.shopping_basket_rounded,
+                    Icons.shopping_basket_outlined,
                     color: kTextSecondaryColor,
                   ),
                   title: Text(
