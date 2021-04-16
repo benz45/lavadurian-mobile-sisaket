@@ -61,6 +61,17 @@ class StoreModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Update store list.
+  void updateStores(
+      {@required int storeId, @required Map<String, dynamic> value}) {
+    int index = _stores.indexWhere((element) => element['id'] == storeId);
+    if (index != -1)
+      value.forEach((key, value) {
+        _stores[index].update(key, (_) => value);
+      });
+    notifyListeners();
+  }
+
   // Add New Store
   set addStore(Map<String, dynamic> stores) {
     _stores.add(stores);

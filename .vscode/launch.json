@@ -49,6 +49,7 @@
             "type": "dart",
             "request": "launch",
             "preLaunchTask": "adb_reverse",
+            "flutterMode": "release",
             "deviceId": "emulator-5554",
         },
 		{

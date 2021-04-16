@@ -51,6 +51,15 @@ class _BodyEditState extends State<BodyEdit> {
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
 
+  int storeId;
+  @override
+  void initState() {
+    super.initState();
+    storeId = widget.storeID;
+    storeModel = context.read<StoreModel>();
+    settingModel = context.read<SettingModel>();
+  }
+
   Future<void> _onSubmit() async {
     String district;
     // validate data
@@ -104,32 +113,30 @@ class _BodyEditState extends State<BodyEdit> {
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
-      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      if (jsonData['status'] == true) {
-        jsonData['data']['store']['id'] = widget.storeID;
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        if (jsonData['status'] == true) {
+          storeModel.updateStores(
+              storeId: storeId, value: jsonData['data']['store']);
+          showFlashBar(context,
+              message: 'แก้ไขข้อมูลร้านค้าเรียบร้อยแล้ว',
+              success: true,
+              duration: 3500);
 
-        int index =
-            stores.indexWhere((element) => element['id'] == widget.storeID);
-
-        // update state
-        stores[index] = jsonData['data']['store'];
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ViewStoreScreen(widget.storeID)));
+          Navigator.pop(context);
+        } else {
+          print(jsonData['status']);
+        }
+      } else {
+        showFlashBar(context,
+            message: 'บันทึกข้อมูลไม่สำเร็จ code: ${response.statusCode}',
+            error: true);
       }
     } catch (e) {
       print(e);
-      showSnackBar(context, "เกิดข้อผิดพลาดไม่สามารถอัปเดท");
+      showFlashBar(context,
+          message: 'เกิดข้อผิดพลาดไม่สามารถอัปเดได้', error: true);
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    storeModel = context.read<StoreModel>();
-    settingModel = context.read<SettingModel>();
   }
 
   @override
