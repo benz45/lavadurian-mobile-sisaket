@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/EditStore/edit_store_screen.dart';
 import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/profile_model.dart';
@@ -32,8 +33,8 @@ class OperationAppBarSelectStore extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => ViewStoreScreen(
-                          storeModel.getStores[item]['id'],
+                        builder: (_) => EditStoreScreen(
+                          storeId: storeModel.getStores[item]['id'],
                         ),
                       ),
                     );

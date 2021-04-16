@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:LavaDurian/Screens/EditStore/components/show_dialog_delete_store.dart';
 import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
@@ -182,9 +183,20 @@ class _BodyEditState extends State<BodyEdit> {
     );
 
     return Padding(
-      padding: EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(26.0),
       child: Column(
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Row(
+              children: [
+                Text(
+                  'แก้ไขรายละเอียดร้านค้า',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
           // * เขตอำเภอ
           InkWell(
             onTap: () {
@@ -499,6 +511,61 @@ class _BodyEditState extends State<BodyEdit> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 16),
             child: submitButton,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Divider(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              children: [
+                Text(
+                  'ตั้งค่าเพิ่มเติม',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          // ! Remove store
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'หากต้องการลบร้านค้านี้',
+                    style: TextStyle(
+                      color: kTextSecondaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              Center(
+                child: OutlineButton(
+                  color: kErrorColor.withOpacity(0.15),
+                  borderSide: BorderSide(
+                    color: kErrorColor.withOpacity(0.6),
+                  ),
+                  textColor: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 25, vertical: 9),
+                  splashColor: kErrorColor.withOpacity(0.2),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    "ลบ",
+                    style: TextStyle(
+                        color: kErrorColor, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () => showDialogDeleteStore(context, storeId),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Divider(),
           ),
         ],
       ),

@@ -75,72 +75,40 @@ class OperationPageFour extends StatelessWidget {
                               fontSize: textTheme.subtitle2.fontSize,
                               fontWeight: FontWeight.bold),
                         ),
-                        Divider(),
+                        SizedBox(
+                          height: 8,
+                        ),
 
-                        // * Button edit and manage store
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // * Edit store button
-                            Center(
-                              child: OutlineButton(
-                                color: kPrimaryColor.withOpacity(0.15),
-                                borderSide: BorderSide(
-                                  color: kPrimaryColor.withOpacity(0.6),
-                                ),
-                                textColor: Colors.white,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 9),
-                                splashColor: kPrimaryColor.withOpacity(0.2),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Text(
-                                  "แก้ไขร้านค้า",
-                                  style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditStoreScreen(
-                                          storeId: currentStore['id']),
-                                    ),
-                                  );
-                                },
-                              ),
+                        // * Edit store button
+                        SizedBox(
+                          width: double.infinity,
+                          child: OutlineButton(
+                            color: kPrimaryColor.withOpacity(0.15),
+                            borderSide: BorderSide(
+                              color: kPrimaryColor.withOpacity(0.6),
                             ),
-                            SizedBox(
-                              width: 10,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 9),
+                            splashColor: kPrimaryColor.withOpacity(0.2),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              "แก้ไขหรือตั้งค่าร้านค้า",
+                              style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontWeight: FontWeight.bold),
                             ),
-                            // * Manage store button
-                            Center(
-                              child: FlatButton(
-                                color: kPrimaryColor.withOpacity(0.15),
-                                textColor: Colors.white,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 9),
-                                splashColor: kPrimaryColor.withOpacity(0.2),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Text(
-                                  "ตั้งค่าร้านค้า",
-                                  style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditStoreScreen(
+                                      storeId: currentStore['id']),
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => SettingStoreScreen(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                              );
+                            },
+                          ),
                         ),
                         Divider(),
                         SizedBox(
