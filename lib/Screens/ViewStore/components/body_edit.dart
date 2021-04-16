@@ -123,6 +123,7 @@ class _BodyEditState extends State<BodyEdit> {
               success: true,
               duration: 3500);
 
+          _btnController.success();
           Navigator.pop(context);
         } else {
           print(jsonData['status']);
@@ -136,6 +137,7 @@ class _BodyEditState extends State<BodyEdit> {
       print(e);
       showFlashBar(context,
           message: 'เกิดข้อผิดพลาดไม่สามารถอัปเดได้', error: true);
+      _btnController.reset();
     }
   }
 

@@ -276,6 +276,17 @@ class BookBankModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Update bookbank
+  void updateBookbank(
+      {@required int bookbankId, @required Map<String, dynamic> value}) {
+    int index = _bookbank.indexWhere((element) => element['id'] == bookbankId);
+    if (index != -1)
+      value.forEach((key, value) {
+        _bookbank[index].update(key, (_) => value);
+      });
+    notifyListeners();
+  }
+
   void removeBookbank({@required int bookbankId}) {
     _bookbank.removeWhere((element) => element['id'] == bookbankId);
     notifyListeners();

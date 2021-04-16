@@ -34,6 +34,7 @@ class _BodyEditState extends State<BodyEdit> {
   bool _isAccountNumber = false;
 
   int _storeID;
+  int bookbankID;
 
   TextEditingController branchController;
   TextEditingController nameController;
@@ -47,6 +48,14 @@ class _BodyEditState extends State<BodyEdit> {
 
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
+
+  @override
+  void initState() {
+    super.initState();
+    settingModel = context.read<SettingModel>();
+    bookBankModel = context.read<BookBankModel>();
+    bookbankID = widget.bookbankID;
+  }
 
   Future<void> _onSubmit() async {
     // validate data
@@ -103,33 +112,33 @@ class _BodyEditState extends State<BodyEdit> {
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
-      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      if (jsonData['status'] == true) {
-        int index = bookBankModel.bookbank
-            .indexWhere((element) => element['id'] == widget.bookbankID);
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        if (jsonData['status'] == true) {
+          // update state
+          bookBankModel.updateBookbank(
+              bookbankId: bookbankID, value: jsonData['data']['bookbank']);
+          showFlashBar(context,
+              message: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
+              success: true,
+              duration: 3500);
 
-        // update state
-        bookBankModel.bookbank[index] = jsonData['data']['bookbank'];
-
-        _btnController.success();
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ViewStoreScreen(jsonData['data']['bookbank']['store'])));
+          _btnController.success();
+          Navigator.pop(context);
+        } else {
+          showFlashBar(context,
+              message: 'เกิดข้อผิดพลาดระหว่างบันทึกข้อมูล', error: true);
+        }
+      } else {
+        showFlashBar(context,
+            message: 'บันทึกข้อมูลไม่สำเร็จ code: ${response.statusCode}',
+            error: true);
       }
     } catch (e) {
-      showSnackBar(context, e.toString());
+      showFlashBar(context,
+          message: 'เกิดข้อผิดพลาดไม่สามารถอัปเดได้', error: true);
       _btnController.reset();
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    settingModel = context.read<SettingModel>();
-    bookBankModel = context.read<BookBankModel>();
   }
 
   @override
