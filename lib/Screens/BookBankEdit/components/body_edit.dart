@@ -35,15 +35,16 @@ class _BodyEditState extends State<BodyEdit> {
   int _storeID;
   int bookbankID;
 
-  TextEditingController branchController;
-  TextEditingController nameController;
-  TextEditingController numberController;
+  final branchController = TextEditingController();
+  final nameController = TextEditingController();
+  final numberController = TextEditingController();
 
   List<Map<String, dynamic>> bookbanks;
   Map<String, dynamic> bookbank;
 
   SettingModel settingModel;
   BookBankModel bookBankModel;
+  StoreModel storeModel;
 
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
@@ -53,7 +54,39 @@ class _BodyEditState extends State<BodyEdit> {
     super.initState();
     settingModel = context.read<SettingModel>();
     bookBankModel = context.read<BookBankModel>();
+    storeModel = context.read<StoreModel>();
+
+    _storeID = storeModel.getCurrentStore['id'];
     bookbankID = widget.bookbankID;
+
+    final initBookbank = bookBankModel.bookbank.firstWhere(
+        (element) => element['id'] == widget.bookbankID,
+        orElse: () => null);
+
+    if (initBookbank != null) {
+      _branchValue = initBookbank['bank_branch'];
+      _accountName = initBookbank['account_name'];
+      _accountNumber = initBookbank['account_number'];
+      branchController.text = initBookbank['bank_branch'];
+      nameController.text = initBookbank['account_name'];
+      numberController.text = initBookbank['account_number'];
+    }
+
+    branchController.addListener(() {
+      setState(() {
+        _branchValue = branchController.text;
+      });
+    });
+    nameController.addListener(() {
+      setState(() {
+        _accountName = nameController.text;
+      });
+    });
+    numberController.addListener(() {
+      setState(() {
+        _accountNumber = numberController.text;
+      });
+    });
   }
 
   Future<void> _onSubmit() async {
@@ -123,6 +156,7 @@ class _BodyEditState extends State<BodyEdit> {
               duration: 3500);
 
           _btnController.success();
+          FocusScope.of(context).unfocus();
           Navigator.pop(context);
         } else {
           showFlashBar(context,
@@ -154,15 +188,6 @@ class _BodyEditState extends State<BodyEdit> {
       _chosenBank = bookBankModel.bank[bookbank['bank'].toString()];
     }
 
-    _branchValue = bookbank['bank_branch'];
-    _accountName = bookbank['account_name'];
-    _accountNumber = bookbank['account_number'];
-    _storeID = bookbank['store'];
-
-    branchController = TextEditingController(text: _branchValue);
-    nameController = TextEditingController(text: _accountName);
-    numberController = TextEditingController(text: _accountNumber);
-
     // Edit Button
     final _submitButton = RoundedLoadingButton(
       child: Text(
@@ -179,12 +204,9 @@ class _BodyEditState extends State<BodyEdit> {
       },
     );
 
-    Size size = MediaQuery.of(context).size;
-
     return Padding(
       padding: EdgeInsets.all(26.0),
       child: Container(
-        height: size.height * .8,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

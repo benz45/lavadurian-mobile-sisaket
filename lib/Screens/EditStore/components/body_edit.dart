@@ -196,69 +196,7 @@ class _BodyEditState extends State<BodyEdit> {
               ],
             ),
           ),
-          // * เขตอำเภอ
-          InkWell(
-            onTap: () {
-              setState(() {
-                _isChosenDistrict = !_isChosenDistrict;
-              });
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'เขตอำเภอ',
-                      style: TextStyle(color: kTextSecondaryColor),
-                    ),
-                    Text(
-                      '$_chosenDistrict',
-                      style: TextStyle(color: kTextSecondaryColor),
-                    ),
-                  ],
-                ),
-                if (!_isChosenDistrict)
-                  Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    size: 14,
-                    color: kTextSecondaryColor,
-                  ),
-                if (_isChosenDistrict)
-                  Icon(
-                    Icons.keyboard_arrow_down_rounded,
-                    size: 22,
-                    color: kTextSecondaryColor,
-                  )
-              ],
-            ),
-          ),
-          if (_isChosenDistrict)
-            DropdownButton<String>(
-              value: _chosenDistrict,
-              isExpanded: true,
-              hint: Text(
-                "เขตอำเภอ",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
-              ),
-              items: <String>['กันทรลักษณ์', 'ขุนหาญ', 'ศรีรัตนะ']
-                  .map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList(),
-              onChanged: (String value) {
-                setState(() {
-                  _chosenDistrict = value;
-                });
-              },
-            ),
-          Divider(),
+
           // * ชื่อร้านค้า
           InkWell(
             onTap: () {
@@ -456,6 +394,70 @@ class _BodyEditState extends State<BodyEdit> {
               // inputFormatters: limitingTextInput,
             ),
           Divider(),
+          // * เขตอำเภอ
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isChosenDistrict = !_isChosenDistrict;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'เขตอำเภอ',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                    Text(
+                      '$_chosenDistrict',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                  ],
+                ),
+                if (!_isChosenDistrict)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: kTextSecondaryColor,
+                  ),
+                if (_isChosenDistrict)
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 22,
+                    color: kTextSecondaryColor,
+                  )
+              ],
+            ),
+          ),
+          if (_isChosenDistrict)
+            DropdownButton<String>(
+              value: _chosenDistrict,
+              isExpanded: true,
+              hint: Text(
+                "เขตอำเภอ",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w100),
+              ),
+              items: <String>['กันทรลักษณ์', 'ขุนหาญ', 'ศรีรัตนะ']
+                  .map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: (String value) {
+                setState(() {
+                  _chosenDistrict = value;
+                });
+              },
+            ),
+          Divider(),
+          // * เกี่ยวกับร้านค้า
           InkWell(
             onTap: () {
               setState(() {
