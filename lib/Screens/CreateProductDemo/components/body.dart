@@ -810,7 +810,7 @@ class _BodyState extends State<Body> {
           ),
           // ! Smooth Indicator
 
-          CreateStoreAnimatedSmoothIndicator(),
+          CreateProductAnimatedSmoothIndicator(),
           // ! Back page button
           if (widget.backArrowButton != null && widget.backArrowButton)
             Positioned(
@@ -837,7 +837,7 @@ class _BodyState extends State<Body> {
   }
 }
 
-class CreateStoreAnimatedSmoothIndicator extends StatelessWidget {
+class CreateProductAnimatedSmoothIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -845,7 +845,7 @@ class CreateStoreAnimatedSmoothIndicator extends StatelessWidget {
       width: size.width,
       bottom: size.height * 0.07,
       child: Center(
-        child: Container(child: Consumer<CreateStoreModel>(
+        child: Container(child: Consumer<CreateProductModel>(
           builder: (_, createStoreModel, c) {
             return AnimatedSmoothIndicator(
               activeIndex: createStoreModel.getCurrentIndexPage,
