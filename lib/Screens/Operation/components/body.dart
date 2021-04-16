@@ -76,32 +76,34 @@ class _BodyState extends State<Body> {
         storeList.add(map);
       }
 
+      // Set store list
+      storeModel.setStores = storeList;
+
       if (storeList.length != 0) {
         // Set persistent storage initial id store
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        String currentStoreById =
+        String keyStoreForPrefs =
             'USERID_${userModel.value['id']}_CURRENT_STORE';
 
-        if (prefs.getInt(currentStoreById) != null) {
-          final bool isContainsStore = storeList.contains(
-            (element) => element['id'] == prefs.getInt(currentStoreById),
-          );
+        var storeidFromPrefs = prefs.getInt(keyStoreForPrefs);
 
-          if (isContainsStore) {
-            storeModel.setCurrentStore(
-                value: prefs.getInt(currentStoreById),
-                user: userModel.value['id']);
-          } else {
-            storeModel.setCurrentStore(
-                value: storeList[0]['id'], user: userModel.value['id']);
-          }
-        } else if (storeList != null) {
-          prefs.setInt(currentStoreById, storeList.first['id']);
-          storeModel.setCurrentStore(value: storeList.first['id']);
+        if (storeidFromPrefs == null) {
+          storeModel.setCurrentStore(
+              value: storeList.first['id'], user: userModel.value['id']);
+          return;
         }
 
-        // Set store list
-        storeModel.setStores = storeList;
+        final isContainsStore = storeList.firstWhere(
+            (element) => element['id'] == storeidFromPrefs,
+            orElse: () => null);
+
+        if (isContainsStore != null) {
+          storeModel.setCurrentStore(
+              value: storeidFromPrefs, user: userModel.value['id']);
+        } else {
+          storeModel.setCurrentStore(
+              value: storeList[0]['id'], user: userModel.value['id']);
+        }
       }
     }
 
