@@ -3,10 +3,10 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
-import 'package:LavaDurian/Screens/ViewStore/delete_store_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 showDialogDeleteStore(BuildContext context, int storeID) {
   SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
   StoreModel storeModel = Provider.of<StoreModel>(context, listen: false);
+  UserModel userModel = Provider.of<UserModel>(context, listen: false);
 
   // Number random
   int numberRandom = Random().nextInt(90) + 10;
@@ -50,7 +51,8 @@ showDialogDeleteStore(BuildContext context, int storeID) {
           var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
           if (jsonData['status'] == true) {
             stores.removeWhere((element) => element['id'] == store['id']);
-            storeModel.onRemoveCurrentStore(id: storeID);
+            storeModel.onRemoveCurrentStore(
+                id: storeID, userId: userModel.value['id']);
             // update state
             storeModel.setStores = stores;
             showFlashBar(context,

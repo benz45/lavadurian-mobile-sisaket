@@ -37,19 +37,27 @@ class StoreModel extends ChangeNotifier {
   }
 
   // Set current store and save id store to SharedPreferences.
-  void setCurrentStore({@required value, user}) async {
+  void setCurrentStore({@required int value, user}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String currentStoreById = 'USERID_${user}_CURRENT_STORE';
+
+    // Set SharedPreferences current store
     prefs.setInt(currentStoreById, value);
+
+    // Set current store from id store (value = id store)
     _idCurrentStore = value;
+
     notifyListeners();
   }
 
   // on remove current store and change current store id.
-  void onRemoveCurrentStore({@required id}) {
+  void onRemoveCurrentStore({@required id, @required int userId}) {
     List<Map> res = _stores.where((i) => i['id'] != id).toList();
     if (res != null && res.length != 0) {
       _idCurrentStore = res[0]['id'];
+      setCurrentStore(
+        value: _idCurrentStore,
+      );
     } else
       _idCurrentStore = null;
     notifyListeners();

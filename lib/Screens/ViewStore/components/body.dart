@@ -1,6 +1,5 @@
 import 'package:LavaDurian/Screens/CreateBookBank/bookbank_add_screen.dart';
 import 'package:LavaDurian/Screens/BookBank/bookbank_edit_screen.dart';
-import 'package:LavaDurian/Screens/ViewStore/components/show_alert_dialog.dart';
 import 'package:LavaDurian/Screens/EditStore/edit_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
@@ -95,16 +94,6 @@ class _BodyState extends State<Body> {
                                         storeId: widget.storeID)));
                           },
                         ),
-                        const SizedBox(width: 8),
-                        TextButton(
-                          child: const Text('ลบร้าน',
-                              style: TextStyle(
-                                  fontSize: 16, color: kPrimaryColor)),
-                          onPressed: () {
-                            showAlertDialog(context, widget.storeID);
-                          },
-                        ),
-                        const SizedBox(width: 8),
                       ],
                     ),
                   ],

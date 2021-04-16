@@ -83,8 +83,18 @@ class _BodyState extends State<Body> {
             'USERID_${userModel.value['id']}_CURRENT_STORE';
 
         if (prefs.getInt(currentStoreById) != null) {
-          storeModel.setCurrentStore(
-              value: prefs.getInt(currentStoreById), user: currentStoreById);
+          final bool isContainsStore = storeList.contains(
+            (element) => element['id'] == prefs.getInt(currentStoreById),
+          );
+
+          if (isContainsStore) {
+            storeModel.setCurrentStore(
+                value: prefs.getInt(currentStoreById),
+                user: userModel.value['id']);
+          } else {
+            storeModel.setCurrentStore(
+                value: storeList[0]['id'], user: userModel.value['id']);
+          }
         } else if (storeList != null) {
           prefs.setInt(currentStoreById, storeList.first['id']);
           storeModel.setCurrentStore(value: storeList.first['id']);

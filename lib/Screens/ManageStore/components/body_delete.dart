@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,18 @@ class _BodyDeleteState extends State<BodyDelete> {
   int storeID;
   StoreModel storeModel;
   SettingModel settingModel;
+  UserModel userModel;
 
   final RoundedLoadingButtonController _btnController =
       new RoundedLoadingButtonController();
+
+  @override
+  void initState() {
+    super.initState();
+    storeModel = context.read<StoreModel>();
+    settingModel = context.read<SettingModel>();
+    userModel = context.read<UserModel>();
+  }
 
   Future<String> _deleteStore() async {
     List<Map<String, dynamic>> stores = storeModel.getStores;
@@ -47,7 +57,8 @@ class _BodyDeleteState extends State<BodyDelete> {
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status'] == true) {
         stores.removeWhere((element) => element['id'] == store['id']);
-        storeModel.onRemoveCurrentStore(id: storeID);
+        storeModel.onRemoveCurrentStore(
+            id: storeID, userId: userModel.value['id']);
         // update state
         storeModel.setStores = stores;
         return "success";
@@ -58,13 +69,6 @@ class _BodyDeleteState extends State<BodyDelete> {
       print(e);
       return "fail";
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    storeModel = context.read<StoreModel>();
-    settingModel = context.read<SettingModel>();
   }
 
   @override
