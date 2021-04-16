@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -118,7 +118,7 @@ class _BodyState extends State<Body> {
 
         _btnController.success();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ViewStoreScreen(storeID)));
+            MaterialPageRoute(builder: (context) => OperationScreen()));
       } else {
         _btnController.reset();
         showSnackBar(context, 'บันทึกข้อมูลไม่สำเร็จ');

@@ -1,5 +1,5 @@
 import 'package:LavaDurian/Screens/EditProduct/components/body_delete.dart';
-import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -26,10 +26,8 @@ class DeleteProductScreen extends StatelessWidget {
         elevation: 0.0,
         title: Text('ลบข้อมูลสินค้า').text.color(kTextPrimaryColor).make(),
         leading: IconButton(
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ViewStoreScreen(product['store']))),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => OperationScreen())),
           icon: Icon(Icons.arrow_back_rounded),
           color: kPrimaryColor,
         ),

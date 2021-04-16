@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
@@ -87,7 +87,7 @@ class _BodyDeleteState extends State<BodyDelete> {
       onPressed: () {
         _btnController.stop();
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ViewStoreScreen(storeID)));
+            MaterialPageRoute(builder: (context) => OperationScreen()));
       },
     );
 

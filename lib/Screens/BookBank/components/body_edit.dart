@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -105,11 +105,8 @@ class _BodyEditState extends State<BodyEdit> {
 
         _btnController.success();
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ViewStoreScreen(jsonData['data']['bookbank']['store'])));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => OperationScreen()));
       }
     } catch (e) {
       showSnackBar(context, e.toString());

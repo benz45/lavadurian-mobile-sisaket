@@ -1,5 +1,4 @@
 import 'package:LavaDurian/Screens/EditStore/edit_store_screen.dart';
-import 'package:LavaDurian/Screens/ViewStore/view_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
