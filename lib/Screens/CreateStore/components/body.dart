@@ -562,26 +562,27 @@ class _BodyState extends State<Body> {
           // ! Smooth Indicator
 
           CreateStoreAnimatedSmoothIndicator(),
-          // ! Back page button
-          if (widget.backArrowButton != null && widget.backArrowButton)
-            Positioned(
-              child: ClipOval(
-                child: Material(
-                  color: Colors.white.withOpacity(0.3),
-                  child: InkWell(
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: Icon(Icons.arrow_back_rounded),
-                      color: Colors.grey,
-                    ),
+
+          // TODO: Back page button
+          // if (widget.backArrowButton != null && widget.backArrowButton)
+          Positioned(
+            child: ClipOval(
+              child: Material(
+                color: Colors.white.withOpacity(0.3),
+                child: InkWell(
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: Icon(Icons.arrow_back_rounded),
+                    color: Colors.grey,
                   ),
                 ),
               ),
-              top: size.height * 0.04,
-              left: size.height * 0.04,
             ),
+            top: size.height * 0.04,
+            left: size.height * 0.04,
+          ),
         ],
       ),
     );

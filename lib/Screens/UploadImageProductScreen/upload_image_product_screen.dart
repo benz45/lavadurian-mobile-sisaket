@@ -88,6 +88,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
       try {
         resultList = await MultiImagePicker.pickImages(
+          enableCamera: true,
           maxImages: listImageForPreview.length < maxImageLimit
               ? maxImageLimit - listImageForPreview.length
               : 0,
