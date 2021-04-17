@@ -68,31 +68,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
 
   void _onNavigatorEditProductScreen() {
     if (widget.productId != null) {
-      final Map order = ordertModel.orderItems.firstWhere(
-          (e) => e['product'] == widget.productId,
-          orElse: () => {});
-
-      if (order.isEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditProductScreen(
-              productID: widget.productId,
-            ),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditProductScreen(
+            productID: widget.productId,
           ),
-        );
-      } else {
-        showDialog<void>(
-          context: context,
-          barrierDismissible: true, // user must tap button!
-          builder: (BuildContext context) {
-            return DialoCanNotgActionProduct(
-              orderId: order['id'],
-              title: 'ไม่สามารถแก้ไขสินค้าได้',
-            );
-          },
-        );
-      }
+        ),
+      );
     }
   }
 
