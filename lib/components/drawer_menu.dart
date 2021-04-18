@@ -1,8 +1,12 @@
+import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/CreateStore/create_store_screen.dart';
+import 'package:LavaDurian/Screens/Developer/developer_screen.dart';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/profile_model.dart';
+import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +26,8 @@ class _NavDrawerState extends State<NavDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+
     Future<void> _logout() async {
       FileProcess fileProcess = FileProcess('setting.json');
       try {
@@ -38,49 +44,123 @@ class _NavDrawerState extends State<NavDrawer> {
     }
 
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(
-                "${userModel.value['first_name']} ${userModel.value['last_name']}"),
-            accountEmail: Text("${userModel.value['email']}"),
-            currentAccountPicture: CircleAvatar(
-              child: FlutterLogo(
-                size: 40.0,
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  UserAccountsDrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                    ),
+                    accountName: Text(
+                      "${userModel.value['first_name']} ${userModel.value['last_name']}",
+                      style: TextStyle(
+                          fontSize: textTheme.headline6.fontSize,
+                          color: kPrimaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    accountEmail: Text(
+                      "${userModel.value['email']}",
+                      style: TextStyle(
+                          fontSize: textTheme.subtitle1.fontSize,
+                          color: kTextSecondaryColor),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.home_outlined),
+                    title: Text(
+                      'หน้าแรก',
+                      style: TextStyle(
+                          fontSize: textTheme.subtitle1.fontSize,
+                          color: kTextSecondaryColor),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OperationScreen()));
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.storefront_rounded),
+                    title: Text(
+                      'สร้างร้านค้า',
+                      style: TextStyle(
+                          fontSize: textTheme.subtitle1.fontSize,
+                          color: kTextSecondaryColor),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreateStoreScreen()));
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.shopping_basket_outlined),
+                    title: Text(
+                      'สร้างสินค้า',
+                      style: TextStyle(
+                          fontSize: textTheme.subtitle1.fontSize,
+                          color: kTextSecondaryColor),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Consumer<StoreModel>(
+                            builder: (_, storeModel, __) {
+                              return CreateProductDemoScreen(
+                                  backArrowButton: true,
+                                  storeID: storeModel.getCurrentIdStore);
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.admin_panel_settings_outlined),
+                    title: Text(
+                      'ผู้พัฒนา',
+                      style: TextStyle(
+                          fontSize: textTheme.subtitle1.fontSize,
+                          color: kTextSecondaryColor),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DeveloperScreen()));
+                    },
+                  ),
+                  Divider(),
+                ],
               ),
-              backgroundColor: Colors.white,
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('หน้าแรก'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => OperationScreen()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('สร้างร้านค้า'),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CreateStoreScreen()));
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.account_box),
-            title: Text('ข้อมูลส่วนตัว'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('ออกจากระบบ'),
-            onTap: () {
-              _logout();
-            },
-          ),
-        ],
+            Container(
+              child: ListTile(
+                leading: Icon(Icons.logout),
+                title: Text(
+                  'ออกจากระบบ',
+                  style: TextStyle(
+                      fontSize: textTheme.subtitle1.fontSize,
+                      color: kTextSecondaryColor),
+                ),
+                onTap: () {
+                  _logout();
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
