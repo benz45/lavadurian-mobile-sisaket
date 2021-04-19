@@ -113,19 +113,39 @@ class OperationCardOrder extends StatelessWidget {
                 ],
               ),
             if (listProductImage.length == 0)
-              Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.horizontal(left: Radius.circular(18.0)),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(
-                      'assets/images/example.png',
+              Stack(
+                children: [
+                  Container(
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.horizontal(left: Radius.circular(18.0)),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                          'assets/images/example.png',
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  if (_order['status'] == 1)
+                    Container(
+                      margin: EdgeInsets.all(6.8),
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        color: kErrorColor,
+                        borderRadius: BorderRadius.circular(7.5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Text(
+                          "ใหม่",
+                          style: TextStyle(color: Colors.white, fontSize: 12.0),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             Padding(
               padding: const EdgeInsets.all(8.0),

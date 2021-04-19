@@ -206,10 +206,21 @@ class OrdertModel extends ChangeNotifier {
   }
 
   // Update order
-  void updateOrder(Map value) {
-    final indexListOrder =
-        _orders.indexWhere((element) => element['id'] == value['id']);
-    _orders[indexListOrder] = value;
+  void updateOrder({Map order, Map orderItem}) {
+    int indexListOrder;
+    int indexListOrderItem;
+
+    if (order != null) {
+      indexListOrder =
+          _orders.indexWhere((element) => element['id'] == order['id']);
+      _orders[indexListOrder] = order;
+    }
+    if (order != null) {
+      indexListOrderItem =
+          _orderItems.indexWhere((element) => element['id'] == orderItem['id']);
+      _orderItems[indexListOrderItem] = orderItem;
+    }
+
     notifyListeners();
   }
 

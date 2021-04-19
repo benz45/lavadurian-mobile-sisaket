@@ -54,7 +54,7 @@ class _ViewOrderBottomSheetStatusSevenState
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status']) {
           // Update order
-          _ordertModel.updateOrder(jsonData['data']['order']);
+          _ordertModel.updateOrder(order: jsonData['data']['order']);
           Navigator.of(context).pop();
           if (_statusFromRadio > 7) {
             if (jsonData['data']['order']['status'] == 8) {

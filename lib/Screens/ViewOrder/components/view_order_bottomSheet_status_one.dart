@@ -45,7 +45,7 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status']) {
           // Update order
-          _ordertModel.updateOrder(jsonData['data']['order']);
+          _ordertModel.updateOrder(order: jsonData['data']['order']);
           Navigator.of(context).pop();
           showFlashBar(context,
               title: 'ยืนยันคำสั่งซื้อแล้ว',
@@ -155,7 +155,7 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
               ],
             ),
             Text(
-              '${_orderItem['price']} บาท',
+              '${_order['total_order_price']} บาท',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: kPrimaryColor,

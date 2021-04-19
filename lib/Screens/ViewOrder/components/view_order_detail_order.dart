@@ -70,23 +70,29 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder>
 
     Future _onSubmitConfirmEditWeightOrder() async {
       try {
-        Map<String, dynamic> data = {
-          "order_id": widget.orders['id'].toString(),
-          "weight": _valueEditWeigth
+        final Map<String, dynamic> data = {
+          "order_id": widget.orders['id'],
+          "item_id": "${widget.orderItems['id']}",
+          "weight": "$_valueEditWeigth"
         };
         // get current user token
         String token = settingModel.value['token'];
 
         final response = await Http.post(
           '${settingModel.baseURL}/${settingModel.endPoinGetOrderUpdateWeight}',
-          body: data,
-          headers: {HttpHeaders.authorizationHeader: "Token $token"},
+          body: jsonEncode(data),
+          headers: {
+            HttpHeaders.authorizationHeader: "Token $token",
+            HttpHeaders.contentTypeHeader: "application/json",
+          },
         );
 
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status']) {
           // Update order
-          _ordertModel.updateOrder(jsonData['data']['order']);
+          _ordertModel.updateOrder(
+              order: jsonData['data']['order'],
+              orderItem: jsonData['data']['orderItems']);
 
           Navigator.of(context).pop();
           setState(() {
@@ -103,6 +109,7 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder>
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
       } catch (e) {
+        print(e);
         showFlashBar(context,
             message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทน้ำหนักได้', error: true);
       }
@@ -388,16 +395,33 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder>
                                     ),
                             ),
                             BuildSubText(
-                              leading: 'กิโลกรัมละ (บาท)',
-                              text: '${_orderItem['price_kg']}',
+                              leading: 'จำนวน (ลูก)',
+                              text: '${_orderItem['quantity']}',
+                            ),
+                            BuildSubText(
+                              leading: 'ค่าทุเรียนรวม (บาท)',
+                              text: '${_order['total_item_price']}',
+                            ),
+                            BuildSubText(
+                              leading: 'ค่ากล่องขนาด 1 ลูก จำนวน 1 กล่อง (บาท)',
+                              text: '${_order['box_1']}',
+                            ),
+                            BuildSubText(
+                              leading: 'ค่ากล่องขนาด 2 ลูก จำนวน 1 กล่อง (บาท)',
+                              text: '${_order['box_2']}',
                             ),
                             BuildSubText(
                               leading: 'ค่าจัดส่ง (บาท)',
                               text: '${_order['shipping']}',
                             ),
+                            Divider(
+                              height: 28,
+                            ),
                             BuildSubText(
                               leading: 'รวมราคา (บาท)',
-                              text: '${_orderItem['price']}',
+                              fontWeight: true,
+                              text: '${_order['total_order_price']}',
+                              color: kPrimaryColor,
                             ),
                           ],
                         ),

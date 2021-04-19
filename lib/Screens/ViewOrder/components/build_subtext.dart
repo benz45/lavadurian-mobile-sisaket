@@ -12,7 +12,7 @@ class BuildSubText extends StatelessWidget {
       this.text,
       this.leading,
       this.width,
-      this.fontWeight,
+      this.fontWeight = false,
       this.color})
       : super(key: key);
 
@@ -27,6 +27,8 @@ class BuildSubText extends StatelessWidget {
           Text(
             leading,
             style: TextStyle(
+                fontWeight:
+                    fontWeight ?? true ? FontWeight.bold : FontWeight.normal,
                 color: kTextSecondaryColor,
                 fontSize: Theme.of(context).textTheme.subtitle2.fontSize),
           ),

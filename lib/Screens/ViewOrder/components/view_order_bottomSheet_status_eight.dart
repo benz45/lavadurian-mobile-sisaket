@@ -54,7 +54,7 @@ class _ViewOrderBottomSheetStatusEightState
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status']) {
           // Update order
-          _ordertModel.updateOrder(jsonData['data']['order']);
+          _ordertModel.updateOrder(order: jsonData['data']['order']);
           Navigator.of(context).pop();
           showFlashBar(context, message: 'บันทึกข้อมูลสำเร็จ', success: true);
         } else {
