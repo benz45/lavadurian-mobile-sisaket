@@ -111,12 +111,34 @@ class _BodyState extends State<Body> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: size.height * 0.03),
-            SvgPicture.asset(
-              "assets/icons/logo_lava_durian_sisaket_top.svg",
-              width: size.width * 0.80,
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Text(
+                    'ทุเรียนภูเขาไฟศรีสะเกษ',
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ',
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                )
+              ],
             ),
-            SizedBox(height: size.height * 0.03),
+            SizedBox(height: size.height * 0.05),
             RoundedInputField(
               hintText: "ชื่อบัญชี/อีเมล",
               icon: Icons.person,
