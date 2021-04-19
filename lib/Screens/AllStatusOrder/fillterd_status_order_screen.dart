@@ -4,8 +4,8 @@ import 'package:LavaDurian/constants.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class FillterdStatusOrderScreen extends StatelessWidget {
-  String title;
-  int statusID;
+  final String title;
+  final int statusID;
   FillterdStatusOrderScreen(this.title, this.statusID);
   @override
   Widget build(BuildContext context) {

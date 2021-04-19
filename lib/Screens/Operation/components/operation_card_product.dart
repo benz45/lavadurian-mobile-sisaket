@@ -105,6 +105,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                                 top: Radius.circular(18.0)),
                                           ),
                                         ),
+                                        // ignore: todo
                                         // TODO:
                                         // child: Hero(
                                         //   tag: 'image$index',

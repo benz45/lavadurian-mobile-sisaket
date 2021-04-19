@@ -1,9 +1,7 @@
 import 'package:LavaDurian/Screens/EditProduct/components/body_delete.dart';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/constants.dart';
-import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class DeleteProductScreen extends StatelessWidget {
@@ -12,14 +10,6 @@ class DeleteProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProductModel productModel = context.read<ProductModel>();
-
-    List<Map<String, dynamic>> products = productModel.products;
-    Map<String, dynamic> product;
-
-    if (products != null) {
-      product = products.firstWhere((element) => element['id'] == productID);
-    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

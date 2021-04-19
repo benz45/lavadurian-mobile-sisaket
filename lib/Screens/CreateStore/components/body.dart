@@ -22,7 +22,7 @@ import 'dart:convert';
 import 'dart:io';
 
 class Body extends StatefulWidget {
-  bool backArrowButton;
+  final bool backArrowButton;
   Body({this.backArrowButton});
 
   @override
@@ -563,6 +563,7 @@ class _BodyState extends State<Body> {
 
           CreateStoreAnimatedSmoothIndicator(),
 
+          // ignore: todo
           // TODO: Back page button
           // if (widget.backArrowButton != null && widget.backArrowButton)
           Positioned(

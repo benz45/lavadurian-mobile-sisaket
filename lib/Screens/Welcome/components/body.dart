@@ -4,13 +4,11 @@ import 'package:LavaDurian/Screens/Signup_ID_Card/signup_id_card_screen.dart';
 import 'package:LavaDurian/Screens/Welcome/components/background.dart';
 import 'package:LavaDurian/components/rounded_button.dart';
 import 'package:LavaDurian/constants.dart';
-import 'package:flutter_svg/svg.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    TextTheme textTheme = Theme.of(context).textTheme;
 
     return Background(
       child: SingleChildScrollView(

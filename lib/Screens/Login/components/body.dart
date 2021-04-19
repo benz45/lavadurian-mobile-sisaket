@@ -12,7 +12,6 @@ import 'package:LavaDurian/Screens/Signup_ID_Card/signup_id_card_screen.dart';
 import 'package:LavaDurian/components/already_have_an_account_acheck.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/rounded_password_field.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as Http;
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:provider/provider.dart';

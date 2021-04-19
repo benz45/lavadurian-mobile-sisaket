@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class BodyFillterd extends StatefulWidget {
-  int statusID;
+  final int statusID;
   BodyFillterd(this.statusID);
   @override
   _BodyFillterdState createState() => _BodyFillterdState();

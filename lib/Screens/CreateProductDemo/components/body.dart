@@ -8,7 +8,6 @@ import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/createProduct_model.dart';
-import 'package:LavaDurian/models/createStore_model.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';

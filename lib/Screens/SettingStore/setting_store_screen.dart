@@ -10,7 +10,6 @@ class SettingStoreScreen extends StatefulWidget {
 }
 
 class _SettingStoreScreenState extends State<SettingStoreScreen> {
-  bool _isRemove = false;
   int storeId;
 
   @override

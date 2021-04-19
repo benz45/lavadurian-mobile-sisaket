@@ -1,6 +1,5 @@
 import 'package:LavaDurian/Screens/EditStore/edit_store_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/card_bookbank.dart';
-import 'package:LavaDurian/Screens/SettingStore/setting_store_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
