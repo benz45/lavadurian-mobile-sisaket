@@ -134,6 +134,36 @@ class ProductModel extends ChangeNotifier {
     return mapId;
   }
 
+  // Filter product from id.
+  String getProductGeneFromId({@required int productId}) {
+    final Map mapProducts =
+        _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
+    if (mapProducts != null) {
+      return "${_gene['${mapProducts['gene']}']}";
+    }
+    return "";
+  }
+
+  // Filter product from id.
+  String getProductGradeFromId({@required int productId}) {
+    final Map mapProducts =
+        _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
+    if (mapProducts != null) {
+      return "${_grade['${mapProducts['grade']}']}";
+    }
+    return "";
+  }
+
+  // Filter product from id.
+  String getProductWeightFromId({@required int productId}) {
+    final Map mapProducts =
+        _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
+    if (mapProducts != null) {
+      return "${mapProducts['weight']}";
+    }
+    return "";
+  }
+
   // Remove product.
   void removeProduct({@required productId}) {
     _products.removeWhere((element) => element['id'] == productId);
@@ -173,9 +203,9 @@ class OrdertModel extends ChangeNotifier {
   }
 
   // Get order item by id
-  Map getOrderItemFromId(int idOrder) {
-    final order = _orderItems
-        .firstWhere((element) => element['order'] == idOrder, orElse: () => {});
+  List getOrderItemFromId(int orderId) {
+    final List order =
+        _orderItems.where((element) => element['order'] == orderId).toList();
     return order;
   }
 
@@ -213,12 +243,17 @@ class OrdertModel extends ChangeNotifier {
     if (order != null) {
       indexListOrder =
           _orders.indexWhere((element) => element['id'] == order['id']);
-      _orders[indexListOrder] = order;
+      order.forEach(
+        (key, value) => _orders[indexListOrder].update(key, (_) => value),
+      );
     }
-    if (order != null) {
+    if (orderItem != null) {
       indexListOrderItem =
           _orderItems.indexWhere((element) => element['id'] == orderItem['id']);
-      _orderItems[indexListOrderItem] = orderItem;
+      orderItem.forEach(
+        (key, value) =>
+            _orderItems[indexListOrderItem].update(key, (_) => value),
+      );
     }
 
     notifyListeners();

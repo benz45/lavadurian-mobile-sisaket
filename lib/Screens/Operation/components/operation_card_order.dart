@@ -26,7 +26,7 @@ class OperationCardOrder extends StatelessWidget {
     final _orderItem = _orderModel.getOrderItemFromId(orderId);
 
     List listProductImage = productImageModel.getProductImageFromProductId(
-        productId: _orderItem['product']);
+        productId: _orderItem[0]['product']);
 
     DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
     var dateCreate = DateTime.parse(_order['date_created']).toLocal();

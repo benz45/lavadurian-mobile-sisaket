@@ -71,7 +71,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
 
                 // w: รายละเอียดสินค้า
                 ViewOrderDetailProduct(
-                  productId: /*value product id ->*/ mapOrderItems['product'],
+                  orderId: mapOrder['id'],
                 ),
                 // w: รายละเอียดคำสั่งซื้อ
                 ViewOrderDetailOrder(

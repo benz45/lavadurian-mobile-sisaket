@@ -25,12 +25,11 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
         Provider.of<SettingModel>(context, listen: false);
 
     final _order = _ordertModel.getOrderFromId(orderId);
-    final _orderItem = _ordertModel.getOrderItemFromId(orderId);
 
     Future _onSubmitConfirmOrder() async {
       try {
         Map<String, dynamic> data = {
-          "order_id": _orderItem['order'].toString(),
+          "order_id": "${_order['id']}",
           "status": "3"
         };
         // get current user token
@@ -56,6 +55,7 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
       } catch (e) {
+        print(e);
         showFlashBar(context,
             message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทสถานะคำสั่งซื้อได้',
             error: true);
@@ -137,7 +137,7 @@ class ViewOrderBottomSheetStatusOne extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'จำนวน',
+                  'น้ำหนักรวม',
                   style: TextStyle(
                       color: kTextSecondaryColor,
                       fontSize: textTheme.subtitle2.fontSize),

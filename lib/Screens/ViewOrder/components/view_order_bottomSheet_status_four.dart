@@ -32,12 +32,12 @@ class _ViewOrderBottomSheetStatusFourState
     SettingModel settingModel =
         Provider.of<SettingModel>(context, listen: false);
 
-    final _orderItem = _ordertModel.getOrderItemFromId(widget.orderId);
+    final _order = _ordertModel.getOrderFromId(widget.orderId);
 
     Future _onSubmitConfirmPayment() async {
       try {
         Map<String, dynamic> data = {
-          "order_id": _orderItem['order'].toString(),
+          "order_id": "${_order['id']}",
           "status": "${_statusFromRadio ?? 5}"
         };
         // get current user token

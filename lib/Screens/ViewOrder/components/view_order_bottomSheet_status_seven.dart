@@ -33,13 +33,12 @@ class _ViewOrderBottomSheetStatusSevenState
     SettingModel settingModel =
         Provider.of<SettingModel>(context, listen: false);
 
-    final _orders = _ordertModel.getOrderFromId(widget.orderId);
-    final _orderItem = _ordertModel.getOrderItemFromId(widget.orderId);
+    final _order = _ordertModel.getOrderFromId(widget.orderId);
 
     void _onSubmitConfirm(String status) async {
       try {
         Map<String, dynamic> data = {
-          "order_id": _orderItem['order'].toString(),
+          "order_id": "${_order['id']}",
           "status": "$_statusFromRadio"
         };
         // get current user token
@@ -87,7 +86,7 @@ class _ViewOrderBottomSheetStatusSevenState
           int selectedRadio = _ordertModel.orderStatus.entries
                   .map((e) => "${e.key}")
                   .toList()
-                  .indexOf('${_orders['status']}') ??
+                  .indexOf('${_order['status']}') ??
               0;
 
           return AlertDialog(
