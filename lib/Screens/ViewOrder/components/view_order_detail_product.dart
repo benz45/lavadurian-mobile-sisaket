@@ -153,7 +153,12 @@ class _ViewOrderDetailProductState extends State<ViewOrderDetailProduct> {
                                     ),
                                   );
                                 },
-                                child: listOrderItems.length != 0
+                                child: productImageModel
+                                            .getProductImageFromProductId(
+                                                productId: listOrderItems[index]
+                                                    ['product'])
+                                            .length !=
+                                        0
                                     ? CachedNetworkImage(
                                         imageUrl: productImageModel
                                             .getProductImageFromProductId(

@@ -24,6 +24,8 @@ class OperationCardOrder extends StatelessWidget {
 
     final _order = _orderModel.getOrderFromId(orderId);
     final _orderItem = _orderModel.getOrderItemFromId(orderId);
+    final int _lengthOrderItem =
+        _orderModel.getLengthOrderItemById(orderId: orderId);
 
     List listProductImage = productImageModel.getProductImageFromProductId(
         productId: _orderItem[0]['product']);
@@ -103,9 +105,25 @@ class OperationCardOrder extends StatelessWidget {
                         borderRadius: BorderRadius.circular(7.5),
                       ),
                       child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Text(
+                            "ใหม่",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 12.0),
+                          )),
+                    ),
+                  if (_order['status'] != 1)
+                    Container(
+                      margin: EdgeInsets.all(6.8),
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(7.5),
+                      ),
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2),
                         child: Text(
-                          "ใหม่",
+                          "$_lengthOrderItem รายการ",
                           style: TextStyle(color: Colors.white, fontSize: 12.0),
                         ),
                       ),
@@ -141,6 +159,22 @@ class OperationCardOrder extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 2),
                         child: Text(
                           "ใหม่",
+                          style: TextStyle(color: Colors.white, fontSize: 12.0),
+                        ),
+                      ),
+                    ),
+                  if (_order['status'] != 1)
+                    Container(
+                      margin: EdgeInsets.all(6.8),
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.circular(7.5),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2),
+                        child: Text(
+                          "$_lengthOrderItem รายการ",
                           style: TextStyle(color: Colors.white, fontSize: 12.0),
                         ),
                       ),

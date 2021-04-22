@@ -225,6 +225,14 @@ class OrdertModel extends ChangeNotifier {
     return _listorderItems;
   }
 
+  int getLengthOrderItemById({int orderId}) {
+    final int _lengthOrderItems = _orderItems
+        .where((element) => element['order'] == orderId)
+        .toList()
+        .length;
+    return _lengthOrderItems;
+  }
+
   set orders(List<Map<String, dynamic>> orders) {
     _orders = orders;
     notifyListeners();
