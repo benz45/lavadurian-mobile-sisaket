@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:LavaDurian/Screens/Login/components/background.dart';
 import 'package:LavaDurian/Screens/Login/login_screen.dart';
+import 'package:LavaDurian/Screens/Signup_Account/components/background.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -65,54 +66,97 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    // Login Button
-    final loginButton = RoundedLoadingButton(
-      child: Text(
-        "RESET",
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.white),
-      ),
-      width: MediaQuery.of(context).size.width,
-      color: Color(0xFF6F35A5),
-      controller: _btnController,
-      onPressed: () {
-        if (email == "") {
-          _btnController.stop();
-        } else {
-          _resetPassword(email);
-        }
-      },
-    );
-
     Size size = MediaQuery.of(context).size;
+    TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Reset My Password'),
-      ),
       body: Background(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: size.height * 0.03),
-              SvgPicture.asset(
-                "assets/icons/login.svg",
-                height: size.height * 0.35,
+        child: Stack(
+          overflow: Overflow.visible,
+          children: [
+            Container(
+              height: size.height,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SvgPicture.asset(
+                    "assets/icons/undraw_inbox_cleanup_w2ur.svg",
+                    width: size.width * 0.45,
+                  ),
+                  SizedBox(height: size.height * 0.03),
+                  Text(
+                    'เปลี่ยนรหัสผ่าน',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: textTheme.headline6.fontSize,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Container(
+                    width: size.width * 0.80,
+                    child: Text(
+                      'หากต้องการเปลี่ยนรหัสผ่าน กรุณากรอกอีเมลที่ใช้ทำการสมัครเข้าใช้งานระบบ',
+                      style: TextStyle(
+                        color: kTextSecondaryColor,
+                        fontSize: textTheme.subtitle1.fontSize,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  RoundedInputField(
+                    icon: Icons.mail,
+                    hintText: "อีเมลสำหรับเปลี่ยนรหัสผ่าน",
+                    onChanged: (value) {
+                      email = value;
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
+                    child: RoundedLoadingButton(
+                      child: Text(
+                        "เปลี่ยนรหัสผ่าน",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      color: kPrimaryColor,
+                      controller: _btnController,
+                      onPressed: () {
+                        if (email == "") {
+                          _btnController.stop();
+                        } else {
+                          _resetPassword(email);
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: size.height * 0.03),
-              RoundedInputField(
-                hintText: "Your Email to Reset Password",
-                onChanged: (value) {
-                  email = value;
-                },
+            ),
+            Positioned(
+              child: ClipOval(
+                child: Material(
+                  color: Colors.white.withOpacity(0.3),
+                  child: InkWell(
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.arrow_back_rounded),
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                child: loginButton,
-              ),
-            ],
-          ),
+              top: size.height * 0.06,
+              left: size.height * 0.04,
+            ),
+          ],
         ),
       ),
     );
