@@ -48,17 +48,18 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
       builder: (BuildContext context) {
         return Consumer<OrdertModel>(builder: (_, ordertModel, c) {
           // Filter order id
-          final order = ordertModel.orderItems
-              .where((e) => e['product'] == widget.productId);
+          final Map filterOrderItem = ordertModel.orderItems.firstWhere(
+              (e) => e['product'] == widget.productId,
+              orElse: () => null);
 
-          if (order.isEmpty) {
-            return DialogDeleteProduct(
-              productId: widget.productId,
+          if (filterOrderItem != null) {
+            return DialoCanNotgActionProduct(
+              orderId: filterOrderItem['order'],
+              title: 'ไม่สามารถลบสินค้าได้',
             );
           } else {
-            return DialoCanNotgActionProduct(
-              orderId: order.first['id'],
-              title: 'ไม่สามารถลบสินค้าได้',
+            return DialogDeleteProduct(
+              productId: widget.productId,
             );
           }
         });
