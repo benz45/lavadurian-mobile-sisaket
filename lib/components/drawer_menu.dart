@@ -146,6 +146,8 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
             ),
             Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom),
               child: ListTile(
                 leading: Icon(Icons.logout),
                 title: Text(
