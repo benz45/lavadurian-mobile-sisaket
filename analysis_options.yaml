@@ -1,0 +1,10 @@
+analyzer:
+  errors:
+    todo: ignore
+    unused_element: ignore
+    must_be_immutable: ignore
+    close_sinks: ignore
+    unused_catch_clause: ignore
+    unused_local_variable: ignore
+    unused_field: ignore
+    deprecated_member_use: ignore

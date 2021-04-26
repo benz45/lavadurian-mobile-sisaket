@@ -203,6 +203,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     StoreModel store = Provider.of<StoreModel>(context);
 
     return FutureBuilder(
@@ -218,28 +219,64 @@ class _BodyState extends State<Body> {
               children: [
                 Container(
                   child: Text(
-                    '101',
+                    '404',
                     style: TextStyle(
                         color: kPrimaryColor,
+                        letterSpacing: 8,
+                        height: .4,
                         fontSize:
-                            Theme.of(context).textTheme.headline3.fontSize),
+                            Theme.of(context).textTheme.headline1.fontSize),
                   ),
                 ),
                 Container(
-                  child: Text('เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => LoginScreen(),
-                      ),
-                    );
-                  },
                   child: Text(
-                    'เข้าสู่ระบบ',
-                    style: TextStyle(color: kPrimaryColor),
+                    'Not found token',
+                    style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize:
+                            Theme.of(context).textTheme.headline6.fontSize),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  child: Text(
+                    'เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง',
+                    style: TextStyle(
+                        color: kTextSecondaryColor,
+                        fontSize:
+                            Theme.of(context).textTheme.bodyText1.fontSize),
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Container(
+                  width: size.width * .7,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => LoginScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'เข้าสู่ระบบ',
+                        style: TextStyle(color: kPrimaryColor),
+                      ),
+                    ),
                   ),
                 ),
               ],

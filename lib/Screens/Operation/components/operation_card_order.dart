@@ -18,6 +18,9 @@ class OperationCardOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final font = Theme.of(context).textTheme;
+
     OrdertModel _orderModel = Provider.of<OrdertModel>(context);
     ProductImageModel productImageModel =
         Provider.of<ProductImageModel>(context);
@@ -32,9 +35,6 @@ class OperationCardOrder extends StatelessWidget {
 
     DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
     var dateCreate = DateTime.parse(_order['date_created']).toLocal();
-
-    Size size = MediaQuery.of(context).size;
-    final font = Theme.of(context).textTheme;
 
     return GestureDetector(
       onTap: () {
@@ -65,122 +65,122 @@ class OperationCardOrder extends StatelessWidget {
         ),
         child: Row(
           children: [
-            if (listProductImage.length != 0)
-              Stack(
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: listProductImage[0]['image'],
-                    imageBuilder: (context, imageProvider) => Container(
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.horizontal(
-                            left: Radius.circular(18.0)),
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    errorWidget: (context, url, error) => Container(
-                      height: 100,
-                      width: 100,
-                      color: Colors.grey[400].withOpacity(.75),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.horizontal(
-                            left: Radius.circular(18.0)),
-                      ),
-                      child: Icon(
-                        Icons.error_outline_rounded,
-                        color: Colors.white,
+            // if (listProductImage.length != 0)
+            //   Stack(
+            //     children: [
+            //       CachedNetworkImage(
+            //         imageUrl: listProductImage[0]['image'],
+            //         imageBuilder: (context, imageProvider) => Container(
+            //           height: 100,
+            //           width: 100,
+            //           decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.horizontal(
+            //                 left: Radius.circular(18.0)),
+            //             image: DecorationImage(
+            //               image: imageProvider,
+            //               fit: BoxFit.cover,
+            //             ),
+            //           ),
+            //         ),
+            //         errorWidget: (context, url, error) => Container(
+            //           height: 100,
+            //           width: 100,
+            //           color: Colors.grey[400].withOpacity(.75),
+            //           decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.horizontal(
+            //                 left: Radius.circular(18.0)),
+            //           ),
+            //           child: Icon(
+            //             Icons.error_outline_rounded,
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //       if (_order['status'] == 1)
+            //         Container(
+            //           margin: EdgeInsets.all(6.8),
+            //           padding: EdgeInsets.symmetric(horizontal: 8.0),
+            //           decoration: BoxDecoration(
+            //             color: kErrorColor,
+            //             borderRadius: BorderRadius.circular(7.5),
+            //           ),
+            //           child: Padding(
+            //               padding: const EdgeInsets.symmetric(vertical: 2),
+            //               child: Text(
+            //                 "ใหม่",
+            //                 style:
+            //                     TextStyle(color: Colors.white, fontSize: 12.0),
+            //               )),
+            //         ),
+            //       if (_order['status'] != 1)
+            //         Container(
+            //           margin: EdgeInsets.all(6.8),
+            //           padding: EdgeInsets.symmetric(horizontal: 8.0),
+            //           decoration: BoxDecoration(
+            //             color: kPrimaryColor,
+            //             borderRadius: BorderRadius.circular(7.5),
+            //           ),
+            //           child: Padding(
+            //             padding: const EdgeInsets.symmetric(vertical: 2),
+            //             child: Text(
+            //               "$_lengthOrderItem รายการ",
+            //               style: TextStyle(color: Colors.white, fontSize: 12.0),
+            //             ),
+            //           ),
+            //         ),
+            //     ],
+            //   ),
+            // if (listProductImage.length == 0)
+            Stack(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.horizontal(left: Radius.circular(18.0)),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        'assets/images/example.png',
                       ),
                     ),
                   ),
-                  if (_order['status'] == 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kErrorColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: Text(
-                            "ใหม่",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 12.0),
-                          )),
-                    ),
-                  if (_order['status'] != 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Text(
-                          "$_lengthOrderItem รายการ",
-                          style: TextStyle(color: Colors.white, fontSize: 12.0),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            if (listProductImage.length == 0)
-              Stack(
-                children: [
+                ),
+                if (_order['status'] == 1)
                   Container(
-                    height: 100,
-                    width: 100,
+                    margin: EdgeInsets.all(6.8),
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
                     decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.horizontal(left: Radius.circular(18.0)),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          'assets/images/example.png',
-                        ),
+                      color: kErrorColor,
+                      borderRadius: BorderRadius.circular(7.5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        "ใหม่",
+                        style: TextStyle(color: Colors.white, fontSize: 12.0),
                       ),
                     ),
                   ),
-                  if (_order['status'] == 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kErrorColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Text(
-                          "ใหม่",
-                          style: TextStyle(color: Colors.white, fontSize: 12.0),
-                        ),
+                if (_order['status'] != 1)
+                  Container(
+                    margin: EdgeInsets.all(6.8),
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    decoration: BoxDecoration(
+                      color: kPrimaryColor,
+                      borderRadius: BorderRadius.circular(7.5),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        "$_lengthOrderItem รายการ",
+                        style: TextStyle(color: Colors.white, fontSize: 12.0),
                       ),
                     ),
-                  if (_order['status'] != 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Text(
-                          "$_lengthOrderItem รายการ",
-                          style: TextStyle(color: Colors.white, fontSize: 12.0),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
+                  ),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -229,7 +229,7 @@ class OperationCardOrder extends StatelessWidget {
                         : _order['status'] == 3
                             ? kTextSecondaryColor
                             : _order['status'] == 8
-                                ? kErrorColor
+                                ? kTextSecondaryColor
                                 : kPrimaryColor,
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_detail_orderItem.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
+import 'package:LavaDurian/actions/check_image_on_sever.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
@@ -82,6 +83,9 @@ class _ViewOrderDetailProductState extends State<ViewOrderDetailProduct> {
                         padding: EdgeInsets.all(0),
                         itemCount: listOrderItems.length,
                         itemBuilder: (context, index) {
+                          List listProductImage =
+                              productImageModel.getProductImageFromProductId(
+                                  productId: listOrderItems[index]['product']);
                           return Column(
                             children: [
                               Row(
@@ -153,46 +157,92 @@ class _ViewOrderDetailProductState extends State<ViewOrderDetailProduct> {
                                     ),
                                   );
                                 },
-                                child: productImageModel
-                                            .getProductImageFromProductId(
-                                                productId: listOrderItems[index]
-                                                    ['product'])
-                                            .length !=
-                                        0
-                                    ? CachedNetworkImage(
-                                        imageUrl: productImageModel
-                                            .getProductImageFromProductId(
-                                                productId: listOrderItems[index]
-                                                    ['product'])[0]['image'],
-                                        imageBuilder:
-                                            (context, imageProvider) =>
-                                                Container(
-                                          height: size.height * 0.09,
-                                          width: size.height * 0.09,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(18.0)),
-                                            image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                child: listProductImage.length != 0
+                                    ? FutureBuilder(
+                                        future: checkImageOnSever(
+                                          imagelist: listProductImage,
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            Container(
-                                          height: size.height * 0.09,
-                                          width: size.height * 0.09,
-                                          color:
-                                              Colors.grey[400].withOpacity(.75),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(18.0)),
-                                          ),
-                                          child: Icon(
-                                            Icons.error_outline_rounded,
-                                            color: Colors.white,
-                                          ),
-                                        ),
+                                        builder: (_, snap) {
+                                          if (snap.hasData) {
+                                            return CachedNetworkImage(
+                                              imageUrl: snap.data[0]['image'],
+                                              imageBuilder:
+                                                  (context, imageProvider) =>
+                                                      Container(
+                                                height: size.height * 0.09,
+                                                width: size.height * 0.09,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              18.0)),
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                              placeholder: (context, url) =>
+                                                  Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    width: 20,
+                                                    height: 20,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      strokeWidth: 2,
+                                                      backgroundColor:
+                                                          kPrimaryColor,
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                                  Color>(
+                                                              Colors.white),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Container(
+                                                height: size.height * 0.09,
+                                                width: size.height * 0.09,
+                                                color: Colors.grey[400]
+                                                    .withOpacity(.75),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              18.0)),
+                                                ),
+                                                child: Icon(
+                                                  Icons.error_outline_rounded,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 20,
+                                                height: 20,
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                  backgroundColor:
+                                                      kPrimaryColor,
+                                                  valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       )
                                     : Container(
                                         height: size.height * 0.09,

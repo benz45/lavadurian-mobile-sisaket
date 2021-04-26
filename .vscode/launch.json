@@ -20,7 +20,8 @@
             "name": "Run Debug",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "debug"
+            "flutterMode": "debug",
+            // "preLaunchTask": "adb_reverse"
         },
         {
             "name": "Mi8",
@@ -29,28 +30,6 @@
             "preLaunchTask": "Mi8",
             "deviceId": "310e522c",
             "flutterMode": "release"
-        },
-        {
-            "name": "Pixel-2-API-24",
-            "type": "dart",
-            "request": "launch",
-            "preLaunchTask": "Pixel_2_API_24",
-            "deviceId": "emulator-5554",
-        },
-        {
-            "name": "Pixel-3a-XL_API",
-            "type": "dart",
-            "request": "launch",
-            "preLaunchTask": "Pixel-3a-XL_API",
-            "deviceId": "emulator-5556",
-        },
-        {
-            "name": "Pixel-4-XL-API-28",
-            "type": "dart",
-            "request": "launch",
-            "preLaunchTask": "adb_reverse",
-            "flutterMode": "debug",
-            "deviceId": "emulator-5554",
         },
 		{
 			"name": "iPhone-6",

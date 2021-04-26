@@ -2,6 +2,7 @@ import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
+import 'package:LavaDurian/Screens/ViewProduct/components/box_show_product_image_not_found.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/preview_product_image.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
@@ -252,6 +253,9 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              BoxShowProductImageNotFound(
+                                productId: productId,
+                              ),
                               // ! Header title
                               Row(
                                 children: [

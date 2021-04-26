@@ -7,6 +7,7 @@ import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -230,9 +231,64 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                                     child: listImageForPreview[index]
                                                 .runtimeType !=
                                             Asset
-                                        ? Image.network(
-                                            listImageForPreview[index]['image'],
-                                            fit: BoxFit.fill)
+                                        ? CachedNetworkImage(
+                                            imageUrl: listImageForPreview[index]
+                                                ['image'],
+                                            imageBuilder:
+                                                (context, imageProvider) =>
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            placeholder: (context, url) => Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: 20,
+                                                  height: 20,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                    backgroundColor:
+                                                        kPrimaryColor,
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            Colors.white),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    Container(
+                                              color: Colors.grey[400]
+                                                  .withOpacity(.75),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.error_outline_rounded,
+                                                    color: Colors.white,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                    'ไม่พบรูป',
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          )
                                         : AssetThumb(
                                             asset: listImageForPreview[index],
                                             width: (size.height * 0.2).round(),
@@ -252,6 +308,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                                         color: Colors.white.withOpacity(0.75),
                                         child: IconButton(
                                           onPressed: () {
+                                            // TODO : Validate type again
                                             // ! To Do Remove Action.
                                             listImageForPreview[index] is Asset
                                                 ? _onRemoveImageSelected(
