@@ -158,91 +158,53 @@ class _ViewOrderDetailProductState extends State<ViewOrderDetailProduct> {
                                   );
                                 },
                                 child: listProductImage.length != 0
-                                    ? FutureBuilder(
-                                        future: checkImageOnSever(
-                                          imagelist: listProductImage,
+                                    ? CachedNetworkImage(
+                                        filterQuality: FilterQuality.low,
+                                        useOldImageOnUrlChange: true,
+                                        cacheKey: listProductImage[0]['image'],
+                                        imageUrl: listProductImage[0]['image'],
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          height: size.height * 0.09,
+                                          width: size.height * 0.09,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(18.0),
+                                            ),
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                        builder: (_, snap) {
-                                          if (snap.hasData) {
-                                            return CachedNetworkImage(
-                                              imageUrl: snap.data[0]['image'],
-                                              imageBuilder:
-                                                  (context, imageProvider) =>
-                                                      Container(
-                                                height: size.height * 0.09,
-                                                width: size.height * 0.09,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              18.0)),
-                                                  image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
+                                        placeholder: (context, url) => Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                backgroundColor: kPrimaryColor,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(Colors.white),
                                               ),
-                                              placeholder: (context, url) =>
-                                                  Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    width: 20,
-                                                    height: 20,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      strokeWidth: 2,
-                                                      backgroundColor:
-                                                          kPrimaryColor,
-                                                      valueColor:
-                                                          AlwaysStoppedAnimation<
-                                                                  Color>(
-                                                              Colors.white),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      Container(
-                                                height: size.height * 0.09,
-                                                width: size.height * 0.09,
-                                                color: Colors.grey[400]
-                                                    .withOpacity(.75),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              18.0)),
-                                                ),
-                                                child: Icon(
-                                                  Icons.error_outline_rounded,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: 20,
-                                                height: 20,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  strokeWidth: 2,
-                                                  backgroundColor:
-                                                      kPrimaryColor,
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(Colors.white),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
+                                            ),
+                                          ],
+                                        ),
+                                        errorWidget: (_, __, ___) => SizedBox(
+                                          height: size.height * 0.09,
+                                          width: size.height * 0.09,
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.error_outline_rounded,
+                                              color: Colors.grey[500],
+                                            ),
+                                          ),
+                                        ),
                                       )
                                     : Container(
                                         height: size.height * 0.09,

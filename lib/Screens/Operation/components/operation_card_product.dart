@@ -109,6 +109,8 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                   //   tag: 'image$index',
                                   child: CachedNetworkImage(
                                     filterQuality: FilterQuality.low,
+                                    useOldImageOnUrlChange: true,
+                                    cacheKey: element['image'],
                                     imageUrl: element['image'],
                                     imageBuilder: (_, imageProvider) =>
                                         Container(

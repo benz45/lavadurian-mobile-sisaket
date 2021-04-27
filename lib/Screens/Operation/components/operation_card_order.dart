@@ -69,76 +69,54 @@ class OperationCardOrder extends StatelessWidget {
             if (listProductImage.length != 0)
               Stack(
                 children: [
-                  FutureBuilder(
-                    future: checkImageOnSever(
-                      imagelist: listProductImage,
-                    ),
-                    builder: (_, snap) {
-                      if (snap.hasData) {
-                        return CachedNetworkImage(
-                          imageUrl: snap.data[0]['image'],
-                          imageBuilder: (context, imageProvider) => Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(18.0)),
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          placeholder: (context, url) => Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  backgroundColor: kPrimaryColor,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
-                                ),
-                              ),
-                            ],
-                          ),
-                          errorWidget: (context, url, error) => Container(
-                            height: size.height * 0.09,
-                            width: size.height * 0.09,
-                            color: Colors.grey[400].withOpacity(.75),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(18.0)),
-                            ),
-                            child: Icon(
-                              Icons.error_outline_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      }
-                      return SizedBox(
+                  CachedNetworkImage(
+                    filterQuality: FilterQuality.low,
+                    fadeOutCurve: Curves.fastOutSlowIn,
+                    cacheKey: listProductImage[0]['image'],
+                    imageUrl: listProductImage[0]['image'],
+                    imageBuilder: (context, imageProvider) {
+                      return Container(
                         height: 100,
                         width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                backgroundColor: kPrimaryColor,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            ),
-                          ],
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.horizontal(
+                            left: Radius.circular(18.0),
+                          ),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       );
                     },
+                    placeholder: (context, _) => SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              backgroundColor: kPrimaryColor,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    errorWidget: (_, __, ___) => SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: Center(
+                          child: Icon(
+                        Icons.error_outline_rounded,
+                        color: Colors.grey[500],
+                      )),
+                    ),
                   ),
                   if (_order['status'] == 1)
                     Container(
