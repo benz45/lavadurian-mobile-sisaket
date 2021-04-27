@@ -1,5 +1,6 @@
 import 'package:LavaDurian/Screens/ViewOrder/components/build_headtext.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/build_subtext.dart';
+import 'package:LavaDurian/Screens/ViewOrder/components/view_order_transfer_image.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +126,7 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
                         text: '${_order['shipping']}',
                       ),
                       Divider(
-                        height: 28,
+                        height: 38,
                       ),
                       BuildSubText(
                         leading: 'รวมราคา (บาท)',
@@ -133,6 +134,15 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
                         text: '${_order['total_order_price']}',
                         color: kPrimaryColor,
                       ),
+                      Divider(
+                        height: 28,
+                      ),
+
+                      // // * Check transfer order
+                      if (_order['status'] >= 5)
+                        ViewOrderTransferImage(
+                          orderId: _order['id'],
+                        )
                     ],
                   );
                 },

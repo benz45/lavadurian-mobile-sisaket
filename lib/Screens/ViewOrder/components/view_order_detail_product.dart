@@ -1,6 +1,5 @@
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_detail_orderItem.dart';
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
-import 'package:LavaDurian/actions/check_image_on_sever.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
