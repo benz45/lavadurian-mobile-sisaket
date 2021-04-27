@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:LavaDurian/actions/check_image_on_sever.dart';
 import 'package:LavaDurian/components/DetailOnCard.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
