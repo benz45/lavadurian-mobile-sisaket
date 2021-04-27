@@ -124,15 +124,15 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                     if (_size != null) {
                       return Container(
                         width: _size.width,
-                        height: _size.height - (size.width * .30),
+                        height: _size.height * .5,
                         decoration: BoxDecoration(),
                         child: PhotoView(
                           backgroundDecoration: BoxDecoration(
-                            color: Colors.white,
                             borderRadius: BorderRadius.all(
                               Radius.circular(18.0),
                             ),
                           ),
+                          customSize: _size * .5,
                           imageProvider: imageProvider,
                         ),
                       );
