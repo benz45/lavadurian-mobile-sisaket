@@ -30,27 +30,29 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
   }
 
   Future<CheckTransferOrderModel> _onCheckTransferOrder() async {
-    Map<String, int> data = {"order": orderId};
+    try {
+      Map<String, int> data = {"order": orderId};
 
-    String url =
-        "${settingModel.baseURL}/${settingModel.endPoinGetCheckTransfer}";
+      String url =
+          "${settingModel.baseURL}/${settingModel.endPoinGetCheckTransfer}";
 
-    final response = await Http.post(
-      url,
-      body: jsonEncode(data),
-      headers: {
-        HttpHeaders.authorizationHeader: "Token ${settingModel.value['token']}",
-        HttpHeaders.contentTypeHeader: "application/json"
-      },
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      CheckTransferOrderModel result =
-          CheckTransferOrderModel.fromMap(jsonData['data']);
-
-      return result;
-    } else {
-      throw Exception('Failed to check transfer order.');
+      final response = await Http.post(
+        url,
+        body: jsonEncode(data),
+        headers: {
+          HttpHeaders.authorizationHeader:
+              "Token ${settingModel.value['token']}",
+          HttpHeaders.contentTypeHeader: "application/json"
+        },
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        CheckTransferOrderModel result =
+            CheckTransferOrderModel.fromMap(jsonData['data']);
+        return result;
+      }
+    } on Exception catch (e) {
+      print(e);
     }
   }
 
