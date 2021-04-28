@@ -30,27 +30,32 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
   }
 
   Future<CheckTransferOrderModel> _onCheckTransferOrder() async {
-    Map<String, int> data = {"order": orderId};
+    try {
+      Map<String, int> data = {"order": orderId};
 
-    String url =
-        "${settingModel.baseURL}/${settingModel.endPoinGetCheckTransfer}";
+      String url =
+          "${settingModel.baseURL}/${settingModel.endPoinGetCheckTransfer}";
 
-    final response = await Http.post(
-      url,
-      body: jsonEncode(data),
-      headers: {
-        HttpHeaders.authorizationHeader: "Token ${settingModel.value['token']}",
-        HttpHeaders.contentTypeHeader: "application/json"
-      },
-    );
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-      CheckTransferOrderModel result =
-          CheckTransferOrderModel.fromMap(jsonData['data']);
+      final response = await Http.post(
+        url,
+        body: jsonEncode(data),
+        headers: {
+          HttpHeaders.authorizationHeader:
+              "Token ${settingModel.value['token']}",
+          HttpHeaders.contentTypeHeader: "application/json"
+        },
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        CheckTransferOrderModel result =
+            CheckTransferOrderModel.fromMap(jsonData['data']);
 
-      return result;
-    } else {
-      throw Exception('Failed to check transfer order.');
+        return result;
+      } else {
+        throw Exception('Failed to check transfer order.');
+      }
+    } on Exception catch (err) {
+      throw (err);
     }
   }
 
@@ -103,6 +108,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                       cacheKey: data?.transfer?.image,
                       imageUrl: data?.transfer?.image,
                       imageBuilder: (context, imageProvider) {
+                        // TODO: Next future
                         // * Get size image provider of CachedNetworkImage.
                         Future<Size> _getSize() async {
                           Completer<Size> completer = Completer();
@@ -145,12 +151,24 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                   );
                                 },
                                 child: Container(
-                                  width: _size.width,
-                                  height: _size.height * .5,
-                                  decoration: BoxDecoration(),
+                                  width: size.width,
+                                  height: size.height * .4,
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                          10,
+                                        ),
+                                      ),
+                                      border: Border.all(
+                                        color:
+                                            kTextSecondaryColor.withOpacity(.2),
+                                      ),
+                                      color: Colors.white),
                                   child: Hero(
                                     tag: "transfer${data.transfer.id}",
                                     child: PhotoView(
+                                      // basePosition: Alignment.center,
                                       filterQuality: FilterQuality.high,
                                       backgroundDecoration: BoxDecoration(
                                         color: Colors.white,
@@ -158,7 +176,6 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                           Radius.circular(18.0),
                                         ),
                                       ),
-                                      customSize: _size * .5,
                                       imageProvider: imageProvider,
                                     ),
                                   ),
