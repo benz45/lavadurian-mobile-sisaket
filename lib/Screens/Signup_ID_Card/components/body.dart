@@ -35,36 +35,56 @@ class Body extends StatelessWidget {
     Future _onSubmit(BuildContext context) async {
       try {
         FocusManager.instance.primaryFocus.unfocus();
-        if (maskFormatter.getUnmaskedText().length != 13) {
-          showSnackBar(context, 'เลขบัตรประชาชนไม่ถูกต้อง');
-          _btnController.stop();
-        }
+        /*
+        We have to choice for user to fill up Citizen ID
+        no.1 : Fill up
+        no.2 : Skip with out fill up
+        */
+        if (maskFormatter.getUnmaskedText().length > 0) {
+          if (maskFormatter.getUnmaskedText().length != 13) {
+            showSnackBar(context, 'เลขบัตรประชาชนไม่ถูกต้อง');
+            _btnController.stop();
+          }
+          if (maskFormatter.getUnmaskedText().length == 13) {
+            final response = await http.post(
+                '${api.baseURL}/${api.endPointCheckCitizenId}',
+                body: {'citizenid': maskFormatter.getUnmaskedText()});
 
-        if (maskFormatter.getUnmaskedText().length == 13) {
-          final response = await http.post(
-              '${api.baseURL}/${api.endPointCheckCitizenId}',
-              body: {'citizenid': maskFormatter.getUnmaskedText()});
-
-          if (response.statusCode == 200) {
-            final result = CheckInfo.fromJson(jsonDecode(response.body));
-            if (result.status) {
-              showSnackBar(context, 'เลขบัตรประชาชนถูกลงทะเบียนแล้ว');
-              _btnController.stop();
-            } else {
-              store.setCitizenid = maskFormatter.getUnmaskedText();
-              _btnController.success();
-              Timer(Duration(milliseconds: 350), () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpAccountScreen();
-                    },
-                  ),
-                );
-              });
+            if (response.statusCode == 200) {
+              final result = CheckInfo.fromJson(jsonDecode(response.body));
+              if (result.status) {
+                showSnackBar(context, 'เลขบัตรประชาชนถูกลงทะเบียนแล้ว');
+                _btnController.stop();
+              } else {
+                store.setCitizenid = maskFormatter.getUnmaskedText();
+                _btnController.success();
+                Timer(Duration(milliseconds: 350), () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SignUpAccountScreen();
+                      },
+                    ),
+                  );
+                });
+              }
             }
           }
+        } else {
+          showSnackBar(context, 'ไม่ประสงค์จะกรอกหมายเลขบัตรประจำตัว ?');
+          store.setCitizenid = "";
+          _btnController.success();
+          Timer(Duration(milliseconds: 3600), () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return SignUpAccountScreen();
+                },
+              ),
+            );
+          });
         }
       } catch (err) {
         throw (err);
@@ -77,7 +97,7 @@ class Body extends StatelessWidget {
       children: [
         HeaderTextSignUp(),
         RoundedInputField(
-          hintText: "รหัสประจำตัวประชาชน",
+          hintText: "รหัสประจำตัวประชาชน (ข้ามได้)",
           inputFormatters: [
             maskFormatter,
           ],
