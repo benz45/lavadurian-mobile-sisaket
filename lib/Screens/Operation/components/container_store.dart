@@ -534,7 +534,27 @@ class _ContainerStoreState extends State<ContainerStore> {
                       )
                     :
                     // //! Screen store waiting approval from admin.
-                    StoreWaitApproval(),
+                    // StoreWaitApproval(),
+                    SliverToBoxAdapter(
+                        child: Column(
+                          children: <Widget>[
+                            StoreWaitApproval(),
+                            Center(
+                              child: TextButton(
+                                onPressed: () {
+                                  _onRefresh();
+                                },
+                                child: Text(
+                                  "ตรวจสอบการอนุมัติร้าน",
+                                  style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
               );
             },
           ),
