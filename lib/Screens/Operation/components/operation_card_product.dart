@@ -49,8 +49,6 @@ class _OperationCardProductState extends State<OperationCardProduct> {
             shrinkWrap: true,
             crossAxisSpacing: 16,
             staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
-
-            // itemCount: productModel.products.length, //staticData.length,
             itemCount: products.length,
             itemBuilder: (context, index) {
               final product = products;
@@ -65,7 +63,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                     context,
                     MaterialPageRoute(
                       builder: (_) => ViewProductScreen(
-                        productId: productModel.products[index]['id'],
+                        productId: products[index]['id'],
                         hero: '$index',
                         status: productModel.productStatus[
                             productModel.products[index]['status'].toString()],
