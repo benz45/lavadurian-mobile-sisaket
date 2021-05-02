@@ -1,7 +1,6 @@
 import 'package:LavaDurian/Screens/AllStatusOrder/components/body_fillterd.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class FillterdStatusOrderScreen extends StatelessWidget {
   final String title;
@@ -13,15 +12,22 @@ class FillterdStatusOrderScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        title: Text('${this.title}').text.color(kTextPrimaryColor).make(),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_rounded),
           color: kPrimaryColor,
         ),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(
+                Icons.person,
+                color: kTextSecondaryColor,
+              ),
+              onPressed: () {})
+        ],
       ),
       body: SingleChildScrollView(
-        child: BodyFillterd(this.statusID),
+        child: BodyFillterd(this.statusID, this.title),
       ),
     );
   }

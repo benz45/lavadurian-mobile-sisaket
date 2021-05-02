@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/AllStatusOrder/components/header_card.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,10 @@ import 'package:provider/provider.dart';
 
 class BodyFillterd extends StatefulWidget {
   final int statusID;
-  BodyFillterd(this.statusID);
+  final String title;
+
+  BodyFillterd(this.statusID, this.title);
+
   @override
   _BodyFillterdState createState() => _BodyFillterdState();
 }
@@ -56,6 +60,7 @@ class _BodyFillterdState extends State<BodyFillterd> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        StoreHeader(title: widget.title),
                         ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -75,6 +80,7 @@ class _BodyFillterdState extends State<BodyFillterd> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
+                          StoreHeader(title: widget.title),
                           SizedBox(height: size.height * 0.03),
                           SvgPicture.asset(
                             "assets/icons/undraw_order_confirmed_aaw7.svg",
@@ -84,7 +90,7 @@ class _BodyFillterdState extends State<BodyFillterd> {
                           Text(
                             "ยังไม่มีออร์เดอร์ในสถานะนี้",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22),
+                                fontWeight: FontWeight.bold, fontSize: 18),
                           ),
                         ],
                       ),

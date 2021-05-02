@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:LavaDurian/Screens/AllStatusOrder/components/header_card.dart';
 import 'package:LavaDurian/Screens/AllStatusOrder/components/status_list.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/models/profile_model.dart';
@@ -67,10 +68,6 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    // currentStoreById = 'USERID_${userModel.value['id']}_CURRENT_STORE';
-    // storeID = int.parse(currentStoreById);
-    // print(storeID);
-
     storeID = widget.storeID;
     size = MediaQuery.of(context).size;
     return FutureBuilder(
@@ -83,6 +80,7 @@ class _BodyState extends State<Body> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  StoreHeader(),
                   StatusCard(),
                 ],
               ),
@@ -90,7 +88,7 @@ class _BodyState extends State<Body> {
           );
         } else {
           return Container(
-            height: size.height,
+            height: size.height * .6,
             width: size.width,
             child: Center(
               child: Column(
