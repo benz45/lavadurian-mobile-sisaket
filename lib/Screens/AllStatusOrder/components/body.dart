@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:LavaDurian/Screens/AllStatusOrder/components/header_card.dart';
 import 'package:LavaDurian/Screens/AllStatusOrder/components/status_list.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
@@ -88,17 +89,22 @@ class _BodyState extends State<Body> {
           );
         } else {
           return Container(
-            height: size.height * .6,
+            height: size.height * .5,
             width: size.width,
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircularProgressIndicator(),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('กำลังเชื่อมต่อกับเซิร์ฟเวอร์'),
+                SizedBox(
+                  height: 20.0,
+                ),
+                CircularProgressIndicator(
+                  backgroundColor: kPrimaryColor,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ],
             ),
           );
         }
