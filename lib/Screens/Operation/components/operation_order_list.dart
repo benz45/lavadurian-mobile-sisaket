@@ -14,7 +14,6 @@ class OperationOrderList extends StatefulWidget {
 class _OperationOrderListState extends State<OperationOrderList> {
   OrdertModel orderModel;
   StoreModel storeModel;
-  int currentStoreID;
 
   @override
   void initState() {
@@ -24,10 +23,9 @@ class _OperationOrderListState extends State<OperationOrderList> {
   }
 
   Widget buildList() {
-    currentStoreID = storeModel.getCurrentIdStore;
     // * set order list
     var orders = orderModel.orders
-        .where((element) => element['store'] == currentStoreID)
+        .where((element) => element['store'] == storeModel.getCurrentIdStore)
         .toList();
 
     return Consumer<OrdertModel>(

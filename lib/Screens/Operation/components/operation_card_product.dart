@@ -17,6 +17,14 @@ class OperationCardProduct extends StatefulWidget {
 }
 
 class _OperationCardProductState extends State<OperationCardProduct> {
+  StoreModel storeModel;
+
+  @override
+  void initState() {
+    super.initState();
+    storeModel = context.read<StoreModel>();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -24,7 +32,13 @@ class _OperationCardProductState extends State<OperationCardProduct> {
 
     return Consumer2<ProductModel, ProductImageModel>(
       builder: (context, productModel, productImageModel, child) {
-        if (productModel.products.length != 0) {
+        // * Fillter for product in current store
+        var products = productModel.products
+            .where(
+                (element) => element['store'] == storeModel.getCurrentIdStore)
+            .toList();
+
+        if (products.length != 0) {
           return StaggeredGridView.countBuilder(
             physics: NeverScrollableScrollPhysics(),
             padding: EdgeInsets.only(
@@ -36,9 +50,10 @@ class _OperationCardProductState extends State<OperationCardProduct> {
             crossAxisSpacing: 16,
             staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
 
-            itemCount: productModel.products.length, //staticData.length,
+            // itemCount: productModel.products.length, //staticData.length,
+            itemCount: products.length,
             itemBuilder: (context, index) {
-              final product = productModel.products;
+              final product = products;
 
               List listProductImage =
                   productImageModel.getProductImageFromProductId(
