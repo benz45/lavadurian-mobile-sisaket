@@ -12,25 +12,41 @@ class OperationOrderList extends StatefulWidget {
 }
 
 class _OperationOrderListState extends State<OperationOrderList> {
+  OrdertModel orderModel;
+  StoreModel storeModel;
+  int currentStoreID;
+
+  @override
+  void initState() {
+    super.initState();
+    orderModel = context.read<OrdertModel>();
+    storeModel = context.read<StoreModel>();
+  }
+
   Widget buildList() {
+    currentStoreID = storeModel.getCurrentIdStore;
+    // * set order list
+    var orders = orderModel.orders
+        .where((element) => element['store'] == currentStoreID)
+        .toList();
+
     return Consumer<OrdertModel>(
       builder: (_, orderModel, c) {
         if (orderModel.orders != null && orderModel.orders.length != 0) {
           return ListView.builder(
-            padding: EdgeInsets.only(top: 0),
-            scrollDirection: Axis.vertical,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return OperationCardOrder(
-                orderId: orderModel.orders[index]['id'],
-              );
-            },
-            itemCount: widget.maxlength != null &&
-                    orderModel.orders.length > widget.maxlength
-                ? widget.maxlength
-                : orderModel.orders.length,
-          );
+              padding: EdgeInsets.only(top: 0),
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return OperationCardOrder(
+                  orderId: orders[index]['id'],
+                );
+              },
+              itemCount: widget.maxlength != null &&
+                      orderModel.orders.length > widget.maxlength
+                  ? widget.maxlength
+                  : orders.length);
         }
         return SizedBox();
       },
