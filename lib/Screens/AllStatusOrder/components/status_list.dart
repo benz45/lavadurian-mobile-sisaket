@@ -38,7 +38,11 @@ class _StatusCardState extends State<StatusCard> {
       StatusListTile(8, orderModel.orderStatus['8'], getStatusCount(8)),
     ];
 
-    return Container(
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
       child: Column(
         children: <Widget>[
           ListView(
