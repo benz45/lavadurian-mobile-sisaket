@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:LavaDurian/Screens/AllStatusOrder/components/status_list.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
+import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +21,17 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   SettingModel settingModel;
   OrdertModel orderModel;
+  UserModel userModel;
+  String currentStoreById;
   int storeID;
+  Size size;
 
   Future<String> _getOrderStatus() async {
-    if (storeID == null) {
-      storeID = 1;
-    }
-
     String token = settingModel.value['token'];
     try {
-      Map<String, dynamic> data = {'store': storeID.toString()};
+      Map<String, dynamic> data = {
+        'store': storeID.toString(),
+      };
 
       final response = await Http.post(
         '${settingModel.baseURL}/${settingModel.endPoinGetOrderStatus}',
@@ -65,7 +67,12 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    // currentStoreById = 'USERID_${userModel.value['id']}_CURRENT_STORE';
+    // storeID = int.parse(currentStoreById);
+    // print(storeID);
+
     storeID = widget.storeID;
+    size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: _getOrderStatus(),
       builder: (context, snapshot) {
@@ -82,12 +89,18 @@ class _BodyState extends State<Body> {
             ),
           );
         } else {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                CircularProgressIndicator(),
-              ],
+          return Container(
+            height: size.height,
+            width: size.width,
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                ],
+              ),
             ),
           );
         }

@@ -5,7 +5,8 @@ import 'package:velocity_x/velocity_x.dart';
 
 class AllStatusOrderScreen extends StatelessWidget {
   final storeID;
-  const AllStatusOrderScreen({Key key, this.storeID}) : super(key: key);
+  const AllStatusOrderScreen({Key key, @required this.storeID})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -173,6 +173,7 @@ class _ContainerStoreState extends State<ContainerStore> {
     // Size for custom screen.
     Size size = MediaQuery.of(context).size;
     final font = Theme.of(context).textTheme;
+
     return Container(
       color: Color(0xFFFAFAFA),
       child: CustomScrollView(
@@ -385,7 +386,9 @@ class _ContainerStoreState extends State<ContainerStore> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (_) =>
-                                                          AllStatusOrderScreen()),
+                                                          AllStatusOrderScreen(
+                                                              storeID: storeModel
+                                                                  .getCurrentIdStore)),
                                                 );
                                               },
                                               child: Text(
