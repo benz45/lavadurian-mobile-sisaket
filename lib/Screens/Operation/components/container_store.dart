@@ -20,6 +20,7 @@ import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -166,6 +167,16 @@ class _ContainerStoreState extends State<ContainerStore> {
 
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 800));
+  }
+
+  void _onCheckStoreStatus() async {
+    final ProgressDialog pr = ProgressDialog(context);
+    pr.style(
+      message: "กำลังตรวจสอบ . . .",
+    );
+    await pr.show();
+    await _getStoreProfile();
+    pr.hide();
   }
 
   @override
@@ -545,7 +556,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                             Center(
                               child: TextButton(
                                 onPressed: () {
-                                  _onRefresh();
+                                  _onCheckStoreStatus();
                                 },
                                 child: Text(
                                   "ตรวจสอบการอนุมัติร้าน",
