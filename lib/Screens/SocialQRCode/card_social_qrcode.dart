@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/SocialQRCode/delete_dialog.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +60,7 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
                           Stack(
                             children: [
                               Container(
-                                width: size.width * .3,
+                                width: size.width * .5,
                                 child: Card(
                                   margin: EdgeInsets.all(10),
                                   semanticContainer: true,
@@ -87,7 +88,13 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
                                         color:
                                             Colors.green[100].withOpacity(0.9),
                                         child: IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) =>
+                                                  QRCodeDeleteDialog(),
+                                            );
+                                          },
                                           icon: Icon(
                                             Icons.close,
                                             size: 13,
