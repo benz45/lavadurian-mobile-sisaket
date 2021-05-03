@@ -1,6 +1,8 @@
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class OperationOrderList extends StatefulWidget {
@@ -12,25 +14,17 @@ class OperationOrderList extends StatefulWidget {
 }
 
 class _OperationOrderListState extends State<OperationOrderList> {
-  OrdertModel orderModel;
-  StoreModel storeModel;
-
-  @override
-  void initState() {
-    super.initState();
-    orderModel = context.read<OrdertModel>();
-    storeModel = context.read<StoreModel>();
-  }
-
   Widget buildList() {
-    // * set order list
-    var orders = orderModel.orders
-        .where((element) => element['store'] == storeModel.getCurrentIdStore)
-        .toList();
+    Size size = MediaQuery.of(context).size;
+    return Consumer2<StoreModel, OrdertModel>(
+      builder: (_, storeModel, orderModel, c) {
+        // * Fillter for order list in current store
+        var orders = orderModel.orders
+            .where(
+                (element) => element['store'] == storeModel.getCurrentIdStore)
+            .toList();
 
-    return Consumer<OrdertModel>(
-      builder: (_, orderModel, c) {
-        if (orderModel.orders != null && orderModel.orders.length != 0) {
+        if (orders != null && orders.length != 0) {
           return ListView.builder(
               padding: EdgeInsets.only(top: 0),
               scrollDirection: Axis.vertical,
@@ -45,8 +39,26 @@ class _OperationOrderListState extends State<OperationOrderList> {
                       orderModel.orders.length > widget.maxlength
                   ? widget.maxlength
                   : orders.length);
+        } else {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/undraw_inbox_cleanup_w2ur.svg',
+                  width: size.width * 0.40,
+                ),
+                SizedBox(
+                  height: 15.0,
+                ),
+                Text(
+                  "ยังไม่มีรายการสั่งซื้อ",
+                  style: TextStyle(color: kTextSecondaryColor),
+                ),
+              ],
+            ),
+          );
         }
-        return SizedBox();
       },
     );
   }

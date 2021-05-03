@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:LavaDurian/Screens/AllStatusOrder/all_status_order_screen.dart';
+import 'package:LavaDurian/Screens/BookBank/components/show_alert_dialog.dart';
 import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/body.dart';
 import 'package:LavaDurian/Screens/Operation/components/dialog_store_status.dart';
@@ -8,7 +9,6 @@ import 'package:LavaDurian/Screens/Operation/components/operation_appbar.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_order_list.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_page_four.dart';
-import 'package:LavaDurian/Screens/Operation/components/store_approval.dart';
 import 'package:LavaDurian/Screens/Operation/components/store_wait_approval.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/bottomBar_model.dart';
@@ -179,8 +179,12 @@ class _ContainerStoreState extends State<ContainerStore> {
     await _getStoreProfile();
     pr.hide();
 
+    // * Show alert dialog
     if (storeModel.getCurrentStoreStatus != 1) {
-      checkStoreStatusDialog(context);
+      showDialog(
+        context: context,
+        builder: (_) => checkStoreStatusDialog(),
+      );
     }
   }
 
@@ -246,8 +250,6 @@ class _ContainerStoreState extends State<ContainerStore> {
                                     onLoading: _onLoading,
                                     child: ListView(
                                       children: [
-                                        StoreApproval(),
-
                                         // * List order
                                         OperationList(
                                           leading: 'รายการสั่งซื้อ',

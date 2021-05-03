@@ -12,12 +12,15 @@ class StoreApproval extends StatelessWidget {
 
     return Consumer2<StoreModel, ProductModel>(
       builder: (context, storeModel, productModel, child) {
-        if (productModel.products.length == 0) {
+        // * Fillter for product in current store
+        var products = productModel.products
+            .where(
+                (element) => element['store'] == storeModel.getCurrentIdStore)
+            .toList();
+
+        if (products.length == 0) {
           return Container(
-            height: size.height * 0.6,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
                   "assets/icons/undraw_add_product.svg",
@@ -41,9 +44,6 @@ class StoreApproval extends StatelessWidget {
                           color: kPrimaryColor, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      // ignore: todo
-                      // TODO: Navigate to create product screen.
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -55,12 +55,15 @@ class StoreApproval extends StatelessWidget {
                     },
                   ),
                 ),
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           );
+        } else {
+          return Container();
         }
-        // Reture Default.
-        return Container();
       },
     );
   }

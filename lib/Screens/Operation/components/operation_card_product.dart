@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:LavaDurian/Screens/Operation/components/store_approval.dart';
 import 'package:LavaDurian/components/DetailOnCard.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -17,21 +18,13 @@ class OperationCardProduct extends StatefulWidget {
 }
 
 class _OperationCardProductState extends State<OperationCardProduct> {
-  StoreModel storeModel;
-
-  @override
-  void initState() {
-    super.initState();
-    storeModel = context.read<StoreModel>();
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final font = Theme.of(context).textTheme;
 
-    return Consumer2<ProductModel, ProductImageModel>(
-      builder: (context, productModel, productImageModel, child) {
+    return Consumer3<StoreModel, ProductModel, ProductImageModel>(
+      builder: (context, storeModel, productModel, productImageModel, child) {
         // * Fillter for product in current store
         var products = productModel.products
             .where(
@@ -267,9 +260,10 @@ class _OperationCardProductState extends State<OperationCardProduct> {
               );
             },
           );
+        } else {
+          // * Return this when no product was created.
+          return StoreApproval();
         }
-        // Return Default.
-        return Container();
       },
     );
   }
