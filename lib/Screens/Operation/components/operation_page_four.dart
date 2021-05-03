@@ -1,5 +1,6 @@
 import 'package:LavaDurian/Screens/EditStore/edit_store_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/card_bookbank.dart';
+import 'package:LavaDurian/Screens/Operation/components/card_social_qrcode.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,6 @@ class OperationPageFour extends StatelessWidget {
             return Column(
               children: [
                 // ! Card container
-
                 Container(
                   padding: EdgeInsets.all(22),
                   decoration: BoxDecoration(
@@ -197,8 +197,11 @@ class OperationPageFour extends StatelessWidget {
                 SizedBox(
                   height: 16,
                 ),
-
                 CardBookBank(),
+                SizedBox(
+                  height: 16,
+                ),
+                CardSocialQRCode(),
               ],
             );
           },

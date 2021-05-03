@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:LavaDurian/Screens/AllStatusOrder/all_status_order_screen.dart';
-import 'package:LavaDurian/Screens/BookBank/components/show_alert_dialog.dart';
 import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/body.dart';
 import 'package:LavaDurian/Screens/Operation/components/dialog_store_status.dart';
@@ -414,6 +413,10 @@ class _ContainerStoreState extends State<ContainerStore> {
                                                 style: TextStyle(
                                                     color: kPrimaryColor),
                                               ),
+                                            ),
+                                            Icon(
+                                              Icons.list,
+                                              color: kTextSecondaryColor,
                                             ),
                                           ],
                                         ),
