@@ -47,6 +47,7 @@ class _ContainerStoreState extends State<ContainerStore> {
   ItemModel itemModel;
   BookBankModel bookBankModel;
   ProductImageModel productImageModel;
+  QRCodeModel qrCodeModel;
   bool isGetUserProfile = true;
 
   @override
@@ -60,20 +61,17 @@ class _ContainerStoreState extends State<ContainerStore> {
     itemModel = context.read<ItemModel>();
     bookBankModel = context.read<BookBankModel>();
     productImageModel = context.read<ProductImageModel>();
+    qrCodeModel = context.read<QRCodeModel>();
   }
 
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
-    final response = await Http.get(
-        '${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          HttpHeaders.authorizationHeader: "Token $token"
-        });
+    final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
+        headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
 
     var jsonData = json.decode(utf8.decode(response.bodyBytes));
 
-    // Set data to stores model
+    // * Set data to models
     if (jsonData['data']['stores'] != null) {
       List<Map<String, dynamic>> storeList = [];
       for (var store in jsonData['data']['stores']) {
@@ -81,15 +79,14 @@ class _ContainerStoreState extends State<ContainerStore> {
         storeList.add(map);
       }
 
+      // * Set data to store model
       if (storeList.length != 0) {
         // Set persistent storage initial id store
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        String currentStoreById =
-            'USERID_${userModel.value['id']}_CURRENT_STORE';
+        String currentStoreById = 'USERID_${userModel.value['id']}_CURRENT_STORE';
 
         if (prefs.getInt(currentStoreById) != null) {
-          storeModel.setCurrentStore(
-              value: prefs.getInt(currentStoreById), user: currentStoreById);
+          storeModel.setCurrentStore(value: prefs.getInt(currentStoreById), user: currentStoreById);
         } else if (storeList != null) {
           prefs.setInt(currentStoreById, storeList.first['id']);
           storeModel.setCurrentStore(value: storeList.first['id']);
@@ -100,7 +97,7 @@ class _ContainerStoreState extends State<ContainerStore> {
       }
     }
 
-    // Set data to products model
+    // * Set data to products model
     if (jsonData['data']['products'] != null) {
       List<Map<String, dynamic>> productList = [];
       for (var product in jsonData['data']['products']) {
@@ -120,7 +117,7 @@ class _ContainerStoreState extends State<ContainerStore> {
       orderModel.orders = orderList;
     }
 
-    // Set data to ordersItems model
+    // * Set data to ordersItems model
     if (jsonData['data']['orderItems'] != null) {
       List<Map<String, dynamic>> orderList = [];
       for (var order in jsonData['data']['orderItems']) {
@@ -130,7 +127,7 @@ class _ContainerStoreState extends State<ContainerStore> {
       orderModel.orderItems = orderList;
     }
 
-    // Set data to items model
+    // * Set data to items model
     if (jsonData['data']['items'] != null) {
       List<Map<String, dynamic>> itemList = [];
       for (var item in jsonData['data']['items']) {
@@ -140,6 +137,7 @@ class _ContainerStoreState extends State<ContainerStore> {
       itemModel.items = itemList;
     }
 
+    // * Set data to bookbank model
     if (jsonData['data']['bookbank'] != null) {
       List<Map<String, dynamic>> bookbankList = [];
       for (var bookbank in jsonData['data']['bookbank']) {
@@ -149,6 +147,7 @@ class _ContainerStoreState extends State<ContainerStore> {
       bookBankModel.bookbank = bookbankList;
     }
 
+    // * Set data to product image model
     if (jsonData['data']['images'] != null) {
       List<Map<String, dynamic>> imageList = [];
       for (var image in jsonData['data']['images']) {
@@ -156,6 +155,16 @@ class _ContainerStoreState extends State<ContainerStore> {
         imageList.add(map);
       }
       productImageModel.images = imageList;
+    }
+
+    // * Set data to qrcode model
+    if (jsonData['data']['qrcode'] != null) {
+      List<Map<String, dynamic>> qrcodeList = [];
+      for (var image in jsonData['data']['qrcode']) {
+        Map<String, dynamic> map = image;
+        qrcodeList.add(map);
+      }
+      qrCodeModel.setQRCode = qrcodeList;
     }
   }
 
@@ -169,6 +178,7 @@ class _ContainerStoreState extends State<ContainerStore> {
     await Future.delayed(Duration(milliseconds: 800));
   }
 
+  // * Use for user check when register new store
   void _onCheckStoreStatus() async {
     final ProgressDialog pr = ProgressDialog(context);
     pr.style(
@@ -217,8 +227,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                   initialPage: 0,
                                   height: size.height,
                                   enlargeCenterPage: true,
-                                  onPageChanged:
-                                      _bottomBarModel.setSelectedTabFromSlider),
+                                  onPageChanged: _bottomBarModel.setSelectedTabFromSlider),
                               items: [
                                 //! 1. Home page on swiper.
                                 Container(
@@ -255,65 +264,38 @@ class _ContainerStoreState extends State<ContainerStore> {
                                           trailing: TextButton(
                                             child: Text(
                                               'ดูทั้งหมด',
-                                              style: TextStyle(
-                                                  color: kPrimaryColor,
-                                                  fontSize:
-                                                      font.subtitle2.fontSize,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: kPrimaryColor, fontSize: font.subtitle2.fontSize, fontWeight: FontWeight.bold),
                                             ),
                                             onPressed: () {
                                               _bottomBarModel.setSelectedTab(1);
                                             },
                                           ),
                                         ),
-                                        Consumer2<OrdertModel, ProductModel>(
-                                            builder: (_, orderModel,
-                                                productModel, c) {
-                                          if (productModel.products != null &&
-                                              productModel.products.length !=
-                                                  0) {
+                                        Consumer2<OrdertModel, ProductModel>(builder: (_, orderModel, productModel, c) {
+                                          if (productModel.products != null && productModel.products.length != 0) {
                                             return Column(
                                               children: [
-                                                if (orderModel.orders.length >
-                                                    0)
+                                                if (orderModel.orders.length > 0)
                                                   OperationOrderList(
                                                     maxlength: 3,
                                                   ),
-                                                if (orderModel.orders
-                                                        .where((element) =>
-                                                            element['status'] ==
-                                                            1)
-                                                        .length >
-                                                    3)
+                                                if (orderModel.orders.where((element) => element['status'] == 1).length > 3)
                                                   SizedBox(
                                                     width: double.infinity,
                                                     child: OutlineButton(
-                                                      highlightedBorderColor:
-                                                          Colors.orange,
-                                                      splashColor: Colors.orange
-                                                          .withOpacity(0.1),
+                                                      highlightedBorderColor: Colors.orange,
+                                                      splashColor: Colors.orange.withOpacity(0.1),
                                                       focusColor: Colors.white,
-                                                      highlightColor: Colors
-                                                          .orange
-                                                          .withOpacity(0.2),
-                                                      borderSide: BorderSide(
-                                                          color: Colors.orange),
+                                                      highlightColor: Colors.orange.withOpacity(0.2),
+                                                      borderSide: BorderSide(color: Colors.orange),
                                                       color: Colors.orange,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          12))),
+                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
                                                       onPressed: () {
-                                                        _bottomBarModel
-                                                            .setSelectedTab(1);
+                                                        _bottomBarModel.setSelectedTab(1);
                                                       },
                                                       child: Text(
                                                         'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.orange),
+                                                        style: TextStyle(color: Colors.orange),
                                                       ),
                                                     ),
                                                   ),
@@ -334,11 +316,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                           trailing: TextButton(
                                             child: Text(
                                               'ดูทั้งหมด',
-                                              style: TextStyle(
-                                                  color: kPrimaryColor,
-                                                  fontSize:
-                                                      font.subtitle2.fontSize,
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(color: kPrimaryColor, fontSize: font.subtitle2.fontSize, fontWeight: FontWeight.bold),
                                             ),
                                             onPressed: () {
                                               _bottomBarModel.setSelectedTab(2);
@@ -382,36 +360,26 @@ class _ContainerStoreState extends State<ContainerStore> {
                                     child: ListView(
                                       children: [
                                         Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             OutlineButton(
-                                              highlightColor:
-                                                  kPrimaryLightColor,
-                                              highlightedBorderColor:
-                                                  kPrimaryColor,
+                                              highlightColor: kPrimaryLightColor,
+                                              highlightedBorderColor: kPrimaryColor,
                                               color: kPrimaryColor,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
+                                                borderRadius: BorderRadius.circular(12),
                                               ),
                                               onPressed: () {
                                                 Navigator.push(
                                                   context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          AllStatusOrderScreen(
-                                                              storeID: storeModel
-                                                                  .getCurrentIdStore)),
+                                                  MaterialPageRoute(builder: (_) => AllStatusOrderScreen(storeID: storeModel.getCurrentIdStore)),
                                                 );
                                               },
                                               child: Text(
                                                 'สถานะคำสั่งซื้อทั้งหมด',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor),
+                                                style: TextStyle(color: kPrimaryColor),
                                               ),
                                             ),
                                             Icon(
@@ -463,36 +431,25 @@ class _ContainerStoreState extends State<ContainerStore> {
                                     child: ListView(
                                       children: [
                                         Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             OutlineButton(
-                                              highlightColor:
-                                                  kPrimaryLightColor,
-                                              highlightedBorderColor:
-                                                  kPrimaryColor,
+                                              highlightColor: kPrimaryLightColor,
+                                              highlightedBorderColor: kPrimaryColor,
                                               color: kPrimaryColor,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
+                                                borderRadius: BorderRadius.circular(12),
                                               ),
                                               onPressed: () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        Consumer<StoreModel>(
-                                                      builder:
-                                                          (_, _storeModel, c) {
-                                                        int stireId = _storeModel
-                                                            .getCurrentIdStore;
-                                                        return CreateProductDemoScreen(
-                                                            backArrowButton:
-                                                                true,
-                                                            storeID: stireId);
+                                                    builder: (_) => Consumer<StoreModel>(
+                                                      builder: (_, _storeModel, c) {
+                                                        int stireId = _storeModel.getCurrentIdStore;
+                                                        return CreateProductDemoScreen(backArrowButton: true, storeID: stireId);
                                                       },
                                                     ),
                                                   ),
@@ -500,8 +457,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                               },
                                               child: Text(
                                                 'สร้างสินค้าใหม่',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor),
+                                                style: TextStyle(color: kPrimaryColor),
                                               ),
                                             ),
                                             Icon(
@@ -570,9 +526,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                 },
                                 child: Text(
                                   "ตรวจสอบการอนุมัติร้าน",
-                                  style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
                                 ),
                               ),
                             )

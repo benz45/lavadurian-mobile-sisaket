@@ -20,8 +20,7 @@ class StoreModel extends ChangeNotifier {
   get getCurrentIdStore => _idCurrentStore ?? null;
 
   Map _filterCurrentStore() {
-    Map res =
-        _stores.firstWhere((i) => i['id'] == _idCurrentStore, orElse: () => {});
+    Map res = _stores.firstWhere((i) => i['id'] == _idCurrentStore, orElse: () => {});
     return res ?? {};
   }
 
@@ -68,8 +67,7 @@ class StoreModel extends ChangeNotifier {
   }
 
   // Update store list.
-  void updateStores(
-      {@required int storeId, @required Map<String, dynamic> value}) {
+  void updateStores({@required int storeId, @required Map<String, dynamic> value}) {
     int index = _stores.indexWhere((element) => element['id'] == storeId);
     if (index != -1)
       value.forEach((key, value) {
@@ -141,8 +139,7 @@ class ProductModel extends ChangeNotifier {
 
   // Filter product from id.
   String getProductGeneFromId({@required int productId}) {
-    final Map mapProducts =
-        _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
+    final Map mapProducts = _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
     if (mapProducts != null) {
       return "${_gene['${mapProducts['gene']}']}";
     }
@@ -151,8 +148,7 @@ class ProductModel extends ChangeNotifier {
 
   // Filter product from id.
   String getProductGradeFromId({@required int productId}) {
-    final Map mapProducts =
-        _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
+    final Map mapProducts = _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
     if (mapProducts != null) {
       return "${_grade['${mapProducts['grade']}']}";
     }
@@ -161,8 +157,7 @@ class ProductModel extends ChangeNotifier {
 
   // Filter product from id.
   String getProductWeightFromId({@required int productId}) {
-    final Map mapProducts =
-        _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
+    final Map mapProducts = _products.firstWhere((e) => e['id'] == productId, orElse: () => null);
     if (mapProducts != null) {
       return "${mapProducts['weight']}";
     }
@@ -207,39 +202,31 @@ class OrdertModel extends ChangeNotifier {
 
   // Get order by id
   getOrderFromId(int idOrder) {
-    final order = _orders.firstWhere((element) => element['id'] == idOrder,
-        orElse: () => {});
+    final order = _orders.firstWhere((element) => element['id'] == idOrder, orElse: () => {});
     return order;
   }
 
   // Get order item by id
   List getOrderItemFromId(int orderId) {
-    final List order =
-        _orderItems.where((element) => element['order'] == orderId).toList();
+    final List order = _orderItems.where((element) => element['order'] == orderId).toList();
     return order;
   }
 
   // Filter order by id
   List filterOrderFromId({int orderId}) {
-    final order =
-        _orders.where((element) => element['order'] == orderId).toList();
+    final order = _orders.where((element) => element['order'] == orderId).toList();
     return order;
   }
 
   // Filter order by id
   List filterOrderItemOfProductFromId({int productId}) {
-    final List _listorderItems = _orderItems
-        .where((element) => element['product'] == productId)
-        .toList();
+    final List _listorderItems = _orderItems.where((element) => element['product'] == productId).toList();
 
     return _listorderItems;
   }
 
   int getLengthOrderItemById({int orderId}) {
-    final int _lengthOrderItems = _orderItems
-        .where((element) => element['order'] == orderId)
-        .toList()
-        .length;
+    final int _lengthOrderItems = _orderItems.where((element) => element['order'] == orderId).toList().length;
     return _lengthOrderItems;
   }
 
@@ -259,18 +246,15 @@ class OrdertModel extends ChangeNotifier {
     int indexListOrderItem;
 
     if (order != null) {
-      indexListOrder =
-          _orders.indexWhere((element) => element['id'] == order['id']);
+      indexListOrder = _orders.indexWhere((element) => element['id'] == order['id']);
       order.forEach(
         (key, value) => _orders[indexListOrder].update(key, (_) => value),
       );
     }
     if (orderItem != null) {
-      indexListOrderItem =
-          _orderItems.indexWhere((element) => element['id'] == orderItem['id']);
+      indexListOrderItem = _orderItems.indexWhere((element) => element['id'] == orderItem['id']);
       orderItem.forEach(
-        (key, value) =>
-            _orderItems[indexListOrderItem].update(key, (_) => value),
+        (key, value) => _orderItems[indexListOrderItem].update(key, (_) => value),
       );
     }
 
@@ -327,8 +311,7 @@ class BookBankModel extends ChangeNotifier {
   };
 
   List getBookBankFromStoreId({@required int storeId}) {
-    final List result =
-        _bookbank.where((element) => element['store'] == storeId).toList();
+    final List result = _bookbank.where((element) => element['store'] == storeId).toList();
     return result;
   }
 
@@ -347,8 +330,7 @@ class BookBankModel extends ChangeNotifier {
   }
 
   // Update bookbank
-  void updateBookbank(
-      {@required int bookbankId, @required Map<String, dynamic> value}) {
+  void updateBookbank({@required int bookbankId, @required Map<String, dynamic> value}) {
     int index = _bookbank.indexWhere((element) => element['id'] == bookbankId);
     if (index != -1)
       value.forEach((key, value) {
@@ -364,6 +346,33 @@ class BookBankModel extends ChangeNotifier {
 
   void clear() {
     _bookbank.clear();
+    notifyListeners();
+  }
+}
+
+class QRCodeModel extends ChangeNotifier {
+  List<Map<String, dynamic>> _qrcode = [];
+
+  List<Map<String, dynamic>> get qrcode => _qrcode;
+
+  // Set qrcode when get store profile.
+  set setQRCode(List<Map<String, dynamic>> qrcode) {
+    _qrcode = qrcode;
+    notifyListeners();
+  }
+
+  // filter qr code by store id
+  List getQRCodeFromStoreId(int storeId) {
+    return _qrcode.where((element) => element['store'] == storeId).toList();
+  }
+
+  void removeQRCodeById(int id) {
+    _qrcode.removeWhere((element) => element['id'] == id);
+    notifyListeners();
+  }
+
+  void clear() {
+    _qrcode.clear();
     notifyListeners();
   }
 }

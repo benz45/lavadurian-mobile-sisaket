@@ -27,22 +27,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<OrdertModel>(create: (_) => OrdertModel()),
         ChangeNotifierProvider<ProductModel>(create: (_) => ProductModel()),
         ChangeNotifierProvider<BookBankModel>(create: (_) => BookBankModel()),
-        ChangeNotifierProvider<SizeViewOrderModel>(
-            create: (_) => SizeViewOrderModel()),
-        ChangeNotifierProvider<ProductImageModel>(
-            create: (_) => ProductImageModel()),
+        ChangeNotifierProvider<QRCodeModel>(create: (_) => QRCodeModel()),
+        ChangeNotifierProvider<SizeViewOrderModel>(create: (_) => SizeViewOrderModel()),
+        ChangeNotifierProvider<ProductImageModel>(create: (_) => ProductImageModel()),
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),
-        ChangeNotifierProvider<CreateProductModel>(
-            create: (_) => CreateProductModel()),
-        ChangeNotifierProvider<CreateStoreModel>(
-            create: (_) => CreateStoreModel()),
+        ChangeNotifierProvider<CreateProductModel>(create: (_) => CreateProductModel()),
+        ChangeNotifierProvider<CreateStoreModel>(create: (_) => CreateStoreModel()),
       ],
       child: RefreshConfiguration(
         headerBuilder: () => ClassicHeader(),
         footerBuilder: () => ClassicFooter(),
         headerTriggerDistance: 80.0,
-        springDescription:
-            SpringDescription(stiffness: 170, damping: 16, mass: 1.9),
+        springDescription: SpringDescription(stiffness: 170, damping: 16, mass: 1.9),
         maxOverScrollExtent: 100,
         maxUnderScrollExtent: 0,
         enableScrollWhenRefreshCompleted: true,
@@ -65,8 +61,7 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             primaryColor: kPrimaryColor,
             scaffoldBackgroundColor: Colors.white,
-            fontFamily:
-                GoogleFonts.kanit(fontWeight: FontWeight.w400).fontFamily,
+            fontFamily: GoogleFonts.kanit(fontWeight: FontWeight.w400).fontFamily,
           ),
           home: SplashPage(),
         ),

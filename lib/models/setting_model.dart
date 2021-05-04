@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class SettingModel extends ChangeNotifier {
   // API value
-  String get baseURL => 'https://durian-lava.herokuapp.com';
-  // String get baseURL => 'http://127.0.0.1:8000';
+  // String get baseURL => 'https://durian-lava.herokuapp.com';
+  String get baseURL => 'http://127.0.0.1:8000';
 
   // End-point for Login
   String get endPointLogin => 'api/login';
@@ -70,6 +70,9 @@ class SettingModel extends ChangeNotifier {
 
   // End-point for check order transfer {"order":int}
   String get endPoinGetCheckTransfer => 'api/check/transfer';
+
+  // End-point for delete qr-code (POST) {"store":int, "qrcode":int}
+  String get endPointDeleteQRCode => 'api/qrcode/delete';
 
   // Setting Value
   Map<String, dynamic> _value = {};
