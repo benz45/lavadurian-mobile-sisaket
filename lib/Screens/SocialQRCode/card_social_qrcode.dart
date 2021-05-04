@@ -1,4 +1,6 @@
-import 'package:LavaDurian/Screens/SocialQRCode/delete_dialog.dart';
+import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
+import 'package:LavaDurian/Screens/SocialQRCode/components/delete_dialog.dart';
+import 'package:LavaDurian/Screens/SocialQRCode/components/upload_qrcode_screen.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,13 +11,6 @@ class CardSocialQRCode extends StatefulWidget {
 }
 
 class _CardSocialQRCodeState extends State<CardSocialQRCode> {
-  /*
-  List<String> imgUrl = [
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png'
-  ];
-  */
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -53,8 +48,8 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
               Flexible(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       'Line & Facebook QR Code',
@@ -76,7 +71,8 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
                                 Stack(
                                   children: [
                                     Container(
-                                      width: size.width * .5,
+                                      width: (size.height * 0.2).round() + .0,
+                                      height: (size.height * 0.2).round() + .0,
                                       child: Card(
                                         margin: EdgeInsets.all(10),
                                         semanticContainer: true,
@@ -122,10 +118,11 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
+                              if (imgUrl.length < 2) _uploadIcon(context),
                             ],
                           )
-                        : Container(),
+                        : _uploadIcon(context),
                   ],
                 ),
               ),
@@ -133,6 +130,28 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
           ),
         );
       },
+    );
+  }
+
+  Widget _uploadIcon(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Center(
+      child: Container(
+        width: (size.height * 0.2).round() + .0,
+        height: (size.height * 0.2).round() + .0,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: SelectQRCodeContainer(
+            title: "อัปโหลด",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => QRCodeUpload()),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }
