@@ -27,14 +27,15 @@ class _QRCodeDeleteDialogState extends State<QRCodeDeleteDialog> {
 
   // * Delete QRCode.
   Future<Null> _deleteQRCode() async {
-    try {
-      String token = settingModel.value['token'];
-      Map<String, String> data = {
-        'store': storeID.toString(),
-        'qrcode': qrcodeID.toString(),
-      };
+    String token = settingModel.value['token'];
+    var response;
+    Map<String, String> data = {
+      'store': storeID.toString(),
+      'qrcode': qrcodeID.toString(),
+    };
 
-      final response = await Http.post(
+    try {
+      response = await Http.post(
         '${settingModel.baseURL}/${settingModel.endPointDeleteQRCode}',
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
