@@ -128,6 +128,11 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Fillter for product in current store
+  getProductsFromStoreId(int idStore) {
+    return _products.where((element) => element['store'] == idStore).toList();
+  }
+
   // Filter product from id.
   getProductFromId({@required int id}) {
     final mapId = _products.where((e) => id == e['id']).toList();
@@ -194,6 +199,11 @@ class OrdertModel extends ChangeNotifier {
   List<Map<String, dynamic>> get orders => _orders;
   List<Map<String, dynamic>> get orderItems => _orderItems;
   Map<String, dynamic> get statusCount => _statusCount;
+
+  // Get order by Store ID
+  getOrdersFromStoreId(int idStore) {
+    return _orders.where((element) => element['store'] == idStore).toList();
+  }
 
   // Get order by id
   getOrderFromId(int idOrder) {

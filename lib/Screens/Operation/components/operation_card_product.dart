@@ -26,10 +26,8 @@ class _OperationCardProductState extends State<OperationCardProduct> {
     return Consumer3<StoreModel, ProductModel, ProductImageModel>(
       builder: (context, storeModel, productModel, productImageModel, child) {
         // * Fillter for product in current store
-        var products = productModel.products
-            .where(
-                (element) => element['store'] == storeModel.getCurrentIdStore)
-            .toList();
+        var products =
+            productModel.getProductsFromStoreId(storeModel.getCurrentIdStore);
 
         if (products.length != 0) {
           return StaggeredGridView.countBuilder(

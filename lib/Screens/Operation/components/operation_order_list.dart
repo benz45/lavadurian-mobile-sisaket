@@ -19,10 +19,8 @@ class _OperationOrderListState extends State<OperationOrderList> {
     return Consumer2<StoreModel, OrdertModel>(
       builder: (_, storeModel, orderModel, c) {
         // * Fillter for order list in current store
-        var orders = orderModel.orders
-            .where(
-                (element) => element['store'] == storeModel.getCurrentIdStore)
-            .toList();
+        var orders =
+            orderModel.getOrdersFromStoreId(storeModel.getCurrentIdStore);
 
         if (orders != null && orders.length != 0) {
           return ListView.builder(

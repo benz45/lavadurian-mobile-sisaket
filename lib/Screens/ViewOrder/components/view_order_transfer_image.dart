@@ -53,9 +53,11 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
         return result;
       } else {
         print('Failed to check transfer order.');
+        return null;
       }
     } on Exception catch (err) {
       print(err);
+      return null;
     }
   }
 
