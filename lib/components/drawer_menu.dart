@@ -17,11 +17,13 @@ class NavDrawer extends StatefulWidget {
 
 class _NavDrawerState extends State<NavDrawer> {
   UserModel userModel;
+  StoreModel storeModel;
 
   @override
   void initState() {
     super.initState();
     userModel = context.read<UserModel>();
+    storeModel = context.read<StoreModel>();
   }
 
   @override
@@ -35,9 +37,7 @@ class _NavDrawerState extends State<NavDrawer> {
         fileProcess.writeData('{}');
 
         // Clear Navigate route
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => WelcomeScreen()),
-            (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => WelcomeScreen()), (Route<dynamic> route) => false);
       } catch (e) {
         print(e);
       }
@@ -58,31 +58,21 @@ class _NavDrawerState extends State<NavDrawer> {
                     ),
                     accountName: Text(
                       "${userModel.value['first_name']} ${userModel.value['last_name']}",
-                      style: TextStyle(
-                          fontSize: textTheme.headline6.fontSize,
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: textTheme.headline6.fontSize, color: kPrimaryColor, fontWeight: FontWeight.bold),
                     ),
                     accountEmail: Text(
                       "${userModel.value['email']}",
-                      style: TextStyle(
-                          fontSize: textTheme.subtitle1.fontSize,
-                          color: kTextSecondaryColor),
+                      style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
                     ),
                   ),
                   ListTile(
                     leading: Icon(Icons.home_outlined),
                     title: Text(
                       'หน้าแรก',
-                      style: TextStyle(
-                          fontSize: textTheme.subtitle1.fontSize,
-                          color: kTextSecondaryColor),
+                      style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
                     ),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OperationScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
                     },
                   ),
                   Divider(),
@@ -90,55 +80,48 @@ class _NavDrawerState extends State<NavDrawer> {
                     leading: Icon(Icons.storefront_rounded),
                     title: Text(
                       'สร้างร้านค้า',
-                      style: TextStyle(
-                          fontSize: textTheme.subtitle1.fontSize,
-                          color: kTextSecondaryColor),
+                      style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
                     ),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CreateStoreScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateStoreScreen()));
                     },
                   ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.shopping_basket_outlined),
-                    title: Text(
-                      'สร้างสินค้า',
-                      style: TextStyle(
-                          fontSize: textTheme.subtitle1.fontSize,
-                          color: kTextSecondaryColor),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Consumer<StoreModel>(
-                            builder: (_, storeModel, __) {
-                              return CreateProductDemoScreen(
-                                  backArrowButton: true,
-                                  storeID: storeModel.getCurrentIdStore);
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  storeModel.getCurrentStoreStatus == 1
+                      ? Container(
+                          child: Column(
+                          children: [
+                            Divider(),
+                            ListTile(
+                              leading: Icon(Icons.shopping_basket_outlined),
+                              title: Text(
+                                'สร้างสินค้า',
+                                style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Consumer<StoreModel>(
+                                      builder: (_, storeModel, __) {
+                                        return CreateProductDemoScreen(backArrowButton: true, storeID: storeModel.getCurrentIdStore);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ))
+                      : Container(),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.admin_panel_settings_outlined),
                     title: Text(
                       'ผู้พัฒนา',
-                      style: TextStyle(
-                          fontSize: textTheme.subtitle1.fontSize,
-                          color: kTextSecondaryColor),
+                      style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
                     ),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DeveloperScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DeveloperScreen()));
                     },
                   ),
                   Divider(),
@@ -146,15 +129,12 @@ class _NavDrawerState extends State<NavDrawer> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom),
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
               child: ListTile(
                 leading: Icon(Icons.logout),
                 title: Text(
                   'ออกจากระบบ',
-                  style: TextStyle(
-                      fontSize: textTheme.subtitle1.fontSize,
-                      color: kTextSecondaryColor),
+                  style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
                 ),
                 onTap: () {
                   _logout();
