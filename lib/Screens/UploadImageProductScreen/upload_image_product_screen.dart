@@ -53,8 +53,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     productImageModel = context.read<ProductImageModel>();
 
     // * Add init image for preview only from product immage.
-    List images =
-        productImageModel.getProductImageFromProductId(productId: productID);
+    List images = productImageModel.getProductImageFromProductId(productId: productID);
     if (images.length != 0) {
       images.forEach((element) {
         listImageForPreview.add(element);
@@ -64,7 +63,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
     // * setup progress dialog
     pr = ProgressDialog(context);
     pr.style(
-      message: 'กำลังอัพโหลดรุปภาพ...',
+      message: 'กำลังอัพโหลดรูปภาพ...',
       borderRadius: 10.0,
       progressWidget: Container(
         padding: EdgeInsets.all(16.0),
@@ -90,9 +89,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
       try {
         resultList = await MultiImagePicker.pickImages(
           enableCamera: true,
-          maxImages: listImageForPreview.length < maxImageLimit
-              ? maxImageLimit - listImageForPreview.length
-              : 0,
+          maxImages: listImageForPreview.length < maxImageLimit ? maxImageLimit - listImageForPreview.length : 0,
         );
       } on Exception catch (err) {
         print(err);
@@ -110,8 +107,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
       if (listImageForPreview.length != 0) {
         // Add image if images not fully. (3 Image).
-        if (listImageForPreview.length < maxImageLimit &&
-            (resultList.length + listImageForPreview.length) <= maxImageLimit) {
+        if (listImageForPreview.length < maxImageLimit && (resultList.length + listImageForPreview.length) <= maxImageLimit) {
           setState(() {
             listImagesForUpload.addAll(resultList);
             listImageForPreview.addAll(resultList);
@@ -182,15 +178,11 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                       children: [
                         Text(
                           "ภาพผลิตภัณฑ์สำหรับประชาสัมพันธ์",
-                          style: TextStyle(
-                              fontSize: font.headline6.fontSize,
-                              color: kTextPrimaryColor),
+                          style: TextStyle(fontSize: font.headline6.fontSize, color: kTextPrimaryColor),
                         ),
                         Text(
                           "สามารถเลือกรูปภาพได้สูงสุด 3 รูปภาพ",
-                          style: TextStyle(
-                              fontSize: font.subtitle2.fontSize,
-                              color: kTextSecondaryColor),
+                          style: TextStyle(fontSize: font.subtitle2.fontSize, color: kTextSecondaryColor),
                         ),
                       ],
                     ),
@@ -210,9 +202,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                       mainAxisSpacing: 16,
                       crossAxisCount: 2,
                       children: [
-                        for (var index = 0;
-                            index < listImageForPreview.length;
-                            index++)
+                        for (var index = 0; index < listImageForPreview.length; index++)
                           Stack(
                             fit: StackFit.expand,
                             children: [
@@ -228,15 +218,10 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(18.0),
                                     ),
-                                    child: listImageForPreview[index]
-                                                .runtimeType !=
-                                            Asset
+                                    child: listImageForPreview[index].runtimeType != Asset
                                         ? CachedNetworkImage(
-                                            imageUrl: listImageForPreview[index]
-                                                ['image'],
-                                            imageBuilder:
-                                                (context, imageProvider) =>
-                                                    Container(
+                                            imageUrl: listImageForPreview[index]['image'],
+                                            imageBuilder: (context, imageProvider) => Container(
                                               decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                   image: imageProvider,
@@ -245,33 +230,23 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                                               ),
                                             ),
                                             placeholder: (context, url) => Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Container(
                                                   width: 20,
                                                   height: 20,
-                                                  child:
-                                                      CircularProgressIndicator(
+                                                  child: CircularProgressIndicator(
                                                     strokeWidth: 2,
-                                                    backgroundColor:
-                                                        kPrimaryColor,
-                                                    valueColor:
-                                                        AlwaysStoppedAnimation<
-                                                                Color>(
-                                                            Colors.white),
+                                                    backgroundColor: kPrimaryColor,
+                                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Container(
-                                              color: Colors.grey[400]
-                                                  .withOpacity(.75),
+                                            errorWidget: (context, url, error) => Container(
+                                              color: Colors.grey[400].withOpacity(.75),
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
                                                     Icons.error_outline_rounded,
@@ -282,8 +257,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                                                   ),
                                                   Text(
                                                     'ไม่พบรูป',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
+                                                    style: TextStyle(color: Colors.white),
                                                   )
                                                 ],
                                               ),
@@ -311,11 +285,8 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                                             // TODO : Validate type again
                                             // ! To Do Remove Action.
                                             listImageForPreview[index] is Asset
-                                                ? _onRemoveImageSelected(
-                                                    listImageForPreview[index])
-                                                : _onShowDialogConfirmRemove(
-                                                    listImageForPreview[index]
-                                                        ['id']);
+                                                ? _onRemoveImageSelected(listImageForPreview[index])
+                                                : _onShowDialogConfirmRemove(listImageForPreview[index]['id']);
                                           },
                                           icon: Icon(
                                             Icons.close,
@@ -353,8 +324,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
       // * Bottom action.
       bottomNavigationBar: Padding(
-        padding:
-            EdgeInsets.symmetric(vertical: 36, horizontal: size.width * 0.04),
+        padding: EdgeInsets.symmetric(vertical: 36, horizontal: size.width * 0.04),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -363,17 +333,11 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
               child: OutlineButton(
                 highlightColor: kPrimaryLightColor,
                 highlightedBorderColor: kPrimaryColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0)),
-                padding: EdgeInsets.symmetric(
-                    vertical: 20, horizontal: size.width * 0.10),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: size.width * 0.10),
                 color: kPrimaryColor,
                 onPressed: widget.onPressed ??
-                    () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ViewProductScreen(productId: productID))),
+                    () => Navigator.push(context, MaterialPageRoute(builder: (context) => ViewProductScreen(productId: productID))),
                 child: Text(
                   widget.onPressed != null ? 'ไม่ใช่ตอนนี้' : 'ยกเลิก',
                   style: TextStyle(color: kPrimaryColor, fontSize: 16.0),
@@ -388,13 +352,10 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
               borderRadius: BorderRadius.circular(14),
               child: FlatButton(
                 disabledColor: kTextSecondaryColor.withOpacity(0.12),
-                padding: EdgeInsets.symmetric(
-                    vertical: 20, horizontal: size.width * 0.10),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: size.width * 0.10),
                 color: kPrimaryColor,
                 onPressed: isSelectedImage && listImagesForUpload.length != 0
-                    ? () => _uploadProcess(
-                        listImageForUpload: listImagesForUpload,
-                        productId: productID)
+                    ? () => _uploadProcess(listImageForUpload: listImagesForUpload, productId: productID)
                     : null,
                 child: Text(
                   'อัพโหลด',
@@ -409,15 +370,12 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
   }
 
   // For upload data by using MultipathRequest
-  Future<Null> _uploadProcess(
-      {@required List<Asset> listImageForUpload,
-      @required int productId}) async {
+  Future<Null> _uploadProcess({@required List<Asset> listImageForUpload, @required int productId}) async {
     // get current user token
     String token = settingModel.value['token'];
 
     // string to uri
-    Uri uri = Uri.parse(
-        '${settingModel.baseURL}/${settingModel.endPointUploadProductImage}');
+    Uri uri = Uri.parse('${settingModel.baseURL}/${settingModel.endPointUploadProductImage}');
 
     // create multipart request
     MultipartRequest request = MultipartRequest("POST", uri);
@@ -490,8 +448,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
       if (jsonData['status']) {
         productImageModel.removeProductImageFromImageId(imageId: imgID);
         setState(() {
-          listImageForPreview.removeWhere((element) =>
-              element.runtimeType != Asset && element['id'] == imgID);
+          listImageForPreview.removeWhere((element) => element.runtimeType != Asset && element['id'] == imgID);
         });
         showFlashBar(context, message: 'ลบรูปภาพสำเร็จ', success: true);
       } else {
@@ -554,8 +511,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
                 minWidth: double.infinity,
                 color: Colors.grey[300],
                 padding: EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(19))),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
                 onPressed: () => Navigator.pop(context),
                 child: Text(
                   'ยกเลิก',

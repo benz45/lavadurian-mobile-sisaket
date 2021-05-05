@@ -53,7 +53,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
     // * setup progress dialog
     pr = ProgressDialog(context);
     pr.style(
-      message: 'กำลังอัพโหลดรุปภาพ...',
+      message: 'กำลังอัพโหลดรูปภาพ...',
       borderRadius: 10.0,
       progressWidget: Container(
         padding: EdgeInsets.all(16.0),
