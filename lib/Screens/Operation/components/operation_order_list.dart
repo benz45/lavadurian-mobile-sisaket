@@ -19,7 +19,10 @@ class _OperationOrderListState extends State<OperationOrderList> {
     return Consumer2<StoreModel, OrdertModel>(
       builder: (_, storeModel, orderModel, c) {
         // * Fillter for order list in current store
-        var orders = orderModel.getOrdersFromStoreId(storeModel.getCurrentIdStore);
+        // * Show only order in status ['รอรับออร์เดอร์', 'รับออร์เดอร์', 'แจ้งชำระเงินแล้ว', 'ชำระเงินแล้ว']
+        // * exclude status ['จัดส่งสินค้าแล้ว', 'ดำเนินการเสร็จสิ้น', 'ยกเลิก']
+        var orders_all = orderModel.getOrdersFromStoreId(storeModel.getCurrentIdStore);
+        var orders = orders_all.where((element) => element['status'] != 6 && element['status'] != 7 && element['status'] != 8).toList();
 
         if (orders != null && orders.length != 0) {
           return ListView.builder(
