@@ -480,7 +480,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                                                   Navigator.pop(context);
                                                                 },
                                                                 child: Text(
-                                                                  'ขณะนี้มีรายคำสั่งซื้อมากกว่า 3 รายการ',
+                                                                  'สิ้นค้านี้มีคำสั่งซื้อมากกว่า 3 รายการ',
                                                                   style: TextStyle(color: kPrimaryColor),
                                                                 ),
                                                               ),
