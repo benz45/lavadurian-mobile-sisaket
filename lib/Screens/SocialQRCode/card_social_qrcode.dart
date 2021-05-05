@@ -1,7 +1,9 @@
 import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/delete_dialog.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/upload_qrcode_screen.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -82,9 +84,53 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(18.0),
                                         ),
-                                        child: Image.network(
-                                          imgUrl[index],
-                                          fit: BoxFit.cover,
+                                        child: CachedNetworkImage(
+                                          filterQuality: FilterQuality.low,
+                                          fadeOutCurve: Curves.fastOutSlowIn,
+                                          cacheKey: imgUrl[index],
+                                          imageUrl: imgUrl[index],
+                                          imageBuilder: (context, imageProvider) {
+                                            return Container(
+                                              height: 100,
+                                              width: 100,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.horizontal(
+                                                  left: Radius.circular(18.0),
+                                                ),
+                                                image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          placeholder: (context, _) => SizedBox(
+                                            height: 100,
+                                            width: 100,
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: 20,
+                                                  height: 20,
+                                                  child: CircularProgressIndicator(
+                                                    strokeWidth: 2,
+                                                    backgroundColor: kPrimaryColor,
+                                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          errorWidget: (_, __, ___) => SizedBox(
+                                            height: 100,
+                                            width: 100,
+                                            child: Center(
+                                                child: Icon(
+                                              Icons.error_outline_rounded,
+                                              color: Colors.grey[500],
+                                            )),
+                                          ),
                                         ),
                                       ),
                                     ),
