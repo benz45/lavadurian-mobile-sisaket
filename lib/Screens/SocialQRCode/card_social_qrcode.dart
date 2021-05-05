@@ -1,3 +1,4 @@
+import 'package:LavaDurian/Screens/SocialQRCode/components/qrcode_img_cache_container.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/delete_dialog.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/upload_qrcode_screen.dart';
@@ -24,6 +25,7 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
 
         // * Fillter qr code in current store
         var qrcodes = qrCodeModel.getQRCodeFromStoreId(storeModel.getCurrentIdStore);
+
         if (qrcodes.length != 0) {
           for (var i = 0; i < qrcodes.length; i++) {
             imgUrl.add(qrcodes[i]['qr_code']);
@@ -84,54 +86,7 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(18.0),
                                         ),
-                                        child: CachedNetworkImage(
-                                          filterQuality: FilterQuality.low,
-                                          fadeOutCurve: Curves.fastOutSlowIn,
-                                          cacheKey: imgUrl[index],
-                                          imageUrl: imgUrl[index],
-                                          imageBuilder: (context, imageProvider) {
-                                            return Container(
-                                              height: 100,
-                                              width: 100,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.horizontal(
-                                                  left: Radius.circular(18.0),
-                                                ),
-                                                image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          placeholder: (context, _) => SizedBox(
-                                            height: 100,
-                                            width: 100,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  width: 20,
-                                                  height: 20,
-                                                  child: CircularProgressIndicator(
-                                                    strokeWidth: 2,
-                                                    backgroundColor: kPrimaryColor,
-                                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget: (_, __, ___) => SizedBox(
-                                            height: 100,
-                                            width: 100,
-                                            child: Center(
-                                                child: Icon(
-                                              Icons.error_outline_rounded,
-                                              color: Colors.grey[500],
-                                            )),
-                                          ),
-                                        ),
+                                        child: QRCodeCachedImageNetwork(imgUrl: imgUrl[index]),
                                       ),
                                     ),
                                     Positioned(
