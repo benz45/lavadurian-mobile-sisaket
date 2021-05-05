@@ -272,38 +272,36 @@ class _ContainerStoreState extends State<ContainerStore> {
                                           ),
                                         ),
                                         Consumer2<OrdertModel, ProductModel>(builder: (_, orderModel, productModel, c) {
-                                          if (productModel.products != null && productModel.products.length != 0) {
-                                            return Column(
-                                              children: [
-                                                if (orderModel.orders.length > 0)
-                                                  OperationOrderList(
-                                                    maxlength: 3,
-                                                  ),
-                                                if (orderModel.orders.where((element) => element['status'] == 1).length > 3)
-                                                  SizedBox(
-                                                    width: double.infinity,
-                                                    child: OutlineButton(
-                                                      highlightedBorderColor: Colors.orange,
-                                                      splashColor: Colors.orange.withOpacity(0.1),
-                                                      focusColor: Colors.white,
-                                                      highlightColor: Colors.orange.withOpacity(0.2),
-                                                      borderSide: BorderSide(color: Colors.orange),
-                                                      color: Colors.orange,
-                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-                                                      onPressed: () {
-                                                        _bottomBarModel.setSelectedTab(1);
-                                                      },
-                                                      child: Text(
-                                                        'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
-                                                        style: TextStyle(color: Colors.orange),
-                                                      ),
+                                          // * Fillter Product and Order by Current Store
+                                          var orders = orderModel.getOrdersFromStoreId(storeModel.getCurrentIdStore);
+
+                                          return Column(
+                                            children: [
+                                              OperationOrderList(
+                                                maxlength: 3,
+                                              ),
+                                              if (orders.where((element) => element['status'] == 1).length > 3)
+                                                SizedBox(
+                                                  width: double.infinity,
+                                                  child: OutlineButton(
+                                                    highlightedBorderColor: Colors.orange,
+                                                    splashColor: Colors.orange.withOpacity(0.1),
+                                                    focusColor: Colors.white,
+                                                    highlightColor: Colors.orange.withOpacity(0.2),
+                                                    borderSide: BorderSide(color: Colors.orange),
+                                                    color: Colors.orange,
+                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                                                    onPressed: () {
+                                                      _bottomBarModel.setSelectedTab(1);
+                                                    },
+                                                    child: Text(
+                                                      'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
+                                                      style: TextStyle(color: Colors.orange),
                                                     ),
                                                   ),
-                                              ],
-                                            );
-                                          }
-
-                                          return SizedBox();
+                                                ),
+                                            ],
+                                          );
                                         }),
 
                                         SizedBox(

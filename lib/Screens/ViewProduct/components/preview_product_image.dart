@@ -33,11 +33,9 @@ class _PreviewProductImageState extends State<PreviewProductImage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    ProductImageModel _productImageModel =
-        Provider.of<ProductImageModel>(context);
+    ProductImageModel _productImageModel = Provider.of<ProductImageModel>(context);
 
-    List listProductImage =
-        _productImageModel.getProductImageFromProductId(productId: productId);
+    List listProductImage = _productImageModel.getProductImageFromProductId(productId: productId);
 
     return Stack(
       children: [
@@ -54,9 +52,7 @@ class _PreviewProductImageState extends State<PreviewProductImage> {
               });
             },
           ),
-          items: _productImageModel
-              .getProductImageFromProductId(productId: productId)
-              .map<Widget>((item) {
+          items: _productImageModel.getProductImageFromProductId(productId: productId).map<Widget>((item) {
             return GridTile(
               child: CachedNetworkImage(
                 imageUrl: item['image'],

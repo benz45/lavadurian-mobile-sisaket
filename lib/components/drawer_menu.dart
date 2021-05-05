@@ -75,21 +75,21 @@ class _NavDrawerState extends State<NavDrawer> {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
                     },
                   ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.storefront_rounded),
-                    title: Text(
-                      'สร้างร้านค้า',
-                      style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
-                    ),
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CreateStoreScreen()));
-                    },
-                  ),
                   storeModel.getCurrentStoreStatus == 1
                       ? Container(
                           child: Column(
                           children: [
+                            Divider(),
+                            ListTile(
+                              leading: Icon(Icons.storefront_rounded),
+                              title: Text(
+                                'สร้างร้านค้า',
+                                style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
+                              ),
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateStoreScreen()));
+                              },
+                            ),
                             Divider(),
                             ListTile(
                               leading: Icon(Icons.shopping_basket_outlined),

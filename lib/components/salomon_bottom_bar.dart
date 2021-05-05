@@ -11,9 +11,7 @@ class MySalomonBottomBar extends StatelessWidget {
     BottomBarModel bottomBarModel = Provider.of<BottomBarModel>(context);
     StoreModel storeModel = Provider.of<StoreModel>(context);
 
-    return storeModel.getStores.length != 0 &&
-            storeModel.getCurrentIdStore != null &&
-            storeModel.getCurrentStoreStatus != 0
+    return storeModel.getStores.length != 0 && storeModel.getCurrentIdStore != null && storeModel.getCurrentStoreStatus == 1
         ? SafeArea(
             child: SalomonBottomBar(
               currentIndex: bottomBarModel.getCurrentSelectedTab,
@@ -30,9 +28,7 @@ class MySalomonBottomBar extends StatelessWidget {
                   ),
                   title: Text(
                     "หน้าหลัก",
-                    style: TextStyle(
-                        fontFamily:
-                            Theme.of(context).textTheme.bodyText1.fontFamily),
+                    style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
                   ),
                   selectedColor: kPrimaryColor,
                 ),
@@ -47,9 +43,7 @@ class MySalomonBottomBar extends StatelessWidget {
                   ),
                   title: Text(
                     "รายการสั่งซื้อ",
-                    style: TextStyle(
-                        fontFamily:
-                            Theme.of(context).textTheme.bodyText1.fontFamily),
+                    style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
                   ),
                   selectedColor: kPrimaryColor,
                 ),
@@ -64,9 +58,7 @@ class MySalomonBottomBar extends StatelessWidget {
                   ),
                   title: Text(
                     "สินค้า",
-                    style: TextStyle(
-                        fontFamily:
-                            Theme.of(context).textTheme.bodyText1.fontFamily),
+                    style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
                   ),
                   selectedColor: kPrimaryColor,
                 ),
@@ -81,9 +73,7 @@ class MySalomonBottomBar extends StatelessWidget {
                   ),
                   title: Text(
                     "ร้านค้า",
-                    style: TextStyle(
-                        fontFamily:
-                            Theme.of(context).textTheme.bodyText1.fontFamily),
+                    style: TextStyle(fontFamily: Theme.of(context).textTheme.bodyText1.fontFamily),
                   ),
                   selectedColor: kPrimaryColor,
                 ),
