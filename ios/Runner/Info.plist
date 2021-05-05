@@ -27,7 +27,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Post videos to profile</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Select product photo for upload to your store</string>
+	<string>Select a photo to upload to your store, such as a product photo or a qrcode image, etc.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

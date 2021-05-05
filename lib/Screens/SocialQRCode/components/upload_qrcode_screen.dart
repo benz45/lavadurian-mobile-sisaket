@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -12,6 +13,7 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart';
+import 'package:smart_select/smart_select.dart';
 
 class QRCodeUpload extends StatefulWidget {
   @override
@@ -35,6 +37,10 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
 
   SettingModel settingModel;
   StoreModel storeModel;
+  QRCodeModel qrCodeModel;
+
+  // Social value
+  int socialValue = 1;
 
   @override
   void initState() {
@@ -42,6 +48,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
     super.initState();
     settingModel = context.read<SettingModel>();
     storeModel = context.read<StoreModel>();
+    qrCodeModel = context.read<QRCodeModel>();
 
     // * setup progress dialog
     pr = ProgressDialog(context);
@@ -68,13 +75,13 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
     String token = settingModel.value['token'];
 
     // string to uri
-    Uri uri = Uri.parse('${settingModel.baseURL}/${settingModel.endPointUploadProductImage}');
+    Uri uri = Uri.parse('${settingModel.baseURL}/${settingModel.endPointAddQRCode}');
 
     // create multipart request
     MultipartRequest request = MultipartRequest("POST", uri);
 
     for (Asset asset in listImageForUpload) {
-      ByteData byteData = await asset.getByteData(quality: 30);
+      ByteData byteData = await asset.getByteData(quality: 60);
       List<int> imageData = byteData.buffer.asUint8List();
 
       MultipartFile multipartFile = MultipartFile.fromBytes(
@@ -90,28 +97,34 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
       request.files.add(multipartFile);
     }
 
-    //adding params Product ID
+    // * adding params Store ID
     request.fields['store'] = "$storeID";
+
+    // * adding params Social ID (1:Facebook, 2:Line)
+    request.fields['social'] = "$socialValue";
 
     // Upload photo and wait for response
     try {
       pr.show();
+
+      // * Send POST data to server
       Response response = await Response.fromStream(await request.send());
+
+      // * encode reponse data
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (jsonData['status']) {
-        pr.hide();
-        //productImageModel.addImage(listImage: jsonData['data']);
+      pr.hide();
+
+      if (response.statusCode == 200 && jsonData['status']) {
+        qrCodeModel.addNewQRCode(jsonData['data']);
         showFlashBar(context, message: 'อัพโหลดรูปภาพสำเร็จ', success: true);
 
-        /*
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ViewProductScreen(productId: productId),
+            builder: (context) => OperationScreen(),
           ),
         );
-        */
       }
     } catch (e) {
       showFlashBar(context, message: 'เกิดข้อผิดพลาดบางอย่าง', error: true);
@@ -311,6 +324,15 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
             sliver: SliverToBoxAdapter(
+              child: SizedBox(
+                width: size.width / 1.5,
+                child: _socialChoice(context),
+              ),
+            ),
+          ),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
+            sliver: SliverToBoxAdapter(
               child: listImageForPreview.length != 0
                   ? GridView.count(
                       shrinkWrap: true,
@@ -430,15 +452,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
                           ),
                       ],
                     )
-                  : Container(
-                      height: size.height * 0.55,
-                      child: Center(
-                        child: SelectQRCodeContainer(
-                          title: "เลือก QR Code",
-                          onPressed: () => loadAssets(),
-                        ),
-                      ),
-                    ),
+                  : _ChooseQRCodeBox(context),
             ),
           ),
         ],
@@ -486,6 +500,57 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
           ],
         ),
       ),
+    );
+  }
+
+  // * widget for select qrcode image when image is empty
+  Widget _ChooseQRCodeBox(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+      height: size.height * 0.55,
+      child: Center(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 30,
+            ),
+            SelectQRCodeContainer(
+              title: "เลือก QR Code",
+              onPressed: () => loadAssets(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // * Gender choice widget
+  Widget _socialChoice(BuildContext context) {
+    List<S2Choice<int>> options = [
+      S2Choice<int>(value: 1, title: 'Facebook'),
+      S2Choice<int>(value: 2, title: 'Line'),
+    ];
+
+    return SmartSelect<int>.single(
+      title: 'Social Media',
+      value: socialValue,
+      choiceDivider: false,
+      modalConfirm: false,
+      choiceItems: options,
+      modalType: S2ModalType.popupDialog,
+      modalStyle: S2ModalStyle(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        elevation: 5,
+        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+        clipBehavior: Clip.antiAlias,
+      ),
+      modalHeaderStyle: S2ModalHeaderStyle(
+        centerTitle: false,
+      ),
+      onChange: (state) => setState(() => socialValue = state.value),
     );
   }
 }

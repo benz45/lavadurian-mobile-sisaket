@@ -366,6 +366,11 @@ class QRCodeModel extends ChangeNotifier {
     return _qrcode.where((element) => element['store'] == storeId).toList();
   }
 
+  void addNewQRCode(Map<String, dynamic> data) {
+    _qrcode.add(data);
+    notifyListeners();
+  }
+
   void removeQRCodeById(int id) {
     _qrcode.removeWhere((element) => element['id'] == id);
     notifyListeners();
