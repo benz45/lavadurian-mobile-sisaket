@@ -420,7 +420,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                                     style: TextStyle(color: kTextSecondaryColor),
                                   ),
                                   Text(
-                                    '${dataProduct['price']} บาท/ลูก',
+                                    '${dataProduct['price']} บาท/กก.',
                                     style: TextStyle(color: kTextPrimaryColor, fontWeight: FontWeight.bold, fontSize: font.subtitle1.fontSize),
                                   ),
                                 ],
