@@ -130,15 +130,28 @@ class _NavDrawerState extends State<NavDrawer> {
             ),
             Container(
               padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-              child: ListTile(
-                leading: Icon(Icons.logout),
-                title: Text(
-                  'ออกจากระบบ',
-                  style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
-                ),
-                onTap: () {
-                  _logout();
-                },
+              child: Column(
+                children: [
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.verified),
+                    title: Text(
+                      'เวอร์ชั่น 1.0.2',
+                      style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text(
+                      'ออกจากระบบ',
+                      style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
+                    ),
+                    onTap: () {
+                      _logout();
+                    },
+                  ),
+                ],
               ),
             ),
           ],
