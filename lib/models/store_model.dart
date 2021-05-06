@@ -189,11 +189,11 @@ class OrdertModel extends ChangeNotifier {
 
   List<Map<String, dynamic>> _orders = [];
   List<Map<String, dynamic>> _orderItems = [];
-  Map<String, dynamic> _statusCount = {};
+  List<Map<String, dynamic>> _statusCount = [];
 
   List<Map<String, dynamic>> get orders => _orders;
   List<Map<String, dynamic>> get orderItems => _orderItems;
-  Map<String, dynamic> get statusCount => _statusCount;
+  List<Map<String, dynamic>> get statusCount => _statusCount;
 
   // Get order by Store ID
   getOrdersFromStoreId(int idStore) {
@@ -261,7 +261,7 @@ class OrdertModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  set statusCount(Map<String, dynamic> statusCount) {
+  set statusCount(List<Map<String, dynamic>> statusCount) {
     _statusCount = statusCount;
     notifyListeners();
   }

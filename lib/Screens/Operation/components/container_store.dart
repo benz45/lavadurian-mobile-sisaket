@@ -66,8 +66,13 @@ class _ContainerStoreState extends State<ContainerStore> {
 
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
-    final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
-        headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
+    final response = await Http.get(
+      '${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: "Token $token",
+      },
+    );
 
     var jsonData = json.decode(utf8.decode(response.bodyBytes));
 
@@ -155,6 +160,16 @@ class _ContainerStoreState extends State<ContainerStore> {
         imageList.add(map);
       }
       productImageModel.images = imageList;
+    }
+
+    // * Set data to order model - statusCount
+    if (jsonData['data']['orders_status'] != null) {
+      List<Map<String, dynamic>> orderStatus = [];
+      for (var status in jsonData['data']['orders_status']) {
+        Map<String, dynamic> map = status;
+        orderStatus.add(map);
+      }
+      orderModel.statusCount = orderStatus;
     }
 
     // * Set data to qrcode model

@@ -32,6 +32,7 @@ class _BodyState extends State<Body> {
   ItemModel itemModel;
   BookBankModel bookBankModel;
   ProductImageModel productImageModel;
+  QRCodeModel qrCodeModel;
   bool isGetUserProfile = true;
 
   Map<String, String> productGene;
@@ -49,6 +50,7 @@ class _BodyState extends State<Body> {
     itemModel = context.read<ItemModel>();
     bookBankModel = context.read<BookBankModel>();
     productImageModel = context.read<ProductImageModel>();
+    qrCodeModel = context.read<QRCodeModel>();
 
     productGene = productModel.productGene;
     productStatus = productModel.productStatus;
@@ -59,12 +61,8 @@ class _BodyState extends State<Body> {
   // Set data to state.
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
-    final response = await Http.get(
-        '${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          HttpHeaders.authorizationHeader: "Token $token"
-        });
+    final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
+        headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
 
     var jsonData = json.decode(utf8.decode(response.bodyBytes));
 
@@ -82,27 +80,21 @@ class _BodyState extends State<Body> {
       if (storeList.length != 0) {
         // Set persistent storage initial id store
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        String keyStoreForPrefs =
-            'USERID_${userModel.value['id']}_CURRENT_STORE';
+        String keyStoreForPrefs = 'USERID_${userModel.value['id']}_CURRENT_STORE';
 
         var storeidFromPrefs = prefs.getInt(keyStoreForPrefs);
 
         if (storeidFromPrefs == null) {
-          storeModel.setCurrentStore(
-              value: storeList.first['id'], user: userModel.value['id']);
+          storeModel.setCurrentStore(value: storeList.first['id'], user: userModel.value['id']);
           return;
         }
 
-        final isContainsStore = storeList.firstWhere(
-            (element) => element['id'] == storeidFromPrefs,
-            orElse: () => null);
+        final isContainsStore = storeList.firstWhere((element) => element['id'] == storeidFromPrefs, orElse: () => null);
 
         if (isContainsStore != null) {
-          storeModel.setCurrentStore(
-              value: storeidFromPrefs, user: userModel.value['id']);
+          storeModel.setCurrentStore(value: storeidFromPrefs, user: userModel.value['id']);
         } else {
-          storeModel.setCurrentStore(
-              value: storeList[0]['id'], user: userModel.value['id']);
+          storeModel.setCurrentStore(value: storeList[0]['id'], user: userModel.value['id']);
         }
       }
     }
@@ -164,6 +156,26 @@ class _BodyState extends State<Body> {
       }
       productImageModel.images = imageList;
     }
+
+    // * Set data to order model - statusCount
+    if (jsonData['data']['orders_status'] != null) {
+      List<Map<String, dynamic>> orderStatus = [];
+      for (var status in jsonData['data']['orders_status']) {
+        Map<String, dynamic> map = status;
+        orderStatus.add(map);
+      }
+      orderModel.statusCount = orderStatus;
+    }
+
+    // * Set data to qrcode model
+    if (jsonData['data']['qrcode'] != null) {
+      List<Map<String, dynamic>> qrcodeList = [];
+      for (var image in jsonData['data']['qrcode']) {
+        Map<String, dynamic> map = image;
+        qrcodeList.add(map);
+      }
+      qrCodeModel.setQRCode = qrcodeList;
+    }
   }
 
   Future<String> _getUserProfile() async {
@@ -171,12 +183,8 @@ class _BodyState extends State<Body> {
 
     // Get only one time after login
     if (userModel.value.isEmpty) {
-      final response = await Http.get(
-          '${settingModel.baseURL}/${settingModel.endPointUserProfile}',
-          headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
-            HttpHeaders.authorizationHeader: "Token $token"
-          });
+      final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointUserProfile}',
+          headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
 
       var jsonData = json.decode(utf8.decode(response.bodyBytes));
       if (jsonData['results'] != null) {
@@ -220,21 +228,13 @@ class _BodyState extends State<Body> {
                 Container(
                   child: Text(
                     '404',
-                    style: TextStyle(
-                        color: kPrimaryColor,
-                        letterSpacing: 8,
-                        height: .4,
-                        fontSize:
-                            Theme.of(context).textTheme.headline1.fontSize),
+                    style: TextStyle(color: kPrimaryColor, letterSpacing: 8, height: .4, fontSize: Theme.of(context).textTheme.headline1.fontSize),
                   ),
                 ),
                 Container(
                   child: Text(
                     'Not found token',
-                    style: TextStyle(
-                        color: kPrimaryColor,
-                        fontSize:
-                            Theme.of(context).textTheme.headline6.fontSize),
+                    style: TextStyle(color: kPrimaryColor, fontSize: Theme.of(context).textTheme.headline6.fontSize),
                   ),
                 ),
                 SizedBox(
@@ -243,10 +243,7 @@ class _BodyState extends State<Body> {
                 Container(
                   child: Text(
                     'เกิดข้อผิดพลาด กรุณาเข้าสู่ระบบใหม่ออีกครั้ง',
-                    style: TextStyle(
-                        color: kTextSecondaryColor,
-                        fontSize:
-                            Theme.of(context).textTheme.bodyText1.fontSize),
+                    style: TextStyle(color: kTextSecondaryColor, fontSize: Theme.of(context).textTheme.bodyText1.fontSize),
                   ),
                 ),
                 SizedBox(

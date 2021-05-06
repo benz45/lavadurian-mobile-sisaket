@@ -10,10 +10,12 @@ class StatusCard extends StatefulWidget {
 
 class _StatusCardState extends State<StatusCard> {
   OrdertModel orderModel;
+  StoreModel storeModel;
 
   int getStatusCount(int statusNumber) {
-    if (orderModel.statusCount[statusNumber.toString()] != null) {
-      return orderModel.statusCount[statusNumber.toString()];
+    var data = orderModel.statusCount.where((element) => element['store'] == storeModel.getCurrentIdStore).toList();
+    if (data[0]['$statusNumber'] != null) {
+      return data[0]['$statusNumber'];
     } else {
       return 0;
     }
@@ -22,6 +24,7 @@ class _StatusCardState extends State<StatusCard> {
   @override
   void initState() {
     super.initState();
+    storeModel = context.read<StoreModel>();
     orderModel = context.read<OrdertModel>();
   }
 
@@ -48,8 +51,7 @@ class _StatusCardState extends State<StatusCard> {
           ListView(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            children:
-                ListTile.divideTiles(context: context, tiles: tiles).toList(),
+            children: ListTile.divideTiles(context: context, tiles: tiles).toList(),
           )
         ],
       ),

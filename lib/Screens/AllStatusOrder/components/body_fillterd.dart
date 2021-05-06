@@ -1,5 +1,6 @@
 import 'package:LavaDurian/Screens/AllStatusOrder/components/header_card.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
+import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -78,19 +79,26 @@ class _BodyFillterdState extends State<BodyFillterd> {
                     child: Container(
                       height: size.height * .5,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           StoreHeader(title: widget.title),
                           SizedBox(height: size.height * 0.03),
-                          SvgPicture.asset(
-                            "assets/icons/undraw_order_confirmed_aaw7.svg",
-                            height: size.height * 0.30,
+                          SizedBox(
+                            height: size.height * 0.2,
+                            width: size.width * 0.4,
+                            child: SvgPicture.asset(
+                              "assets/icons/undraw_inbox_cleanup_w2ur.svg",
+                              height: size.height * 0.30,
+                            ),
                           ),
                           SizedBox(height: size.height * 0.03),
                           Text(
                             "ยังไม่มีออร์เดอร์ในสถานะนี้",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: kTextSecondaryColor,
+                            ),
                           ),
                         ],
                       ),
