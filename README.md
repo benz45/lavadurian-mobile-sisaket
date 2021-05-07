@@ -42,6 +42,6 @@ Benz45.th@outlook.com
 
 ## Download and Install
 
-Available on App Store [Link](https://apps.apple.com/us/app/lava-durian/id1564892719#?platform=iphone)
+Available on [App Store](https://apps.apple.com/us/app/lava-durian/id1564892719#?platform=iphone)
 
-Available on Google Play [Link](https://play.google.com/store/apps/details?id=com.phisan.lavadurian)
+Available on [Google Play](https://play.google.com/store/apps/details?id=com.phisan.lavadurian)
