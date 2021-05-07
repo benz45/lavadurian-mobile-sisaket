@@ -1,6 +1,6 @@
 ## โมบายแอปพิลิเคชั่น "ทุเรียนลาวา" (Lava Durain)
 
-สำหรับ "ทุเรียนลาวา" เป็นโมบายแอปพลิเคชั่นสำหรับจัดการร้านค้า สินคา และคำสั่งซื้อบน www.lavadurian.com ซึ่งจะช่วยให้ผู้ค้าทุเรียนออนไลน์สามารถจัดการข้อมูลต่าง ๆ ที่เกี่ยวข้องกับร้านค้าของตัวเองได้อย่างสะดวกขึ้น ประกอบไปด้วย
+สำหรับ "ทุเรียนลาวา" เป็นโมบายแอปพลิเคชั่นสำหรับจัดการร้านค้า สินค้า และคำสั่งซื้อบน www.lavadurian.com ซึ่งจะช่วยให้ผู้ค้าทุเรียนออนไลน์สามารถจัดการข้อมูลต่าง ๆ ที่เกี่ยวข้องกับร้านค้าของตัวเองได้อย่างสะดวกขึ้น ประกอบไปด้วย
 
 - ลงทะเบียนใช้งานในฐานนะผู้ค้าทุเรียน
 - จัดการเปิดร้านของตนเอง
@@ -36,12 +36,12 @@ phisan.s@sskru.ac.th
 
 #### นายวีรพันธ์ บุญบุตร
 
-ฺBenz45.th@outlook.com
+Benz45.th@outlook.com
 
 สาขาวิทยาการคอมพิวเตอร์, คณะศิลปศาสตร์และวิทยาศาสตร์ มหาวิทยาลัยราชภัฏศรีสะเกษ
 
 ## Download and Install
 
-Available on AppStore [Link](https://apps.apple.com/us/app/lava-durian/id1564892719#?platform=iphone)
+Available on App Store [Link](https://apps.apple.com/us/app/lava-durian/id1564892719#?platform=iphone)
 
-Available on PlayStore [Link](https://play.google.com/store/apps/details?id=com.phisan.lavadurian)
+Available on Google Play [Link](https://play.google.com/store/apps/details?id=com.phisan.lavadurian)
