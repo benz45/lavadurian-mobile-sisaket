@@ -26,16 +26,22 @@ For "Durian Lava" is a mobile application for managing stores, products and orde
 - Engine revision 2f0af37152
 - Dart version 2.10.5
 
-# พัฒนาโดย 
+## พัฒนาโดย 
 
-### [อาจาย์พิศาล สุขขี](https://www.facebook.com/numvarn)
+#### [อาจาย์พิศาล สุขขี](https://www.facebook.com/numvarn)
 
 phisan.s@sskru.ac.th
 
 สาขาวิทยาการคอมพิวเตอร์, คณะศิลปศาสตร์และวิทยาศาสตร์ มหาวิทยาลัยราชภัฏศรีสะเกษ
 
-### นายวีรพันธ์ บุญบุตร
+#### นายวีรพันธ์ บุญบุตร
 
 ฺBenz45.th@outlook.com
 
 สาขาวิทยาการคอมพิวเตอร์, คณะศิลปศาสตร์และวิทยาศาสตร์ มหาวิทยาลัยราชภัฏศรีสะเกษ
+
+## Download and Install
+
+Available on AppStore [Link](https://apps.apple.com/us/app/lava-durian/id1564892719#?platform=iphone)
+
+Available on PlayStore [Link](https://play.google.com/store/apps/details?id=com.phisan.lavadurian)
