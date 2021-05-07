@@ -1,22 +1,41 @@
-# Moblie Application for Lava Durian Online Marketplace
+## โมบายแอปพิลิเคชั่น "ทุเรียนลาวา" (Lava Durain)
 
-พัฒนาโดย 
+สำหรับ "ทุเรียนลาวา" เป็นโมบายแอปพลิเคชั่นสำหรับจัดการร้านค้า สินคา และคำสั่งซื้อบน www.lavadurian.com ซึ่งจะช่วยให้ผู้ค้าทุเรียนออนไลน์สามารถจัดการข้อมูลต่าง ๆ ที่เกี่ยวข้องกับร้านค้าของตัวเองได้อย่างสะดวกขึ้น ประกอบไปด้วย
 
-[อาจาย์พิศาล สุขขี](https://www.facebook.com/numvarn)
+- ลงทะเบียนใช้งานในฐานนะผู้ค้าทุเรียน
+- จัดการเปิดร้านของตนเอง
+- จัดการสินค้าบนร้านค้า
+- จัดการรูปภาพของสินค้าเพื่อนำเสนอแก่ลูกค้า
+- ตรวจสอบคำสั่งซื้อ
+- จัดการคำสั่งซื้อ
+
+## Mobile Application "Durian Lava" (Lava Durain)
+
+For "Durian Lava" is a mobile application for managing stores, products and orders on www.lavadurian.com This will help online durian merchants manage the information related to their stores more conveniently, including
+
+- Register as a durian dealer
+- Manage to open their own shop
+- Manage products on the shop
+- Manage images of products to present to customers
+- Check orders
+- Manage orders 
+
+## build on
+- Flutter version 1.22.6
+- Framework revision 9b2d32b605
+- Engine revision 2f0af37152
+- Dart version 2.10.5
+
+# พัฒนาโดย 
+
+### [อาจาย์พิศาล สุขขี](https://www.facebook.com/numvarn)
 
 phisan.s@sskru.ac.th
 
 สาขาวิทยาการคอมพิวเตอร์, คณะศิลปศาสตร์และวิทยาศาสตร์ มหาวิทยาลัยราชภัฏศรีสะเกษ
 
-**Packages we are using:**
+### นายวีรพันธ์ บุญบุตร
 
-- google_maps_flutter: [link](https://pub.dev/packages/google_maps_flutter)
-- geolocator: [link](https://pub.dev/packages/geolocator)
+ฺBenz45.th@outlook.com
 
-**GUI Template**
-
-- Welcome-Login-Signup-Page-Flutter [link](https://github.com/abuanwar072/Welcome-Login-Signup-Page-Flutter)
-
-**Description:**
-
-โมบายแอปพลิเคชั่นนี้พัฒนาขึ้นสำหรับการจัดการขายทุเรียนภุเขาไฟออนไลน์ จังหวัดศรีสะเกษ เพื่อให้เกษตรกรผู้ปลูกทุดเรียนภูเขาไฟสามารถนำผลผลิตจากสวนตนเองมาขายให้ผู้บริโภคได้โดยตรง ด้วยการรักษาคุณภาพของผลผลิตทุเรียนภูเขาไฟ์ ซึ่งเป็นสินค้าคุณภาพของจังหวัดศรีสะเกษ
+สาขาวิทยาการคอมพิวเตอร์, คณะศิลปศาสตร์และวิทยาศาสตร์ มหาวิทยาลัยราชภัฏศรีสะเกษ
