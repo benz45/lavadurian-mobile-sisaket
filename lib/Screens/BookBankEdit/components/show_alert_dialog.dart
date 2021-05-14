@@ -31,10 +31,7 @@ showAlertDialog(BuildContext context, int bookbankID) {
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status'] == true) {
-          showFlashBar(context,
-              message: 'ลบหมายเลขบัญชีเรียบร้อยแล้ว',
-              success: true,
-              duration: 3500);
+          showFlashBar(context, message: 'ลบหมายเลขบัญชีเรียบร้อยแล้ว', success: true, duration: 3500);
           bookBankModel.removeBookbank(bookbankId: bookbankID);
           Navigator.of(context).pop();
           Navigator.of(context).pop();
@@ -48,7 +45,7 @@ showAlertDialog(BuildContext context, int bookbankID) {
 
   showDialog(
     context: context,
-    child: AlertDialog(
+    builder: (context) => AlertDialog(
       title: Text(
         'ยืนยันลบหมายบัญชีนี้',
         style: TextStyle(
@@ -94,8 +91,7 @@ showAlertDialog(BuildContext context, int bookbankID) {
               minWidth: double.infinity,
               color: Colors.grey[300],
               padding: EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(19))),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'ยกเลิก',

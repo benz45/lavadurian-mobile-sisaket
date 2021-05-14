@@ -51,23 +51,17 @@ showDialogDeleteStore(BuildContext context, int storeID) {
           var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
           if (jsonData['status'] == true) {
             stores.removeWhere((element) => element['id'] == store['id']);
-            storeModel.onRemoveCurrentStore(
-                id: storeID, userId: userModel.value['id']);
+            storeModel.onRemoveCurrentStore(id: storeID, userId: userModel.value['id']);
             // update state
             storeModel.setStores = stores;
-            showFlashBar(context,
-                message: 'ลบร้านค้าเรียบร้อยแล้ว',
-                success: true,
-                duration: 3500);
+            showFlashBar(context, message: 'ลบร้านค้าเรียบร้อยแล้ว', success: true, duration: 3500);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => OperationScreen()),
             );
           }
         } else {
-          showFlashBar(context,
-              message: 'ลบข้อมูลไม่สำเร็จ code: ${response.statusCode}',
-              error: true);
+          showFlashBar(context, message: 'ลบข้อมูลไม่สำเร็จ code: ${response.statusCode}', error: true);
         }
       } catch (e) {
         showFlashBar(context, message: 'ลบข้อมูลไม่สำเร็จ', error: true);
@@ -77,7 +71,7 @@ showDialogDeleteStore(BuildContext context, int storeID) {
 
   return showDialog(
     context: context,
-    child: AlertDialog(
+    builder: (context) => AlertDialog(
       title: Text(
         'ยืนยันลบร้านค้า',
         style: TextStyle(
@@ -127,9 +121,7 @@ showDialogDeleteStore(BuildContext context, int storeID) {
               textAlign: TextAlign.center,
               textAlignVertical: TextAlignVertical.center,
               keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
+              inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
             ),
             SizedBox(
               height: 16,
@@ -156,8 +148,7 @@ showDialogDeleteStore(BuildContext context, int storeID) {
               minWidth: double.infinity,
               color: Colors.grey[300],
               padding: EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(19))),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'ยกเลิก',

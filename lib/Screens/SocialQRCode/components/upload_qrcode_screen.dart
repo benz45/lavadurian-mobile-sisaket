@@ -204,7 +204,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
   void _onShowDialogConfirmRemove(int imgID) {
     showDialog(
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text(
           'ลบภาพสินค้า',
           style: TextStyle(

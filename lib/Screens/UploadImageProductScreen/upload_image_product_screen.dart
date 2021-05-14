@@ -462,7 +462,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
   void _onShowDialogConfirmRemove(int imgID) {
     showDialog(
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text(
           'ลบภาพสินค้า',
           style: TextStyle(

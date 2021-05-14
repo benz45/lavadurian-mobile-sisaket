@@ -2,9 +2,7 @@ import 'package:LavaDurian/Screens/SocialQRCode/components/qrcode_img_cache_cont
 import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/delete_dialog.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/upload_qrcode_screen.dart';
-import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

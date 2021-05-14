@@ -10,18 +10,15 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
 class ViewOrderBottomSheetStatusFour extends StatefulWidget {
-  const ViewOrderBottomSheetStatusFour({Key key, this.orderId})
-      : super(key: key);
+  const ViewOrderBottomSheetStatusFour({Key key, this.orderId}) : super(key: key);
 
   final int orderId;
 
   @override
-  _ViewOrderBottomSheetStatusFourState createState() =>
-      _ViewOrderBottomSheetStatusFourState();
+  _ViewOrderBottomSheetStatusFourState createState() => _ViewOrderBottomSheetStatusFourState();
 }
 
-class _ViewOrderBottomSheetStatusFourState
-    extends State<ViewOrderBottomSheetStatusFour> {
+class _ViewOrderBottomSheetStatusFourState extends State<ViewOrderBottomSheetStatusFour> {
   int _statusFromRadio;
   @override
   Widget build(BuildContext context) {
@@ -29,17 +26,13 @@ class _ViewOrderBottomSheetStatusFourState
     TextTheme textTheme = Theme.of(context).textTheme;
 
     OrdertModel _ordertModel = Provider.of<OrdertModel>(context, listen: false);
-    SettingModel settingModel =
-        Provider.of<SettingModel>(context, listen: false);
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
 
     final _order = _ordertModel.getOrderFromId(widget.orderId);
 
     Future _onSubmitConfirmPayment() async {
       try {
-        Map<String, dynamic> data = {
-          "order_id": "${_order['id']}",
-          "status": "${_statusFromRadio ?? 5}"
-        };
+        Map<String, dynamic> data = {"order_id": "${_order['id']}", "status": "${_statusFromRadio ?? 5}"};
         // get current user token
         String token = settingModel.value['token'];
 
@@ -56,40 +49,32 @@ class _ViewOrderBottomSheetStatusFourState
           Navigator.of(context).pop();
           jsonData['data']['order']['status'] == 3
               ? showFlashBar(context,
-                  title: 'ปรับสถานะรอการชำระเงินแล้ว',
-                  message: 'ระบบกำลังแจ้งข้อมูลการปรับสถานะให้กับผู้สั่งซื้อ',
-                  success: true,
-                  duration: 3500)
+                  title: 'ปรับสถานะรอการชำระเงินแล้ว', message: 'ระบบกำลังแจ้งข้อมูลการปรับสถานะให้กับผู้สั่งซื้อ', success: true, duration: 3500)
               : jsonData['data']['order']['status'] == 5
                   ? showFlashBar(context,
                       title: 'ยืนยันชำระเงินแล้ว',
-                      message:
-                          'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
+                      message: 'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
                       success: true,
                       duration: 3500)
                   : jsonData['data']['order']['status'] == 8
                       ? showFlashBar(context,
                           title: 'ยกเลิกคำสั่งซื้อแล้วแล้ว',
-                          message:
-                              'ระบบกำลังแจ้งข้อมูลการปรับสถานะให้กับผู้สั่งซื้อ',
+                          message: 'ระบบกำลังแจ้งข้อมูลการปรับสถานะให้กับผู้สั่งซื้อ',
                           success: true,
                           duration: 3500)
-                      : showFlashBar(context,
-                          message: 'บันทึกข้อมูลสำเร็จ', success: true);
+                      : showFlashBar(context, message: 'บันทึกข้อมูลสำเร็จ', success: true);
         } else {
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
       } catch (e) {
-        showFlashBar(context,
-            message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทสถานะคำสั่งซื้อได้',
-            error: true);
+        showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทสถานะคำสั่งซื้อได้', error: true);
       }
     }
 
     void _onShowDialogConfirm() {
       showDialog(
         context: context,
-        child: AlertDialog(
+        builder: (context) => AlertDialog(
           title: Text(
             'ยืนยันชำระเงินแล้ว',
             style: TextStyle(
@@ -135,8 +120,7 @@ class _ViewOrderBottomSheetStatusFourState
                   minWidth: double.infinity,
                   color: Colors.grey[300],
                   padding: EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(19))),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     'ยกเลิก',
@@ -180,8 +164,7 @@ class _ViewOrderBottomSheetStatusFourState
                     children: [
                       RadioListTile(
                           title: Text(
-                            '${_ordertModel.orderStatus["3"]}'
-                                .replaceAll("", "\u{200B}"),
+                            '${_ordertModel.orderStatus["3"]}'.replaceAll("", "\u{200B}"),
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: 3,
@@ -200,8 +183,7 @@ class _ViewOrderBottomSheetStatusFourState
                           }),
                       RadioListTile(
                           title: Text(
-                            '${_ordertModel.orderStatus["8"]}'
-                                .replaceAll("", "\u{200B}"),
+                            '${_ordertModel.orderStatus["8"]}'.replaceAll("", "\u{200B}"),
                             overflow: TextOverflow.ellipsis,
                           ),
                           value: 8,
@@ -233,8 +215,7 @@ class _ViewOrderBottomSheetStatusFourState
                   children: [
                     Container(
                       child: OutlineButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 36),
                         color: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -259,8 +240,7 @@ class _ViewOrderBottomSheetStatusFourState
                     ),
                     Container(
                       child: FlatButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 36),
                         color: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -301,25 +281,20 @@ class _ViewOrderBottomSheetStatusFourState
           Text(
             'ขณะนี้ผู้สั่งซื้อได้ทำการแจ้งชำระเงินเรียบร้อยแล้ว กรุณาตรวจสอบและยืนยันการชำระเงิน',
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: textTheme.subtitle1.fontSize),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: textTheme.subtitle1.fontSize),
           ),
           SizedBox(
             height: 18,
           ),
           FlatButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
             onPressed: () => _onShowDialogConfirm(),
             color: kPrimaryColor,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
               child: Text(
                 'ยืนยันชำระเงินแล้ว',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: textTheme.subtitle1.fontSize),
+                style: TextStyle(color: Colors.white, fontSize: textTheme.subtitle1.fontSize),
               ),
             ),
           ),

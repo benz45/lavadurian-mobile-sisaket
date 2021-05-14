@@ -22,12 +22,10 @@ class ViewOrderDetailOrderItem extends StatefulWidget {
   final Map orderItems;
 
   @override
-  _ViewOrderDetailOrderItemState createState() =>
-      _ViewOrderDetailOrderItemState();
+  _ViewOrderDetailOrderItemState createState() => _ViewOrderDetailOrderItemState();
 }
 
-class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
-    with TickerProviderStateMixin {
+class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> with TickerProviderStateMixin {
   TextEditingController _controllerEditWeight = TextEditingController();
   String _valueEditWeigth = "";
   bool _isShowTextFieldEditWeigth = false;
@@ -37,8 +35,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
     super.initState();
 
     _controllerEditWeight.text = widget.orderItems['weight'];
-    _controllerEditWeight.selection = TextSelection.fromPosition(
-        TextPosition(offset: _controllerEditWeight.text.length));
+    _controllerEditWeight.selection = TextSelection.fromPosition(TextPosition(offset: _controllerEditWeight.text.length));
 
     // * Listen text field edit weight
     _controllerEditWeight.addListener(() {
@@ -61,17 +58,12 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    SettingModel settingModel =
-        Provider.of<SettingModel>(context, listen: false);
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
     OrdertModel _ordertModel = Provider.of<OrdertModel>(context, listen: false);
 
     Future _onSubmitConfirmEditWeightOrder() async {
       try {
-        final Map<String, dynamic> data = {
-          "order_id": widget.order['id'],
-          "item_id": "${widget.orderItems['id']}",
-          "weight": "$_valueEditWeigth"
-        };
+        final Map<String, dynamic> data = {"order_id": widget.order['id'], "item_id": "${widget.orderItems['id']}", "weight": "$_valueEditWeigth"};
         // get current user token
         String token = settingModel.value['token'];
 
@@ -87,9 +79,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status']) {
           // Update order
-          _ordertModel.updateOrder(
-              order: jsonData['data']['order'],
-              orderItem: jsonData['data']['orderItems']);
+          _ordertModel.updateOrder(order: jsonData['data']['order'], orderItem: jsonData['data']['orderItems']);
 
           Navigator.of(context).pop();
           setState(() {
@@ -97,25 +87,20 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
             _isShowTextButtonOnSubmit = false;
           });
 
-          showFlashBar(context,
-              title: 'แก้ไขน้ำหนักสินค้าเรียบร้อย',
-              message: 'ระบบกำลังแจ้งข้อมูลไปยังผู้ซื้อ',
-              success: true,
-              duration: 3500);
+          showFlashBar(context, title: 'แก้ไขน้ำหนักสินค้าเรียบร้อย', message: 'ระบบกำลังแจ้งข้อมูลไปยังผู้ซื้อ', success: true, duration: 3500);
         } else {
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
       } catch (e) {
         print(e);
-        showFlashBar(context,
-            message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทน้ำหนักได้', error: true);
+        showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทน้ำหนักได้', error: true);
       }
     }
 
     void _onShowDialogConfirmEditWeight() {
       showDialog(
         context: context,
-        child: AlertDialog(
+        builder: (context) => AlertDialog(
           title: Text(
             'ยืนยันการแก้ไข',
             style: TextStyle(
@@ -161,8 +146,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
                   minWidth: double.infinity,
                   color: Colors.grey[300],
                   padding: EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(19))),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
                   onPressed: () => Navigator.pop(context),
                   child: Text(
                     'ยกเลิก',
@@ -188,8 +172,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
             children: [
               Text(
                 'หมายเหตุ',
-                style: TextStyle(
-                    color: kTextSecondaryColor, fontWeight: FontWeight.bold),
+                style: TextStyle(color: kTextSecondaryColor, fontWeight: FontWeight.bold),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,8 +186,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        _isShowTextFieldEditWeigth =
-                            !_isShowTextFieldEditWeigth;
+                        _isShowTextFieldEditWeigth = !_isShowTextFieldEditWeigth;
                       });
                     },
                     child: Row(
@@ -212,12 +194,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
                       children: [
                         Text(
                           'ปรับน้ำหนัก',
-                          style: TextStyle(
-                              color: kPrimaryColor,
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2
-                                  .fontSize),
+                          style: TextStyle(color: kPrimaryColor, fontSize: Theme.of(context).textTheme.subtitle2.fontSize),
                         ),
                         Icon(
                           Icons.arrow_forward_ios_rounded,
@@ -243,8 +220,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
             children: [
               AnimatedSwitcher(
                 switchInCurve: Curves.fastOutSlowIn,
-                layoutBuilder:
-                    (Widget currentChild, List<Widget> previousChildren) {
+                layoutBuilder: (Widget currentChild, List<Widget> previousChildren) {
                   return Stack(
                     children: <Widget>[
                       ...previousChildren,
@@ -276,19 +252,16 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
                           ),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 10),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 26, vertical: 5),
+                            padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
                             decoration: BoxDecoration(
                               color: kPrimaryLightColor,
                               borderRadius: BorderRadius.circular(29),
                             ),
                             child: TextField(
                               autofocus: true,
-                              keyboardType: TextInputType.numberWithOptions(
-                                  decimal: true),
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[0-9.,]+')),
+                                FilteringTextInputFormatter.allow(RegExp('[0-9.,]+')),
                               ],
                               cursorColor: kPrimaryColor,
                               maxLines: 1,
@@ -300,8 +273,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
                                         onTap: _onShowDialogConfirmEditWeight,
                                         child: Text(
                                           'ยืนยัน',
-                                          style:
-                                              TextStyle(color: kPrimaryColor),
+                                          style: TextStyle(color: kPrimaryColor),
                                         ),
                                       )
                                     : Text('กิโลกรัม'),
@@ -327,8 +299,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem>
               Consumer<ProductModel>(builder: (_, _productModel, __) {
                 return BuildSubText(
                   leading: 'น้ำหนัก/ลูก (กก.)',
-                  text:
-                      '${_productModel.getProductWeightFromId(productId: widget.orderItems['product'])}',
+                  text: '${_productModel.getProductWeightFromId(productId: widget.orderItems['product'])}',
                 );
               }),
               BuildSubText(
