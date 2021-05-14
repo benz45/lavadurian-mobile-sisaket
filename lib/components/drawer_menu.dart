@@ -136,7 +136,7 @@ class _NavDrawerState extends State<NavDrawer> {
                   ListTile(
                     leading: Icon(Icons.verified),
                     title: Text(
-                      'เวอร์ชั่น 1.0.2',
+                      'เวอร์ชั่น 1.0.3.beta',
                       style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
                     ),
                   ),
