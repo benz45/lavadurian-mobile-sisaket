@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:LavaDurian/components/dialog_confirm.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
-import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -45,62 +45,12 @@ showAlertDialog(BuildContext context, int bookbankID) {
 
   showDialog(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Text(
-        'ยืนยันลบหมายบัญชีนี้',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(29),
-        ),
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              'ระบบจะทำการลบหมายบัญชีนี้หลังจากยืนยันแล้ว',
-              style: TextStyle(
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            SizedBox(
-              height: 26,
-            ),
-            FlatButton(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              minWidth: double.infinity,
-              color: kPrimaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(19),
-                ),
-              ),
-              onPressed: _deleteBookbank,
-              child: Text(
-                'ตกลง',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            FlatButton(
-              minWidth: double.infinity,
-              color: Colors.grey[300],
-              padding: EdgeInsets.symmetric(vertical: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                'ยกเลิก',
-                style: TextStyle(color: kTextPrimaryColor),
-              ),
-            ),
-          ],
-        ),
-      ),
+    builder: (context) => CustomConfirmDialog(
+      title: 'ยืนยันลบหมายบัญชีนี้',
+      subtitle: 'ระบบจะทำการลบหมายบัญชีนี้หลังจากยืนยันแล้ว',
+      onpress: () {
+        _deleteBookbank();
+      },
     ),
   );
 }

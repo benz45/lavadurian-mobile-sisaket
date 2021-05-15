@@ -15,3 +15,15 @@ const kErrorColor = Color(0xFFEF5350);
 // Colors Text.
 const kTextPrimaryColor = Colors.black;
 const kTextSecondaryColor = Colors.black54;
+
+// * TextButton Style
+final ButtonStyle outlineButtonStyle = OutlinedButton.styleFrom(
+  primary: Colors.white,
+  backgroundColor: kPrimaryColor,
+  side: BorderSide(color: kPrimaryColor, width: 1),
+  minimumSize: Size(double.infinity, 36),
+  padding: EdgeInsets.symmetric(horizontal: 16),
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(8)),
+  ),
+);

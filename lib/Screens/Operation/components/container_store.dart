@@ -1,5 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:LavaDurian/constants.dart';
+
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as Http;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+
 import 'package:LavaDurian/Screens/AllStatusOrder/all_status_order_screen.dart';
 import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/body.dart';
@@ -9,24 +22,12 @@ import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_order_list.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_page_four.dart';
 import 'package:LavaDurian/Screens/Operation/components/store_wait_approval.dart';
-import 'package:LavaDurian/constants.dart';
+
 import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
-
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
-import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:provider/provider.dart';
-import 'package:http/http.dart' as Http;
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 class ContainerStore extends StatefulWidget {
   const ContainerStore({
@@ -290,7 +291,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                               carouselController: _bottomBarModel.getController,
                               options: CarouselOptions(
                                 viewportFraction: 1.0,
-                                initialPage: 0,
+                                initialPage: _bottomBarModel.getCurrentSelectedTab,
                                 height: size.height,
                                 enlargeCenterPage: true,
                                 onPageChanged: _bottomBarModel.setSelectedTabFromSlider,
@@ -554,7 +555,9 @@ class _ContainerStoreState extends State<ContainerStore> {
                         highlightColor: Colors.orange.withOpacity(0.2),
                         borderSide: BorderSide(color: Colors.orange),
                         color: Colors.orange,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
                         onPressed: () {
                           bottomBarModel.setSelectedTab(1);
                         },

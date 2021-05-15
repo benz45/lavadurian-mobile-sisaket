@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:LavaDurian/Screens/SocialQRCode/components/qrcode_img_cache_container.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
-import 'package:LavaDurian/Screens/SocialQRCode/components/delete_dialog.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/upload_qrcode_screen.dart';
+import 'package:LavaDurian/components/dialog_confirm.dart';
+import 'package:LavaDurian/components/showSnackBar.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as Http;
 
 class CardSocialQRCode extends StatefulWidget {
   @override
@@ -12,6 +18,44 @@ class CardSocialQRCode extends StatefulWidget {
 }
 
 class _CardSocialQRCodeState extends State<CardSocialQRCode> {
+  QRCodeModel qrCodeModel;
+  SettingModel settingModel;
+
+  // * Delete QRCode.
+  Future<Null> _deleteQRCode(int storeID, int qrcodeID) async {
+    String token = settingModel.value['token'];
+    var response;
+    Map<String, String> data = {
+      'store': storeID.toString(),
+      'qrcode': qrcodeID.toString(),
+    };
+
+    try {
+      response = await Http.post(
+        '${settingModel.baseURL}/${settingModel.endPointDeleteQRCode}',
+        body: data,
+        headers: {HttpHeaders.authorizationHeader: "Token $token"},
+      );
+
+      if (response.statusCode == 200) {
+        var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+        if (jsonData['status'] == true) {
+          qrCodeModel.removeQRCodeById(qrcodeID);
+          showFlashBar(context, message: 'ลบ QR Code เรียบร้อยแล้ว', success: true, duration: 3500);
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    qrCodeModel = context.read<QRCodeModel>();
+    settingModel = context.read<SettingModel>();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -101,8 +145,15 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
                                                 onPressed: () {
                                                   showDialog(
                                                     context: context,
-                                                    builder: (_) =>
-                                                        QRCodeDeleteDialog(qrcodeID: qrcodes[index]['id'], storeID: qrcodes[index]['store']),
+                                                    builder: (_) => CustomConfirmDialog(
+                                                      title: "ต้องการลบ QR Code !",
+                                                      subtitle: "กรุณากดปุ่มยืนยันเพื่อลบภาพคิวอาร์โค๊ดออกจากร้านค้า",
+                                                      onpress: () async {
+                                                        await _deleteQRCode(qrcodes[index]['store'], qrcodes[index]['id']);
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                    // QRCodeDeleteDialog(qrcodeID: qrcodes[index]['id'], storeID: qrcodes[index]['store']),
                                                   );
                                                 },
                                                 icon: Icon(
