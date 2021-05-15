@@ -38,7 +38,11 @@ class ContainerStore extends StatefulWidget {
 }
 
 class _ContainerStoreState extends State<ContainerStore> {
-  RefreshController _controller = RefreshController();
+  RefreshController _controllerPage1 = RefreshController();
+  RefreshController _controllerPage2 = RefreshController();
+  RefreshController _controllerPage3 = RefreshController();
+  RefreshController _controllerPage4 = RefreshController();
+
   SettingModel settingModel;
   UserModel userModel;
   StoreModel storeModel;
@@ -183,10 +187,10 @@ class _ContainerStoreState extends State<ContainerStore> {
     }
   }
 
-  void _onRefresh() async {
+  void _onRefresh(RefreshController controller) async {
     await Future.delayed(Duration(milliseconds: 800));
     await _getStoreProfile();
-    _controller.refreshCompleted();
+    controller.refreshCompleted();
   }
 
   void _onLoading() async {
@@ -250,8 +254,8 @@ class _ContainerStoreState extends State<ContainerStore> {
                                   child: SmartRefresher(
                                     enablePullDown: true,
                                     enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
+                                    controller: _controllerPage1,
+                                    onRefresh: () => _onRefresh(_controllerPage1),
                                     footer: ClassicFooter(
                                       iconPos: IconPosition.top,
                                       outerBuilder: (child) {
@@ -349,8 +353,8 @@ class _ContainerStoreState extends State<ContainerStore> {
                                   child: SmartRefresher(
                                     enablePullDown: true,
                                     enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
+                                    controller: _controllerPage2,
+                                    onRefresh: () => _onRefresh(_controllerPage2),
                                     footer: ClassicFooter(
                                       iconPos: IconPosition.top,
                                       outerBuilder: (child) {
@@ -420,8 +424,8 @@ class _ContainerStoreState extends State<ContainerStore> {
                                   child: SmartRefresher(
                                     enablePullDown: true,
                                     enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
+                                    controller: _controllerPage3,
+                                    onRefresh: () => _onRefresh(_controllerPage3),
                                     footer: ClassicFooter(
                                       iconPos: IconPosition.top,
                                       outerBuilder: (child) {
@@ -496,8 +500,8 @@ class _ContainerStoreState extends State<ContainerStore> {
                                   child: SmartRefresher(
                                     enablePullDown: true,
                                     enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
+                                    controller: _controllerPage4,
+                                    onRefresh: () => _onRefresh(_controllerPage4),
                                     footer: ClassicFooter(
                                       iconPos: IconPosition.top,
                                       outerBuilder: (child) {
