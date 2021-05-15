@@ -1,5 +1,6 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/box_show_product_image_not_found.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
@@ -98,6 +99,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     * Get setting value from model by using provider
     */
     SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
+
     await Share.share(
       "ทุเรียนลาวา ศรีสะเกษ\n"
       "${settingModel.baseURL}/${settingModel.endPointShareProduct}/${widget.productId}",
@@ -152,7 +154,13 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           child: InkWell(
                             child: IconButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OperationScreen(),
+                                  ),
+                                );
                               },
                               icon: Icon(Icons.arrow_back_rounded),
                               color: Colors.white,

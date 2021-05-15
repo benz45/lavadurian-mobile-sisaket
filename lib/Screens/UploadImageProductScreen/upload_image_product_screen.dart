@@ -160,9 +160,19 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
             expandedHeight: size.height * 0.17,
             automaticallyImplyLeading: false,
             leading: Padding(
-              padding: EdgeInsets.only(left: size.width * 0.09),
+              // padding: EdgeInsets.only(left: size.width * 0.09),
+              padding: EdgeInsets.only(left: 20),
               child: IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewProductScreen(
+                        productId: widget.productId,
+                      ),
+                    ),
+                  );
+                },
                 icon: Icon(Icons.arrow_back_rounded),
                 color: kTextPrimaryColor,
               ),
