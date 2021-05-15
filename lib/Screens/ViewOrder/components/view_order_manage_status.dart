@@ -212,7 +212,7 @@ class ViewOrderManageStatus extends StatelessWidget {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Text("ผู้ขายกรุณาตรวจสอบการโอนเงิน"),
+                                Text("ผู้ขายกรุณารอเพื่อตรวจสอบการโอนเงิน"),
                               ],
                             )
                           // * ชำระเงินแล้ว
