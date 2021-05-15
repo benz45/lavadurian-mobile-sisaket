@@ -68,6 +68,10 @@ class _ContainerStoreState extends State<ContainerStore> {
     qrCodeModel = context.read<QRCodeModel>();
   }
 
+  /*
+  * Get Store Profile of current user
+  * form www.lavadurian.com
+  */
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
     final response = await Http.get(
@@ -494,36 +498,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                                 ),
 
                                 //! 4. Store page on swiper.
-
-                                Container(
-                                  width: size.width * .85,
-                                  child: SmartRefresher(
-                                    enablePullDown: true,
-                                    enablePullUp: true,
-                                    controller: _controllerPage4,
-                                    onRefresh: () => _onRefresh(_controllerPage4),
-                                    footer: ClassicFooter(
-                                      iconPos: IconPosition.top,
-                                      outerBuilder: (child) {
-                                        return Container(
-                                          width: 80.0,
-                                          child: Center(
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    header: ClassicHeader(
-                                      refreshingText: 'กำลังโหลดข้อมูล',
-                                      completeText: 'โหลดข้อมูลสำเร็จ',
-                                      idleText: 'รีเฟรชข้อมูล',
-                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
-                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
-                                    ),
-                                    onLoading: _onLoading,
-                                    child: OperationPageFour(),
-                                  ),
-                                ),
+                                _swiperStoreProfile(),
                               ].toList(),
                             );
                           },
@@ -554,6 +529,42 @@ class _ContainerStoreState extends State<ContainerStore> {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  /*
+   * Widget for Swiper Page of Store Profile 
+   */
+  Widget _swiperStoreProfile() {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width * .85,
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _controllerPage4,
+        onRefresh: () => _onRefresh(_controllerPage4),
+        footer: ClassicFooter(
+          iconPos: IconPosition.top,
+          outerBuilder: (child) {
+            return Container(
+              width: 80.0,
+              child: Center(
+                child: child,
+              ),
+            );
+          },
+        ),
+        header: ClassicHeader(
+          refreshingText: 'กำลังโหลดข้อมูล',
+          completeText: 'โหลดข้อมูลสำเร็จ',
+          idleText: 'รีเฟรชข้อมูล',
+          failedText: 'โหลดข้อมูลไม่สำเร็จ',
+          releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
+        ),
+        onLoading: _onLoading,
+        child: OperationPageFour(),
       ),
     );
   }
