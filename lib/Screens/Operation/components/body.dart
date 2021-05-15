@@ -291,9 +291,18 @@ class _BodyState extends State<Body> {
         } else {
           // ! Fetching data
           return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: kPrimaryColor,
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('กำลังตรวจสอบข้อมูลผู้ใช้งาน'),
+                SizedBox(
+                  height: 20.0,
+                ),
+                CircularProgressIndicator(
+                  backgroundColor: kPrimaryColor,
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              ],
             ),
           );
         }
