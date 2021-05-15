@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'components/dialog_delete_product.dart';
 
 class ViewProductScreen extends StatefulWidget {
@@ -92,6 +93,13 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     }
   }
 
+  void _onShareProductToSocial() async {
+    await Share.share(
+      "ทุเรียนลาวา ศรีสะเกษ\n"
+      "https://www.lavadurian.com/shopping/product/${widget.productId}",
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -158,7 +166,9 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                               color: kPrimaryColor.withOpacity(0.8),
                               child: InkWell(
                                 child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _onShareProductToSocial();
+                                  },
                                   icon: Icon(Icons.share_outlined),
                                   color: Colors.white,
                                 ),
