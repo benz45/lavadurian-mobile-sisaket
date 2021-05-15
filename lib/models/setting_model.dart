@@ -5,6 +5,9 @@ class SettingModel extends ChangeNotifier {
   String get baseURL => 'https://durian-lava.herokuapp.com';
   // String get baseURL => 'http://127.0.0.1:8000';
 
+  // End-point for share product
+  String get endPointShareProduct => 'shopping/product';
+
   // End-point for Login
   String get endPointLogin => 'api/login';
 

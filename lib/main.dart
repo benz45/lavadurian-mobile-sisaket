@@ -1,5 +1,6 @@
 import 'package:LavaDurian/Screens/ViewOrder/view_order_screen.dart';
 import 'package:LavaDurian/app/splash_screen.dart';
+import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:LavaDurian/models/createProduct_model.dart';
 import 'package:LavaDurian/models/createStore_model.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<SignupModel>(create: (_) => SignupModel()),
         ChangeNotifierProvider<CreateProductModel>(create: (_) => CreateProductModel()),
         ChangeNotifierProvider<CreateStoreModel>(create: (_) => CreateStoreModel()),
+        ChangeNotifierProvider<BottomBarModel>(create: (_) => BottomBarModel()),
       ],
       child: RefreshConfiguration(
         headerBuilder: () => ClassicHeader(),

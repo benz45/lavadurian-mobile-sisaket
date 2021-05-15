@@ -1,11 +1,11 @@
 import 'package:LavaDurian/Screens/EditProduct/edit_product_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_card_order.dart';
-import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/UploadImageProductScreen/upload_image_product_screen.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/box_show_product_image_not_found.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/preview_product_image.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
@@ -37,8 +37,8 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
   OrdertModel ordertModel;
   @override
   void initState() {
-    productId = widget.productId;
     super.initState();
+    productId = widget.productId;
     ordertModel = context.read<OrdertModel>();
     productImageModel = context.read<ProductImageModel>();
   }
@@ -94,9 +94,13 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
   }
 
   void _onShareProductToSocial() async {
+    /*
+    * Get setting value from model by using provider
+    */
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
     await Share.share(
       "ทุเรียนลาวา ศรีสะเกษ\n"
-      "https://www.lavadurian.com/shopping/product/${widget.productId}",
+      "${settingModel.baseURL}/${settingModel.endPointShareProduct}/${widget.productId}",
     );
   }
 
@@ -148,7 +152,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           child: InkWell(
                             child: IconButton(
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
+                                Navigator.pop(context);
                               },
                               icon: Icon(Icons.arrow_back_rounded),
                               color: Colors.white,
