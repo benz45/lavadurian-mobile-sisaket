@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
+import 'package:LavaDurian/Screens/Welcome/components/background.dart';
 import 'package:LavaDurian/Screens/Welcome/welcome_screen.dart';
 import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/constants.dart';
@@ -33,9 +34,7 @@ class _SplashPageState extends State<SplashPage> {
       settingModel.value = jsonDecode(setting);
 
       // Clear Navigate route
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => OperationScreen()),
-          (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => OperationScreen()), (Route<dynamic> route) => false);
     }
   }
 
@@ -53,43 +52,43 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('กำลังเชื่อมต่อกับเซิร์ฟเวอร์'),
-            SizedBox(
-              height: 20.0,
-            ),
-            Container(
-              child: FutureBuilder(
-                future: _getSetting(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    startTime();
-                    return Column(
-                      children: [
-                        CircularProgressIndicator(
-                          backgroundColor: kPrimaryColor,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        )
-                      ],
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        CircularProgressIndicator(),
-                      ],
-                    );
-                  }
-                },
+      body: Background(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: FutureBuilder(
+                  future: _getSetting(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      startTime();
+                      return Column(
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width * .6,
+                            child: Image(
+                              image: AssetImage("assets/icons/A_002.png"),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0),
+                            child: Text(
+                              'ทุเรียนภูเขาไฟศรีสะเกษ',
+                              style: TextStyle(color: kPrimaryColor, fontSize: 21, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

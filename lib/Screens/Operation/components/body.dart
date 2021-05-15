@@ -294,7 +294,7 @@ class _BodyState extends State<Body> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('กำลังตรวจสอบข้อมูลผู้ใช้งาน'),
+                Text('กำลังเชื่อมต่อกับเซิร์ฟเวอร์'),
                 SizedBox(
                   height: 20.0,
                 ),
