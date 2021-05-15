@@ -26,8 +26,7 @@ class ViewOrderScreen extends StatefulWidget {
   _ViewOrderScreenState createState() => _ViewOrderScreenState();
 }
 
-class _ViewOrderScreenState extends State<ViewOrderScreen>
-    with SingleTickerProviderStateMixin {
+class _ViewOrderScreenState extends State<ViewOrderScreen> with SingleTickerProviderStateMixin {
   AnimationController animateController;
   OrdertModel orderModel;
   ProductModel productModel;
@@ -44,11 +43,9 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
     Size size = MediaQuery.of(context).size;
 
     // f: Filter index id on orderItems id.
-    final Map mapOrder = orderModel.orders
-        .firstWhere((e) => e['id'] == widget?.order['id'], orElse: () => {});
+    final Map mapOrder = orderModel.orders.firstWhere((e) => e['id'] == widget?.order['id'], orElse: () => {});
     // f: Filter index id on orderItems id.
-    final Map mapOrderItems = orderModel.orderItems
-        .firstWhere((e) => e['order'] == mapOrder['id'], orElse: () => {});
+    final Map mapOrderItems = orderModel.orderItems.firstWhere((e) => e['order'] == mapOrder['id'], orElse: () => {});
 
     //If there are no elements in this mapOrderItems.
     if (mapOrder.isEmpty) {
@@ -73,6 +70,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
                 ViewOrderDetailProduct(
                   orderId: mapOrder['id'],
                 ),
+
                 // w: รายละเอียดคำสั่งซื้อ
                 ViewOrderDetailOrder(
                   orderItems: mapOrderItems,
@@ -82,8 +80,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
                   padding: EdgeInsets.only(bottom: size.height * 0.06),
                 ),
                 SliverToBoxAdapter(
-                  child: Consumer<SizeViewOrderModel>(
-                      builder: (_, _sizeViewOrderModel, c) {
+                  child: Consumer<SizeViewOrderModel>(builder: (_, _sizeViewOrderModel, c) {
                     return SizedBox(
                       height: _sizeViewOrderModel.getSize?.height ?? 0.0,
                     );
@@ -99,8 +96,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
               final _order = _orderModel.getOrderFromId(mapOrderItems['order']);
               return _order['status'] == 1 || _order['status'] >= 4
                   ? Container(
-                      decoration:
-                          BoxDecoration(color: Colors.white, boxShadow: [
+                      decoration: BoxDecoration(color: Colors.white, boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.1),
                           spreadRadius: 5,
@@ -108,18 +104,14 @@ class _ViewOrderScreenState extends State<ViewOrderScreen>
                           offset: Offset(0, 3),
                         )
                       ]),
-                      padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom * 0.7),
+                      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom * 0.7),
                       child: GetSize(
                         onChange: (Size size) {
                           _sizeViewOrderModel.setSize = size;
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.height * 0.024,
-                              horizontal: size.width * 0.06),
-                          child: ViewOrderBottomSheet(
-                              mapOrderItems: mapOrderItems),
+                          padding: EdgeInsets.symmetric(vertical: size.height * 0.024, horizontal: size.width * 0.06),
+                          child: ViewOrderBottomSheet(mapOrderItems: mapOrderItems),
                         ),
                       ),
                     )
