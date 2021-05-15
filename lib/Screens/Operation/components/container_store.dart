@@ -420,7 +420,7 @@ class _ContainerStoreState extends State<ContainerStore> {
                   ),
                 ),
                 Icon(
-                  Icons.filter_list,
+                  Icons.add_circle_outline_rounded,
                   color: kTextSecondaryColor,
                 )
               ],

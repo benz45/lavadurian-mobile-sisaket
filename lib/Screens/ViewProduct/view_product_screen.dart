@@ -19,7 +19,7 @@ class ViewProductScreen extends StatefulWidget {
   final String status;
   final int productId;
 
-  ViewProductScreen({Key key, this.hero, this.status, this.gene, @required int productId})
+  const ViewProductScreen({Key key, this.hero, this.status, this.gene, @required int productId})
       : this.productId = productId,
         super(key: key);
 
@@ -133,11 +133,15 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ClipOval(
-                        child: Material(
+                        child: Container(
+                          width: 40,
+                          height: 40,
                           color: kPrimaryColor.withOpacity(0.8),
                           child: InkWell(
                             child: IconButton(
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen())),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
+                              },
                               icon: Icon(Icons.arrow_back_rounded),
                               color: Colors.white,
                             ),
@@ -147,9 +151,28 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       // ! Icons header
                       Row(
                         children: [
+                          ClipOval(
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              color: kPrimaryColor.withOpacity(0.8),
+                              child: InkWell(
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(Icons.share_outlined),
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
                           // * Icons Upload Image Product
                           ClipOval(
-                            child: Material(
+                            child: Container(
+                              width: 40,
+                              height: 40,
                               color: kPrimaryColor.withOpacity(0.8),
                               child: InkWell(
                                 child: IconButton(
@@ -165,12 +188,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           ),
                           // * Icons Edit Product
                           ClipOval(
-                            child: Material(
+                            child: Container(
+                              width: 40,
+                              height: 40,
                               color: kPrimaryColor.withOpacity(0.8),
                               child: InkWell(
                                 child: IconButton(
                                   onPressed: _onNavigatorEditProductScreen,
-                                  icon: Icon(Icons.edit),
+                                  icon: Icon(Icons.edit_outlined),
                                   color: Colors.white,
                                 ),
                               ),
@@ -181,12 +206,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           ),
                           // * Icons Delete Product
                           ClipOval(
-                            child: Material(
+                            child: Container(
+                              width: 40,
+                              height: 40,
                               color: kPrimaryColor.withOpacity(0.8),
                               child: InkWell(
                                 child: IconButton(
                                   onPressed: () => _showOnDeleteDialog(),
-                                  icon: Icon(Icons.delete),
+                                  icon: Icon(Icons.delete_outline_outlined),
                                   color: Colors.white,
                                 ),
                               ),
