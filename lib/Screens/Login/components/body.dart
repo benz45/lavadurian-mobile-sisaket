@@ -30,19 +30,15 @@ class _BodyState extends State<Body> {
   String email = '';
   String password = '';
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
-  Future<void> _login(
-      BuildContext context, String email, String password) async {
+  Future<void> _login(BuildContext context, String email, String password) async {
     Map<String, String> data = {
       'username': email,
       'password': password,
     };
 
-    final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPointLogin}',
-        body: data);
+    final response = await Http.post('${settingModel.baseURL}/${settingModel.endPointLogin}', body: data);
 
     final jsonData = json.decode(response.body);
 
@@ -57,8 +53,7 @@ class _BodyState extends State<Body> {
         FileProcess fileProcess = FileProcess('setting.json');
         fileProcess.writeData(tokenData);
         _btnController.success();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => OperationScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
       } catch (e) {
         print(e);
       }
@@ -69,8 +64,7 @@ class _BodyState extends State<Body> {
         builder: (context) {
           return AlertDialog(
             title: Text('เข้าสู่ระบบไม่สำเร็จ !!'),
-            content: Text(
-                "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องโปรดเข้าสู่ระบบอีกครั้ง."),
+            content: Text("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้องโปรดเข้าสู่ระบบอีกครั้ง."),
           );
         },
       );
@@ -107,6 +101,55 @@ class _BodyState extends State<Body> {
     Size size = MediaQuery.of(context).size;
     return Background(
       child: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            width: size.width * .7,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Text(
+                    'ทุเรียนภูเขาไฟศรีสะเกษ',
+                    style: TextStyle(color: kPrimaryColor, fontSize: 21, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ',
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+                SizedBox(height: size.height * 0.05),
+                RoundedInputField(
+                  hintText: "ชื่อบัญชี/อีเมล",
+                  icon: Icons.person,
+                  onChanged: (value) {
+                    email = value;
+                  },
+                ),
+                RoundedPasswordField(
+                  onChanged: (value) {
+                    password = value;
+                  },
+                ),
+                SizedBox(height: size.height * 0.009),
+                loginButton,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    /*
+    return Background(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -116,10 +159,7 @@ class _BodyState extends State<Body> {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text(
                     'ทุเรียนภูเขาไฟศรีสะเกษ',
-                    style: TextStyle(
-                        color: kPrimaryColor,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(color: kPrimaryColor, fontSize: 21, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
@@ -184,5 +224,6 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  */
   }
 }
