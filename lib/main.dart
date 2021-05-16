@@ -11,13 +11,23 @@ import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/physics.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-void main() => runApp(MyApp());
+/**
+ * * Run main app
+ * * by prevent device orientation
+ */
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+    runApp(new LavaDurianApp());
+  });
+}
 
-class MyApp extends StatelessWidget {
+class LavaDurianApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
