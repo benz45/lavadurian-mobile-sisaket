@@ -26,15 +26,11 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   var data = Map<String, String>();
-  final regExpEmail =
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+  final regExpEmail = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
   final regExpPassword = r"^(?=.*?[A-Z])(?=.*?[a-z]).{8,}$";
-  List<TextInputFormatter> limitingTextInput = [
-    LengthLimitingTextInputFormatter(250)
-  ];
+  List<TextInputFormatter> limitingTextInput = [LengthLimitingTextInputFormatter(250)];
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   Widget build(BuildContext context) {
     final storeSignup = Provider.of<SignupModel>(context);
@@ -73,73 +69,77 @@ class _BodyState extends State<Body> {
       constraints: BoxConstraints.expand(),
       child: Center(
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 12.0),
-                child: Text(
-                  "ทุเรียนภูเขาไฟศรีสะเกษ",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+          child: Container(
+            width: size.width * .8,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 12.0),
+                  child: Text(
+                    "ทุเรียนภูเขาไฟศรีสะเกษ",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+                  ),
                 ),
-              ),
-              Text(
-                "สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: kTextSecondaryColor),
-              ),
-              SizedBox(height: size.height * 0.03),
+                Text(
+                  "สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้า",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: kTextSecondaryColor,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
 
-              RoundedInputField(
-                hintText: "อีเมล",
-                icon: Icons.email,
-                onChanged: (v) => _onChange(value: v, index: 'email'),
-                textInputAction: TextInputAction.next,
-                keyboardType: TextInputType.emailAddress,
-                inputFormatters: limitingTextInput,
-              ),
-              RoundedInputField(
-                hintText: "รหัสผ่าน ( 8 ตัวอักษรขึ้นไป )",
-                icon: Icons.vpn_key_outlined,
-                onChanged: (v) => _onChange(value: v, index: 'password'),
-                textInputAction: TextInputAction.next,
-                obscureText: true,
-                inputFormatters: limitingTextInput,
-              ),
-              RoundedInputField(
-                hintText: "ยืนยันรหัสผ่าน",
-                icon: Icons.vpn_key,
-                onChanged: (v) => _onChange(value: v, index: 'cPassword'),
-                textInputAction: TextInputAction.done,
-                obscureText: true,
-                inputFormatters: limitingTextInput,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                child: BtnRoundedLoadingButton(
+                RoundedInputField(
+                  hintText: "อีเมล",
+                  icon: Icons.email,
+                  onChanged: (v) => _onChange(value: v, index: 'email'),
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.emailAddress,
+                  inputFormatters: limitingTextInput,
+                ),
+                RoundedInputField(
+                  hintText: "รหัสผ่าน ( 8 ตัวอักษรขึ้นไป )",
+                  icon: Icons.vpn_key_outlined,
+                  onChanged: (v) => _onChange(value: v, index: 'password'),
+                  textInputAction: TextInputAction.next,
+                  obscureText: true,
+                  inputFormatters: limitingTextInput,
+                ),
+                RoundedInputField(
+                  hintText: "ยืนยันรหัสผ่าน",
+                  icon: Icons.vpn_key,
+                  onChanged: (v) => _onChange(value: v, index: 'cPassword'),
+                  textInputAction: TextInputAction.done,
+                  obscureText: true,
+                  inputFormatters: limitingTextInput,
+                ),
+                SizedBox(height: size.height * 0.01),
+                BtnRoundedLoadingButton(
                   text: 'ถัดไป',
                   controller: _btnController,
                   onPressed: () => _onSubmit(),
                 ),
-              ),
-              SizedBox(height: size.height * 0.03),
-              AlreadyHaveAnAccountCheck(
-                login: false,
-                press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return LoginScreen();
-                      },
-                    ),
-                  );
-                },
-              ),
-              // ignore: todo
-              // TODO:(Next Feature) Social Sign Up.
-              // SocialSignUp()
-            ],
+                SizedBox(height: size.height * 0.03),
+                AlreadyHaveAnAccountCheck(
+                  login: false,
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LoginScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                // ignore: todo
+                // TODO:(Next Feature) Social Sign Up.
+                // SocialSignUp()
+              ],
+            ),
           ),
         ),
       ),
@@ -147,9 +147,7 @@ class _BodyState extends State<Body> {
   }
 
   Future validateData(BuildContext context, SettingModel api) async {
-    if (data['email']?.length == null ||
-        data['password']?.length == null ||
-        data['cPassword']?.length == null) {
+    if (data['email']?.length == null || data['password']?.length == null || data['cPassword']?.length == null) {
       showSnackBar(context, 'กรุญากรอกข้อมูลให้ครบถ้วน');
       _btnController.reset();
     } else {
@@ -175,15 +173,13 @@ class _BodyState extends State<Body> {
       }
 
       if (!passValid) {
-        showSnackBar(context,
-            'รหัสผ่านควรมีตัวพิมพ์ใหญ่, ตัวพิมพ์เล็ก อย่างละ 1 ตัวอักษร');
+        showSnackBar(context, 'รหัสผ่านควรมีตัวพิมพ์ใหญ่, ตัวพิมพ์เล็ก อย่างละ 1 ตัวอักษร');
         _btnController.reset();
         return false;
       }
 
       if (emailValid && passValid) {
-        final response =
-            await http.post('${api.baseURL}/${api.endPointCheckEmail}', body: {
+        final response = await http.post('${api.baseURL}/${api.endPointCheckEmail}', body: {
           'email': data['email'],
         });
 

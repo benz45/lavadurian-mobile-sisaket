@@ -103,7 +103,7 @@ class _BodyState extends State<Body> {
       child: SingleChildScrollView(
         child: Center(
           child: Container(
-            width: size.width * .7,
+            width: size.width * .8,
             child: Column(
               children: [
                 Padding(
@@ -122,8 +122,8 @@ class _BodyState extends State<Body> {
                     ),
                   ),
                   child: Text(
-                    'สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    'ลงชื่อเข้าใช้งานเพื่อจัดการร้านและสินค้า',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
                 SizedBox(height: size.height * 0.05),
@@ -141,89 +141,37 @@ class _BodyState extends State<Body> {
                 ),
                 SizedBox(height: size.height * 0.009),
                 loginButton,
+                SizedBox(height: size.height * 0.03),
+                ResetPasswordCheck(
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ResetPassword();
+                        },
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: size.height * 0.01),
+                AlreadyHaveAnAccountCheck(
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SignUpIDCardScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),
         ),
       ),
     );
-    /*
-    return Background(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Text(
-                    'ทุเรียนภูเขาไฟศรีสะเกษ',
-                    style: TextStyle(color: kPrimaryColor, fontSize: 21, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: size.height * 0.05),
-            RoundedInputField(
-              hintText: "ชื่อบัญชี/อีเมล",
-              icon: Icons.person,
-              onChanged: (value) {
-                email = value;
-              },
-            ),
-            RoundedPasswordField(
-              onChanged: (value) {
-                password = value;
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              child: loginButton,
-            ),
-            SizedBox(height: size.height * 0.03),
-            ResetPasswordCheck(
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ResetPassword();
-                    },
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: size.height * 0.01),
-            AlreadyHaveAnAccountCheck(
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpIDCardScreen();
-                    },
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  */
   }
 }
