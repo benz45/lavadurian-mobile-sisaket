@@ -1,5 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:LavaDurian/constants.dart';
+
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as Http;
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+
 import 'package:LavaDurian/Screens/AllStatusOrder/all_status_order_screen.dart';
 import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/Screens/Operation/components/body.dart';
@@ -9,24 +22,12 @@ import 'package:LavaDurian/Screens/Operation/components/operation_list.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_order_list.dart';
 import 'package:LavaDurian/Screens/Operation/components/operation_page_four.dart';
 import 'package:LavaDurian/Screens/Operation/components/store_wait_approval.dart';
-import 'package:LavaDurian/constants.dart';
+
 import 'package:LavaDurian/models/bottomBar_model.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
-
 import 'package:LavaDurian/models/profile_model.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
-import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
-import 'package:provider/provider.dart';
-import 'package:http/http.dart' as Http;
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 class ContainerStore extends StatefulWidget {
   const ContainerStore({
@@ -38,7 +39,6 @@ class ContainerStore extends StatefulWidget {
 }
 
 class _ContainerStoreState extends State<ContainerStore> {
-  RefreshController _controller = RefreshController();
   SettingModel settingModel;
   UserModel userModel;
   StoreModel storeModel;
@@ -50,9 +50,13 @@ class _ContainerStoreState extends State<ContainerStore> {
   QRCodeModel qrCodeModel;
   bool isGetUserProfile = true;
 
+  Size size;
+  TextTheme font;
+
   @override
   void initState() {
     super.initState();
+
     settingModel = context.read<SettingModel>();
     userModel = context.read<UserModel>();
     storeModel = context.read<StoreModel>();
@@ -64,6 +68,10 @@ class _ContainerStoreState extends State<ContainerStore> {
     qrCodeModel = context.read<QRCodeModel>();
   }
 
+  /*
+  * Get Store Profile of current user
+  * form www.lavadurian.com
+  */
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
     final response = await Http.get(
@@ -183,12 +191,18 @@ class _ContainerStoreState extends State<ContainerStore> {
     }
   }
 
-  void _onRefresh() async {
+  /*
+   * On refresh of smart refresher
+   */
+  void _onRefresh(RefreshController controller) async {
     await Future.delayed(Duration(milliseconds: 800));
     await _getStoreProfile();
-    _controller.refreshCompleted();
+    controller.refreshCompleted();
   }
 
+  /*
+   * OnLoading of smart refresher
+   */
   void _onLoading() async {
     await Future.delayed(Duration(milliseconds: 800));
   }
@@ -212,322 +226,98 @@ class _ContainerStoreState extends State<ContainerStore> {
     }
   }
 
+  /*
+   * Classic header of smart refresher 
+   */
+  ClassicHeader _refresherHeader() {
+    return ClassicHeader(
+      refreshingText: 'กำลังโหลดข้อมูล',
+      completeText: 'โหลดข้อมูลสำเร็จ',
+      idleText: 'รีเฟรชข้อมูล',
+      failedText: 'โหลดข้อมูลไม่สำเร็จ',
+      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
+    );
+  }
+
+  /*
+   * Classic footer of smart refresher 
+   */
+  ClassicFooter _refresherFooter() {
+    return ClassicFooter(
+      iconPos: IconPosition.top,
+      outerBuilder: (child) {
+        return Container(
+          width: 80.0,
+          child: Center(
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Size for custom screen.
-    Size size = MediaQuery.of(context).size;
-    final font = Theme.of(context).textTheme;
+    size = MediaQuery.of(context).size;
+    font = Theme.of(context).textTheme;
 
     return Container(
       color: Color(0xFFFAFAFA),
       child: CustomScrollView(
         physics: NeverScrollableScrollPhysics(),
         slivers: [
-          //! Operation App Bar
+          /*
+          * Main Operation App Bar
+          */
           OperationAppBar(),
 
-          //! Screen store approval success from admin.
+          /*
+           * Main operation screen 
+           */
           Consumer<StoreModel>(
             builder: (_, store, child) {
               return SliverAnimatedSwitcher(
                 duration: Duration(milliseconds: 300),
                 child: store.getCurrentStoreStatus == 1
+                    /*
+                     * If store status is aleady approve by admin
+                     * Display operation scrren with bottom nav bar
+                     */
                     ? SliverToBoxAdapter(
                         child: Consumer<BottomBarModel>(
                           builder: (_, _bottomBarModel, c) {
                             return CarouselSlider(
                               carouselController: _bottomBarModel.getController,
                               options: CarouselOptions(
-                                  viewportFraction: 1.0,
-                                  initialPage: 0,
-                                  height: size.height,
-                                  enlargeCenterPage: true,
-                                  onPageChanged: _bottomBarModel.setSelectedTabFromSlider),
+                                viewportFraction: 1.0,
+                                initialPage: _bottomBarModel.getCurrentSelectedTab,
+                                height: size.height,
+                                enlargeCenterPage: true,
+                                onPageChanged: _bottomBarModel.setSelectedTabFromSlider,
+                              ),
                               items: [
-                                //! 1. Home page on swiper.
-                                Container(
-                                  width: size.width * 0.85,
-                                  child: SmartRefresher(
-                                    enablePullDown: true,
-                                    enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
-                                    footer: ClassicFooter(
-                                      iconPos: IconPosition.top,
-                                      outerBuilder: (child) {
-                                        return Container(
-                                          width: 80.0,
-                                          child: Center(
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    header: ClassicHeader(
-                                      refreshingText: 'กำลังโหลดข้อมูล',
-                                      completeText: 'โหลดข้อมูลสำเร็จ',
-                                      idleText: 'รีเฟรชข้อมูล',
-                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
-                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
-                                    ),
-                                    onLoading: _onLoading,
-                                    child: ListView(
-                                      children: [
-                                        // * List order
-                                        OperationList(
-                                          leading: 'รายการสั่งซื้อ',
-                                          trailing: TextButton(
-                                            child: Text(
-                                              'ดูทั้งหมด',
-                                              style: TextStyle(color: kPrimaryColor, fontSize: font.subtitle2.fontSize, fontWeight: FontWeight.bold),
-                                            ),
-                                            onPressed: () {
-                                              _bottomBarModel.setSelectedTab(1);
-                                            },
-                                          ),
-                                        ),
-                                        Consumer2<OrdertModel, ProductModel>(builder: (_, orderModel, productModel, c) {
-                                          // * Fillter Product and Order by Current Store
-                                          var orders = orderModel.getOrdersFromStoreId(storeModel.getCurrentIdStore);
+                                //* 1. Home page on swiper.
+                                _swiperMainOperation(),
 
-                                          return Column(
-                                            children: [
-                                              OperationOrderList(
-                                                maxlength: 3,
-                                              ),
-                                              if (orders.where((element) => element['status'] == 1).length > 3)
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  child: OutlineButton(
-                                                    highlightedBorderColor: Colors.orange,
-                                                    splashColor: Colors.orange.withOpacity(0.1),
-                                                    focusColor: Colors.white,
-                                                    highlightColor: Colors.orange.withOpacity(0.2),
-                                                    borderSide: BorderSide(color: Colors.orange),
-                                                    color: Colors.orange,
-                                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-                                                    onPressed: () {
-                                                      _bottomBarModel.setSelectedTab(1);
-                                                    },
-                                                    child: Text(
-                                                      'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
-                                                      style: TextStyle(color: Colors.orange),
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
-                                          );
-                                        }),
+                                //* 2. Orders page on swiper.
+                                _swiperOrderList(),
 
-                                        SizedBox(
-                                          height: size.height * 0.02,
-                                        ),
+                                //* 3. Products page on swiper.
+                                _swiperProductList(),
 
-                                        // * List product
-                                        OperationList(
-                                          leading: 'รายการสินค้า',
-                                          trailing: TextButton(
-                                            child: Text(
-                                              'ดูทั้งหมด',
-                                              style: TextStyle(color: kPrimaryColor, fontSize: font.subtitle2.fontSize, fontWeight: FontWeight.bold),
-                                            ),
-                                            onPressed: () {
-                                              _bottomBarModel.setSelectedTab(2);
-                                            },
-                                          ),
-                                        ),
-
-                                        OperationProductList()
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                //! 2. Orders page on swiper.
-                                Container(
-                                  width: size.width * 0.85,
-                                  child: SmartRefresher(
-                                    enablePullDown: true,
-                                    enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
-                                    footer: ClassicFooter(
-                                      iconPos: IconPosition.top,
-                                      outerBuilder: (child) {
-                                        return Container(
-                                          width: 80.0,
-                                          child: Center(
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    header: ClassicHeader(
-                                      refreshingText: 'กำลังโหลดข้อมูล',
-                                      completeText: 'โหลดข้อมูลสำเร็จ',
-                                      idleText: 'รีเฟรชข้อมูล',
-                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
-                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
-                                    ),
-                                    onLoading: _onLoading,
-                                    child: ListView(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            OutlineButton(
-                                              highlightColor: kPrimaryLightColor,
-                                              highlightedBorderColor: kPrimaryColor,
-                                              color: kPrimaryColor,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(12),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(builder: (_) => AllStatusOrderScreen(storeID: storeModel.getCurrentIdStore)),
-                                                );
-                                              },
-                                              child: Text(
-                                                'สถานะคำสั่งซื้อทั้งหมด',
-                                                style: TextStyle(color: kPrimaryColor),
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.list,
-                                              color: kTextSecondaryColor,
-                                            ),
-                                          ],
-                                        ),
-                                        Divider(),
-                                        OperationList(
-                                          leading: 'รายการสั่งซื้อ',
-                                        ),
-                                        OperationOrderList(),
-                                        SizedBox(
-                                          height: size.height * .4,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                //! 3. Products page on swiper.
-                                Container(
-                                  width: size.width * 0.85,
-                                  child: SmartRefresher(
-                                    enablePullDown: true,
-                                    enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
-                                    footer: ClassicFooter(
-                                      iconPos: IconPosition.top,
-                                      outerBuilder: (child) {
-                                        return Container(
-                                          width: 80.0,
-                                          child: Center(
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    header: ClassicHeader(
-                                      refreshingText: 'กำลังโหลดข้อมูล',
-                                      completeText: 'โหลดข้อมูลสำเร็จ',
-                                      idleText: 'รีเฟรชข้อมูล',
-                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
-                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
-                                    ),
-                                    onLoading: _onLoading,
-                                    child: ListView(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            OutlineButton(
-                                              highlightColor: kPrimaryLightColor,
-                                              highlightedBorderColor: kPrimaryColor,
-                                              color: kPrimaryColor,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(12),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (_) => Consumer<StoreModel>(
-                                                      builder: (_, _storeModel, c) {
-                                                        int stireId = _storeModel.getCurrentIdStore;
-                                                        return CreateProductDemoScreen(backArrowButton: true, storeID: stireId);
-                                                      },
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text(
-                                                'สร้างสินค้าใหม่',
-                                                style: TextStyle(color: kPrimaryColor),
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.filter_list,
-                                              color: kTextSecondaryColor,
-                                            )
-                                          ],
-                                        ),
-                                        Divider(),
-                                        OperationList(
-                                          leading: 'รายการสินค้า',
-                                        ),
-                                        OperationProductList()
-                                      ],
-                                    ),
-                                  ),
-                                ),
-
-                                //! 4. Store page on swiper.
-
-                                Container(
-                                  width: size.width * .85,
-                                  child: SmartRefresher(
-                                    enablePullDown: true,
-                                    enablePullUp: true,
-                                    controller: _controller,
-                                    onRefresh: _onRefresh,
-                                    footer: ClassicFooter(
-                                      iconPos: IconPosition.top,
-                                      outerBuilder: (child) {
-                                        return Container(
-                                          width: 80.0,
-                                          child: Center(
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                    header: ClassicHeader(
-                                      refreshingText: 'กำลังโหลดข้อมูล',
-                                      completeText: 'โหลดข้อมูลสำเร็จ',
-                                      idleText: 'รีเฟรชข้อมูล',
-                                      failedText: 'โหลดข้อมูลไม่สำเร็จ',
-                                      releaseText: 'ปล่อยเพื่อรีเฟรชข้อมูล',
-                                    ),
-                                    onLoading: _onLoading,
-                                    child: OperationPageFour(),
-                                  ),
-                                ),
-                              ].toList(),
+                                //* 4. Store page on swiper.
+                                _swiperStoreProfile(),
+                              ],
                             );
                           },
                         ),
                       )
                     :
-                    // //! Screen store waiting approval from admin.
-                    // StoreWaitApproval(),
+                    /*
+                     * If store status is not approve by admin
+                     * Display waiting approval screen
+                     */
                     SliverToBoxAdapter(
                         child: Column(
                           children: <Widget>[
@@ -539,7 +329,10 @@ class _ContainerStoreState extends State<ContainerStore> {
                                 },
                                 child: Text(
                                   "ตรวจสอบการอนุมัติร้าน",
-                                  style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    color: kPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             )
@@ -550,6 +343,260 @@ class _ContainerStoreState extends State<ContainerStore> {
             },
           ),
         ],
+      ),
+    );
+  }
+
+  /*
+   * Widget of Swiper Page of Store Profile 
+   */
+  Widget _swiperStoreProfile() {
+    RefreshController _controller = RefreshController();
+
+    return Container(
+      width: size.width * .85,
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _controller,
+        onRefresh: () => _onRefresh(_controller),
+        footer: _refresherFooter(),
+        header: _refresherHeader(),
+        onLoading: _onLoading,
+        child: OperationPageFour(),
+      ),
+    );
+  }
+
+  /*
+   * Widget of Swiper Page for Show Product List 
+   */
+  Widget _swiperProductList() {
+    RefreshController _controller = RefreshController();
+
+    return Container(
+      width: size.width * 0.85,
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _controller,
+        onRefresh: () => _onRefresh(_controller),
+        footer: _refresherFooter(),
+        header: _refresherHeader(),
+        onLoading: _onLoading,
+        child: ListView(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                OutlineButton(
+                  highlightColor: kPrimaryLightColor,
+                  highlightedBorderColor: kPrimaryColor,
+                  color: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => Consumer<StoreModel>(
+                          builder: (_, _storeModel, c) {
+                            int stireId = _storeModel.getCurrentIdStore;
+                            return CreateProductDemoScreen(
+                              backArrowButton: true,
+                              storeID: stireId,
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'สร้างสินค้าใหม่',
+                    style: TextStyle(color: kPrimaryColor),
+                  ),
+                ),
+                Icon(
+                  Icons.add_circle_outline_rounded,
+                  color: kTextSecondaryColor,
+                )
+              ],
+            ),
+            Divider(),
+            OperationList(
+              leading: 'รายการสินค้า',
+            ),
+            OperationProductList()
+          ],
+        ),
+      ),
+    );
+  }
+
+  /*
+   * Widget of Swiper Page for Show Order List 
+   */
+  Widget _swiperOrderList() {
+    RefreshController _controller = RefreshController();
+
+    return Container(
+      width: size.width * 0.85,
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _controller,
+        onRefresh: () => _onRefresh(_controller),
+        footer: _refresherFooter(),
+        header: _refresherHeader(),
+        onLoading: _onLoading,
+        child: ListView(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                OutlineButton(
+                  highlightColor: kPrimaryLightColor,
+                  highlightedBorderColor: kPrimaryColor,
+                  color: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => AllStatusOrderScreen(storeID: storeModel.getCurrentIdStore),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'สถานะคำสั่งซื้อทั้งหมด',
+                    style: TextStyle(color: kPrimaryColor),
+                  ),
+                ),
+                Icon(
+                  Icons.list,
+                  color: kTextSecondaryColor,
+                ),
+              ],
+            ),
+            Divider(),
+            OperationList(
+              leading: 'รายการสั่งซื้อ',
+            ),
+            OperationOrderList(),
+            SizedBox(
+              height: size.height * .4,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /*
+   * Widget of Swiper Page for Show Main Operation
+   */
+  Widget _swiperMainOperation() {
+    RefreshController _controller = RefreshController();
+
+    return Container(
+      width: size.width * 0.85,
+      child: SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: true,
+        controller: _controller,
+        onRefresh: () => _onRefresh(_controller),
+        footer: _refresherFooter(),
+        header: _refresherHeader(),
+        onLoading: _onLoading,
+        child: ListView(
+          children: [
+            // * List order
+            OperationList(
+              leading: 'รายการสั่งซื้อ',
+              trailing: Consumer<BottomBarModel>(
+                builder: (context, bottomBarModel, child) => TextButton(
+                  child: Text(
+                    'ดูทั้งหมด',
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: font.subtitle2.fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    bottomBarModel.setSelectedTab(1);
+                  },
+                ),
+              ),
+            ),
+            Consumer3<OrdertModel, ProductModel, BottomBarModel>(builder: (_, orderModel, productModel, bottomBarModel, c) {
+              // * Fillter Product and Order by Current Store
+              var orders = orderModel.getOrdersFromStoreId(storeModel.getCurrentIdStore);
+
+              return Column(
+                children: [
+                  OperationOrderList(
+                    maxlength: 3,
+                  ),
+                  if (orders.where((element) => element['status'] == 1).length > 3)
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlineButton(
+                        highlightedBorderColor: Colors.orange,
+                        splashColor: Colors.orange.withOpacity(0.1),
+                        focusColor: Colors.white,
+                        highlightColor: Colors.orange.withOpacity(0.2),
+                        borderSide: BorderSide(color: Colors.orange),
+                        color: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                        onPressed: () {
+                          bottomBarModel.setSelectedTab(1);
+                        },
+                        child: Text(
+                          'ขณะนี้มีรายคำสั่งซื้อใหม่มากกว่า 3 รายการ',
+                          style: TextStyle(color: Colors.orange),
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            }),
+
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+
+            // * List product
+            OperationList(
+              leading: 'รายการสินค้า',
+              trailing: Consumer<BottomBarModel>(
+                builder: (context, bottomBarModel, child) => TextButton(
+                  child: Text(
+                    'ดูทั้งหมด',
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: font.subtitle2.fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () {
+                    bottomBarModel.setSelectedTab(2);
+                  },
+                ),
+              ),
+            ),
+            OperationProductList()
+          ],
+        ),
       ),
     );
   }

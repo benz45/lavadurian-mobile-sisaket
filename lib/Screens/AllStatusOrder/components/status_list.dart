@@ -42,7 +42,7 @@ class _StatusCardState extends State<StatusCard> {
     ];
 
     return Card(
-      elevation: 5,
+      elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),

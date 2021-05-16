@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:LavaDurian/Screens/ViewProduct/view_product_screen.dart';
+import 'package:LavaDurian/components/dialog_confirm.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
@@ -159,9 +160,19 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
             expandedHeight: size.height * 0.17,
             automaticallyImplyLeading: false,
             leading: Padding(
-              padding: EdgeInsets.only(left: size.width * 0.09),
+              // padding: EdgeInsets.only(left: size.width * 0.09),
+              padding: EdgeInsets.only(left: 20),
               child: IconButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewProductScreen(
+                        productId: widget.productId,
+                      ),
+                    ),
+                  );
+                },
                 icon: Icon(Icons.arrow_back_rounded),
                 color: kTextPrimaryColor,
               ),
@@ -462,65 +473,13 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
   void _onShowDialogConfirmRemove(int imgID) {
     showDialog(
       context: context,
-      child: AlertDialog(
-        title: Text(
-          'ลบภาพสินค้า',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(28),
-          ),
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                'ลบภาพสินค้าออกจากรายการสินค้าปัจจุบัน',
-                style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              SizedBox(
-                height: 26,
-              ),
-              FlatButton(
-                padding: EdgeInsets.symmetric(vertical: 12),
-                minWidth: double.infinity,
-                color: kPrimaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(19),
-                  ),
-                ),
-                onPressed: () {
-                  _deleteImage(productID, imgID);
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'ตกลง',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              FlatButton(
-                minWidth: double.infinity,
-                color: Colors.grey[300],
-                padding: EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  'ยกเลิก',
-                  style: TextStyle(color: kTextPrimaryColor),
-                ),
-              ),
-            ],
-          ),
-        ),
+      builder: (context) => CustomConfirmDialog(
+        title: 'ลบภาพสินค้า',
+        subtitle: 'ลบภาพสินค้าออกจากรายการสินค้าปัจจุบัน',
+        onpress: () {
+          _deleteImage(productID, imgID);
+          Navigator.pop(context);
+        },
       ),
     );
   }

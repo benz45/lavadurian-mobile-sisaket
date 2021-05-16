@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -119,12 +118,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
         qrCodeModel.addNewQRCode(jsonData['data']);
         showFlashBar(context, message: 'อัพโหลดรูปภาพสำเร็จ', success: true);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OperationScreen(),
-          ),
-        );
+        Navigator.pop(context);
       }
     } catch (e) {
       showFlashBar(context, message: 'เกิดข้อผิดพลาดบางอย่าง', error: true);
@@ -204,7 +198,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
   void _onShowDialogConfirmRemove(int imgID) {
     showDialog(
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text(
           'ลบภาพสินค้า',
           style: TextStyle(
