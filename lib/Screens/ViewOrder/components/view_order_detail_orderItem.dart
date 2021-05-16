@@ -180,7 +180,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
                   Flexible(
                     child: Text(
                       'กรณีน้ำหนักที่มีอยู่ไม่เพียงพอ',
-                      style: TextStyle(color: kTextSecondaryColor),
+                      style: TextStyle(color: kAlertColor),
                     ),
                   ),
                   GestureDetector(
