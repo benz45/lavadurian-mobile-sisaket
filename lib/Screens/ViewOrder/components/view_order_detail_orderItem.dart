@@ -27,13 +27,21 @@ class ViewOrderDetailOrderItem extends StatefulWidget {
 
 class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> with TickerProviderStateMixin {
   TextEditingController _controllerEditWeight = TextEditingController();
+  TextEditingController _controllerEditQuntity = TextEditingController();
+
   String _valueEditWeigth = "";
+  String _valueEditQuantity = "";
   bool _isShowTextFieldEditWeigth = false;
   bool _isShowTextButtonOnSubmit = false;
+  bool _isShowTextButtonOnSubmitQuantity = false;
+
   @override
   void initState() {
     super.initState();
 
+    /**
+     * * For update new total weight of current order
+     * */
     _controllerEditWeight.text = widget.orderItems['weight'];
     _controllerEditWeight.selection = TextSelection.fromPosition(TextPosition(offset: _controllerEditWeight.text.length));
 
@@ -44,6 +52,24 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
           _isShowTextButtonOnSubmit = true;
         }
         _valueEditWeigth = _controllerEditWeight.text;
+        _valueEditQuantity = _controllerEditQuntity.text;
+      });
+    });
+
+    /**
+     * * For update new total quantity of current order
+     * */
+    _controllerEditQuntity.text = widget.orderItems['quantity'].toString();
+    _controllerEditQuntity.selection = TextSelection.fromPosition(TextPosition(offset: _controllerEditQuntity.text.length));
+
+    // * Listen text field edit weight
+    _controllerEditQuntity.addListener(() {
+      setState(() {
+        if (_isShowTextButtonOnSubmitQuantity == false) {
+          _isShowTextButtonOnSubmitQuantity = true;
+        }
+        _valueEditWeigth = _controllerEditWeight.text;
+        _valueEditQuantity = _controllerEditQuntity.text;
       });
     });
   }
@@ -61,9 +87,18 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
     SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
     OrdertModel _ordertModel = Provider.of<OrdertModel>(context, listen: false);
 
+    /**
+     * * Modify quantity & weight of current order item
+     */
     Future _onSubmitConfirmEditWeightOrder() async {
       try {
-        final Map<String, dynamic> data = {"order_id": widget.order['id'], "item_id": "${widget.orderItems['id']}", "weight": "$_valueEditWeigth"};
+        final Map<String, dynamic> data = {
+          "order_id": widget.order['id'],
+          "item_id": "${widget.orderItems['id']}",
+          "weight": "$_valueEditWeigth",
+          "quantity": "$_valueEditQuantity",
+        };
+
         // get current user token
         String token = settingModel.value['token'];
 
@@ -85,6 +120,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
           setState(() {
             _isShowTextFieldEditWeigth = false;
             _isShowTextButtonOnSubmit = false;
+            _isShowTextButtonOnSubmitQuantity = false;
           });
 
           showFlashBar(context, title: 'แก้ไขน้ำหนักสินค้าเรียบร้อย', message: 'ระบบกำลังแจ้งข้อมูลไปยังผู้ซื้อ', success: true, duration: 3500);
@@ -93,6 +129,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
         }
       } catch (e) {
         print(e);
+        Navigator.of(context).pop();
         showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทน้ำหนักได้', error: true);
       }
     }
@@ -234,12 +271,71 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
                 },
                 duration: Duration(milliseconds: 300),
                 child: !_isShowTextFieldEditWeigth
-                    ? BuildSubText(
-                        leading: 'น้ำหนักที่สั่งซื้อ (กก.)',
-                        text: '${widget.orderItems['weight']}',
+                    ? Column(
+                        children: [
+                          BuildSubText(
+                            leading: 'จำนวน (ลูก)',
+                            text: '${widget.orderItems['quantity']}',
+                          ),
+                          BuildSubText(
+                            leading: 'น้ำหนักที่สั่งซื้อ (กก.)',
+                            text: '${widget.orderItems['weight']}',
+                          ),
+                        ],
                       )
                     : Column(
                         children: [
+                          // * For modify quantity of product
+                          Row(
+                            children: [
+                              Text(
+                                'จำนวนลูก',
+                                style: TextStyle(
+                                  color: kTextSecondaryColor,
+                                ),
+                              )
+                            ],
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10),
+                            padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: kPrimaryLightColor,
+                              borderRadius: BorderRadius.circular(29),
+                            ),
+                            child: TextField(
+                              autofocus: true,
+                              keyboardType: TextInputType.numberWithOptions(decimal: true),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp('[0-9.,]+')),
+                              ],
+                              cursorColor: kPrimaryColor,
+                              maxLines: 1,
+                              textInputAction: TextInputAction.done,
+                              controller: _controllerEditQuntity,
+                              decoration: InputDecoration(
+                                suffix: _isShowTextButtonOnSubmitQuantity
+                                    ? InkWell(
+                                        onTap: _onShowDialogConfirmEditWeight,
+                                        child: Text(
+                                          'ยืนยัน',
+                                          style: TextStyle(color: kPrimaryColor),
+                                        ),
+                                      )
+                                    : Text('ลูก'),
+                                icon: Icon(
+                                  Icons.snooze_outlined,
+                                  color: kPrimaryColor,
+                                ),
+                                hintText: 'น้ำหนักที่สั่งซื้อ',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          // * For modify weight of product
                           Row(
                             children: [
                               Text(
@@ -292,10 +388,11 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
                         ],
                       ),
               ),
-              BuildSubText(
-                leading: 'จำนวน (ลูก)',
-                text: '${widget.orderItems['quantity']}',
-              ),
+              // BuildSubText(
+              //   leading: 'จำนวน (ลูก)',
+              //   text: '${widget.orderItems['quantity']}',
+              // ),
+              Divider(),
               Consumer<ProductModel>(builder: (_, _productModel, __) {
                 return BuildSubText(
                   leading: 'น้ำหนัก/ลูก (กก.)',
