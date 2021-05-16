@@ -4,6 +4,7 @@ import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_s
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_one.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_seven.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_six.dart';
+import 'package:LavaDurian/Screens/ViewOrder/components/view_order_bottomSheet_status_three.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 
@@ -27,12 +28,17 @@ class _ViewOrderBottomSheetState extends State<ViewOrderBottomSheet> {
   Widget build(BuildContext context) {
     return Consumer<OrdertModel>(
       builder: (_, _ordertModel, c) {
-        final _order =
-            _ordertModel.getOrderFromId(widget.mapOrderItems['order']);
+        final _order = _ordertModel.getOrderFromId(widget.mapOrderItems['order']);
 
         // * Bottom Sheet Status 1
         if (_order['status'] == 1) {
           return ViewOrderBottomSheetStatusOne(
+            orderId: _order['id'],
+          );
+        }
+        // * Bottom Sheet Status 3
+        if (_order['status'] == 3) {
+          return ViewOrderBottomSheetStatusThree(
             orderId: _order['id'],
           );
         }

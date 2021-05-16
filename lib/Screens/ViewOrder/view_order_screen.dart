@@ -94,7 +94,8 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> with SingleTickerProv
           child: Consumer2<OrdertModel, SizeViewOrderModel>(
             builder: (_, _orderModel, _sizeViewOrderModel, c) {
               final _order = _orderModel.getOrderFromId(mapOrderItems['order']);
-              return _order['status'] == 1 || _order['status'] >= 4
+              // return _order['status'] == 1 || _order['status'] >= 4
+              return _order['status'] != 2
                   ? Container(
                       decoration: BoxDecoration(color: Colors.white, boxShadow: [
                         BoxShadow(
