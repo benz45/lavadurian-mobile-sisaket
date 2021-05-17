@@ -179,7 +179,6 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
     Size size = MediaQuery.of(context).size;
 
     double extendedScreen = 0.2;
-    print(size.width);
     if (size.width >= 600.0) {
       extendedScreen = 0.3;
     }
