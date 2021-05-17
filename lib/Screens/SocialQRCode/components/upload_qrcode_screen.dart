@@ -278,14 +278,6 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
             pinned: true,
             expandedHeight: size.height * 0.17,
             automaticallyImplyLeading: false,
-            leading: Padding(
-              padding: EdgeInsets.only(left: size.width * 0.09),
-              child: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.arrow_back_rounded),
-                color: kTextPrimaryColor,
-              ),
-            ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 child: Column(
@@ -318,8 +310,8 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
             sliver: SliverToBoxAdapter(
-              child: SizedBox(
-                width: size.width / 1.5,
+              child: Container(
+                width: size.width * .8,
                 child: _socialChoice(context),
               ),
             ),

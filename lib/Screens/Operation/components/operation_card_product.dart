@@ -193,7 +193,9 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                         child: Material(
                                           color: Colors.transparent,
                                           child: Text(
-                                            "${productModel.productGene[product[index]['gene'].toString()]}",
+                                            size.width > 2048
+                                                ? "${productModel.productGene[product[index]['gene'].toString()]}".substring(0, 20)
+                                                : "${productModel.productGene[product[index]['gene'].toString()]}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: font.subtitle2.fontSize,
