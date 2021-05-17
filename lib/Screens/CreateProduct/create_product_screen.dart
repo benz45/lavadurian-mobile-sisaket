@@ -1,4 +1,4 @@
-import 'package:LavaDurian/Screens/CreateProductDemo/components/body.dart';
+import 'package:LavaDurian/Screens/CreateProduct/components/body.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
 

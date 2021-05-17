@@ -1,4 +1,4 @@
-import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
+import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/Screens/CreateStore/create_store_screen.dart';
 import 'package:LavaDurian/Screens/Developer/developer_screen.dart';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
