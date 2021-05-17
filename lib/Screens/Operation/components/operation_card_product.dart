@@ -177,46 +177,29 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: EdgeInsets.all(10),
+                        child: FittedBox(
+                          child: Text(
+                            "${productModel.productGene[product[index]['gene'].toString()]}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 12, right: 12, bottom: 12),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 3.8),
-                                    child: Hero(
-                                      tag: 'gene$index',
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: Text(
-                                            size.width > 2048
-                                                ? "${productModel.productGene[product[index]['gene'].toString()]}".substring(0, 20)
-                                                : "${productModel.productGene[product[index]['gene'].toString()]}",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: font.subtitle2.fontSize,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  DetailOnCard(
-                                    type: 'จำนวน',
-                                    value: product[index]['values'].toString(),
-                                    fontSize: font.subtitle2.fontSize,
-                                  ),
-                                  DetailOnCard(
-                                    type: 'น้ำหนัก',
-                                    value: product[index]['weight'].toString(),
-                                    fontSize: font.subtitle2.fontSize,
-                                  ),
-                                ],
-                              ),
+                            DetailOnCard(
+                              type: 'จำนวน',
+                              value: product[index]['values'].toString(),
+                              // fontSize: font.subtitle2.fontSize,
+                            ),
+                            DetailOnCard(
+                              type: 'น้ำหนัก',
+                              value: product[index]['weight'].toString(),
+                              // fontSize: font.subtitle2.fontSize,
                             ),
                             Container(
                               padding: EdgeInsets.only(top: 8.0),

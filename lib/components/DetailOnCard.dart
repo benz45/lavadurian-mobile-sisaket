@@ -17,20 +17,19 @@ class DetailOnCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          "$type \t",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: fontSize,
-              color: kTextSecondaryColor),
+        FittedBox(
+          child: Text(
+            "$type \t",
+            style: TextStyle(fontWeight: FontWeight.bold, color: kTextSecondaryColor),
+          ),
         ),
-        Text(
-          "$value",
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: fontSize,
-              color: color ?? kPrimaryColor),
+        FittedBox(
+          child: Text(
+            "$value",
+            style: TextStyle(fontWeight: FontWeight.bold, color: color ?? kPrimaryColor),
+          ),
         ),
       ],
     );

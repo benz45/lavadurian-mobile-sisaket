@@ -179,38 +179,36 @@ class OperationCardOrder extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "${dateFormat.format(dateCreate)}",
-                          style: TextStyle(
-                            color: kTextSecondaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: font.subtitle2.fontSize,
+                        FittedBox(
+                          child: Text(
+                            "${dateFormat.format(dateCreate)}",
+                            style: TextStyle(
+                              color: kTextSecondaryColor,
+                            ),
                           ),
                         ),
-                        Text(
-                          "${_order['owner']}",
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: font.subtitle2.fontSize,
+                        FittedBox(
+                          child: Text(
+                            "${_order['owner']}",
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        DetailOnCard(
-                          type: 'น้ำหนัก',
-                          value: _order['weight'],
-                          fontSize: font.subtitle2.fontSize,
+                        FittedBox(
+                          child: Text('น้ำหนัก ${_orderModel.orderStatus['${_order['status']}']}'),
                         ),
-                        DetailOnCard(
-                          type: 'สถานะ',
-                          value: _orderModel.orderStatus['${_order['status']}'],
-                          fontSize: font.subtitle2.fontSize,
-                          color: _order['status'] == 1
-                              ? kPrimaryColor
-                              : _order['status'] == 3
-                                  ? kTextSecondaryColor
-                                  : _order['status'] == 8
+                        FittedBox(
+                          child: Text(
+                            'สถานะ ${_orderModel.orderStatus['${_order['status']}']}',
+                            style: TextStyle(
+                              color: _order['status'] == 1
+                                  ? kAlertColor
+                                  : _order['status'] == 3
                                       ? kTextSecondaryColor
-                                      : kPrimaryColor,
+                                      : _order['status'] == 8
+                                          ? kTextSecondaryColor
+                                          : kPrimaryColor,
+                            ),
+                          ),
                         ),
                       ],
                     ),
