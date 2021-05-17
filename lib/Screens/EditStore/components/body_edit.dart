@@ -48,8 +48,7 @@ class _BodyEditState extends State<BodyEdit> {
   StoreModel storeModel;
   SettingModel settingModel;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   int storeId;
   @override
@@ -68,8 +67,7 @@ class _BodyEditState extends State<BodyEdit> {
       _btnController.reset();
       return false;
     } else {
-      district = storeModel.district.keys.firstWhere(
-          (element) => storeModel.district[element] == _chosenDistrict);
+      district = storeModel.district.keys.firstWhere((element) => storeModel.district[element] == _chosenDistrict);
     }
 
     if (_nameValue == "") {
@@ -116,12 +114,8 @@ class _BodyEditState extends State<BodyEdit> {
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status'] == true) {
-          storeModel.updateStores(
-              storeId: storeId, value: jsonData['data']['store']);
-          showFlashBar(context,
-              message: 'แก้ไขข้อมูลร้านค้าเรียบร้อยแล้ว',
-              success: true,
-              duration: 3500);
+          storeModel.updateStores(storeId: storeId, value: jsonData['data']['store']);
+          showFlashBar(context, message: 'แก้ไขข้อมูลร้านค้าเรียบร้อยแล้ว', success: true, duration: 3500);
 
           _btnController.success();
           Navigator.pop(context);
@@ -129,14 +123,11 @@ class _BodyEditState extends State<BodyEdit> {
           print(jsonData['status']);
         }
       } else {
-        showFlashBar(context,
-            message: 'บันทึกข้อมูลไม่สำเร็จ code: ${response.statusCode}',
-            error: true);
+        showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ code: ${response.statusCode}', error: true);
       }
     } catch (e) {
       print(e);
-      showFlashBar(context,
-          message: 'เกิดข้อผิดพลาดไม่สามารถอัปเดได้', error: true);
+      showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัปเดได้', error: true);
       _btnController.reset();
     }
   }
@@ -345,44 +336,43 @@ class _BodyEditState extends State<BodyEdit> {
             ),
           Divider(),
           // * เบอร์โทรติดต่อสำรอง
-          if (_phone2Value != '')
-            InkWell(
-              onTap: () {
-                setState(() {
-                  _isPhone2Value = !_isPhone2Value;
-                });
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'เบอร์โทรติดต่อสำรอง',
-                        style: TextStyle(color: kTextSecondaryColor),
-                      ),
-                      Text(
-                        '$_phone2Value',
-                        style: TextStyle(color: kTextSecondaryColor),
-                      ),
-                    ],
-                  ),
-                  if (!_isPhone2Value)
-                    Icon(
-                      Icons.arrow_forward_ios_rounded,
-                      size: 14,
-                      color: kTextSecondaryColor,
+          InkWell(
+            onTap: () {
+              setState(() {
+                _isPhone2Value = !_isPhone2Value;
+              });
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'เบอร์โทรติดต่อสำรอง',
+                      style: TextStyle(color: kTextSecondaryColor),
                     ),
-                  if (_isPhone2Value)
-                    Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 22,
-                      color: kTextSecondaryColor,
-                    )
-                ],
-              ),
+                    Text(
+                      _phone2Value != "" ? '$_phone2Value' : 'ไม่ได้ระบุ',
+                      style: TextStyle(color: kTextSecondaryColor),
+                    ),
+                  ],
+                ),
+                if (!_isPhone2Value)
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: kTextSecondaryColor,
+                  ),
+                if (_isPhone2Value)
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 22,
+                    color: kTextSecondaryColor,
+                  )
+              ],
             ),
+          ),
           if (_isPhone2Value)
             RoundedInputField(
               hintText: "เบอร์โทรติดต่อสำรอง (ถ้ามี)",
@@ -438,13 +428,9 @@ class _BodyEditState extends State<BodyEdit> {
               isExpanded: true,
               hint: Text(
                 "เขตอำเภอ",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
-              items: <String>['กันทรลักษณ์', 'ขุนหาญ', 'ศรีรัตนะ']
-                  .map((String value) {
+              items: <String>['กันทรลักษณ์', 'ขุนหาญ', 'ศรีรัตนะ'].map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
                   child: new Text(value),
@@ -552,12 +538,10 @@ class _BodyEditState extends State<BodyEdit> {
                   textColor: Colors.white,
                   padding: EdgeInsets.symmetric(horizontal: 25, vertical: 9),
                   splashColor: kErrorColor.withOpacity(0.2),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   child: Text(
                     "ลบ",
-                    style: TextStyle(
-                        color: kErrorColor, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: kErrorColor, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () => showDialogDeleteStore(context, storeId),
                 ),
