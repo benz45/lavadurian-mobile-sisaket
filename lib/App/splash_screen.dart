@@ -7,7 +7,6 @@ import 'package:LavaDurian/class/file_process.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/setting_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 class SplashPage extends StatefulWidget {
