@@ -22,16 +22,13 @@ class OperationCardOrder extends StatelessWidget {
     final font = Theme.of(context).textTheme;
 
     OrdertModel _orderModel = Provider.of<OrdertModel>(context);
-    ProductImageModel productImageModel =
-        Provider.of<ProductImageModel>(context);
+    ProductImageModel productImageModel = Provider.of<ProductImageModel>(context);
 
     final _order = _orderModel.getOrderFromId(orderId);
     final _orderItem = _orderModel.getOrderItemFromId(orderId);
-    final int _lengthOrderItem =
-        _orderModel.getLengthOrderItemById(orderId: orderId);
+    final int _lengthOrderItem = _orderModel.getLengthOrderItemById(orderId: orderId);
 
-    List listProductImage = productImageModel.getProductImageFromProductId(
-        productId: _orderItem[0]['product']);
+    List listProductImage = productImageModel.getProductImageFromProductId(productId: _orderItem[0]['product']);
 
     DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
     var dateCreate = DateTime.parse(_order['date_created']).toLocal();
@@ -100,8 +97,7 @@ class OperationCardOrder extends StatelessWidget {
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                               backgroundColor: kPrimaryColor,
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           ),
                         ],
@@ -129,8 +125,7 @@ class OperationCardOrder extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 2),
                           child: Text(
                             "ใหม่",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 12.0),
+                            style: TextStyle(color: Colors.white, fontSize: 12.0),
                           )),
                     ),
                   if (_order['status'] != 1)
@@ -158,8 +153,7 @@ class OperationCardOrder extends StatelessWidget {
                     height: 100,
                     width: 100,
                     decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.horizontal(left: Radius.circular(18.0)),
+                      borderRadius: BorderRadius.horizontal(left: Radius.circular(18.0)),
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: AssetImage(
@@ -213,9 +207,7 @@ class OperationCardOrder extends StatelessWidget {
                       style: TextStyle(
                         color: kTextSecondaryColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: size.height /
-                            size.width *
-                            (font.subtitle2.fontSize / 2.61),
+                        fontSize: size.height / size.width * (font.subtitle2.fontSize / 2.61),
                       ),
                     ),
                   ),
@@ -226,25 +218,19 @@ class OperationCardOrder extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: size.height /
-                            size.width *
-                            (font.subtitle1.fontSize / 2.61),
+                        fontSize: size.height / size.width * (font.subtitle1.fontSize / 2.61),
                       ),
                     ),
                   ),
                   DetailOnCard(
                     type: 'น้ำหนัก',
                     value: _order['weight'],
-                    fontSize: size.height /
-                        size.width *
-                        (font.subtitle1.fontSize / 2.59),
+                    fontSize: size.height / size.width * (font.subtitle1.fontSize / 2.59),
                   ),
                   DetailOnCard(
                     type: 'สถานะ',
                     value: _orderModel.orderStatus['${_order['status']}'],
-                    fontSize: size.height /
-                        size.width *
-                        (font.subtitle1.fontSize / 2.59),
+                    fontSize: size.height / size.width * (font.subtitle1.fontSize / 2.59),
                     color: _order['status'] == 1
                         ? kPrimaryColor
                         : _order['status'] == 3

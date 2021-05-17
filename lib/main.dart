@@ -64,6 +64,7 @@ class LavaDurianApp extends StatelessWidget {
             textTheme: TextTheme(
               headline6: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
             ),
             pageTransitionsTheme: PageTransitionsTheme(builders: {
