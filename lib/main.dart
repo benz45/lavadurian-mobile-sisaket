@@ -66,6 +66,9 @@ class LavaDurianApp extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
+              subtitle2: TextStyle(
+                fontSize: 14,
+              ),
             ),
             pageTransitionsTheme: PageTransitionsTheme(builders: {
               TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),

@@ -33,9 +33,9 @@ class OperationCardOrder extends StatelessWidget {
     DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm");
     var dateCreate = DateTime.parse(_order['date_created']).toLocal();
 
-    return GestureDetector(
+    return InkWell(
       onTap: () {
-        return Navigator.push(
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => ViewOrderScreen(
@@ -44,205 +44,182 @@ class OperationCardOrder extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: Offset(0, 1), // changes position of shadow
-            ),
-          ],
-          borderRadius: BorderRadius.all(
-            Radius.circular(18.0),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 0.0),
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.04),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
           ),
-        ),
-        child: Row(
-          children: [
-            if (listProductImage.length != 0)
-              Stack(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              height: 100,
+              width: double.infinity,
+              color: Colors.white,
+              child: Row(
                 children: [
-                  CachedNetworkImage(
-                    filterQuality: FilterQuality.low,
-                    fadeOutCurve: Curves.fastOutSlowIn,
-                    cacheKey: listProductImage[0]['image'],
-                    imageUrl: listProductImage[0]['image'],
-                    imageBuilder: (context, imageProvider) {
-                      return Container(
-                        height: 100,
+                  /*
+                  * Product hader image 
+                  */
+                  Stack(
+                    children: [
+                      Container(
+                        color: Colors.white,
                         width: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(
-                            left: Radius.circular(18.0),
+                        height: 100,
+                        child: listProductImage.length != 0
+                            ? CachedNetworkImage(
+                                filterQuality: FilterQuality.low,
+                                fadeOutCurve: Curves.fastOutSlowIn,
+                                cacheKey: listProductImage[0]['image'],
+                                imageUrl: listProductImage[0]['image'],
+                                imageBuilder: (context, imageProvider) {
+                                  return Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                placeholder: (context, _) => SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          backgroundColor: kPrimaryColor,
+                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                errorWidget: (_, __, ___) => SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: Center(
+                                      child: Icon(
+                                    Icons.error_outline_rounded,
+                                    color: Colors.grey[500],
+                                  )),
+                                ),
+                              )
+                            : Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.horizontal(left: Radius.circular(18.0)),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                      'assets/images/example.png',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ),
+                      if (_order['status'] == 1)
+                        Container(
+                          margin: EdgeInsets.all(6.8),
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          decoration: BoxDecoration(
+                            color: kErrorColor,
+                            borderRadius: BorderRadius.circular(7.5),
                           ),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                    placeholder: (context, _) => SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              backgroundColor: kPrimaryColor,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Text(
+                              "ใหม่",
+                              style: TextStyle(color: Colors.white, fontSize: 12.0),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    errorWidget: (_, __, ___) => SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: Center(
-                          child: Icon(
-                        Icons.error_outline_rounded,
-                        color: Colors.grey[500],
-                      )),
-                    ),
-                  ),
-                  if (_order['status'] == 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kErrorColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          child: Text(
-                            "ใหม่",
-                            style: TextStyle(color: Colors.white, fontSize: 12.0),
-                          )),
-                    ),
-                  if (_order['status'] != 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Text(
-                          "$_lengthOrderItem รายการ",
-                          style: TextStyle(color: Colors.white, fontSize: 12.0),
                         ),
-                      ),
-                    ),
-                ],
-              ),
-            if (listProductImage.length == 0)
-              Stack(
-                children: [
-                  Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.horizontal(left: Radius.circular(18.0)),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          'assets/images/example.png',
+                      if (_order['status'] != 1)
+                        Container(
+                          margin: EdgeInsets.all(6.8),
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          decoration: BoxDecoration(
+                            color: kPrimaryColor,
+                            borderRadius: BorderRadius.circular(7.5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 2),
+                            child: Text(
+                              "$_lengthOrderItem รายการ",
+                              style: TextStyle(color: Colors.white, fontSize: 12.0),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                    ],
                   ),
-                  if (_order['status'] == 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kErrorColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Text(
-                          "ใหม่",
-                          style: TextStyle(color: Colors.white, fontSize: 12.0),
+                  SizedBox(width: 15),
+                  /*
+                  * Order detail
+                  */
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${dateFormat.format(dateCreate)}",
+                          style: TextStyle(
+                            color: kTextSecondaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: font.subtitle2.fontSize,
+                          ),
                         ),
-                      ),
-                    ),
-                  if (_order['status'] != 1)
-                    Container(
-                      margin: EdgeInsets.all(6.8),
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(7.5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        child: Text(
-                          "$_lengthOrderItem รายการ",
-                          style: TextStyle(color: Colors.white, fontSize: 12.0),
+                        Text(
+                          "${_order['owner']}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: font.subtitle2.fontSize,
+                          ),
                         ),
-                      ),
-                    ),
-                ],
-              ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(
-                      "${dateFormat.format(dateCreate)}",
-                      style: TextStyle(
-                        color: kTextSecondaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: size.height / size.width * (font.subtitle2.fontSize / 2.61),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 3.8, top: 2.0),
-                    child: Text(
-                      "${_order['owner']}",
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: size.height / size.width * (font.subtitle1.fontSize / 2.61),
-                      ),
+                        DetailOnCard(
+                          type: 'น้ำหนัก',
+                          value: _order['weight'],
+                          fontSize: font.subtitle2.fontSize,
+                        ),
+                        DetailOnCard(
+                          type: 'สถานะ',
+                          value: _orderModel.orderStatus['${_order['status']}'],
+                          fontSize: font.subtitle2.fontSize,
+                          color: _order['status'] == 1
+                              ? kPrimaryColor
+                              : _order['status'] == 3
+                                  ? kTextSecondaryColor
+                                  : _order['status'] == 8
+                                      ? kTextSecondaryColor
+                                      : kPrimaryColor,
+                        ),
+                      ],
                     ),
                   ),
-                  DetailOnCard(
-                    type: 'น้ำหนัก',
-                    value: _order['weight'],
-                    fontSize: size.height / size.width * (font.subtitle1.fontSize / 2.59),
-                  ),
-                  DetailOnCard(
-                    type: 'สถานะ',
-                    value: _orderModel.orderStatus['${_order['status']}'],
-                    fontSize: size.height / size.width * (font.subtitle1.fontSize / 2.59),
-                    color: _order['status'] == 1
-                        ? kPrimaryColor
-                        : _order['status'] == 3
-                            ? kTextSecondaryColor
-                            : _order['status'] == 8
-                                ? kTextSecondaryColor
-                                : kPrimaryColor,
-                  ),
+                  // Icon(Icons.arrow_forward_ios, color: kTextSecondaryColor),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
