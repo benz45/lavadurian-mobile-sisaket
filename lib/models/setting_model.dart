@@ -53,6 +53,9 @@ class SettingModel extends ChangeNotifier {
   // End-point for delete store
   String get endPoinDeleteStore => 'api/store/delete';
 
+  // End-point for upload qr-code (POST) {"store":int, 'status':int}
+  String get endPointSetStoreStatus => 'api/qrcode/status';
+
   // End-point for edit bookbank
   String get endPoinUpdateBookBank => 'api/bookbank/edit';
 

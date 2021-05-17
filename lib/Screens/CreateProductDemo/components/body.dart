@@ -83,19 +83,14 @@ class _BodyState extends State<Body> {
   CarouselController carouselController = CarouselController();
 
   // Input  Formater Limit 250.
-  List<TextInputFormatter> limitingTextInput = [
-    LengthLimitingTextInputFormatter(250)
-  ];
+  List<TextInputFormatter> limitingTextInput = [LengthLimitingTextInputFormatter(250)];
 
   @override
   Widget build(BuildContext context) {
     // Provider model.
-    ProductModel productModel =
-        Provider.of<ProductModel>(context, listen: false);
-    CreateProductModel createProductModel =
-        Provider.of<CreateProductModel>(context);
-    SettingModel settingModel =
-        Provider.of<SettingModel>(context, listen: false);
+    ProductModel productModel = Provider.of<ProductModel>(context, listen: false);
+    CreateProductModel createProductModel = Provider.of<CreateProductModel>(context);
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
 
     // Jump page with animation
     void carouselControllerAnimateToPage(int page) {
@@ -115,10 +110,8 @@ class _BodyState extends State<Body> {
 
     // ! Validate data page one
     Future _valdatatePageOne() async {
-      if (createProductModel.getChosenGene == null ||
-          createProductModel.getChosenGene == "") {
-        showFlashBar(context,
-            message: 'กรุณาเลือกสายพันธ์ุทุเรียน', warning: true);
+      if (createProductModel.getChosenGene == null || createProductModel.getChosenGene == "") {
+        showFlashBar(context, message: 'กรุณาเลือกสายพันธ์ุทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 0) {
           carouselControllerAnimateToPage(0);
@@ -126,8 +119,7 @@ class _BodyState extends State<Body> {
         return false;
       }
 
-      if (createProductModel.getChosenGrade == null ||
-          createProductModel.getChosenGrade == "") {
+      if (createProductModel.getChosenGrade == null || createProductModel.getChosenGrade == "") {
         showFlashBar(context, message: 'กรุณาเลือกเกรดทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 0) {
@@ -136,10 +128,8 @@ class _BodyState extends State<Body> {
         return false;
       }
 
-      if (createProductModel.getProductDetail == null ||
-          createProductModel.getProductDetail == "") {
-        showFlashBar(context,
-            message: 'กรุณาระบุข้อมูลเกี่ยวกับสินค้า', warning: true);
+      if (createProductModel.getProductDetail == null || createProductModel.getProductDetail == "") {
+        showFlashBar(context, message: 'กรุณาระบุข้อมูลเกี่ยวกับสินค้า', warning: true);
         if (createProductModel.getCurrentIndexPage != 0) {
           carouselControllerAnimateToPage(0);
         }
@@ -151,8 +141,7 @@ class _BodyState extends State<Body> {
 
     // ! Validate data page two
     Future _valdatatePageTwo() async {
-      if (createProductModel.getChosenStatus == null ||
-          createProductModel.getChosenStatus == "") {
+      if (createProductModel.getChosenStatus == null || createProductModel.getChosenStatus == "") {
         showFlashBar(context, message: 'กรุณาสถานะการขาย', warning: true);
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
@@ -161,8 +150,7 @@ class _BodyState extends State<Body> {
       }
 
       if (createProductModel.getProductValue == null) {
-        showFlashBar(context,
-            message: 'กรุณาระบุจำนวนทุเรียนที่มีขาย', warning: true);
+        showFlashBar(context, message: 'กรุณาระบุจำนวนทุเรียนที่มีขาย', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
@@ -171,15 +159,12 @@ class _BodyState extends State<Body> {
         return false;
       } else if (createProductModel.getProductValue.length > 8) {
         // จำนวนไม่เกิน 10^7 ลูก
-        showFlashBar(context,
-            message: 'กรุณาระบุจำนวนทุเรียนตามความเป็นจริง', warning: true);
+        showFlashBar(context, message: 'กรุณาระบุจำนวนทุเรียนตามความเป็นจริง', warning: true);
         return false;
       }
 
-      if (createProductModel.getProductWeight == null ||
-          createProductModel.getProductWeight == "") {
-        showFlashBar(context,
-            message: 'กรุณาระบุน้ำหนักของทุเรียน', warning: true);
+      if (createProductModel.getProductWeight == null || createProductModel.getProductWeight == "") {
+        showFlashBar(context, message: 'กรุณาระบุน้ำหนักของทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
@@ -188,15 +173,12 @@ class _BodyState extends State<Body> {
         return false;
       } else if (createProductModel.getProductWeight.length > 5) {
         // น้ำหนักไม่เกิน 99.99 กก.
-        showFlashBar(context,
-            message: 'กรุณาระบุน้ำหนักทุเรียนตามความเป็นจริง', warning: true);
+        showFlashBar(context, message: 'กรุณาระบุน้ำหนักทุเรียนตามความเป็นจริง', warning: true);
         return false;
       }
 
-      if (createProductModel.getProductPrice == null ||
-          createProductModel.getProductPrice == "") {
-        showFlashBar(context,
-            message: 'กรุณาระบุราคาของทุเรียน', warning: true);
+      if (createProductModel.getProductPrice == null || createProductModel.getProductPrice == "") {
+        showFlashBar(context, message: 'กรุณาระบุราคาของทุเรียน', warning: true);
 
         if (createProductModel.getCurrentIndexPage != 1) {
           carouselControllerAnimateToPage(1);
@@ -205,8 +187,7 @@ class _BodyState extends State<Body> {
         return false;
       } else if (createProductModel.getProductPrice.length > 8) {
         // จำนวนไม่เกิน 10^7 ลูก
-        showFlashBar(context,
-            message: 'กรุณาระบุราคาทุเรียนตามความเป็นจริง', warning: true);
+        showFlashBar(context, message: 'กรุณาระบุราคาทุเรียนตามความเป็นจริง', warning: true);
         return false;
       }
 
@@ -231,18 +212,13 @@ class _BodyState extends State<Body> {
 
         Map<String, dynamic> data = {
           'store_id': widget.storeID.toString(),
-          'grade': productModel.productGrade.keys.firstWhere((k) =>
-              productModel.productGrade[k] ==
-              createProductModel.getChosenGrade),
-          'gene': productModel.productGene.keys.firstWhere((k) =>
-              productModel.productGene[k] == createProductModel.getChosenGene),
+          'grade': productModel.productGrade.keys.firstWhere((k) => productModel.productGrade[k] == createProductModel.getChosenGrade),
+          'gene': productModel.productGene.keys.firstWhere((k) => productModel.productGene[k] == createProductModel.getChosenGene),
           'values': createProductModel.getProductValue.toString(),
           'price': createProductModel.getProductPrice.toString(),
           'weight': createProductModel.getProductWeight.toString(),
           'desc': createProductModel.getProductDetail.toString(),
-          'status': productModel.productStatus.keys.firstWhere((k) =>
-              productModel.productStatus[k] ==
-              createProductModel.getChosenStatus),
+          'status': productModel.productStatus.keys.firstWhere((k) => productModel.productStatus[k] == createProductModel.getChosenStatus),
         };
 
         try {
@@ -271,10 +247,7 @@ class _BodyState extends State<Body> {
                   productId: jsonData['data']['product']['id'],
                   onPressed: () {
                     showFlashBar(context,
-                        title: 'สร้างสินค้าสำเร็จ',
-                        message: 'ระบบกำลังอัพเดทข้อมูลและเผยแผร่ไปยังผู้ซื้อ',
-                        success: true,
-                        duration: 3500);
+                        title: 'สร้างสินค้าสำเร็จ', message: 'ระบบกำลังอัพเดทข้อมูลและเผยแผร่ไปยังผู้ซื้อ', success: true, duration: 3500);
                     // * Navigate operation screen and show snackbar create store success
                     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                       builder: (_) {
@@ -289,12 +262,10 @@ class _BodyState extends State<Body> {
               ),
             );
           } else {
-            showFlashBar(context,
-                message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
+            showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
           }
         } catch (e) {
-          showFlashBar(context,
-              message: 'เกิดข้อผิดพลาดไม่สามารถสร้างสินค้าได้', error: true);
+          showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถสร้างสินค้าได้', error: true);
         }
       }
     }
@@ -319,22 +290,18 @@ class _BodyState extends State<Body> {
                           padding: EdgeInsets.only(bottom: 7.0),
                           child: Text(
                             "สร้างสินค้าของคุณ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 26),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
                           ),
                         ),
                         Text(
                           "ทุเรียนภูเขาไฟศรีสะเกษ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: kTextSecondaryColor),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: kTextSecondaryColor),
                         ),
                         SizedBox(height: size.height * 0.04),
                       ],
                     ),
                   ),
-                  Consumer<CreateProductModel>(
-                      builder: (_, consumerCreateProductModel, c) {
+                  Consumer<CreateProductModel>(builder: (_, consumerCreateProductModel, c) {
                     return Container(
                       child: CarouselSlider(
                         carouselController: carouselController,
@@ -344,8 +311,7 @@ class _BodyState extends State<Body> {
                             enableInfiniteScroll: false,
                             height: size.height * 0.6,
                             onPageChanged: (index, reason) {
-                              consumerCreateProductModel.setCurrentIndexPage =
-                                  index;
+                              consumerCreateProductModel.setCurrentIndexPage = index;
                             }),
                         items: [
                           // ! Page 1
@@ -359,13 +325,10 @@ class _BodyState extends State<Body> {
                                     barrierDismissible: true,
                                     builder: (context) {
                                       // * Init state dialog only.
-                                      int selectedRadio = productModel
-                                              .productGene.entries
+                                      int selectedRadio = productModel.productGene.entries
                                               .map((e) => "${e.value}")
                                               .toList()
-                                              .indexOf(
-                                                  consumerCreateProductModel
-                                                      .getChosenGene) ??
+                                              .indexOf(consumerCreateProductModel.getChosenGene) ??
                                           0;
 
                                       return AlertDialog(
@@ -386,23 +349,16 @@ class _BodyState extends State<Body> {
                                               width: size.width * 0.8,
                                               child: ListView.builder(
                                                 shrinkWrap: true,
-                                                itemCount: productModel
-                                                    .productGene.entries
-                                                    .map((e) => e.key)
-                                                    .toList()
-                                                    .length,
+                                                itemCount: productModel.productGene.entries.map((e) => e.key).toList().length,
                                                 itemBuilder: (context, index) {
                                                   return RadioListTile(
                                                     title: Text(
                                                       '${productModel.productGene.entries.map((e) => "${e.value}").toList()[index]}'
-                                                          .replaceAll(
-                                                              "", "\u{200B}"),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                          .replaceAll("", "\u{200B}"),
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                     value: index,
-                                                    groupValue:
-                                                        selectedRadio ?? 0,
+                                                    groupValue: selectedRadio ?? 0,
                                                     onChanged: (value) {
                                                       // * set state dialog only.
                                                       setDialogState(() {
@@ -410,20 +366,11 @@ class _BodyState extends State<Body> {
                                                       });
 
                                                       // * set state global only.
-                                                      consumerCreateProductModel
-                                                              .setChosenGene =
-                                                          productModel
-                                                              .productGene
-                                                              .entries
-                                                              .map((e) =>
-                                                                  "${e.value}")
-                                                              .toList()[value];
+                                                      consumerCreateProductModel.setChosenGene =
+                                                          productModel.productGene.entries.map((e) => "${e.value}").toList()[value];
                                                       Navigator.pop(context);
                                                     },
-                                                    selected:
-                                                        index == selectedRadio
-                                                            ? true
-                                                            : false,
+                                                    selected: index == selectedRadio ? true : false,
                                                     activeColor: kPrimaryColor,
                                                   );
                                                 },
@@ -438,23 +385,16 @@ class _BodyState extends State<Body> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(29),
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 36, vertical: 18),
+                                    padding: EdgeInsets.symmetric(horizontal: 36, vertical: 18),
                                     width: size.width * 0.8,
                                     color: kPrimaryLightColor,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           '${consumerCreateProductModel.getChosenGene ?? 'สายพันธุ์'}',
-                                          style: TextStyle(
-                                              color: kTextPrimaryColor
-                                                  .withOpacity(0.62),
-                                              fontSize:
-                                                  font.subtitle1.fontSize),
+                                          style: TextStyle(color: kTextPrimaryColor.withOpacity(0.62), fontSize: font.subtitle1.fontSize),
                                         ),
                                         Icon(
                                           Icons.keyboard_arrow_down_rounded,
@@ -476,13 +416,10 @@ class _BodyState extends State<Body> {
                                     barrierDismissible: true,
                                     builder: (context) {
                                       // * Init state dialog only.
-                                      int selectedRadio = productModel
-                                              .productGrade.entries
+                                      int selectedRadio = productModel.productGrade.entries
                                               .map((e) => "${e.value}")
                                               .toList()
-                                              .indexOf(
-                                                  consumerCreateProductModel
-                                                      .getChosenGrade) ??
+                                              .indexOf(consumerCreateProductModel.getChosenGrade) ??
                                           0;
 
                                       return AlertDialog(
@@ -503,23 +440,16 @@ class _BodyState extends State<Body> {
                                               width: size.width * 0.8,
                                               child: ListView.builder(
                                                 shrinkWrap: true,
-                                                itemCount: productModel
-                                                    .productGrade.entries
-                                                    .map((e) => e.key)
-                                                    .toList()
-                                                    .length,
+                                                itemCount: productModel.productGrade.entries.map((e) => e.key).toList().length,
                                                 itemBuilder: (context, index) {
                                                   return RadioListTile(
                                                     title: Text(
                                                       '${productModel.productGrade.entries.map((e) => "${e.value}").toList()[index]}'
-                                                          .replaceAll(
-                                                              "", "\u{200B}"),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                          .replaceAll("", "\u{200B}"),
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                     value: index,
-                                                    groupValue:
-                                                        selectedRadio ?? 0,
+                                                    groupValue: selectedRadio ?? 0,
                                                     onChanged: (value) {
                                                       // * set state dialog only.
                                                       setDialogState(() {
@@ -527,20 +457,11 @@ class _BodyState extends State<Body> {
                                                       });
 
                                                       // * set state global only.
-                                                      consumerCreateProductModel
-                                                              .setChosenGrade =
-                                                          productModel
-                                                              .productGrade
-                                                              .entries
-                                                              .map((e) =>
-                                                                  "${e.value}")
-                                                              .toList()[value];
+                                                      consumerCreateProductModel.setChosenGrade =
+                                                          productModel.productGrade.entries.map((e) => "${e.value}").toList()[value];
                                                       Navigator.pop(context);
                                                     },
-                                                    selected:
-                                                        index == selectedRadio
-                                                            ? true
-                                                            : false,
+                                                    selected: index == selectedRadio ? true : false,
                                                     activeColor: kPrimaryColor,
                                                   );
                                                 },
@@ -555,23 +476,16 @@ class _BodyState extends State<Body> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(29),
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 36, vertical: 18),
+                                    padding: EdgeInsets.symmetric(horizontal: 36, vertical: 18),
                                     width: size.width * 0.8,
                                     color: kPrimaryLightColor,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           '${consumerCreateProductModel.getChosenGrade ?? 'เกรดทุเรียน'}',
-                                          style: TextStyle(
-                                              color: kTextPrimaryColor
-                                                  .withOpacity(0.62),
-                                              fontSize:
-                                                  font.subtitle1.fontSize),
+                                          style: TextStyle(color: kTextPrimaryColor.withOpacity(0.62), fontSize: font.subtitle1.fontSize),
                                         ),
                                         Icon(
                                           Icons.keyboard_arrow_down_rounded,
@@ -589,8 +503,7 @@ class _BodyState extends State<Body> {
                               // * _productDetail
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 26, vertical: 5),
+                                padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
                                 width: size.width * 0.8,
                                 decoration: BoxDecoration(
                                   color: kPrimaryLightColor,
@@ -618,16 +531,9 @@ class _BodyState extends State<Body> {
                                       duration: Duration(milliseconds: 800),
                                       curve: Curves.fastOutSlowIn,
                                     );
-                                    consumerCreateProductModel
-                                            .setCurrentIndexPage =
-                                        (consumerCreateProductModel
-                                                .getCurrentIndexPage) +
-                                            1;
+                                    consumerCreateProductModel.setCurrentIndexPage = (consumerCreateProductModel.getCurrentIndexPage) + 1;
                                   } else {
-                                    showFlashBar(context,
-                                        message:
-                                            'กรุณาระบุข้อมูลให้ครบถ้วนตามความเป็นจริง',
-                                        warning: true);
+                                    showFlashBar(context, message: 'กรุณาระบุข้อมูลให้ครบถ้วนตามความเป็นจริง', warning: true);
                                   }
                                 },
                               ),
@@ -646,13 +552,10 @@ class _BodyState extends State<Body> {
                                     barrierDismissible: true,
                                     builder: (context) {
                                       // * Init state dialog only.
-                                      int selectedRadio = productModel
-                                              .productStatus.entries
+                                      int selectedRadio = productModel.productStatus.entries
                                               .map((e) => "${e.value}")
                                               .toList()
-                                              .indexOf(
-                                                  consumerCreateProductModel
-                                                      .getChosenStatus) ??
+                                              .indexOf(consumerCreateProductModel.getChosenStatus) ??
                                           0;
 
                                       return AlertDialog(
@@ -673,23 +576,16 @@ class _BodyState extends State<Body> {
                                               width: size.width * 0.8,
                                               child: ListView.builder(
                                                 shrinkWrap: true,
-                                                itemCount: productModel
-                                                    .productStatus.entries
-                                                    .map((e) => e.key)
-                                                    .toList()
-                                                    .length,
+                                                itemCount: productModel.productStatus.entries.map((e) => e.key).toList().length,
                                                 itemBuilder: (context, index) {
                                                   return RadioListTile(
                                                     title: Text(
                                                       '${productModel.productStatus.entries.map((e) => "${e.value}").toList()[index]}'
-                                                          .replaceAll(
-                                                              "", "\u{200B}"),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                          .replaceAll("", "\u{200B}"),
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                     value: index,
-                                                    groupValue:
-                                                        selectedRadio ?? 0,
+                                                    groupValue: selectedRadio ?? 0,
                                                     onChanged: (value) {
                                                       // * set state dialog only.
                                                       setDialogState(() {
@@ -697,20 +593,11 @@ class _BodyState extends State<Body> {
                                                       });
 
                                                       // * set state global only.
-                                                      consumerCreateProductModel
-                                                              .setChosenStatus =
-                                                          productModel
-                                                              .productStatus
-                                                              .entries
-                                                              .map((e) =>
-                                                                  "${e.value}")
-                                                              .toList()[value];
+                                                      consumerCreateProductModel.setChosenStatus =
+                                                          productModel.productStatus.entries.map((e) => "${e.value}").toList()[value];
                                                       Navigator.pop(context);
                                                     },
-                                                    selected:
-                                                        index == selectedRadio
-                                                            ? true
-                                                            : false,
+                                                    selected: index == selectedRadio ? true : false,
                                                     activeColor: kPrimaryColor,
                                                   );
                                                 },
@@ -725,23 +612,16 @@ class _BodyState extends State<Body> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(29),
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 36, vertical: 18),
+                                    padding: EdgeInsets.symmetric(horizontal: 36, vertical: 18),
                                     width: size.width * 0.8,
                                     color: kPrimaryLightColor,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           '${consumerCreateProductModel.getChosenStatus ?? 'สถานะการขาย'}',
-                                          style: TextStyle(
-                                              color: kTextPrimaryColor
-                                                  .withOpacity(0.62),
-                                              fontSize:
-                                                  font.subtitle1.fontSize),
+                                          style: TextStyle(color: kTextPrimaryColor.withOpacity(0.62), fontSize: font.subtitle1.fontSize),
                                         ),
                                         Icon(
                                           Icons.keyboard_arrow_down_rounded,
@@ -761,11 +641,8 @@ class _BodyState extends State<Body> {
                                 icon: Icons.drag_indicator_outlined,
                                 controller: _textProductValue,
                                 textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    signed: true, decimal: true),
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ], // Onl
+                                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly], // Onl
                               ),
 
                               //  * _productWeight
@@ -774,12 +651,8 @@ class _BodyState extends State<Body> {
                                 icon: Icons.snooze_outlined,
                                 controller: _textProductWeight,
                                 textInputAction: TextInputAction.next,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    decimal: true),
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r'^(\d+)?\.?\d{0,2}'))
-                                ], // Onl
+                                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}'))], // Onl
                               ),
                               //  * _productPrice
                               RoundedInputField(
@@ -787,16 +660,11 @@ class _BodyState extends State<Body> {
                                 icon: Icons.money,
                                 controller: _textProductPrice,
                                 textInputAction: TextInputAction.go,
-                                keyboardType: TextInputType.numberWithOptions(
-                                    signed: true, decimal: true),
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ], // Onl
+                                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly], // Onl
                               ),
 
-                              RoundedButton(
-                                  text: 'ยืนยัน',
-                                  press: () async => await _onSubmit()),
+                              RoundedButton(text: 'ยืนยัน', press: () async => await _onSubmit()),
                             ],
                           ),
                         ],
@@ -811,7 +679,7 @@ class _BodyState extends State<Body> {
 
           CreateProductAnimatedSmoothIndicator(),
           // ! Back page button
-          if (widget.backArrowButton != null && widget.backArrowButton)
+          /* if (widget.backArrowButton != null && widget.backArrowButton)
             Positioned(
               child: ClipOval(
                 child: Material(
@@ -829,7 +697,7 @@ class _BodyState extends State<Body> {
               ),
               top: size.height * 0.04,
               left: size.height * 0.04,
-            ),
+            ), */
         ],
       ),
     );

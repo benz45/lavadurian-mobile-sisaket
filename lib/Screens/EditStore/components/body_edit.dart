@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:LavaDurian/Screens/EditStore/components/show_dialog_delete_store.dart';
+import 'package:LavaDurian/Screens/EditStore/components/show_dialog_set_store_status.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -47,6 +48,8 @@ class _BodyEditState extends State<BodyEdit> {
 
   StoreModel storeModel;
   SettingModel settingModel;
+
+  bool isSwitched = false;
 
   final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
@@ -514,6 +517,30 @@ class _BodyEditState extends State<BodyEdit> {
               ],
             ),
           ),
+          // ! ไม่พร้อมขาย
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'ปรับสถานะของร้านเป็น "ไม่พร้อมขาย"',
+                style: TextStyle(
+                  color: kTextSecondaryColor,
+                ),
+              ),
+              Switch(
+                value: isSwitched,
+                onChanged: (value) {
+                  setState(() {
+                    isSwitched = value;
+                    showDialogSetStoreStatus(context, storeId);
+                  });
+                },
+                activeTrackColor: Colors.red[200],
+                activeColor: Colors.red[600],
+              ),
+            ],
+          ),
+          Divider(),
           // ! Remove store
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

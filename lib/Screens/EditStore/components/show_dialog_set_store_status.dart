@@ -14,7 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as Http;
 import 'package:provider/provider.dart';
 
-showDialogDeleteStore(BuildContext context, int storeID) {
+showDialogSetStoreStatus(BuildContext context, int storeID) {
   SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
   StoreModel storeModel = Provider.of<StoreModel>(context, listen: false);
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
@@ -24,7 +24,7 @@ showDialogDeleteStore(BuildContext context, int storeID) {
 
   TextEditingController controllerNumber = TextEditingController();
 
-  void _deleteStore() async {
+  void _changeStatus() async {
     if (controllerNumber.text != '$numberRandom') {
       showFlashBar(context, message: 'หมายเลขที่กรอกไม่ถูกต้อง', warning: true);
     } else {
@@ -36,12 +36,13 @@ showDialogDeleteStore(BuildContext context, int storeID) {
       String token = settingModel.value['token'];
 
       Map<String, dynamic> data = {
-        'id': store['id'].toString(),
+        'store': store['id'].toString(),
+        'status': 3.toString(),
       };
 
       try {
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPoinDeleteStore}',
+          '${settingModel.baseURL}/${settingModel.endPointSetStoreStatus}',
           body: data,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
         );
@@ -72,7 +73,7 @@ showDialogDeleteStore(BuildContext context, int storeID) {
     context: context,
     builder: (context) => AlertDialog(
       title: Text(
-        'ยืนยันลบร้านค้า',
+        'ปรับสถานะของร้านค้า',
         style: TextStyle(
           fontWeight: FontWeight.bold,
         ),
@@ -86,14 +87,14 @@ showDialogDeleteStore(BuildContext context, int storeID) {
         child: Column(
           children: [
             Text(
-              'ข้อมูลทั้งหมดจะถูกลบออกจากระบบ ท่านต้องการยืนยันการลบร้านค้าของท่านหรือไม่ ?',
+              'ปรับสถานะร้านค้าของท่านใหม่',
               style: TextStyle(
                 fontWeight: FontWeight.normal,
               ),
             ),
             Divider(),
             Text(
-              'หากต้องลบร้านค้านี้ให้พิมพ์หมายเลขด้านล่างลงในช่องว่างและกด "ตกลง"',
+              'หากต้องปรับสถานะของร้านค้านี้ให้พิมพ์หมายเลขด้านล่างลงในช่องว่างและกด "ตกลง"',
               style: TextStyle(
                 fontWeight: FontWeight.normal,
               ),
@@ -134,7 +135,7 @@ showDialogDeleteStore(BuildContext context, int storeID) {
                   Radius.circular(19),
                 ),
               ),
-              onPressed: _deleteStore,
+              onPressed: _changeStatus,
               child: Text(
                 'ตกลง',
                 style: TextStyle(color: Colors.white),

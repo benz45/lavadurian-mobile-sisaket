@@ -32,8 +32,7 @@ class _BodyState extends State<Body> {
   SettingModel settingModel;
   ProductModel productModel;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   Future<void> _createProduct() async {
     // validate data
@@ -52,6 +51,7 @@ class _BodyState extends State<Body> {
       _btnController.reset();
       return false;
     }
+    print(_productValue);
     if (_productPrice == null) {
       showSnackBar(context, 'กรุณากรอกราคาสินค้า');
       _btnController.reset();
@@ -77,17 +77,11 @@ class _BodyState extends State<Body> {
     // get current user token
     String token = settingModel.value['token'];
 
-    var _grade = productModel.productGrade.keys.firstWhere(
-        (element) => productModel.productGrade[element] == _chosenGrade,
-        orElse: () => null);
+    var _grade = productModel.productGrade.keys.firstWhere((element) => productModel.productGrade[element] == _chosenGrade, orElse: () => null);
 
-    var _gene = productModel.productGene.keys.firstWhere(
-        (element) => productModel.productGene[element] == _chosenGene,
-        orElse: () => null);
+    var _gene = productModel.productGene.keys.firstWhere((element) => productModel.productGene[element] == _chosenGene, orElse: () => null);
 
-    var _status = productModel.productStatus.keys.firstWhere(
-        (element) => productModel.productStatus[element] == _chosenStatus,
-        orElse: () => null);
+    var _status = productModel.productStatus.keys.firstWhere((element) => productModel.productStatus[element] == _chosenStatus, orElse: () => null);
 
     Map<String, dynamic> data = {
       'store_id': storeID.toString(),
@@ -117,8 +111,7 @@ class _BodyState extends State<Body> {
         productModel.products = products;
 
         _btnController.success();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => OperationScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
       } else {
         _btnController.reset();
         showSnackBar(context, 'บันทึกข้อมูลไม่สำเร็จ');
@@ -166,10 +159,7 @@ class _BodyState extends State<Body> {
               isExpanded: true,
               hint: Text(
                 "เกรดทุเรียน",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
               items: <String>[
                 'เกรดคุณภาพ',
@@ -194,20 +184,9 @@ class _BodyState extends State<Body> {
               value: _chosenGene,
               hint: Text(
                 "สายพันธุ์",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
-              items: <String>[
-                'ทุเรียนภูเขาไฟ (หมอนทอง)',
-                'ก้านยาว',
-                'หมอนทอง',
-                'ชะนี',
-                'กระดุม',
-                'หลงลับแล',
-                'พวงมณี'
-              ].map((String value) {
+              items: <String>['ทุเรียนภูเขาไฟ (หมอนทอง)', 'ก้านยาว', 'หมอนทอง', 'ชะนี', 'กระดุม', 'หลงลับแล', 'พวงมณี'].map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
                   child: new Text(value),
@@ -259,10 +238,7 @@ class _BodyState extends State<Body> {
               isExpanded: true,
               hint: Text(
                 "สถานะการขาย",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
               items: <String>[
                 'พร้อมขาย',

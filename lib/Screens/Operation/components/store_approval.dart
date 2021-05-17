@@ -1,4 +1,5 @@
 import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
+import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,7 @@ class StoreApproval extends StatelessWidget {
     return Consumer2<StoreModel, ProductModel>(
       builder: (context, storeModel, productModel, child) {
         // * Fillter for product in current store
-        var products = productModel.products
-            .where(
-                (element) => element['store'] == storeModel.getCurrentIdStore)
-            .toList();
+        var products = productModel.products.where((element) => element['store'] == storeModel.getCurrentIdStore).toList();
 
         if (products.length == 0) {
           return Container(
@@ -36,18 +34,17 @@ class StoreApproval extends StatelessWidget {
                     textColor: Colors.white,
                     padding: EdgeInsets.symmetric(horizontal: 25),
                     splashColor: kPrimaryColor.withOpacity(0.2),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     child: Text(
                       "สร้างสินค้าของคุณ",
-                      style: TextStyle(
-                          color: kPrimaryColor, fontWeight: FontWeight.bold),
+                      style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => CreateProductScreen(
+                          builder: (_) => CreateProductDemoScreen(
+                            backArrowButton: true,
                             storeID: storeModel.getCurrentIdStore,
                           ),
                         ),
