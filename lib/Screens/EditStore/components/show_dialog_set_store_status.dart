@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -66,7 +67,10 @@ showDialogSetStoreStatus(BuildContext context, int storeID, int currentStatus) {
             storeModel.setStores = stores;
 
             showFlashBar(context, message: 'ปรับสถานะร้านค้าเรียบร้อยแล้ว', success: true, duration: 3500);
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => OperationScreen()),
+            );
           }
         } else {
           showFlashBar(context, message: 'ปรับสถานะข้อมูลไม่สำเร็จ code: ${response.statusCode}', error: true);

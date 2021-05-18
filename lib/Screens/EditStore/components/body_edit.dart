@@ -144,13 +144,17 @@ class _BodyEditState extends State<BodyEdit> {
     /**
      * * Set store status swtich
      * */
-    String statusMsg = '';
+    String newStatus = '';
+    String currentStatus = '';
+
     if (store['status'] == 1) {
       _isSwitched = true;
-      statusMsg = "ไม่พร้อมขาย";
+      newStatus = "ไม่พร้อมขาย";
+      currentStatus = "พร้อมขาย";
     } else {
       _isSwitched = false;
-      statusMsg = "พร้อมขาย";
+      newStatus = "พร้อมขาย";
+      currentStatus = "ไม่พร้อมขาย";
     }
 
     // initial value
@@ -203,6 +207,26 @@ class _BodyEditState extends State<BodyEdit> {
             ),
           ),
 
+          // * แจ้งสถานะของร้านค้า
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'สถานะของร้านค้า',
+                    style: TextStyle(color: kTextSecondaryColor),
+                  ),
+                  Text(
+                    '$currentStatus',
+                    style: TextStyle(color: store['status'] != 1 ? kAlertColor : kPrimaryColor),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Divider(),
           // * ชื่อร้านค้า
           InkWell(
             onTap: () {
@@ -252,7 +276,7 @@ class _BodyEditState extends State<BodyEdit> {
               // inputFormatters: limitingTextInput,
             ),
           Divider(),
-          // * ชื่อร้านค้า
+          // * สโลแกนร้านค้า
           InkWell(
             onTap: () {
               setState(() {
@@ -534,18 +558,15 @@ class _BodyEditState extends State<BodyEdit> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'ปรับสถานะของร้านใหม่เป็น "$statusMsg"',
+                'ปรับสถานะของร้านใหม่เป็น "$newStatus"',
                 style: TextStyle(
                   color: kTextSecondaryColor,
                 ),
               ),
               Switch(
                 value: _isSwitched,
-                onChanged: (_) {
-                  setState(() {
-                    showDialogSetStoreStatus(context, storeId, store['status']);
-                    _isSwitched = !_isSwitched;
-                  });
+                onChanged: (value) {
+                  showDialogSetStoreStatus(context, storeId, store['status']);
                 },
                 activeTrackColor: Colors.red[200],
                 activeColor: Colors.red[600],
