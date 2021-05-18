@@ -22,13 +22,13 @@ class DetailOnCard extends StatelessWidget {
         FittedBox(
           child: Text(
             "$type \t",
-            style: TextStyle(fontWeight: FontWeight.bold, color: kTextSecondaryColor),
+            style: TextStyle(color: kTextSecondaryColor),
           ),
         ),
         FittedBox(
           child: Text(
             "$value",
-            style: TextStyle(fontWeight: FontWeight.bold, color: color ?? kPrimaryColor),
+            style: TextStyle(color: color ?? kPrimaryColor),
           ),
         ),
       ],

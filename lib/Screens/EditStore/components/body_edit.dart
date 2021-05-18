@@ -49,7 +49,7 @@ class _BodyEditState extends State<BodyEdit> {
   StoreModel storeModel;
   SettingModel settingModel;
 
-  bool isSwitched = false;
+  bool _isSwitched;
 
   final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
@@ -140,6 +140,18 @@ class _BodyEditState extends State<BodyEdit> {
     // get current store
     stores = storeModel.getStores;
     store = stores.firstWhere((element) => element['id'] == widget.storeID);
+
+    /**
+     * * Set store status swtich
+     * */
+    String statusMsg = '';
+    if (store['status'] == 1) {
+      _isSwitched = true;
+      statusMsg = "ไม่พร้อมขาย";
+    } else {
+      _isSwitched = false;
+      statusMsg = "พร้อมขาย";
+    }
 
     // initial value
     _controllerNameValue = TextEditingController(text: store['name']);
@@ -522,17 +534,17 @@ class _BodyEditState extends State<BodyEdit> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'ปรับสถานะของร้านเป็น "ไม่พร้อมขาย"',
+                'ปรับสถานะของร้านใหม่เป็น "$statusMsg"',
                 style: TextStyle(
                   color: kTextSecondaryColor,
                 ),
               ),
               Switch(
-                value: isSwitched,
-                onChanged: (value) {
+                value: _isSwitched,
+                onChanged: (_) {
                   setState(() {
-                    isSwitched = value;
-                    showDialogSetStoreStatus(context, storeId);
+                    showDialogSetStoreStatus(context, storeId, store['status']);
+                    _isSwitched = !_isSwitched;
                   });
                 },
                 activeTrackColor: Colors.red[200],

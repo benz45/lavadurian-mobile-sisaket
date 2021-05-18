@@ -279,7 +279,7 @@ class _ContainerStoreState extends State<ContainerStore> {
             builder: (_, store, child) {
               return SliverAnimatedSwitcher(
                 duration: Duration(milliseconds: 300),
-                child: store.getCurrentStoreStatus == 1
+                child: store.getCurrentStoreStatus == 1 || store.getCurrentStoreStatus == 3
                     /*
                      * If store status is aleady approve by admin
                      * Display operation scrren with bottom nav bar

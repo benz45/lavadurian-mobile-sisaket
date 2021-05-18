@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/components/rounded_input_field.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -14,13 +13,14 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as Http;
 import 'package:provider/provider.dart';
 
-showDialogSetStoreStatus(BuildContext context, int storeID) {
+showDialogSetStoreStatus(BuildContext context, int storeID, int currentStatus) {
   SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
   StoreModel storeModel = Provider.of<StoreModel>(context, listen: false);
   UserModel userModel = Provider.of<UserModel>(context, listen: false);
 
   // Number random
   int numberRandom = Random().nextInt(90) + 10;
+  int newStatus = 0;
 
   TextEditingController controllerNumber = TextEditingController();
 
@@ -32,12 +32,21 @@ showDialogSetStoreStatus(BuildContext context, int storeID) {
       int index = stores.indexWhere((element) => element['id'] == storeID);
       Map<String, dynamic> store = stores[index];
 
+      /**
+       * * Setup new status
+       * */
+      if (currentStatus == 1) {
+        newStatus = 3;
+      } else {
+        newStatus = 1;
+      }
+
       // get current user token
       String token = settingModel.value['token'];
 
       Map<String, dynamic> data = {
         'store': store['id'].toString(),
-        'status': 3.toString(),
+        'status': newStatus.toString(),
       };
 
       try {
@@ -50,21 +59,20 @@ showDialogSetStoreStatus(BuildContext context, int storeID) {
         if (response.statusCode == 200) {
           var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
           if (jsonData['status'] == true) {
-            stores.removeWhere((element) => element['id'] == store['id']);
-            storeModel.onRemoveCurrentStore(id: storeID, userId: userModel.value['id']);
-            // update state
+            /**
+             *  Update state of store
+             * */
+            stores[index] = jsonData['data']['store'];
             storeModel.setStores = stores;
-            showFlashBar(context, message: 'ลบร้านค้าเรียบร้อยแล้ว', success: true, duration: 3500);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => OperationScreen()),
-            );
+
+            showFlashBar(context, message: 'ปรับสถานะร้านค้าเรียบร้อยแล้ว', success: true, duration: 3500);
+            Navigator.pop(context);
           }
         } else {
-          showFlashBar(context, message: 'ลบข้อมูลไม่สำเร็จ code: ${response.statusCode}', error: true);
+          showFlashBar(context, message: 'ปรับสถานะข้อมูลไม่สำเร็จ code: ${response.statusCode}', error: true);
         }
       } catch (e) {
-        showFlashBar(context, message: 'ลบข้อมูลไม่สำเร็จ', error: true);
+        showFlashBar(context, message: 'ปรับสถานะข้อมูลไม่สำเร็จ', error: true);
       }
     }
   }

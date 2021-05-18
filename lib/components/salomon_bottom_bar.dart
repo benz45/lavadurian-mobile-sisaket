@@ -11,7 +11,10 @@ class MySalomonBottomBar extends StatelessWidget {
     BottomBarModel bottomBarModel = Provider.of<BottomBarModel>(context);
     StoreModel storeModel = Provider.of<StoreModel>(context);
 
-    return storeModel.getStores.length != 0 && storeModel.getCurrentIdStore != null && storeModel.getCurrentStoreStatus == 1
+    // * check store status
+    int storeStatus = storeModel.getCurrentStoreStatus;
+
+    return storeModel.getStores.length != 0 && storeModel.getCurrentIdStore != null && (storeStatus == 1 || storeStatus == 3)
         ? SafeArea(
             child: SalomonBottomBar(
               currentIndex: bottomBarModel.getCurrentSelectedTab,

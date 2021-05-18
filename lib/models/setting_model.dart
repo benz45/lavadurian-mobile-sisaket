@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class SettingModel extends ChangeNotifier {
   // API value
-  String get baseURL => 'https://durian-lava.herokuapp.com';
-  // String get baseURL => 'http://127.0.0.1:8000';
+  // String get baseURL => 'https://durian-lava.herokuapp.com';
+  String get baseURL => 'http://127.0.0.1:8000';
 
   // End-point for share product
   String get endPointShareProduct => 'shopping/product';
@@ -54,7 +54,7 @@ class SettingModel extends ChangeNotifier {
   String get endPoinDeleteStore => 'api/store/delete';
 
   // End-point for upload qr-code (POST) {"store":int, 'status':int}
-  String get endPointSetStoreStatus => 'api/qrcode/status';
+  String get endPointSetStoreStatus => 'api/store/status';
 
   // End-point for edit bookbank
   String get endPoinUpdateBookBank => 'api/bookbank/edit';
