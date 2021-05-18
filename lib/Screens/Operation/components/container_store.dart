@@ -391,34 +391,39 @@ class _ContainerStoreState extends State<ContainerStore> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: [
-                OutlineButton(
-                  highlightColor: kPrimaryLightColor,
-                  highlightedBorderColor: kPrimaryColor,
-                  color: kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => Consumer<StoreModel>(
-                          builder: (_, _storeModel, c) {
-                            int stireId = _storeModel.getCurrentIdStore;
-                            return CreateProductDemoScreen(
-                              backArrowButton: true,
-                              storeID: stireId,
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'สร้างสินค้าใหม่',
-                    style: TextStyle(color: kPrimaryColor),
-                  ),
-                ),
+                Consumer<StoreModel>(builder: (context, _storeModel, child) {
+                  int stireId = _storeModel.getCurrentIdStore;
+                  int storeStatus = _storeModel.getCurrentStoreStatus;
+
+                  return OutlineButton(
+                    highlightColor: kPrimaryLightColor,
+                    highlightedBorderColor: kPrimaryColor,
+                    color: kPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: storeStatus == 1
+                        ? Text(
+                            'สร้างสินค้าใหม่',
+                            style: TextStyle(color: kPrimaryColor),
+                          )
+                        : Text(
+                            'ไม่พร้อมขายสินค้า',
+                            style: TextStyle(color: kAlertColor),
+                          ),
+                    onPressed: () {
+                      storeStatus == 1
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreateProductDemoScreen(
+                                        backArrowButton: true,
+                                        storeID: stireId,
+                                      )))
+                          : null;
+                    },
+                  );
+                }),
                 Icon(
                   Icons.add_circle_outline_rounded,
                   color: kTextSecondaryColor,

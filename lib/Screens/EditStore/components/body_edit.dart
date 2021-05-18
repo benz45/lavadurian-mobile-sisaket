@@ -149,12 +149,12 @@ class _BodyEditState extends State<BodyEdit> {
 
     if (store['status'] == 1) {
       _isSwitched = true;
-      newStatus = "ไม่พร้อมขาย";
-      currentStatus = "พร้อมขาย";
+      newStatus = "ไม่พร้อมขายสินค้า";
+      currentStatus = "พร้อมขายสินค้า";
     } else {
       _isSwitched = false;
-      newStatus = "พร้อมขาย";
-      currentStatus = "ไม่พร้อมขาย";
+      newStatus = "พร้อมขายสินค้า";
+      currentStatus = "ไม่พร้อมขายสินค้า";
     }
 
     // initial value

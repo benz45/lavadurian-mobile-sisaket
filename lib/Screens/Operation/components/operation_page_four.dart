@@ -28,17 +28,14 @@ class OperationPageFour extends StatelessWidget {
                 // ! Card container
                 Container(
                   padding: EdgeInsets.all(22),
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.04),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.04),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ], color: Colors.white, borderRadius: BorderRadius.circular(20)),
                   width: size.width * 0.9,
                   child: SingleChildScrollView(
                     child: ListView(
@@ -60,20 +57,37 @@ class OperationPageFour extends StatelessWidget {
                           child: Text(
                             '${currentStore['name']}',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: textTheme.subtitle1.fontSize,
-                                fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: textTheme.subtitle1.fontSize, fontWeight: FontWeight.bold),
                           ),
                         ),
 
                         Text(
                           '${currentStore['slogan']}',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: kTextSecondaryColor,
-                              fontSize: textTheme.subtitle2.fontSize,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: kTextSecondaryColor, fontSize: textTheme.subtitle2.fontSize, fontWeight: FontWeight.bold),
                         ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        storeModel.getCurrentStoreStatus == 1
+                            ? Text(
+                                "สถานะ : พร้อมขาย",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: textTheme.subtitle2.fontSize,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Text(
+                                "สถานะ : ไม่พร้อมขายสินค้า",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: kAlertColor,
+                                  fontSize: textTheme.subtitle2.fontSize,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                         SizedBox(
                           height: 8,
                         ),
@@ -87,23 +101,18 @@ class OperationPageFour extends StatelessWidget {
                               color: kPrimaryColor.withOpacity(0.6),
                             ),
                             textColor: Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 9),
+                            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 9),
                             splashColor: kPrimaryColor.withOpacity(0.2),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                             child: Text(
                               "แก้ไขหรือตั้งค่าร้านค้า",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
                             ),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditStoreScreen(
-                                      storeId: currentStore['id']),
+                                  builder: (context) => EditStoreScreen(storeId: currentStore['id']),
                                 ),
                               );
                             },
@@ -124,19 +133,14 @@ class OperationPageFour extends StatelessWidget {
                                 children: [
                                   Text(
                                     'คำอธิบายเพิ่มเติม',
-                                    style: TextStyle(
-                                        fontSize: textTheme.subtitle2.fontSize,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontSize: textTheme.subtitle2.fontSize, fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
                                     height: 8,
                                   ),
                                   Text(
                                     '${currentStore['about']}',
-                                    style: TextStyle(
-                                        color: kTextSecondaryColor,
-                                        fontSize: textTheme.subtitle2.fontSize,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: kTextSecondaryColor, fontSize: textTheme.subtitle2.fontSize, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -156,9 +160,7 @@ class OperationPageFour extends StatelessWidget {
                                 children: [
                                   Text(
                                     'เบอร์โทร',
-                                    style: TextStyle(
-                                        fontSize: textTheme.subtitle2.fontSize,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(fontSize: textTheme.subtitle2.fontSize, fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
                                     height: 8,
@@ -168,20 +170,13 @@ class OperationPageFour extends StatelessWidget {
                                       Text(
                                         '${currentStore['phone1']}',
                                         style: TextStyle(
-                                            color: kTextSecondaryColor,
-                                            fontSize:
-                                                textTheme.subtitle2.fontSize,
-                                            fontWeight: FontWeight.bold),
+                                            color: kTextSecondaryColor, fontSize: textTheme.subtitle2.fontSize, fontWeight: FontWeight.bold),
                                       ),
-                                      if (currentStore['phone2'] != '' ||
-                                          currentStore['phone2'] != null)
+                                      if (currentStore['phone2'] != '' || currentStore['phone2'] != null)
                                         Text(
                                           ', ${currentStore['phone2']}',
                                           style: TextStyle(
-                                              color: kTextSecondaryColor,
-                                              fontSize:
-                                                  textTheme.subtitle2.fontSize,
-                                              fontWeight: FontWeight.bold),
+                                              color: kTextSecondaryColor, fontSize: textTheme.subtitle2.fontSize, fontWeight: FontWeight.bold),
                                         ),
                                     ],
                                   ),
