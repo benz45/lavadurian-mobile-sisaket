@@ -4,11 +4,11 @@ import 'package:LavaDurian/constants.dart';
 
 class AllStatusOrderScreen extends StatelessWidget {
   final storeID;
-  const AllStatusOrderScreen({Key key, @required this.storeID})
-      : super(key: key);
+  const AllStatusOrderScreen({Key key, @required this.storeID}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFAFAFA),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,

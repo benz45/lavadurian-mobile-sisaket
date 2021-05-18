@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
 import 'package:LavaDurian/Screens/SocialQRCode/components/select_qrcode_container.dart';
 import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
@@ -119,12 +118,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
         qrCodeModel.addNewQRCode(jsonData['data']);
         showFlashBar(context, message: 'อัพโหลดรูปภาพสำเร็จ', success: true);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OperationScreen(),
-          ),
-        );
+        Navigator.pop(context);
       }
     } catch (e) {
       showFlashBar(context, message: 'เกิดข้อผิดพลาดบางอย่าง', error: true);
@@ -204,7 +198,7 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
   void _onShowDialogConfirmRemove(int imgID) {
     showDialog(
       context: context,
-      child: AlertDialog(
+      builder: (context) => AlertDialog(
         title: Text(
           'ลบภาพสินค้า',
           style: TextStyle(
@@ -284,14 +278,6 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
             pinned: true,
             expandedHeight: size.height * 0.17,
             automaticallyImplyLeading: false,
-            leading: Padding(
-              padding: EdgeInsets.only(left: size.width * 0.09),
-              child: IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.arrow_back_rounded),
-                color: kTextPrimaryColor,
-              ),
-            ),
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 child: Column(
@@ -324,8 +310,8 @@ class _QRCodeUploadState extends State<QRCodeUpload> {
           SliverPadding(
             padding: EdgeInsets.symmetric(horizontal: 36, vertical: 12),
             sliver: SliverToBoxAdapter(
-              child: SizedBox(
-                width: size.width / 1.5,
+              child: Container(
+                width: size.width * .8,
                 child: _socialChoice(context),
               ),
             ),

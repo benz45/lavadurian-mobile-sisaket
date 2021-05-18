@@ -6,11 +6,13 @@ import 'package:LavaDurian/Screens/ViewProduct/components/box_show_product_image
 import 'package:LavaDurian/Screens/ViewProduct/components/dialog_can_not_action_product.dart';
 import 'package:LavaDurian/Screens/ViewProduct/components/preview_product_image.dart';
 import 'package:LavaDurian/models/productImage_model.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'components/dialog_delete_product.dart';
 
 class ViewProductScreen extends StatefulWidget {
@@ -19,7 +21,7 @@ class ViewProductScreen extends StatefulWidget {
   final String status;
   final int productId;
 
-  ViewProductScreen({Key key, this.hero, this.status, this.gene, @required int productId})
+  const ViewProductScreen({Key key, this.hero, this.status, this.gene, @required int productId})
       : this.productId = productId,
         super(key: key);
 
@@ -36,8 +38,8 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
   OrdertModel ordertModel;
   @override
   void initState() {
-    productId = widget.productId;
     super.initState();
+    productId = widget.productId;
     ordertModel = context.read<OrdertModel>();
     productImageModel = context.read<ProductImageModel>();
   }
@@ -92,6 +94,18 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
     }
   }
 
+  void _onShareProductToSocial() async {
+    /*
+    * Get setting value from model by using provider
+    */
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
+
+    await Share.share(
+      "ทุเรียนลาวา ศรีสะเกษ\n"
+      "${settingModel.baseURL}/${settingModel.endPointShareProduct}/${widget.productId}",
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -133,11 +147,21 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ClipOval(
-                        child: Material(
+                        child: Container(
+                          width: 40,
+                          height: 40,
                           color: kPrimaryColor.withOpacity(0.8),
                           child: InkWell(
                             child: IconButton(
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen())),
+                              onPressed: () {
+                                // Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => OperationScreen(),
+                                  ),
+                                );
+                              },
                               icon: Icon(Icons.arrow_back_rounded),
                               color: Colors.white,
                             ),
@@ -147,9 +171,30 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                       // ! Icons header
                       Row(
                         children: [
+                          ClipOval(
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              color: kPrimaryColor.withOpacity(0.8),
+                              child: InkWell(
+                                child: IconButton(
+                                  onPressed: () {
+                                    _onShareProductToSocial();
+                                  },
+                                  icon: Icon(Icons.share_outlined),
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
                           // * Icons Upload Image Product
                           ClipOval(
-                            child: Material(
+                            child: Container(
+                              width: 40,
+                              height: 40,
                               color: kPrimaryColor.withOpacity(0.8),
                               child: InkWell(
                                 child: IconButton(
@@ -165,12 +210,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           ),
                           // * Icons Edit Product
                           ClipOval(
-                            child: Material(
+                            child: Container(
+                              width: 40,
+                              height: 40,
                               color: kPrimaryColor.withOpacity(0.8),
                               child: InkWell(
                                 child: IconButton(
                                   onPressed: _onNavigatorEditProductScreen,
-                                  icon: Icon(Icons.edit),
+                                  icon: Icon(Icons.edit_outlined),
                                   color: Colors.white,
                                 ),
                               ),
@@ -181,12 +228,14 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
                           ),
                           // * Icons Delete Product
                           ClipOval(
-                            child: Material(
+                            child: Container(
+                              width: 40,
+                              height: 40,
                               color: kPrimaryColor.withOpacity(0.8),
                               child: InkWell(
                                 child: IconButton(
                                   onPressed: () => _showOnDeleteDialog(),
-                                  icon: Icon(Icons.delete),
+                                  icon: Icon(Icons.delete_outline_outlined),
                                   color: Colors.white,
                                 ),
                               ),

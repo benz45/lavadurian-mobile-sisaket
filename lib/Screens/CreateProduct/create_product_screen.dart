@@ -1,27 +1,30 @@
 import 'package:LavaDurian/Screens/CreateProduct/components/body.dart';
 import 'package:LavaDurian/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:velocity_x/velocity_x.dart';
 
-class CreateProductScreen extends StatelessWidget {
+class CreateProductDemoScreen extends StatelessWidget {
+  final bool backArrowButton;
   final int storeID;
-  const CreateProductScreen({Key key, @required this.storeID})
-      : super(key: key);
+  CreateProductDemoScreen({this.backArrowButton, @required this.storeID});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        title: Text('สร้างสินค้า').text.color(kTextPrimaryColor).make(),
+        automaticallyImplyLeading: true,
+        title: Text(""),
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_rounded),
-          color: kPrimaryColor,
+          icon: Icon(Icons.arrow_back, color: kPrimaryColor),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SingleChildScrollView(
-        child: Body(storeID: storeID),
+        child: Body(
+          storeID: storeID,
+          backArrowButton: backArrowButton,
+        ),
       ),
     );
   }

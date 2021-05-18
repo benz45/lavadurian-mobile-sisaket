@@ -13,10 +13,8 @@ class StoreApproval extends StatelessWidget {
     return Consumer2<StoreModel, ProductModel>(
       builder: (context, storeModel, productModel, child) {
         // * Fillter for product in current store
-        var products = productModel.products
-            .where(
-                (element) => element['store'] == storeModel.getCurrentIdStore)
-            .toList();
+        var products = productModel.products.where((element) => element['store'] == storeModel.getCurrentIdStore).toList();
+        int currentStatus = storeModel.getCurrentStoreStatus;
 
         if (products.length == 0) {
           return Container(
@@ -29,32 +27,32 @@ class StoreApproval extends StatelessWidget {
                 SizedBox(
                   height: 16.0,
                 ),
-                Center(
-                  child: FlatButton(
-                    height: 40,
-                    color: kPrimaryColor.withOpacity(0.15),
-                    textColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 25),
-                    splashColor: kPrimaryColor.withOpacity(0.2),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text(
-                      "สร้างสินค้าของคุณ",
-                      style: TextStyle(
-                          color: kPrimaryColor, fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => CreateProductScreen(
-                            storeID: storeModel.getCurrentIdStore,
+                if (currentStatus == 1)
+                  Center(
+                    child: FlatButton(
+                      height: 40,
+                      color: kPrimaryColor.withOpacity(0.15),
+                      textColor: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      splashColor: kPrimaryColor.withOpacity(0.2),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        "สร้างสินค้าของคุณ",
+                        style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => CreateProductDemoScreen(
+                              backArrowButton: true,
+                              storeID: storeModel.getCurrentIdStore,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
                 SizedBox(
                   height: 20,
                 )

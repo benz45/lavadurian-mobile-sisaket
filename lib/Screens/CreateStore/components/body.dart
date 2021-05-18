@@ -79,21 +79,17 @@ class _BodyState extends State<Body> {
   CarouselController carouselController = CarouselController();
 
   // Input  Formater Limit 250.
-  List<TextInputFormatter> limitingTextInput = [
-    LengthLimitingTextInputFormatter(250)
-  ];
+  List<TextInputFormatter> limitingTextInput = [LengthLimitingTextInputFormatter(250)];
 
   // Mask Formater Phone Number
-  var maskFormatter = MaskTextInputFormatter(
-      mask: '###-###-####', filter: {"#": RegExp(r'[0-9]')});
+  var maskFormatter = MaskTextInputFormatter(mask: '###-###-####', filter: {"#": RegExp(r'[0-9]')});
 
   @override
   Widget build(BuildContext context) {
     // Provider model.
     StoreModel storeModel = Provider.of<StoreModel>(context, listen: false);
     CreateStoreModel createStoreModel = Provider.of<CreateStoreModel>(context);
-    SettingModel settingModel =
-        Provider.of<SettingModel>(context, listen: false);
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
 
     // Jump page with animation
     void carouselControllerAnimateToPage(int page) {
@@ -113,23 +109,20 @@ class _BodyState extends State<Body> {
 
     // ! Validate data page one
     Future _valdatatePageOne() async {
-      if (createStoreModel.getNameValue == null ||
-          createStoreModel.getNameValue == "") {
+      if (createStoreModel.getNameValue == null || createStoreModel.getNameValue == "") {
         showSnackBar(context, 'กรุณากรอกชื่อร้านค้า');
 
         carouselControllerAnimateToPage(0);
         return false;
       }
 
-      if (createStoreModel.getSloganValue == null ||
-          createStoreModel.getSloganValue == "") {
+      if (createStoreModel.getSloganValue == null || createStoreModel.getSloganValue == "") {
         showSnackBar(context, 'กรุณากรอกข้อมูลสโลแกนร้านค้า');
         carouselControllerAnimateToPage(0);
         return false;
       }
 
-      if (createStoreModel.getAboutValue == null ||
-          createStoreModel.getAboutValue == "") {
+      if (createStoreModel.getAboutValue == null || createStoreModel.getAboutValue == "") {
         showSnackBar(context, 'กรุณาบรรยายข้อมูลเกี่ยวกับร้านค้า');
         carouselControllerAnimateToPage(0);
 
@@ -147,8 +140,7 @@ class _BodyState extends State<Body> {
         return false;
       }
 
-      if (createStoreModel.getPhone1Value == null ||
-          createStoreModel.getPhone1Value == "") {
+      if (createStoreModel.getPhone1Value == null || createStoreModel.getPhone1Value == "") {
         showSnackBar(context, 'กรุณากรอกหมายเลขติดต่อ');
         carouselControllerAnimateToPage(1);
         return false;
@@ -176,8 +168,7 @@ class _BodyState extends State<Body> {
           'about': createStoreModel.getAboutValue.toString().trim(),
           'phone1': createStoreModel.getPhone1Value.toString().trim(),
           'phone2': createStoreModel.getPhone2Value.toString().trim(),
-          'district': storeModel.district.keys.firstWhere((k) =>
-              storeModel.district[k] == createStoreModel.getChosenDistrict),
+          'district': storeModel.district.keys.firstWhere((k) => storeModel.district[k] == createStoreModel.getChosenDistrict),
           'status': 0.toString(),
         };
 
@@ -208,8 +199,7 @@ class _BodyState extends State<Body> {
 
             storeModel.addStore = toMap();
             SharedPreferences prefs = await SharedPreferences.getInstance();
-            String currentStoreById =
-                'USERID_${initUserModel.value['id']}_CURRENT_STORE';
+            String currentStoreById = 'USERID_${initUserModel.value['id']}_CURRENT_STORE';
             prefs.setInt(currentStoreById, toMap()['id']);
             createStoreModel.clear();
 
@@ -241,8 +231,7 @@ class _BodyState extends State<Body> {
               },
             ), (Route<dynamic> route) => false);
           } else {
-            showSnackBar(context,
-                "เกิดข้อผิดพลาด Response status : ${response.statusCode}");
+            showSnackBar(context, "เกิดข้อผิดพลาด Response status : ${response.statusCode}");
           }
         } catch (e) {
           print(e);
@@ -273,22 +262,18 @@ class _BodyState extends State<Body> {
                           padding: EdgeInsets.only(bottom: 7.0),
                           child: Text(
                             "สร้างร้านค้าของคุณ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 26),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
                           ),
                         ),
                         Text(
                           "ทุเรียนภูเขาไฟศรีสะเกษ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: kTextSecondaryColor),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: kTextSecondaryColor),
                         ),
                         SizedBox(height: size.height * 0.04),
                       ],
                     ),
                   ),
-                  Consumer<CreateStoreModel>(
-                      builder: (_, consumerCreateStoreModel, c) {
+                  Consumer<CreateStoreModel>(builder: (_, consumerCreateStoreModel, c) {
                     return Container(
                       child: CarouselSlider(
                         carouselController: carouselController,
@@ -298,8 +283,7 @@ class _BodyState extends State<Body> {
                             enableInfiniteScroll: false,
                             height: size.height * 0.6,
                             onPageChanged: (index, reason) {
-                              consumerCreateStoreModel.setCurrentIndexPage =
-                                  index;
+                              consumerCreateStoreModel.setCurrentIndexPage = index;
                             }),
                         items: [
                           // ! Page 1
@@ -325,8 +309,7 @@ class _BodyState extends State<Body> {
                               // * _aboutValue
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 26, vertical: 5),
+                                padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
                                 width: size.width * 0.8,
                                 decoration: BoxDecoration(
                                   color: kPrimaryLightColor,
@@ -354,11 +337,7 @@ class _BodyState extends State<Body> {
                                       duration: Duration(milliseconds: 800),
                                       curve: Curves.fastOutSlowIn,
                                     );
-                                    consumerCreateStoreModel
-                                            .setCurrentIndexPage =
-                                        (consumerCreateStoreModel
-                                                .getCurrentIndexPage) +
-                                            1;
+                                    consumerCreateStoreModel.setCurrentIndexPage = (consumerCreateStoreModel.getCurrentIndexPage) + 1;
                                   }
                                 },
                               ),
@@ -377,12 +356,10 @@ class _BodyState extends State<Body> {
                                     barrierDismissible: true,
                                     builder: (context) {
                                       // * Init state dialog only.
-                                      int selectedRadio = storeModel
-                                              .district.entries
+                                      int selectedRadio = storeModel.district.entries
                                               .map((e) => "${e.value}")
                                               .toList()
-                                              .indexOf(consumerCreateStoreModel
-                                                  .getChosenDistrict) ??
+                                              .indexOf(consumerCreateStoreModel.getChosenDistrict) ??
                                           0;
 
                                       return AlertDialog(
@@ -403,23 +380,16 @@ class _BodyState extends State<Body> {
                                               width: size.width * 0.8,
                                               child: ListView.builder(
                                                 shrinkWrap: true,
-                                                itemCount: storeModel
-                                                    .district.entries
-                                                    .map((e) => e.key)
-                                                    .toList()
-                                                    .length,
+                                                itemCount: storeModel.district.entries.map((e) => e.key).toList().length,
                                                 itemBuilder: (context, index) {
                                                   return RadioListTile(
                                                     title: Text(
                                                       '${storeModel.district.entries.map((e) => "${e.value}").toList()[index]}'
-                                                          .replaceAll(
-                                                              "", "\u{200B}"),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                          .replaceAll("", "\u{200B}"),
+                                                      overflow: TextOverflow.ellipsis,
                                                     ),
                                                     value: index,
-                                                    groupValue:
-                                                        selectedRadio ?? 0,
+                                                    groupValue: selectedRadio ?? 0,
                                                     onChanged: (value) {
                                                       // * set state dialog only.
                                                       setDialogState(() {
@@ -427,19 +397,11 @@ class _BodyState extends State<Body> {
                                                       });
 
                                                       // * set state global only.
-                                                      consumerCreateStoreModel
-                                                              .setChosenDistrict =
-                                                          storeModel
-                                                              .district.entries
-                                                              .map((e) =>
-                                                                  "${e.value}")
-                                                              .toList()[value];
+                                                      consumerCreateStoreModel.setChosenDistrict =
+                                                          storeModel.district.entries.map((e) => "${e.value}").toList()[value];
                                                       Navigator.pop(context);
                                                     },
-                                                    selected:
-                                                        index == selectedRadio
-                                                            ? true
-                                                            : false,
+                                                    selected: index == selectedRadio ? true : false,
                                                     activeColor: kPrimaryColor,
                                                   );
                                                 },
@@ -454,23 +416,16 @@ class _BodyState extends State<Body> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(29),
                                   child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 36, vertical: 18),
+                                    padding: EdgeInsets.symmetric(horizontal: 36, vertical: 18),
                                     width: size.width * 0.8,
                                     color: kPrimaryLightColor,
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           '${consumerCreateStoreModel.getChosenDistrict ?? 'เขตอำเภอ'}',
-                                          style: TextStyle(
-                                              color: kTextPrimaryColor
-                                                  .withOpacity(0.62),
-                                              fontSize:
-                                                  font.subtitle1.fontSize),
+                                          style: TextStyle(color: kTextPrimaryColor.withOpacity(0.62), fontSize: font.subtitle1.fontSize),
                                         ),
                                         Icon(
                                           Icons.keyboard_arrow_down_rounded,
@@ -496,59 +451,18 @@ class _BodyState extends State<Body> {
                                 ],
                               ),
                               // * _phone2Value
-                              LayoutBuilder(builder: (context, constrain) {
-                                bool isShow = false;
-                                return StatefulBuilder(
-                                  builder:
-                                      (BuildContext context, setPhoneState) {
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            setPhoneState(() {
-                                              isShow = !isShow;
-                                            });
-                                          },
-                                          child: InkWell(
-                                            highlightColor: kPrimaryColor,
-                                            splashColor: kPrimaryColor,
-                                            hoverColor: kPrimaryColor,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10),
-                                              child: Text(
-                                                'เพิ่มเบอร์โทรติดต่อสำรอง (ถ้ามี)',
-                                                style: TextStyle(
-                                                    color: kPrimaryColor),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        if (isShow)
-                                          RoundedInputField(
-                                            hintText: "หมายเลขโทรศัพท์สำรอง",
-                                            icon: Icons.phone,
-                                            controller: _textPhone2Value,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            keyboardType: TextInputType.phone,
-                                            inputFormatters: [
-                                              maskFormatter,
-                                            ],
-                                          ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }),
+                              RoundedInputField(
+                                hintText: "หมายเลขโทรศัพท์สำรอง (ถ้ามี)",
+                                icon: Icons.phone,
+                                controller: _textPhone2Value,
+                                textInputAction: TextInputAction.next,
+                                keyboardType: TextInputType.phone,
+                                inputFormatters: [
+                                  maskFormatter,
+                                ],
+                              ),
 
-                              RoundedButton(
-                                  text: 'ยืนยัน',
-                                  press: () async => await _onSubmit()),
+                              RoundedButton(text: 'ยืนยัน', press: () async => await _onSubmit()),
                             ],
                           ),
                         ],
@@ -562,28 +476,6 @@ class _BodyState extends State<Body> {
           // ! Smooth Indicator
 
           CreateStoreAnimatedSmoothIndicator(),
-
-          // ignore: todo
-          // TODO: Back page button
-          // if (widget.backArrowButton != null && widget.backArrowButton)
-          Positioned(
-            child: ClipOval(
-              child: Material(
-                color: Colors.white.withOpacity(0.3),
-                child: InkWell(
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(Icons.arrow_back_rounded),
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-            top: size.height * 0.04,
-            left: size.height * 0.04,
-          ),
         ],
       ),
     );

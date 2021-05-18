@@ -1,4 +1,4 @@
-import 'package:LavaDurian/Screens/CreateProductDemo/create_product_demo_screen.dart';
+import 'package:LavaDurian/Screens/CreateProduct/create_product_screen.dart';
 import 'package:LavaDurian/Screens/CreateStore/create_store_screen.dart';
 import 'package:LavaDurian/Screens/Developer/developer_screen.dart';
 import 'package:LavaDurian/Screens/Operation/operation_screen.dart';
@@ -136,7 +136,7 @@ class _NavDrawerState extends State<NavDrawer> {
                   ListTile(
                     leading: Icon(Icons.verified),
                     title: Text(
-                      'เวอร์ชั่น 1.0.2',
+                      'เวอร์ชั่น 1.0.3',
                       style: TextStyle(fontSize: textTheme.subtitle1.fontSize, color: kTextSecondaryColor),
                     ),
                   ),

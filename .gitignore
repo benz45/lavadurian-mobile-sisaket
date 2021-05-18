@@ -29,6 +29,7 @@
 .pub-cache/
 .pub/
 .vscode/
+.fvm/
 /build/
 
 # Web related

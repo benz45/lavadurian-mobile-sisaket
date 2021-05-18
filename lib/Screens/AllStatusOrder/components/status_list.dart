@@ -41,17 +41,30 @@ class _StatusCardState extends State<StatusCard> {
       StatusListTile(8, orderModel.orderStatus['8'], getStatusCount(8)),
     ];
 
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 3,
+            offset: Offset(0, 1), // changes position of shadow
+          ),
+        ],
+        borderRadius: BorderRadius.all(
+          Radius.circular(18.0),
+        ),
       ),
       child: Column(
         children: <Widget>[
           ListView(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            children: ListTile.divideTiles(context: context, tiles: tiles).toList(),
+            children: ListTile.divideTiles(
+              context: context,
+              tiles: tiles,
+            ).toList(),
           )
         ],
       ),

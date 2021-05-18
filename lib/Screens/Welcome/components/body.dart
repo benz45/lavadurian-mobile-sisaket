@@ -28,10 +28,7 @@ class Body extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 12.0),
                   child: Text(
                     'ทุเรียนภูเขาไฟศรีสะเกษ',
-                    style: TextStyle(
-                        color: kPrimaryColor,
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(color: kPrimaryColor, fontSize: 21, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Container(
@@ -43,8 +40,8 @@ class Body extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    'สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้า',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 )
               ],

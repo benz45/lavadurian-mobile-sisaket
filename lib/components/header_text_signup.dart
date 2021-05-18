@@ -15,9 +15,12 @@ class HeaderTextSignUp extends StatelessWidget {
           ),
         ),
         Text(
-          "สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ",
+          "สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้า",
           style: TextStyle(
-              fontWeight: FontWeight.bold, color: kTextSecondaryColor),
+            fontWeight: FontWeight.bold,
+            color: kTextSecondaryColor,
+            fontSize: 16,
+          ),
         ),
         SizedBox(height: size.height * 0.03)
       ],

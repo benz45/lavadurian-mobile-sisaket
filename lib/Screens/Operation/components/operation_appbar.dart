@@ -12,8 +12,7 @@ class OperationAppBar extends StatefulWidget {
   _OperationAppBarState createState() => _OperationAppBarState();
 }
 
-class _OperationAppBarState extends State<OperationAppBar>
-    with TickerProviderStateMixin {
+class _OperationAppBarState extends State<OperationAppBar> with TickerProviderStateMixin {
   int storeID;
 
   @override
@@ -61,8 +60,7 @@ class _OperationAppBarState extends State<OperationAppBar>
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.48,
+                                    height: MediaQuery.of(context).size.height * 0.48,
                                     padding: EdgeInsets.all(10.0),
                                     child: Column(
                                       children: [
@@ -81,33 +79,25 @@ class _OperationAppBarState extends State<OperationAppBar>
                                   child: LayoutBuilder(
                                     builder: (context, constaints) {
                                       // Build the textspan
+
                                       final text = TextSpan(
-                                        text: '${currentStore['name']}'
-                                            .replaceAll("", "\u{200B}"),
+                                        text: '${currentStore['name']}'.replaceAll("", "\u{200B}"),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: kTextPrimaryColor,
-                                          fontSize: size.height /
-                                              size.width *
-                                              (font.headline4.fontSize / 3.31),
+                                          fontSize: font.headline6.fontSize,
                                         ),
                                       );
 
                                       // Use a textpainter to determine if it will exceed max lines
-                                      final textPainter = TextPainter(
-                                          maxLines: 1,
-                                          textAlign: TextAlign.left,
-                                          textDirection: TextDirection.ltr,
-                                          text: text);
+                                      final textPainter =
+                                          TextPainter(maxLines: 1, textAlign: TextAlign.left, textDirection: TextDirection.ltr, text: text);
 
                                       // trigger it to layout
-                                      textPainter.layout(
-                                          minWidth: constaints.minWidth,
-                                          maxWidth: constaints.maxWidth);
+                                      textPainter.layout(minWidth: constaints.minWidth, maxWidth: constaints.maxWidth);
 
                                       // whether the text overflowed or not
-                                      bool exceeded =
-                                          textPainter.didExceedMaxLines;
+                                      bool exceeded = textPainter.didExceedMaxLines;
 
                                       return Row(
                                         children: [
@@ -118,8 +108,7 @@ class _OperationAppBarState extends State<OperationAppBar>
                                                     text,
                                                     maxLines: 1,
                                                     softWrap: true,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 )
                                               : Container(
@@ -127,16 +116,12 @@ class _OperationAppBarState extends State<OperationAppBar>
                                                     text,
                                                     maxLines: 1,
                                                     softWrap: true,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow.ellipsis,
                                                   ),
                                                 ),
                                           Icon(
                                             Icons.keyboard_arrow_down_rounded,
-                                            size: Theme.of(context)
-                                                .textTheme
-                                                .headline4
-                                                .fontSize,
+                                            size: Theme.of(context).textTheme.headline4.fontSize,
                                           )
                                         ],
                                       );
@@ -146,10 +131,7 @@ class _OperationAppBarState extends State<OperationAppBar>
                               : Container(
                                   child: Text(
                                     'เลือกร้านค้าที่นี้',
-                                    style: TextStyle(
-                                        color: kPrimaryColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: font.headline5.fontSize),
+                                    style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: font.headline5.fontSize),
                                   ),
                                 ),
                         )
@@ -159,14 +141,12 @@ class _OperationAppBarState extends State<OperationAppBar>
                       children: [
                         Container(
                           child: Text(
-                            'ทุเรียนภุเขาไฟจังหวัดศรีสะเกษ',
+                            'ทุเรียนภูเขาไฟจังหวัดศรีสะเกษ',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: kTextSecondaryColor,
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2
-                                    .fontSize),
+                              fontWeight: FontWeight.bold,
+                              color: kTextSecondaryColor,
+                              fontSize: Theme.of(context).textTheme.subtitle2.fontSize,
+                            ),
                           ),
                         ),
                       ],

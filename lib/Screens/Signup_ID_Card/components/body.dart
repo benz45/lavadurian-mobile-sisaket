@@ -19,8 +19,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:http/http.dart' as http;
 
 class Body extends StatelessWidget {
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +28,7 @@ class Body extends StatelessWidget {
     final store = Provider.of<SignupModel>(context);
     final api = Provider.of<SettingModel>(context);
 
-    var maskFormatter = MaskTextInputFormatter(
-        mask: '#-####-#####-##-#', filter: {"#": RegExp(r'[0-9]')});
+    var maskFormatter = MaskTextInputFormatter(mask: '#-####-#####-##-#', filter: {"#": RegExp(r'[0-9]')});
 
     Future _onSubmit(BuildContext context) async {
       try {
@@ -46,9 +44,7 @@ class Body extends StatelessWidget {
             _btnController.stop();
           }
           if (maskFormatter.getUnmaskedText().length == 13) {
-            final response = await http.post(
-                '${api.baseURL}/${api.endPointCheckCitizenId}',
-                body: {'citizenid': maskFormatter.getUnmaskedText()});
+            final response = await http.post('${api.baseURL}/${api.endPointCheckCitizenId}', body: {'citizenid': maskFormatter.getUnmaskedText()});
 
             if (response.statusCode == 200) {
               final result = CheckInfo.fromJson(jsonDecode(response.body));
@@ -92,47 +88,49 @@ class Body extends StatelessWidget {
       // Validation ID Card.
     }
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        HeaderTextSignUp(),
-        RoundedInputField(
-          hintText: "รหัสประจำตัวประชาชน (ข้ามได้)",
-          inputFormatters: [
-            maskFormatter,
+    return Center(
+      child: Container(
+        width: size.width * .8,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            HeaderTextSignUp(),
+            RoundedInputField(
+              hintText: "รหัสประจำตัวประชาชน (ข้ามได้)",
+              inputFormatters: [
+                maskFormatter,
+              ],
+              keyboardType: TextInputType.number,
+              icon: Icons.person_search,
+              onSubmitted: (_) => _onSubmit(context),
+            ),
+            SizedBox(height: size.height * 0.01),
+            BtnRoundedLoadingButton(
+              text: 'ถัดไป',
+              controller: _btnController,
+              onPressed: () => _onSubmit(context),
+            ),
+
+            SizedBox(height: size.height * 0.03),
+            AlreadyHaveAnAccountCheck(
+              login: false,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+            // ignore: todo
+            // TODO:(Next Feature) Social Sign Up.
+            // SocialSignUp()
           ],
-          keyboardType: TextInputType.number,
-          icon: Icons.person_search,
-          onSubmitted: (_) => _onSubmit(context),
         ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-          child: BtnRoundedLoadingButton(
-            text: 'ถัดไป',
-            controller: _btnController,
-            onPressed: () => _onSubmit(context),
-          ),
-        ),
-
-        SizedBox(height: size.height * 0.03),
-        AlreadyHaveAnAccountCheck(
-          login: false,
-          press: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return LoginScreen();
-                },
-              ),
-            );
-          },
-        ),
-        // ignore: todo
-        // TODO:(Next Feature) Social Sign Up.
-        // SocialSignUp()
-      ],
+      ),
     );
   }
 }

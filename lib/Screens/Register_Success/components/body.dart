@@ -27,8 +27,7 @@ class _BodyState extends State<Body> {
   // Checkbox State
   bool checkboxValue = false;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   @override
   void initState() {
@@ -46,9 +45,7 @@ class _BodyState extends State<Body> {
         'password': storeSignUp.getPassword,
       };
 
-      final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPointLogin}',
-          body: data);
+      final response = await Http.post('${settingModel.baseURL}/${settingModel.endPointLogin}', body: data);
 
       final jsonData = json.decode(response.body);
 
@@ -83,8 +80,7 @@ class _BodyState extends State<Body> {
           builder: (context) {
             return AlertDialog(
               title: Text('Can not login !!'),
-              content:
-                  Text("Invalid Username or Password !, Please login again."),
+              content: Text("Invalid Username or Password !, Please login again."),
             );
           },
         );
@@ -105,60 +101,56 @@ class _BodyState extends State<Body> {
 
     Size size = MediaQuery.of(context).size;
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: size.height * 0.03),
-          SvgPicture.asset(
-            "assets/icons/undraw_order_confirmed_aaw7.svg",
-            width: size.width * 0.6,
-          ),
-          SizedBox(height: size.height * 0.03),
-          Text(
-            "ลงทะเบียนสำเร็จ",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-          ),
-          SizedBox(height: size.height * 0.02),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Checkbox(
-                value: checkboxValue,
-                onChanged: (_) =>
-                    setState(() => checkboxValue = !checkboxValue),
-                activeColor: kPrimaryColor,
-              ),
-              Text('ยอมรับข้อกำหนดและการใช้บริการ'),
-              SizedBox(width: size.width * 0.01),
-              Text(
-                'ข้อกำหนด',
-                style: TextStyle(
-                    color: kPrimaryColor,
-                    decorationColor: kPrimaryColor,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-            child: getstartedButton,
-          ),
-          SizedBox(height: size.height * 0.01),
-          AlreadyHaveAnAccountCheck(
-            login: false,
-            press: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return SignUpIDCardScreen();
-                  },
+      child: Container(
+        width: size.width * .8,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: size.height * 0.03),
+            SvgPicture.asset(
+              "assets/icons/undraw_order_confirmed_aaw7.svg",
+              width: size.width * 0.6,
+            ),
+            SizedBox(height: size.height * 0.03),
+            Text(
+              "ลงทะเบียนสำเร็จ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+            ),
+            SizedBox(height: size.height * 0.02),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Checkbox(
+                  value: checkboxValue,
+                  onChanged: (_) => setState(() => checkboxValue = !checkboxValue),
+                  activeColor: kPrimaryColor,
                 ),
-              );
-            },
-          ),
-        ],
+                Text('ยอมรับข้อกำหนดและการใช้บริการ'),
+                SizedBox(width: size.width * 0.01),
+                Text(
+                  'ข้อกำหนด',
+                  style: TextStyle(color: kPrimaryColor, decorationColor: kPrimaryColor, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            getstartedButton,
+            SizedBox(height: size.height * 0.01),
+            AlreadyHaveAnAccountCheck(
+              login: false,
+              press: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SignUpIDCardScreen();
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

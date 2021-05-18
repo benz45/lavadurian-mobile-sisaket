@@ -17,8 +17,7 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
   SettingModel settingModel;
   String email = '';
 
@@ -29,9 +28,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       'email': email,
     };
 
-    final response = await Http.post(
-        "${settingModel.baseURL}/${settingModel.endPointResetPassword}",
-        body: data);
+    final response = await Http.post("${settingModel.baseURL}/${settingModel.endPointResetPassword}", body: data);
 
     var jsonData = jsonDecode(response.body);
     if (jsonData['detail'] != null) {
@@ -45,8 +42,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             actions: [
               FlatButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
                   child: Text("OK"))
             ],
@@ -69,94 +65,79 @@ class _ResetPasswordState extends State<ResetPassword> {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: true,
+        title: Text(""),
+      ),
       body: Background(
-        child: Stack(
-          overflow: Overflow.visible,
-          children: [
-            Container(
-              height: size.height,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SvgPicture.asset(
-                    "assets/icons/undraw_inbox_cleanup_w2ur.svg",
-                    width: size.width * 0.45,
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                  Text(
-                    'เปลี่ยนรหัสผ่าน',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: textTheme.headline6.fontSize,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    width: size.width * 0.80,
-                    child: Text(
-                      'หากต้องการเปลี่ยนรหัสผ่าน กรุณากรอกอีเมลที่ใช้ทำการสมัครเข้าใช้งานระบบ',
-                      style: TextStyle(
-                        color: kTextSecondaryColor,
-                        fontSize: textTheme.subtitle1.fontSize,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  RoundedInputField(
-                    icon: Icons.mail,
-                    hintText: "อีเมลสำหรับเปลี่ยนรหัสผ่าน",
-                    onChanged: (value) {
-                      email = value;
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 15),
-                    child: RoundedLoadingButton(
-                      child: Text(
-                        "เปลี่ยนรหัสผ่าน",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      width: MediaQuery.of(context).size.width,
-                      color: kPrimaryColor,
-                      controller: _btnController,
-                      onPressed: () {
-                        if (email == "") {
-                          _btnController.stop();
-                        } else {
-                          _resetPassword(email);
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              child: ClipOval(
-                child: Material(
-                  color: Colors.white.withOpacity(0.3),
-                  child: InkWell(
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: Icon(Icons.arrow_back_rounded),
-                      color: Colors.grey,
-                    ),
+        child: Center(
+          child: Container(
+            width: size.width * .8,
+            height: size.height,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset(
+                  "assets/icons/undraw_inbox_cleanup_w2ur.svg",
+                  width: size.width * 0.45,
+                ),
+                SizedBox(height: size.height * 0.03),
+                Text(
+                  'เปลี่ยนรหัสผ่าน',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: textTheme.headline6.fontSize,
                   ),
                 ),
-              ),
-              top: size.height * 0.06,
-              left: size.height * 0.04,
+                SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  'หากต้องการเปลี่ยนรหัสผ่าน กรุณากรอกอีเมลที่ใช้ทำการสมัครเข้าใช้งานระบบ',
+                  style: TextStyle(
+                    color: kTextSecondaryColor,
+                    fontSize: textTheme.subtitle1.fontSize,
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                RoundedInputField(
+                  icon: Icons.mail,
+                  hintText: "อีเมลสำหรับเปลี่ยนรหัสผ่าน",
+                  onChanged: (value) {
+                    email = value;
+                  },
+                ),
+                SizedBox(
+                  height: size.height * .01,
+                ),
+                RoundedLoadingButton(
+                  width: MediaQuery.of(context).size.width,
+                  child: Text(
+                    "เปลี่ยนรหัสผ่าน",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  // width: MediaQuery.of(context).size.width,
+                  color: kPrimaryColor,
+                  controller: _btnController,
+                  onPressed: () {
+                    if (email == "") {
+                      _btnController.stop();
+                    } else {
+                      _resetPassword(email);
+                    }
+                  },
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

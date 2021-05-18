@@ -26,8 +26,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
     return Consumer3<StoreModel, ProductModel, ProductImageModel>(
       builder: (context, storeModel, productModel, productImageModel, child) {
         // * Fillter for product in current store
-        var products =
-            productModel.getProductsFromStoreId(storeModel.getCurrentIdStore);
+        var products = productModel.getProductsFromStoreId(storeModel.getCurrentIdStore);
 
         if (products.length != 0) {
           return StaggeredGridView.countBuilder(
@@ -44,9 +43,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
             itemBuilder: (context, index) {
               final product = products;
 
-              List listProductImage =
-                  productImageModel.getProductImageFromProductId(
-                      productId: product[index]['id']);
+              List listProductImage = productImageModel.getProductImageFromProductId(productId: product[index]['id']);
 
               return GestureDetector(
                 onTap: () {
@@ -56,10 +53,8 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                       builder: (_) => ViewProductScreen(
                         productId: products[index]['id'],
                         hero: '$index',
-                        status: productModel.productStatus[
-                            productModel.products[index]['status'].toString()],
-                        gene: productModel
-                            .productGene[product[index]['gene'].toString()],
+                        status: productModel.productStatus[productModel.products[index]['status'].toString()],
+                        gene: productModel.productGene[product[index]['gene'].toString()],
                       ),
                     ),
                   );
@@ -89,14 +84,9 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                 height: size.height * .21,
                                 viewportFraction: 1.0,
                                 enlargeCenterPage: true,
-                                autoPlay:
-                                    listProductImage.length > 1 ? true : false,
-                                autoPlayInterval: Duration(
-                                    seconds: Random()
-                                            .nextInt(listProductImage.length) +
-                                        5),
-                                autoPlayAnimationDuration:
-                                    Duration(milliseconds: 800),
+                                autoPlay: listProductImage.length > 1 ? true : false,
+                                autoPlayInterval: Duration(seconds: Random().nextInt(listProductImage.length) + 5),
+                                autoPlayAnimationDuration: Duration(milliseconds: 800),
                                 autoPlayCurve: Curves.fastOutSlowIn,
                               ),
                               items: listProductImage.map((element) {
@@ -116,8 +106,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                     useOldImageOnUrlChange: true,
                                     cacheKey: element['image'],
                                     imageUrl: element['image'],
-                                    imageBuilder: (_, imageProvider) =>
-                                        Container(
+                                    imageBuilder: (_, imageProvider) => Container(
                                       decoration: ShapeDecoration(
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.vertical(
@@ -131,8 +120,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                       ),
                                     ),
                                     placeholder: (_, __) => Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Container(
                                           width: 20,
@@ -140,9 +128,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                                           child: CircularProgressIndicator(
                                             strokeWidth: 2,
                                             backgroundColor: kPrimaryColor,
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.white),
+                                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                           ),
                                         ),
                                       ],
@@ -163,8 +149,7 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                               width: double.infinity,
                               height: 140,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(18.0)),
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(18.0)),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: AssetImage(
@@ -185,68 +170,43 @@ class _OperationCardProductState extends State<OperationCardProduct> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: Text(
                                 "${productModel.productStatus[productModel.products[index]['status'].toString()]}",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12.0),
+                                style: TextStyle(color: Colors.white, fontSize: 12.0),
                               ),
                             ),
                           ),
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: EdgeInsets.all(10),
+                        child: FittedBox(
+                          child: Text(
+                            "${productModel.productGene[product[index]['gene'].toString()]}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, left: 12, right: 12, bottom: 12),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 3.8),
-                                    child: Hero(
-                                      tag: 'gene$index',
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: Text(
-                                            "${productModel.productGene[product[index]['gene'].toString()]}",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: size.height /
-                                                  size.width *
-                                                  (font.subtitle1.fontSize /
-                                                      2.61),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  DetailOnCard(
-                                    type: 'จำนวน',
-                                    value: product[index]['values'].toString(),
-                                    fontSize: size.height /
-                                        size.width *
-                                        (font.subtitle1.fontSize / 2.58),
-                                  ),
-                                  DetailOnCard(
-                                    type: 'น้ำหนัก',
-                                    value: product[index]['weight'].toString(),
-                                    fontSize: size.height /
-                                        size.width *
-                                        (font.subtitle1.fontSize / 2.59),
-                                  ),
-                                ],
-                              ),
+                            DetailOnCard(
+                              type: 'จำนวน',
+                              value: product[index]['values'].toString(),
+                              // fontSize: font.subtitle2.fontSize,
+                            ),
+                            DetailOnCard(
+                              type: 'น้ำหนัก',
+                              value: product[index]['weight'].toString(),
+                              // fontSize: font.subtitle2.fontSize,
                             ),
                             Container(
                               padding: EdgeInsets.only(top: 8.0),
                               child: DetailOnCard(
                                 type: 'ราคา',
                                 value: product[index]['price'].toString(),
-                                fontSize: size.height /
-                                    size.width *
-                                    (font.subtitle1.fontSize / 2.67),
+                                fontSize: font.subtitle2.fontSize,
                               ),
                             ),
                           ],

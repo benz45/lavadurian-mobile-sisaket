@@ -25,20 +25,16 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   // Mask Formater Phone Number
-  var maskFormatter = MaskTextInputFormatter(
-      mask: '###-###-####', filter: {"#": RegExp(r'[0-9]')});
+  var maskFormatter = MaskTextInputFormatter(mask: '###-###-####', filter: {"#": RegExp(r'[0-9]')});
 
   // Checkbox State
   bool checkboxValue = true;
 
   // Input  Formater Limit 250
-  List<TextInputFormatter> limitingTextInput = [
-    LengthLimitingTextInputFormatter(250)
-  ];
+  List<TextInputFormatter> limitingTextInput = [LengthLimitingTextInputFormatter(250)];
 
   // Controller Button
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   Widget build(BuildContext context) {
     // Store Provider
@@ -73,22 +69,19 @@ class _BodyState extends State<Body> {
             return;
           }
 
-          final response = await http.post(
-              '${storeApi.baseURL}/${storeApi.endPointRegis}',
-              body: <String, String>{
-                'username': storeSignup.getEmail,
-                'password': storeSignup.getPassword,
-                'email': storeSignup.getEmail,
-                'first_name': storeSignup.getFirstName,
-                'last_name': storeSignup.getLastName,
-                'citizenid': storeSignup.getCitizenid,
-                'tradertype': storeSignup.getTradertype,
-                'tradername': storeSignup.getTradername,
-                'phone': storeSignup.getPhoneNumber,
-              });
+          final response = await http.post('${storeApi.baseURL}/${storeApi.endPointRegis}', body: <String, String>{
+            'username': storeSignup.getEmail,
+            'password': storeSignup.getPassword,
+            'email': storeSignup.getEmail,
+            'first_name': storeSignup.getFirstName,
+            'last_name': storeSignup.getLastName,
+            'citizenid': storeSignup.getCitizenid,
+            'tradertype': storeSignup.getTradertype,
+            'tradername': storeSignup.getTradername,
+            'phone': storeSignup.getPhoneNumber,
+          });
           if (response.statusCode == 200) {
-            final result =
-                ResponseSignupModel.fromJson(jsonDecode(response.body));
+            final result = ResponseSignupModel.fromJson(jsonDecode(response.body));
 
             if (result.status) {
               _btnController.success();
@@ -108,8 +101,7 @@ class _BodyState extends State<Body> {
             }
           } else {
             _btnController.reset();
-            showSnackBar(
-                context, 'เกิดข้อผิดพลาด response ${response.statusCode}');
+            showSnackBar(context, 'เกิดข้อผิดพลาด response ${response.statusCode}');
           }
         } else {
           _btnController.reset();
@@ -121,10 +113,10 @@ class _BodyState extends State<Body> {
       }
     }
 
-    return Container(
-      constraints: BoxConstraints.expand(),
-      child: Center(
-        child: SingleChildScrollView(
+    return Center(
+      child: SingleChildScrollView(
+        child: Container(
+          width: size.width * .8,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -137,8 +129,7 @@ class _BodyState extends State<Body> {
               ),
               Text(
                 "สมัครใช้งานเพื่อสร้างร้านค้าและอัพเดทสินค้าของคุณ",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: kTextSecondaryColor),
+                style: TextStyle(fontWeight: FontWeight.bold, color: kTextSecondaryColor),
               ),
               SizedBox(height: size.height * 0.03),
 
@@ -195,13 +186,10 @@ class _BodyState extends State<Body> {
                   Text(storeSignup.tTrader['1']),
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                child: BtnRoundedLoadingButton(
-                  text: 'ถัดไป',
-                  controller: _btnController,
-                  onPressed: () => _onSubmit(),
-                ),
+              BtnRoundedLoadingButton(
+                text: 'ถัดไป',
+                controller: _btnController,
+                onPressed: () => _onSubmit(),
               ),
               SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
