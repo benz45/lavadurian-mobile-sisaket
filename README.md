@@ -21,10 +21,10 @@ For "Durian Lava" is a mobile application for managing stores, products and orde
 - Manage orders 
 
 ## build on
-- Flutter version 1.22.6
-- Framework revision 9b2d32b605
-- Engine revision 2f0af37152
-- Dart version 2.10.5
+- Flutter version 2.0.5
+- Framework revision adc687823a
+- Engine revision b09f014e96
+- Dart version 2.12.3
 
 ## พัฒนาโดย 
 
