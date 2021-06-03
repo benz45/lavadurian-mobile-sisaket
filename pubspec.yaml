@@ -13,8 +13,8 @@ description: Lava Durian Project.
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 # update verion by Phisan Sookkhee
-# on date 14-march-2021
-version: 1.0.3+3
+# on date 03-jan-2021
+version: 1.0.4+4
 
 environment:
   sdk: ">=2.10.5 <3.0.0"
