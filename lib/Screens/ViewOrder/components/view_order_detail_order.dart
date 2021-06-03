@@ -1,13 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:LavaDurian/Screens/ViewOrder/components/build_headtext.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/build_subtext.dart';
 import 'package:LavaDurian/Screens/ViewOrder/components/view_order_transfer_image.dart';
+import 'package:LavaDurian/components/showSnackBar.dart';
 import 'package:LavaDurian/constants.dart';
+import 'package:LavaDurian/models/setting_model.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as Http;
 
 class ViewOrderDetailOrder extends StatefulWidget {
   const ViewOrderDetailOrder({
@@ -24,6 +30,9 @@ class ViewOrderDetailOrder extends StatefulWidget {
 }
 
 class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
+  SettingModel settingModel;
+  OrdertModel ordertModel;
+
   TextEditingController _controllerEditTransfer = TextEditingController();
 
   bool _isShowTextButtonOnSubmitTransfer = false;
@@ -31,8 +40,53 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
 
   String _valueEditTransfer = "";
 
+  Future _onsubmitConfirmEditShippingCost() async {
+    try {
+      final Map<String, dynamic> data = {
+        "order_id": widget.orders['id'],
+        "shipping": _valueEditTransfer.toString(),
+      };
+      // get current user token
+      String token = settingModel.value['token'];
+
+      final response = await Http.post(
+        '${settingModel.baseURL}/${settingModel.endPoinOrderUpdateShipping}',
+        body: jsonEncode(data),
+        headers: {
+          HttpHeaders.authorizationHeader: "Token $token",
+          HttpHeaders.contentTypeHeader: "application/json",
+        },
+      );
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      if (jsonData['status']) {
+        // set to state and notify
+        ordertModel.updateOrder(
+          order: jsonData['data']['order'],
+        );
+
+        Navigator.pop(context);
+        setState(() {
+          _isShowTextButtonOnSubmitTransfer = false;
+          _isShowTextFieldEditTransfer = false;
+        });
+
+        showFlashBar(context, title: 'แก้ไขค่าขนส่งสินค้าเรียบร้อย', message: 'ระบบกำลังแจ้งข้อมูลไปยังผู้ซื้อ', success: true, duration: 3500);
+      } else {
+        showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
+      }
+    } catch (e) {
+      print(e);
+      Navigator.of(context).pop();
+      showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทค่าขนส่ง', error: true);
+    }
+  }
+
   @override
   void initState() {
+    settingModel = context.read<SettingModel>();
+    ordertModel = context.read<OrdertModel>();
+
     super.initState();
     // shipping cost
     _controllerEditTransfer.text = widget.orders['shipping'];
@@ -101,7 +155,7 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
                       Radius.circular(19),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () => _onsubmitConfirmEditShippingCost(),
                   child: Text(
                     'ตกลง',
                     style: TextStyle(color: Colors.white),
@@ -199,38 +253,39 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
 
                       // * 3. รายละเอียดคำสั่งซื้อ
                       /*Edit by Phisan*/
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              'หากใช้การขนส่งในอัตราอื่น',
-                              style: TextStyle(color: kAlertColor),
+                      if (widget.orders['status'] == 1)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                'หากใช้การขนส่งในอัตราอื่น',
+                                style: TextStyle(color: kAlertColor),
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _isShowTextFieldEditTransfer = !_isShowTextFieldEditTransfer;
-                              });
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'ปรับค่าขนส่ง',
-                                  style: TextStyle(color: kPrimaryColor, fontSize: Theme.of(context).textTheme.subtitle2.fontSize),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  color: kPrimaryColor,
-                                  size: Theme.of(context).textTheme.subtitle2.fontSize,
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _isShowTextFieldEditTransfer = !_isShowTextFieldEditTransfer;
+                                });
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'ปรับค่าขนส่ง',
+                                    style: TextStyle(color: kPrimaryColor, fontSize: Theme.of(context).textTheme.subtitle2.fontSize),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: kPrimaryColor,
+                                    size: Theme.of(context).textTheme.subtitle2.fontSize,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       if (_isShowTextFieldEditTransfer)
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
@@ -269,9 +324,10 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
                           ),
                         ),
 
-                      SizedBox(
-                        height: size.height * 0.03,
-                      ),
+                      if (widget.orders['status'] == 1)
+                        SizedBox(
+                          height: size.height * 0.03,
+                        ),
                       /*--------------*/
                       BuildSubText(
                         leading: 'รวมจำนวน (ลูก)',
