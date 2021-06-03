@@ -5,6 +5,7 @@ import 'package:LavaDurian/constants.dart';
 import 'package:LavaDurian/models/store_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -23,9 +24,112 @@ class ViewOrderDetailOrder extends StatefulWidget {
 }
 
 class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
+  TextEditingController _controllerEditTransfer = TextEditingController();
+
+  bool _isShowTextButtonOnSubmitTransfer = false;
+  bool _isShowTextFieldEditTransfer = false;
+
+  String _valueEditTransfer = "";
+
+  @override
+  void initState() {
+    super.initState();
+    // shipping cost
+    _controllerEditTransfer.text = widget.orders['shipping'];
+    _controllerEditTransfer.selection = TextSelection.fromPosition(TextPosition(offset: _controllerEditTransfer.text.length));
+
+    // onchange
+    _controllerEditTransfer.addListener(() {
+      setState(() {
+        if (_isShowTextButtonOnSubmitTransfer == false) {
+          _isShowTextButtonOnSubmitTransfer = true;
+        }
+
+        if (_controllerEditTransfer.text.isEmpty) {
+          _isShowTextButtonOnSubmitTransfer = false;
+        }
+
+        _valueEditTransfer = _controllerEditTransfer.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _controllerEditTransfer.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    void _onShowDialogConfirmEditTransfer() {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+            'ยืนยันการแก้ไข',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(28),
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  'ระบบจะแจ้งข้อมูลการเปลี่ยนแปลงค่าขนส่งไปยังผู้สั่งซื้อ',
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                SizedBox(
+                  height: 26,
+                ),
+                FlatButton(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  minWidth: double.infinity,
+                  color: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(19),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    'ตกลง',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                FlatButton(
+                  minWidth: double.infinity,
+                  color: Colors.grey[300],
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(19))),
+                  onPressed: () {
+                    _controllerEditTransfer.text = widget.orders['shipping'];
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'ยกเลิก',
+                    style: TextStyle(color: kTextPrimaryColor),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return SliverPadding(
       padding: EdgeInsets.only(top: 20),
@@ -44,18 +148,12 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
               width: size.width * 0.9,
               child: Consumer<OrdertModel>(
                 builder: (_, _ordertModel, c) {
-                  final Map _order =
-                      _ordertModel.getOrderFromId(widget.orders['id']);
+                  final Map _order = _ordertModel.getOrderFromId(widget.orders['id']);
 
-                  final List _orderItem =
-                      _ordertModel.getOrderItemFromId(_order['id']);
+                  final List _orderItem = _ordertModel.getOrderItemFromId(_order['id']);
 
-                  final String orderDateCreate = DateFormat("dd-MM-yyyy HH:mm")
-                      .format(DateTime.parse(_order['date_created']).toLocal())
-                      .toString();
-                  final String orderDateUpdate = DateFormat('dd-MM-yyyy HH:mm')
-                      .format(DateTime.parse(_order['date_updated']).toLocal())
-                      .toString();
+                  final String orderDateCreate = DateFormat("dd-MM-yyyy HH:mm").format(DateTime.parse(_order['date_created']).toLocal()).toString();
+                  final String orderDateUpdate = DateFormat('dd-MM-yyyy HH:mm').format(DateTime.parse(_order['date_updated']).toLocal()).toString();
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +198,81 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
                       ),
 
                       // * 3. รายละเอียดคำสั่งซื้อ
+                      /*Edit by Phisan*/
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              'หากใช้การขนส่งในอัตราอื่น',
+                              style: TextStyle(color: kAlertColor),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _isShowTextFieldEditTransfer = !_isShowTextFieldEditTransfer;
+                              });
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'ปรับค่าขนส่ง',
+                                  style: TextStyle(color: kPrimaryColor, fontSize: Theme.of(context).textTheme.subtitle2.fontSize),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  color: kPrimaryColor,
+                                  size: Theme.of(context).textTheme.subtitle2.fontSize,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      if (_isShowTextFieldEditTransfer)
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 26, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: kPrimaryLightColor,
+                            borderRadius: BorderRadius.circular(29),
+                          ),
+                          child: TextField(
+                            autofocus: true,
+                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp('[0-9.,]+')),
+                            ],
+                            cursorColor: kPrimaryColor,
+                            maxLines: 1,
+                            textInputAction: TextInputAction.done,
+                            controller: _controllerEditTransfer,
+                            decoration: InputDecoration(
+                              suffix: _isShowTextButtonOnSubmitTransfer
+                                  ? InkWell(
+                                      onTap: () => _onShowDialogConfirmEditTransfer(),
+                                      child: Text(
+                                        'ยืนยัน',
+                                        style: TextStyle(color: kPrimaryColor),
+                                      ),
+                                    )
+                                  : Text('บาท'),
+                              icon: Icon(
+                                Icons.monetization_on_outlined,
+                                color: kPrimaryColor,
+                              ),
+                              hintText: 'ค่าขนส่ง',
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
 
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                      /*--------------*/
                       BuildSubText(
                         leading: 'รวมจำนวน (ลูก)',
                         text: '${_order['total_order_quantity']}',
@@ -122,7 +294,7 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
                         text: '${_order['box_2']}',
                       ),
                       BuildSubText(
-                        leading: 'รวมค่าจัดส่ง (บาท)',
+                        leading: 'ค่าจัดส่ง (บาท)',
                         text: '${_order['shipping']}',
                       ),
                       Divider(
@@ -134,9 +306,10 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
                         text: '${_order['total_order_price']}',
                         color: kPrimaryColor,
                       ),
-                      Divider(
+                      /* Divider(
                         height: 28,
                       ),
+                      */
 
                       // // * Check transfer order
                       if (_order['status'] >= 5)
