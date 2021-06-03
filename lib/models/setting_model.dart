@@ -74,6 +74,9 @@ class SettingModel extends ChangeNotifier {
   // End-point for update order weight
   String get endPoinGetOrderUpdateWeight => 'api/order/weight';
 
+  // End-point for update order shipping cost (POST) {"order_id": int, "shipping": int}
+  String get endPoinOrderUpdateShipping => 'api/order/shipping';
+
   // End-point for check order transfer {"order":int}
   String get endPoinGetCheckTransfer => 'api/check/transfer';
 
