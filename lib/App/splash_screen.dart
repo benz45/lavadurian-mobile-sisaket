@@ -21,6 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   Future<String> _getSetting() async {
     FileProcess fileProcess = FileProcess('setting.json');
     setting = await fileProcess.readData();
+    await _checkAuthentication();
     return setting;
   }
 
@@ -62,7 +63,7 @@ class _SplashPageState extends State<SplashPage> {
                   future: _getSetting(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      startTime();
+                      // startTime();
                       return Column(
                         children: [
                           Container(
