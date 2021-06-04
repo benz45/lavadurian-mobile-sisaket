@@ -20,7 +20,12 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<String> _getSetting() async {
     FileProcess fileProcess = FileProcess('setting.json');
-    setting = await fileProcess.readData();
+
+    Future.delayed(Duration(seconds: 2), () async {
+      setting = await fileProcess.readData();
+      await _checkAuthentication();
+    });
+
     return setting;
   }
 
@@ -32,15 +37,9 @@ class _SplashPageState extends State<SplashPage> {
       );
     } else {
       settingModel.value = jsonDecode(setting);
-
       // Clear Navigate route
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => OperationScreen()), (Route<dynamic> route) => false);
     }
-  }
-
-  Future<void> startTime() async {
-    var duration = new Duration(seconds: 1);
-    return new Timer(duration, _checkAuthentication);
   }
 
   @override
@@ -62,7 +61,8 @@ class _SplashPageState extends State<SplashPage> {
                   future: _getSetting(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      startTime();
+                      return Container();
+                    } else {
                       return Column(
                         children: [
                           Container(
@@ -81,8 +81,6 @@ class _SplashPageState extends State<SplashPage> {
                           ),
                         ],
                       );
-                    } else {
-                      return Container();
                     }
                   },
                 ),
