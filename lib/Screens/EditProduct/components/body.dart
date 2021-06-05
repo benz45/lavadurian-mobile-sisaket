@@ -41,8 +41,7 @@ class _BodyState extends State<Body> {
   SettingModel _settingModel;
 
   // ! Controller button
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   @override
   void initState() {
@@ -50,8 +49,7 @@ class _BodyState extends State<Body> {
     _productModel = context.read<ProductModel>();
     _settingModel = context.read<SettingModel>();
 
-    _product = _productModel.products
-        .firstWhere((element) => element['id'] == widget.productID);
+    _product = _productModel.products.firstWhere((element) => element['id'] == widget.productID);
 
     _controllerProductDetail.text = _product['desc'].toString();
     _controllerProductValue.text = _product['values'].toString();
@@ -69,8 +67,7 @@ class _BodyState extends State<Body> {
     _productPrice = double.parse(_product['price']);
     _chosenGrade ??= _productModel.productGrade[_product['grade'].toString()];
     _chosenGene ??= _productModel.productGene[_product['gene'].toString()];
-    _chosenStatus ??=
-        _productModel.productStatus[_product['status'].toString()];
+    _chosenStatus ??= _productModel.productStatus[_product['status'].toString()];
   }
 
   _onControllerProductDetail() {
@@ -119,8 +116,7 @@ class _BodyState extends State<Body> {
       return false;
     }
     if (_productDetail == null) {
-      showFlashBar(context,
-          message: 'กรุณาบรรยายรายละเอียดสินค้า', warning: true);
+      showFlashBar(context, message: 'กรุณาบรรยายรายละเอียดสินค้า', warning: true);
       _btnController.reset();
       return false;
     }
@@ -130,17 +126,11 @@ class _BodyState extends State<Body> {
       return false;
     }
 
-    var _grade = _productModel.productGrade.keys.firstWhere(
-        (element) => _productModel.productGrade[element] == _chosenGrade,
-        orElse: () => null);
+    var _grade = _productModel.productGrade.keys.firstWhere((element) => _productModel.productGrade[element] == _chosenGrade, orElse: () => null);
 
-    var _gene = _productModel.productGene.keys.firstWhere(
-        (element) => _productModel.productGene[element] == _chosenGene,
-        orElse: () => null);
+    var _gene = _productModel.productGene.keys.firstWhere((element) => _productModel.productGene[element] == _chosenGene, orElse: () => null);
 
-    var _status = _productModel.productStatus.keys.firstWhere(
-        (element) => _productModel.productStatus[element] == _chosenStatus,
-        orElse: () => null);
+    var _status = _productModel.productStatus.keys.firstWhere((element) => _productModel.productStatus[element] == _chosenStatus, orElse: () => null);
 
     Map<String, dynamic> data = {
       'store_id': _product['store'].toString(),
@@ -159,15 +149,14 @@ class _BodyState extends State<Body> {
 
     try {
       final response = await Http.post(
-        '${_settingModel.baseURL}/${_settingModel.endPointEditProduct}',
+        Uri.parse('${_settingModel.baseURL}/${_settingModel.endPointEditProduct}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status'] == true) {
-        int index = _productModel.products.indexWhere(
-            (element) => element['id'] == jsonData['data']['product']['id']);
+        int index = _productModel.products.indexWhere((element) => element['id'] == jsonData['data']['product']['id']);
         _productModel.products[index] = jsonData['data']['product'];
 
         _btnController.success();
@@ -235,20 +224,9 @@ class _BodyState extends State<Body> {
               icon: Icon(Icons.keyboard_arrow_down_rounded),
               hint: Text(
                 "สายพันธุ์",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
-              items: <String>[
-                'ทุเรียนภูเขาไฟ (หมอนทอง)',
-                'ก้านยาว',
-                'หมอนทอง',
-                'ชะนี',
-                'กระดุม',
-                'หลงลับแล',
-                'พวงมณี'
-              ].map((String value) {
+              items: <String>['ทุเรียนภูเขาไฟ (หมอนทอง)', 'ก้านยาว', 'หมอนทอง', 'ชะนี', 'กระดุม', 'หลงลับแล', 'พวงมณี'].map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
                   child: new Text(value),
@@ -280,10 +258,7 @@ class _BodyState extends State<Body> {
               icon: Icon(Icons.keyboard_arrow_down_rounded),
               hint: Text(
                 "เกรดทุเรียน",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
               items: <String>[
                 'เกรดคุณภาพ',
@@ -321,10 +296,7 @@ class _BodyState extends State<Body> {
               icon: Icon(Icons.keyboard_arrow_down_rounded),
               hint: Text(
                 "สถานะการขาย",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
               items: <String>[
                 'พร้อมขาย',
@@ -405,11 +377,8 @@ class _BodyState extends State<Body> {
                 maxLines: 1,
                 textInputAction: TextInputAction.next,
                 controller: _controllerProductValue,
-                keyboardType: TextInputType.numberWithOptions(
-                    signed: true, decimal: true),
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
+                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(
                   suffix: Text('ลูก'),
                   icon: Icon(
@@ -486,11 +455,8 @@ class _BodyState extends State<Body> {
                 borderRadius: BorderRadius.circular(29),
               ),
               child: TextField(
-                keyboardType: TextInputType.numberWithOptions(
-                    signed: true, decimal: true),
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
+                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                 cursorColor: kPrimaryColor,
                 maxLines: 1,
                 textInputAction: TextInputAction.done,

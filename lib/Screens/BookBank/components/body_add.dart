@@ -29,8 +29,7 @@ class _BodyAddState extends State<BodyAdd> {
   SettingModel settingModel;
   BookBankModel bookBankModel;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   Future<void> _onSubmit() async {
     // validate data
@@ -60,13 +59,9 @@ class _BodyAddState extends State<BodyAdd> {
       return false;
     }
 
-    var _bank = bookBankModel.bank.keys.firstWhere(
-        (element) => bookBankModel.bank[element] == _chosenBank,
-        orElse: () => null);
+    var _bank = bookBankModel.bank.keys.firstWhere((element) => bookBankModel.bank[element] == _chosenBank, orElse: () => null);
 
-    var _type = bookBankModel.type.keys.firstWhere(
-        (element) => bookBankModel.type[element] == _bookbankTypeValue,
-        orElse: () => null);
+    var _type = bookBankModel.type.keys.firstWhere((element) => bookBankModel.type[element] == _bookbankTypeValue, orElse: () => null);
 
     // get current user token
     String token = settingModel.value['token'];
@@ -80,8 +75,9 @@ class _BodyAddState extends State<BodyAdd> {
     };
 
     try {
+      var url = Uri.parse('${settingModel.baseURL}/${settingModel.endPoinAddBookBank}');
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPoinAddBookBank}',
+        url,
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
@@ -92,10 +88,7 @@ class _BodyAddState extends State<BodyAdd> {
       bookBankModel.addBookbank = jsonData['data']['bookbank'];
 
       Navigator.of(context).pop();
-      showFlashBar(context,
-          message: 'เพิ่มหมายเลขบัญชีเรียบร้อยแล้ว',
-          success: true,
-          duration: 3500);
+      showFlashBar(context, message: 'เพิ่มหมายเลขบัญชีเรียบร้อยแล้ว', success: true, duration: 3500);
     } catch (e) {
       showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
       _btnController.reset();
@@ -142,10 +135,7 @@ class _BodyAddState extends State<BodyAdd> {
                 isExpanded: true,
                 hint: Text(
                   "เลือกธนาคาร",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w100),
+                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
                 ),
                 items: <String>[
                   'ธนาคารกรุงเทพ',
@@ -176,10 +166,7 @@ class _BodyAddState extends State<BodyAdd> {
                 isExpanded: true,
                 hint: Text(
                   "ประเภทบัญชี",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w100),
+                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
                 ),
                 items: <String>[
                   'กระแสรายวัน',

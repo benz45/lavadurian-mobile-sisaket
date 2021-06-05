@@ -179,9 +179,12 @@ class _BodyState extends State<Body> {
       }
 
       if (emailValid && passValid) {
-        final response = await http.post('${api.baseURL}/${api.endPointCheckEmail}', body: {
-          'email': data['email'],
-        });
+        final response = await http.post(
+          Uri.parse('${api.baseURL}/${api.endPointCheckEmail}'),
+          body: {
+            'email': data['email'],
+          },
+        );
 
         if (response.statusCode == 200) {
           final result = CheckInfo.fromJson(jsonDecode(response.body));

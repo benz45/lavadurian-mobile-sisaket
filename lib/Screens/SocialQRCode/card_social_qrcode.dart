@@ -32,7 +32,7 @@ class _CardSocialQRCodeState extends State<CardSocialQRCode> {
 
     try {
       response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPointDeleteQRCode}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPointDeleteQRCode}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );

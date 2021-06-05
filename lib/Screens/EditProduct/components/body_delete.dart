@@ -25,8 +25,7 @@ class _BodyDeleteState extends State<BodyDelete> {
   List<Map<String, dynamic>> products;
   Map<String, dynamic> product;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   Future<String> _deleteProduct() async {
     Map<String, dynamic> data = {
@@ -37,7 +36,7 @@ class _BodyDeleteState extends State<BodyDelete> {
     String token = settingModel.value['token'];
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPointDeleteProduct}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPointDeleteProduct}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
@@ -70,8 +69,7 @@ class _BodyDeleteState extends State<BodyDelete> {
     Size size = MediaQuery.of(context).size;
     products = productModel.products;
     if (products != null) {
-      product =
-          products.firstWhere((element) => element['id'] == widget.productID);
+      product = products.firstWhere((element) => element['id'] == widget.productID);
     }
 
     // Edit Button
@@ -86,8 +84,7 @@ class _BodyDeleteState extends State<BodyDelete> {
       color: kPrimaryColor,
       onPressed: () {
         _btnController.stop();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => OperationScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
       },
     );
 
@@ -113,8 +110,7 @@ class _BodyDeleteState extends State<BodyDelete> {
                         SizedBox(height: size.height * 0.03),
                         Text(
                           "ลบสินค้าออกจากร้านค้าแล้ว",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 26),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
                         ),
                         SizedBox(height: size.height * 0.02),
                         Padding(

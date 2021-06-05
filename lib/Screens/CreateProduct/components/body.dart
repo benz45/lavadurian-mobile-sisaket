@@ -223,7 +223,7 @@ class _BodyState extends State<Body> {
 
         try {
           final response = await Http.post(
-            '${settingModel.baseURL}/${settingModel.endPointAddProduct}',
+            Uri.parse('${settingModel.baseURL}/${settingModel.endPointAddProduct}'),
             body: data,
             headers: {HttpHeaders.authorizationHeader: "Token $token"},
           );

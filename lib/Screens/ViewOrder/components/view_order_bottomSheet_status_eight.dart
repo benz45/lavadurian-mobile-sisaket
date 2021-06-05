@@ -11,18 +11,15 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
 class ViewOrderBottomSheetStatusEight extends StatefulWidget {
-  const ViewOrderBottomSheetStatusEight({Key key, this.orderId})
-      : super(key: key);
+  const ViewOrderBottomSheetStatusEight({Key key, this.orderId}) : super(key: key);
 
   final int orderId;
 
   @override
-  _ViewOrderBottomSheetStatusEightState createState() =>
-      _ViewOrderBottomSheetStatusEightState();
+  _ViewOrderBottomSheetStatusEightState createState() => _ViewOrderBottomSheetStatusEightState();
 }
 
-class _ViewOrderBottomSheetStatusEightState
-    extends State<ViewOrderBottomSheetStatusEight> {
+class _ViewOrderBottomSheetStatusEightState extends State<ViewOrderBottomSheetStatusEight> {
   int _statusFromRadio;
   @override
   Widget build(BuildContext context) {
@@ -30,22 +27,18 @@ class _ViewOrderBottomSheetStatusEightState
     TextTheme textTheme = Theme.of(context).textTheme;
 
     OrdertModel _ordertModel = Provider.of<OrdertModel>(context, listen: false);
-    SettingModel settingModel =
-        Provider.of<SettingModel>(context, listen: false);
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
 
     final _orders = _ordertModel.getOrderFromId(widget.orderId);
 
     void _onSubmitConfirm(String status) async {
       try {
-        Map<String, dynamic> data = {
-          "order_id": "${_orders['id']}",
-          "status": "$_statusFromRadio"
-        };
+        Map<String, dynamic> data = {"order_id": "${_orders['id']}", "status": "$_statusFromRadio"};
         // get current user token
         String token = settingModel.value['token'];
 
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPoinOrderStatusUpdate}',
+          Uri.parse('${settingModel.baseURL}/${settingModel.endPoinOrderStatusUpdate}'),
           body: data,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
         );
@@ -60,9 +53,7 @@ class _ViewOrderBottomSheetStatusEightState
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
       } catch (e) {
-        showFlashBar(context,
-            message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทสถานะคำสั่งซื้อได้',
-            error: true);
+        showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทสถานะคำสั่งซื้อได้', error: true);
       }
     }
 
@@ -73,11 +64,7 @@ class _ViewOrderBottomSheetStatusEightState
         barrierDismissible: true,
         builder: (context) {
           // * Init state dialog only.
-          int selectedRadio = _ordertModel.orderStatus.entries
-                  .map((e) => "${e.key}")
-                  .toList()
-                  .indexOf('${_orders['status']}') ??
-              0;
+          int selectedRadio = _ordertModel.orderStatus.entries.map((e) => "${e.key}").toList().indexOf('${_orders['status']}') ?? 0;
 
           return AlertDialog(
             title: Text(
@@ -99,15 +86,11 @@ class _ViewOrderBottomSheetStatusEightState
                     reverse: true,
                     dragStartBehavior: DragStartBehavior.start,
                     shrinkWrap: true,
-                    itemCount: _ordertModel.orderStatus.entries
-                        .map((e) => e.key)
-                        .toList()
-                        .length,
+                    itemCount: _ordertModel.orderStatus.entries.map((e) => e.key).toList().length,
                     itemBuilder: (context, index) {
                       return RadioListTile(
                         title: Text(
-                          '${_ordertModel.orderStatus.entries.map((e) => "${e.value}").toList()[index]}'
-                              .replaceAll("", "\u{200B}"),
+                          '${_ordertModel.orderStatus.entries.map((e) => "${e.value}").toList()[index]}'.replaceAll("", "\u{200B}"),
                           overflow: TextOverflow.ellipsis,
                         ),
                         value: index,
@@ -142,8 +125,7 @@ class _ViewOrderBottomSheetStatusEightState
                   children: [
                     Container(
                       child: OutlineButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 36),
                         color: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -168,16 +150,14 @@ class _ViewOrderBottomSheetStatusEightState
                     ),
                     Container(
                       child: FlatButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 36),
                         color: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
                             Radius.circular(19),
                           ),
                         ),
-                        onPressed: () async =>
-                            _onSubmitConfirm('${selectedRadio + 1}'),
+                        onPressed: () async => _onSubmitConfirm('${selectedRadio + 1}'),
                         child: Text(
                           'ตกลง',
                           style: TextStyle(color: Colors.white),
@@ -211,9 +191,7 @@ class _ViewOrderBottomSheetStatusEightState
           Text(
             'ดำเนินการยกเลิกคำสั่งซื้อนี้แล้ว',
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: textTheme.subtitle1.fontSize),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: textTheme.subtitle1.fontSize),
           ),
           TextButton(
             onPressed: _onChangeStatusOrder,

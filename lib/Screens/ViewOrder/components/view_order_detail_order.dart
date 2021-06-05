@@ -50,7 +50,7 @@ class _ViewOrderDetailOrderState extends State<ViewOrderDetailOrder> {
       String token = settingModel.value['token'];
 
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPoinOrderUpdateShipping}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPoinOrderUpdateShipping}'),
         body: jsonEncode(data),
         headers: {
           HttpHeaders.authorizationHeader: "Token $token",

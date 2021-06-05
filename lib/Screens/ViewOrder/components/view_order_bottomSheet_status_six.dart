@@ -11,18 +11,15 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as Http;
 
 class ViewOrderBottomSheetStatusSix extends StatefulWidget {
-  const ViewOrderBottomSheetStatusSix({Key key, this.orderId})
-      : super(key: key);
+  const ViewOrderBottomSheetStatusSix({Key key, this.orderId}) : super(key: key);
 
   final int orderId;
 
   @override
-  _ViewOrderBottomSheetStatusSixState createState() =>
-      _ViewOrderBottomSheetStatusSixState();
+  _ViewOrderBottomSheetStatusSixState createState() => _ViewOrderBottomSheetStatusSixState();
 }
 
-class _ViewOrderBottomSheetStatusSixState
-    extends State<ViewOrderBottomSheetStatusSix> {
+class _ViewOrderBottomSheetStatusSixState extends State<ViewOrderBottomSheetStatusSix> {
   int _statusFromRadio;
 
   @override
@@ -31,23 +28,19 @@ class _ViewOrderBottomSheetStatusSixState
     TextTheme textTheme = Theme.of(context).textTheme;
 
     OrdertModel _ordertModel = Provider.of<OrdertModel>(context, listen: false);
-    SettingModel settingModel =
-        Provider.of<SettingModel>(context, listen: false);
+    SettingModel settingModel = Provider.of<SettingModel>(context, listen: false);
 
     final _order = _ordertModel.getOrderFromId(widget.orderId);
 
     void _onSubmitConfirm() async {
       try {
-        Map<String, dynamic> data = {
-          "order_id": "${_order['id']}",
-          "status": "${_statusFromRadio ?? 7}"
-        };
+        Map<String, dynamic> data = {"order_id": "${_order['id']}", "status": "${_statusFromRadio ?? 7}"};
         print(data);
         // get current user token
         String token = settingModel.value['token'];
 
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPoinOrderStatusUpdate}',
+          Uri.parse('${settingModel.baseURL}/${settingModel.endPoinOrderStatusUpdate}'),
           body: data,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
         );
@@ -61,32 +54,21 @@ class _ViewOrderBottomSheetStatusSixState
             if (jsonData['data']['order']['status'] == 5) {
               showFlashBar(context,
                   title: 'ยืนยันชำระเงินแล้ว',
-                  message:
-                      'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
+                  message: 'กรุณาจัดส่งสินค้าตามคำสั่งซื้อ และเปลี่ยนสถานะเมื่อจัดส่งเรียบร้อยแล้ว',
                   success: true,
                   duration: 3500);
             }
             if (jsonData['data']['order']['status'] == 6) {
               showFlashBar(context,
-                  title: 'จัดส่งสินค้าแล้ว',
-                  message: 'ระบบกำลังแจ้งข้อมูลดำเนินการให้กับผู้สั่งซื้อ',
-                  success: true,
-                  duration: 3500);
+                  title: 'จัดส่งสินค้าแล้ว', message: 'ระบบกำลังแจ้งข้อมูลดำเนินการให้กับผู้สั่งซื้อ', success: true, duration: 3500);
             }
             if (jsonData['data']['order']['status'] == 7) {
               showFlashBar(context,
-                  title: 'ดำเนินการเสร็จสิ้น',
-                  message:
-                      'ระบบกำลังแจ้งข้อมูลดำเนินการเสร็จสิ้นให้กับผู้สั่งซื้อ',
-                  success: true,
-                  duration: 3500);
+                  title: 'ดำเนินการเสร็จสิ้น', message: 'ระบบกำลังแจ้งข้อมูลดำเนินการเสร็จสิ้นให้กับผู้สั่งซื้อ', success: true, duration: 3500);
             }
             if (jsonData['data']['order']['status'] == 8) {
               showFlashBar(context,
-                  title: 'ยกเลิกคำสั่งซื้อแล้วแล้ว',
-                  message: 'ระบบกำลังแจ้งข้อมูลการยกเลิกให้กับผู้สั่งซื้อ',
-                  success: true,
-                  duration: 3500);
+                  title: 'ยกเลิกคำสั่งซื้อแล้วแล้ว', message: 'ระบบกำลังแจ้งข้อมูลการยกเลิกให้กับผู้สั่งซื้อ', success: true, duration: 3500);
             }
           } else {
             showFlashBar(context, message: 'บันทึกข้อมูลสำเร็จ', success: true);
@@ -95,9 +77,7 @@ class _ViewOrderBottomSheetStatusSixState
           showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ', error: true);
         }
       } catch (e) {
-        showFlashBar(context,
-            message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทสถานะคำสั่งซื้อได้',
-            error: true);
+        showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัพเดทสถานะคำสั่งซื้อได้', error: true);
       }
     }
 
@@ -108,11 +88,7 @@ class _ViewOrderBottomSheetStatusSixState
         barrierDismissible: true,
         builder: (context) {
           // * Init state dialog only.
-          int selectedRadio = _ordertModel.orderStatus.entries
-                  .map((e) => "${e.key}")
-                  .toList()
-                  .indexOf('${_order['status']}') ??
-              0;
+          int selectedRadio = _ordertModel.orderStatus.entries.map((e) => "${e.key}").toList().indexOf('${_order['status']}') ?? 0;
 
           return AlertDialog(
             title: Text(
@@ -134,15 +110,11 @@ class _ViewOrderBottomSheetStatusSixState
                     reverse: true,
                     dragStartBehavior: DragStartBehavior.start,
                     shrinkWrap: true,
-                    itemCount: _ordertModel.orderStatus.entries
-                        .map((e) => e.key)
-                        .toList()
-                        .length,
+                    itemCount: _ordertModel.orderStatus.entries.map((e) => e.key).toList().length,
                     itemBuilder: (context, index) {
                       return RadioListTile(
                         title: Text(
-                          '${_ordertModel.orderStatus.entries.map((e) => "${e.value}").toList()[index]}'
-                              .replaceAll("", "\u{200B}"),
+                          '${_ordertModel.orderStatus.entries.map((e) => "${e.value}").toList()[index]}'.replaceAll("", "\u{200B}"),
                           overflow: TextOverflow.ellipsis,
                         ),
                         value: index,
@@ -176,8 +148,7 @@ class _ViewOrderBottomSheetStatusSixState
                   children: [
                     Container(
                       child: OutlineButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 36),
                         color: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -202,8 +173,7 @@ class _ViewOrderBottomSheetStatusSixState
                     ),
                     Container(
                       child: FlatButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 36),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 36),
                         color: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -244,9 +214,7 @@ class _ViewOrderBottomSheetStatusSixState
           Text(
             'อยู่ระหว่างการนำส่ง . . .',
             textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: textTheme.subtitle1.fontSize),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: textTheme.subtitle1.fontSize),
           ),
           SizedBox(
             height: 18,

@@ -75,7 +75,7 @@ class _ContainerStoreState extends State<ContainerStore> {
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
     final response = await Http.get(
-      '${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
+      Uri.parse('${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: "Token $token",

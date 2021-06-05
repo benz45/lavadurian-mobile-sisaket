@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
       'password': password,
     };
 
-    final response = await Http.post('${settingModel.baseURL}/${settingModel.endPointLogin}', body: data);
+    final response = await Http.post(Uri.parse('${settingModel.baseURL}/${settingModel.endPointLogin}'), body: data);
 
     final jsonData = json.decode(response.body);
 

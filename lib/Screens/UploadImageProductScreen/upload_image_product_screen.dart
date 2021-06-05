@@ -447,7 +447,7 @@ class _ProductImageUploadState extends State<ProductImageUpload> {
 
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPointDeleteProductImage}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPointDeleteProductImage}'),
         body: data,
         headers: {
           HttpHeaders.authorizationHeader: "Token $token",

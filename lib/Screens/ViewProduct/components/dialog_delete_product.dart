@@ -29,7 +29,7 @@ class DialogDeleteProduct extends StatelessWidget {
         // get current user token
         String token = settingModel.value['token'];
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPointDeleteProduct}',
+          Uri.parse('${settingModel.baseURL}/${settingModel.endPointDeleteProduct}'),
           body: data,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
         );
@@ -107,8 +107,7 @@ class DialogDeleteProduct extends StatelessWidget {
             FlatButton(
               minWidth: double.infinity,
               color: Colors.grey[300],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8))),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
               onPressed: () => Navigator.pop(context),
               child: Text(
                 'ยกเลิก',

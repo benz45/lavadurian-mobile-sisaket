@@ -176,7 +176,7 @@ class _BodyState extends State<Body> {
           // get current user token
           String token = settingModel.value['token'];
           final response = await Http.post(
-            '${settingModel.baseURL}/${settingModel.endPointAddStore}',
+            Uri.parse('${settingModel.baseURL}/${settingModel.endPointAddStore}'),
             body: data,
             headers: {HttpHeaders.authorizationHeader: "Token $token"},
           );

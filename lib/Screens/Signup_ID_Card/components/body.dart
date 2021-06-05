@@ -44,7 +44,12 @@ class Body extends StatelessWidget {
             _btnController.stop();
           }
           if (maskFormatter.getUnmaskedText().length == 13) {
-            final response = await http.post('${api.baseURL}/${api.endPointCheckCitizenId}', body: {'citizenid': maskFormatter.getUnmaskedText()});
+            final response = await http.post(
+              Uri.parse('${api.baseURL}/${api.endPointCheckCitizenId}'),
+              body: {
+                'citizenid': maskFormatter.getUnmaskedText(),
+              },
+            );
 
             if (response.statusCode == 200) {
               final result = CheckInfo.fromJson(jsonDecode(response.body));

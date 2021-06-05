@@ -33,22 +33,14 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
     try {
       Map<String, int> data = {"order": orderId};
 
-      String url =
-          "${settingModel.baseURL}/${settingModel.endPoinGetCheckTransfer}";
-
       final response = await Http.post(
-        url,
+        Uri.parse("${settingModel.baseURL}/${settingModel.endPoinGetCheckTransfer}"),
         body: jsonEncode(data),
-        headers: {
-          HttpHeaders.authorizationHeader:
-              "Token ${settingModel.value['token']}",
-          HttpHeaders.contentTypeHeader: "application/json"
-        },
+        headers: {HttpHeaders.authorizationHeader: "Token ${settingModel.value['token']}", HttpHeaders.contentTypeHeader: "application/json"},
       );
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
-        CheckTransferOrderModel result =
-            CheckTransferOrderModel.fromMap(jsonData['data']);
+        CheckTransferOrderModel result = CheckTransferOrderModel.fromMap(jsonData['data']);
 
         return result;
       } else {
@@ -80,10 +72,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
               Text(
                 'ใบเสร็จชำระเงิน',
                 style: TextStyle(
-                    height: 1.4,
-                    color: kTextSecondaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: Theme.of(context).textTheme.subtitle1.fontSize),
+                    height: 1.4, color: kTextSecondaryColor, fontWeight: FontWeight.bold, fontSize: Theme.of(context).textTheme.subtitle1.fontSize),
               ),
               SizedBox(
                 width: 8,
@@ -114,8 +103,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                         // * Get size image provider of CachedNetworkImage.
                         Future<Size> _getSize() async {
                           Completer<Size> completer = Completer();
-                          ImageStream _image =
-                              imageProvider.resolve(ImageConfiguration());
+                          ImageStream _image = imageProvider.resolve(ImageConfiguration());
                           _image.addListener(
                             ImageStreamListener(
                               (ImageInfo image, bool synchronousCall) {
@@ -144,8 +132,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          HeroPhotoViewRouteWrapper(
+                                      builder: (context) => HeroPhotoViewRouteWrapper(
                                         tag: "transfer${data.transfer.id}",
                                         imageProvider: imageProvider,
                                       ),
@@ -163,8 +150,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                         ),
                                       ),
                                       border: Border.all(
-                                        color:
-                                            kTextSecondaryColor.withOpacity(.2),
+                                        color: kTextSecondaryColor.withOpacity(.2),
                                       ),
                                       color: Colors.white),
                                   child: Hero(
@@ -200,8 +186,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
                                 backgroundColor: kPrimaryColor,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             ),
                           ],
@@ -237,10 +222,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                     height: 1.4,
                                     color: kTextSecondaryColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .fontSize,
+                                    fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                                   ),
                                 ),
                               ),
@@ -250,10 +232,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                   style: TextStyle(
                                     height: 1.4,
                                     color: kTextSecondaryColor,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .fontSize,
+                                    fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                                   ),
                                 ),
                               ),
@@ -267,10 +246,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                     height: 1.4,
                                     fontWeight: FontWeight.bold,
                                     color: kTextSecondaryColor,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .fontSize,
+                                    fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                                   ),
                                 ),
                               ),
@@ -280,10 +256,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                   style: TextStyle(
                                     height: 1.4,
                                     color: kTextSecondaryColor,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .fontSize,
+                                    fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                                   ),
                                 ),
                               ),
@@ -297,10 +270,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                     height: 1.4,
                                     fontWeight: FontWeight.bold,
                                     color: kTextSecondaryColor,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .fontSize,
+                                    fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                                   ),
                                 ),
                               ),
@@ -310,10 +280,7 @@ class _ViewOrderTransferImageState extends State<ViewOrderTransferImage> {
                                   style: TextStyle(
                                     height: 1.4,
                                     color: kTextSecondaryColor,
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1
-                                        .fontSize,
+                                    fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
                                   ),
                                 ),
                               ),

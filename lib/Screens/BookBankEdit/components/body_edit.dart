@@ -46,8 +46,7 @@ class _BodyEditState extends State<BodyEdit> {
   BookBankModel bookBankModel;
   StoreModel storeModel;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   @override
   void initState() {
@@ -59,9 +58,7 @@ class _BodyEditState extends State<BodyEdit> {
     _storeID = storeModel.getCurrentStore['id'];
     bookbankID = widget.bookbankID;
 
-    final initBookbank = bookBankModel.bookbank.firstWhere(
-        (element) => element['id'] == widget.bookbankID,
-        orElse: () => null);
+    final initBookbank = bookBankModel.bookbank.firstWhere((element) => element['id'] == widget.bookbankID, orElse: () => null);
 
     if (initBookbank != null) {
       _branchValue = initBookbank['bank_branch'];
@@ -117,13 +114,9 @@ class _BodyEditState extends State<BodyEdit> {
       return false;
     }
 
-    var _bank = bookBankModel.bank.keys.firstWhere(
-        (element) => bookBankModel.bank[element] == _chosenBank,
-        orElse: () => null);
+    var _bank = bookBankModel.bank.keys.firstWhere((element) => bookBankModel.bank[element] == _chosenBank, orElse: () => null);
 
-    var _type = bookBankModel.type.keys.firstWhere(
-        (element) => bookBankModel.type[element] == _bookbankTypeValue,
-        orElse: () => null);
+    var _type = bookBankModel.type.keys.firstWhere((element) => bookBankModel.type[element] == _bookbankTypeValue, orElse: () => null);
 
     // get current user token
     String token = settingModel.value['token'];
@@ -139,7 +132,7 @@ class _BodyEditState extends State<BodyEdit> {
 
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPoinUpdateBookBank}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPoinUpdateBookBank}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
@@ -148,40 +141,30 @@ class _BodyEditState extends State<BodyEdit> {
         var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
         if (jsonData['status'] == true) {
           // update state
-          bookBankModel.updateBookbank(
-              bookbankId: bookbankID, value: jsonData['data']['bookbank']);
-          showFlashBar(context,
-              message: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
-              success: true,
-              duration: 3500);
+          bookBankModel.updateBookbank(bookbankId: bookbankID, value: jsonData['data']['bookbank']);
+          showFlashBar(context, message: 'แก้ไขข้อมูลเรียบร้อยแล้ว', success: true, duration: 3500);
 
           _btnController.success();
           FocusScope.of(context).unfocus();
           Navigator.pop(context);
         } else {
-          showFlashBar(context,
-              message: 'เกิดข้อผิดพลาดระหว่างบันทึกข้อมูล', error: true);
+          showFlashBar(context, message: 'เกิดข้อผิดพลาดระหว่างบันทึกข้อมูล', error: true);
         }
       } else {
-        showFlashBar(context,
-            message: 'บันทึกข้อมูลไม่สำเร็จ code: ${response.statusCode}',
-            error: true);
+        showFlashBar(context, message: 'บันทึกข้อมูลไม่สำเร็จ code: ${response.statusCode}', error: true);
       }
     } catch (e) {
-      showFlashBar(context,
-          message: 'เกิดข้อผิดพลาดไม่สามารถอัปเดได้', error: true);
+      showFlashBar(context, message: 'เกิดข้อผิดพลาดไม่สามารถอัปเดได้', error: true);
       _btnController.reset();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    bookbank = bookBankModel.bookbank
-        .firstWhere((element) => element['id'] == widget.bookbankID);
+    bookbank = bookBankModel.bookbank.firstWhere((element) => element['id'] == widget.bookbankID);
 
     if (_bookbankTypeValue == null) {
-      _bookbankTypeValue =
-          bookBankModel.type[bookbank['account_type'].toString()];
+      _bookbankTypeValue = bookBankModel.type[bookbank['account_type'].toString()];
     }
 
     if (_chosenBank == null) {
@@ -260,9 +243,7 @@ class _BodyEditState extends State<BodyEdit> {
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.number,
                     controller: numberController,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
+                    inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                   ),
                 Divider(),
                 InkWell(
@@ -407,10 +388,7 @@ class _BodyEditState extends State<BodyEdit> {
                     isExpanded: true,
                     hint: Text(
                       "เลือกธนาคาร",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w100),
+                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
                     ),
                     items: bookBankModel.bank.entries.map((e) {
                       return new DropdownMenuItem<String>(
@@ -466,10 +444,7 @@ class _BodyEditState extends State<BodyEdit> {
                     isExpanded: true,
                     hint: Text(
                       "ประเภทบัญชี",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w100),
+                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
                     ),
                     items: bookBankModel.type.entries.map((e) {
                       return new DropdownMenuItem<String>(

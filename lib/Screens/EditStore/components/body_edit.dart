@@ -109,7 +109,7 @@ class _BodyEditState extends State<BodyEdit> {
       String token = settingModel.value['token'];
 
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPoinEditStore}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPoinEditStore}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );

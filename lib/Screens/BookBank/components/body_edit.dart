@@ -37,8 +37,7 @@ class _BodyEditState extends State<BodyEdit> {
   SettingModel settingModel;
   BookBankModel bookBankModel;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   Future<void> _onSubmit() async {
     // validate data
@@ -68,13 +67,9 @@ class _BodyEditState extends State<BodyEdit> {
       return false;
     }
 
-    var _bank = bookBankModel.bank.keys.firstWhere(
-        (element) => bookBankModel.bank[element] == _chosenBank,
-        orElse: () => null);
+    var _bank = bookBankModel.bank.keys.firstWhere((element) => bookBankModel.bank[element] == _chosenBank, orElse: () => null);
 
-    var _type = bookBankModel.type.keys.firstWhere(
-        (element) => bookBankModel.type[element] == _bookbankTypeValue,
-        orElse: () => null);
+    var _type = bookBankModel.type.keys.firstWhere((element) => bookBankModel.type[element] == _bookbankTypeValue, orElse: () => null);
 
     // get current user token
     String token = settingModel.value['token'];
@@ -90,23 +85,21 @@ class _BodyEditState extends State<BodyEdit> {
 
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPoinUpdateBookBank}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPoinUpdateBookBank}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status'] == true) {
-        int index = bookBankModel.bookbank
-            .indexWhere((element) => element['id'] == widget.bookbankID);
+        int index = bookBankModel.bookbank.indexWhere((element) => element['id'] == widget.bookbankID);
 
         // update state
         bookBankModel.bookbank[index] = jsonData['data']['bookbank'];
 
         _btnController.success();
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => OperationScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
       }
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -123,12 +116,10 @@ class _BodyEditState extends State<BodyEdit> {
 
   @override
   Widget build(BuildContext context) {
-    bookbank = bookBankModel.bookbank
-        .firstWhere((element) => element['id'] == widget.bookbankID);
+    bookbank = bookBankModel.bookbank.firstWhere((element) => element['id'] == widget.bookbankID);
 
     if (_bookbankTypeValue == null) {
-      _bookbankTypeValue =
-          bookBankModel.type[bookbank['account_type'].toString()];
+      _bookbankTypeValue = bookBankModel.type[bookbank['account_type'].toString()];
     }
 
     if (_chosenBank == null) {
@@ -170,10 +161,7 @@ class _BodyEditState extends State<BodyEdit> {
               isExpanded: true,
               hint: Text(
                 "เลือกธนาคาร",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
               items: <String>[
                 'ธนาคารกรุงเทพ',
@@ -204,10 +192,7 @@ class _BodyEditState extends State<BodyEdit> {
               isExpanded: true,
               hint: Text(
                 "ประเภทบัญชี",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w100),
+                style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w100),
               ),
               items: <String>[
                 'กระแสรายวัน',

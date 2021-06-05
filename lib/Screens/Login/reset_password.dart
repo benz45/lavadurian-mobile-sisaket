@@ -28,7 +28,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       'email': email,
     };
 
-    final response = await Http.post("${settingModel.baseURL}/${settingModel.endPointResetPassword}", body: data);
+    final response = await Http.post(Uri.parse("${settingModel.baseURL}/${settingModel.endPointResetPassword}"), body: data);
 
     var jsonData = jsonDecode(response.body);
     if (jsonData['detail'] != null) {

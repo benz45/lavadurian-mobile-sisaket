@@ -52,7 +52,7 @@ showDialogSetStoreStatus(BuildContext context, int storeID, int currentStatus) {
 
       try {
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPointSetStoreStatus}',
+          Uri.parse('${settingModel.baseURL}/${settingModel.endPointSetStoreStatus}'),
           body: data,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
         );

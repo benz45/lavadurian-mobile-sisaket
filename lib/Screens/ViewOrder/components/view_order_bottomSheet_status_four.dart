@@ -37,7 +37,7 @@ class _ViewOrderBottomSheetStatusFourState extends State<ViewOrderBottomSheetSta
         String token = settingModel.value['token'];
 
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPoinOrderStatusUpdate}',
+          Uri.parse('${settingModel.baseURL}/${settingModel.endPoinOrderStatusUpdate}'),
           body: data,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
         );

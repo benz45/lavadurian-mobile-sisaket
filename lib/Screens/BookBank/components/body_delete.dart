@@ -25,8 +25,7 @@ class _BodyDeleteState extends State<BodyDelete> {
   SettingModel settingModel;
   Map<String, dynamic> bookbank;
 
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
+  final RoundedLoadingButtonController _btnController = new RoundedLoadingButtonController();
 
   Future<String> _deleteBookbank() async {
     Map<String, dynamic> data = {
@@ -38,22 +37,20 @@ class _BodyDeleteState extends State<BodyDelete> {
 
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPoinDeleteBookBank}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPoinDeleteBookBank}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonData['status'] == true) {
-        int index = bookBankModel.bookbank
-            .indexWhere((element) => element['id'] == bookbankID);
+        int index = bookBankModel.bookbank.indexWhere((element) => element['id'] == bookbankID);
 
         bookbank = bookBankModel.bookbank[index];
         storeID = bookbank['store'];
         print(storeID);
 
-        bookBankModel.bookbank
-            .removeWhere((element) => element['id'] == bookbankID);
+        bookBankModel.bookbank.removeWhere((element) => element['id'] == bookbankID);
       }
       return jsonData['message'];
     } catch (e) {
@@ -86,8 +83,7 @@ class _BodyDeleteState extends State<BodyDelete> {
       color: kPrimaryColor,
       onPressed: () {
         _btnController.stop();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => OperationScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => OperationScreen()));
       },
     );
 
@@ -113,8 +109,7 @@ class _BodyDeleteState extends State<BodyDelete> {
                         SizedBox(height: size.height * 0.03),
                         Text(
                           "ลบบัญชีธนาคารออกแล้ว",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 26),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
                         ),
                         SizedBox(height: size.height * 0.02),
                         Padding(

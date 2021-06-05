@@ -23,7 +23,7 @@ showAlertDialog(BuildContext context, int bookbankID) {
 
     try {
       final response = await Http.post(
-        '${settingModel.baseURL}/${settingModel.endPoinDeleteBookBank}',
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPoinDeleteBookBank}'),
         body: data,
         headers: {HttpHeaders.authorizationHeader: "Token $token"},
       );

@@ -103,7 +103,7 @@ class _ViewOrderDetailOrderItemState extends State<ViewOrderDetailOrderItem> wit
         String token = settingModel.value['token'];
 
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPoinGetOrderUpdateWeight}',
+          Uri.parse('${settingModel.baseURL}/${settingModel.endPoinGetOrderUpdateWeight}'),
           body: jsonEncode(data),
           headers: {
             HttpHeaders.authorizationHeader: "Token $token",

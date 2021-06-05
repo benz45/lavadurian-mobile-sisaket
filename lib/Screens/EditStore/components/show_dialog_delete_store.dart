@@ -41,7 +41,7 @@ showDialogDeleteStore(BuildContext context, int storeID) {
 
       try {
         final response = await Http.post(
-          '${settingModel.baseURL}/${settingModel.endPoinDeleteStore}',
+          Uri.parse('${settingModel.baseURL}/${settingModel.endPoinDeleteStore}'),
           body: data,
           headers: {HttpHeaders.authorizationHeader: "Token $token"},
         );

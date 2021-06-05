@@ -69,17 +69,20 @@ class _BodyState extends State<Body> {
             return;
           }
 
-          final response = await http.post('${storeApi.baseURL}/${storeApi.endPointRegis}', body: <String, String>{
-            'username': storeSignup.getEmail,
-            'password': storeSignup.getPassword,
-            'email': storeSignup.getEmail,
-            'first_name': storeSignup.getFirstName,
-            'last_name': storeSignup.getLastName,
-            'citizenid': storeSignup.getCitizenid,
-            'tradertype': storeSignup.getTradertype,
-            'tradername': storeSignup.getTradername,
-            'phone': storeSignup.getPhoneNumber,
-          });
+          final response = await http.post(
+            Uri.parse('${storeApi.baseURL}/${storeApi.endPointRegis}'),
+            body: <String, String>{
+              'username': storeSignup.getEmail,
+              'password': storeSignup.getPassword,
+              'email': storeSignup.getEmail,
+              'first_name': storeSignup.getFirstName,
+              'last_name': storeSignup.getLastName,
+              'citizenid': storeSignup.getCitizenid,
+              'tradertype': storeSignup.getTradertype,
+              'tradername': storeSignup.getTradername,
+              'phone': storeSignup.getPhoneNumber,
+            },
+          );
           if (response.statusCode == 200) {
             final result = ResponseSignupModel.fromJson(jsonDecode(response.body));
 

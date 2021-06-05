@@ -61,8 +61,10 @@ class _BodyState extends State<Body> {
   // Set data to state.
   Future<void> _getStoreProfile() async {
     String token = settingModel.value['token'];
-    final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}',
-        headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
+    final response = await Http.get(
+      Uri.parse('${settingModel.baseURL}/${settingModel.endPointGetStoreProfile}'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"},
+    );
 
     var jsonData = json.decode(utf8.decode(response.bodyBytes));
 
@@ -183,8 +185,13 @@ class _BodyState extends State<Body> {
 
     // Get only one time after login
     if (userModel.value.isEmpty) {
-      final response = await Http.get('${settingModel.baseURL}/${settingModel.endPointUserProfile}',
-          headers: {'Content-Type': 'application/json; charset=UTF-8', HttpHeaders.authorizationHeader: "Token $token"});
+      final response = await Http.get(
+        Uri.parse('${settingModel.baseURL}/${settingModel.endPointUserProfile}'),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: "Token $token",
+        },
+      );
 
       var jsonData = json.decode(utf8.decode(response.bodyBytes));
       if (jsonData['results'] != null) {
